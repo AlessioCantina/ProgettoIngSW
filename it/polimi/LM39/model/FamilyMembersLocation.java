@@ -1,55 +1,30 @@
 package it.polimi.LM39.model;
 
+import java.util.ArrayList;
 
 /**
  * 
  */
 public class FamilyMembersLocation {
 
-    /**
-     * Default constructor
-     */
-    public FamilyMembersLocation() {
-    }
-
-    /**
-     * 
-     */
     private FamilyMember[][] familyMembersOnTheTowers= new FamilyMember[4][4];
 
-    /**
-     * 
-     */
-    private FamilyMember familyMembersAtTheMarket;
+    private FamilyMember[] familyMembersAtTheMarket = new FamilyMember[4];
 
-    /**
-     * 
-     */
-    private FamilyMember familyMembersAtTheProduction;
+    private ArrayList<FamilyMember> familyMembersAtTheProduction = new ArrayList<FamilyMember>();
 
-    /**
-     * 
-     */
-    private FamilyMember familyMembersAtTheHarvest;
+    private ArrayList<FamilyMember> familyMembersAtTheHarvest = new ArrayList<FamilyMember>();
     
-    private FamilyMember[] familyMembersAtTheCouncilPalace;
+    private ArrayList<FamilyMember> familyMembersAtTheCouncilPalace = new ArrayList<FamilyMember>();
 
 
-
-    /**
-     * @param familyMember 
-     * @param positionX 
-     * @param positionY 
-     * @return
-     */
-    public void setFamilyMembersAtTheCouncilPalace(FamilyMember familyMember, Integer position) {
-        // TODO implement here
-        
+    public void setFamilyMembersAtTheCouncilPalace(FamilyMember familyMember) {
+        //set a FamilyMember at the Council Palace
+    	// TODO implement here
     }
     
-    public FamilyMember[] getFamilyMembersAtTheCouncilPalace() {
-        // TODO implement here
-        return null; //prevent error
+    public ArrayList<FamilyMember> getFamilyMembersAtTheCouncilPalace() {
+        return this.familyMembersAtTheCouncilPalace;
     }
     
     public void setFamilyMemberOnTheTower(FamilyMember familyMember, Integer positionX, Integer positionY) {
@@ -57,49 +32,33 @@ public class FamilyMembersLocation {
         
     }
 
-    /**
-     * @return
-     */
     public FamilyMember[][] getFamilyMembersOnTheTowers() {
-        // TODO implement here
-        return null; //prevent error
+        return this.familyMembersOnTheTowers;
     }
 
-    /**
-     * @param familyMember 
-     * @param Integer position 
-     * @return
-     */
     public void setFamilyMemberOnTheMarket(FamilyMember familyMember, Integer position) {
-        // TODO implement here
-        
+    	//set a FamilyMember in a specific position of the Market
+    	// TODO implement here
     }
 
-    /**
-     * @return
-     */
     public FamilyMember[] getFamilyMembersOnTheMarket() {
-        // TODO implement here
-        return null; //prevent error
+        return this.familyMembersAtTheMarket; 
     }
 
-    /**
-     * @param familyMember 
-     * @param ActionType 
-     * @return
-     */
     public void setFamilyMemberOnProductionOrHarvest(FamilyMember familyMember, String ActionType) {
         // TODO implement here
         
     }
 
-    /**
-     * @param actionType 
-     * @return
-     */
-    public FamilyMember[] getFamilyMembersOnProductionOrHarvest(String actionType) {
-        // TODO implement here
-        return null; //prevent error
+
+    public ArrayList<FamilyMember> getFamilyMembersOnProductionOrHarvest(String actionType) {
+    	if(actionType.equals("Production"))
+    		return this.familyMembersAtTheProduction;
+    	else 
+    		if (actionType.equals("Harvest"))
+    			return this.familyMembersAtTheHarvest;
+    		else
+    			return null; // invalid action
     }
 
 }

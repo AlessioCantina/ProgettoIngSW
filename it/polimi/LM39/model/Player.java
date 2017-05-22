@@ -12,184 +12,84 @@ public class Player {
      */
     public Player() {
     }
-
-    /**
-     * 
-     */
+    
     private String nickname;
 
-    /**
-     * 
-     */
     private String playerColor;
 
-    /**
-     * 
-     */
     private PlayerBoard possessions;
 
-    /**
-     * 
-     */
     private PlayerPoints points;
 
-    /**
-     * 
-     */
     private PlayerResources resources;
 
-    /**
-     * 
-     */
     private Excommunication[] excommunications;
 
-    /**
-     * 
-     */
     private MainBoard personalMainBoard;
 
-    /**
-     * 
-     */
     private String[] playerPlayedLeaderCards;
+    //todo
 
-
-
-
-
-
-
-
-
-
-
-
-    /**
-     * @param nickname 
-     * @param color 
-     * @return
-     */
+    
     public void setNicknameAndColor(String nickname, String color) {
-        // TODO implement here
-        
+        this.nickname = nickname;
+        this.playerColor = color;
     }
 
-    /**
-     * @return
-     */
     public String getNickname() {
-        // TODO implement here
-        return "";
+        return this.nickname;
     }
 
-    /**
-     * @return
-     */
     public String getColor() {
-        // TODO implement here
-        return "";
+        return this.playerColor;
     }
 
-    /**
-     * @param playerBoard 
-     * @return
-     */
     public void setPlayerBoard(PlayerBoard playerBoard) {
-        // TODO implement here
-        
+       this.possessions=playerBoard;
     }
 
-    /**
-     * @return
-     */
     public PlayerBoard getPlayerBoard() {
-        // TODO implement here
-    	return null; // prevent error
+    	return this.possessions;
     }
 
-    /**
-     * @param points 
-     * @return
-     */
     public void setPoints(PlayerPoints points) {
-        // TODO implement here
-        
+        this.points=points;
     }
 
-    /**
-     * @return
-     */
     public PlayerPoints getPoints() {
-        // TODO implement here
-    	return null; // prevent error
+    	return this.points; 
     }
 
-    /**
-     * @param resources 
-     * @return
-     */
     public void setResources(PlayerResources resources) {
-        // TODO implement here
-        
+       this.resources=resources;    
     }
 
-    /**
-     * @return
-     */
     public PlayerResources getResources() {
-        // TODO implement here
-    	return null; // prevent error
+    	return this.resources;
     }
 
-    /**
-     * @param personalMainBoard 
-     * @return
-     */
     public void setPersonalMainBoard(MainBoard personalMainBoard) {
-        // TODO implement here
-        
+       this.personalMainBoard=personalMainBoard;
     }
-
-    /**
-     * @return
-     */
+    
     public MainBoard getPersonalMainBoard() {
-        // TODO implement here
-    	return null; // prevent error
+    	return this.personalMainBoard;
     }
 
-    /**
-     * @param cardName 
-     * @return
-     */
     public void setPlayerPlayedLeaderCards(String cardName) {
-        // TODO implement here
-        
+    	// TODO implement here
     }
 
-    /**
-     * @return
-     */
-    public String getPlayerPlayedLeaderCards() {
-        // TODO implement here
-        return "";
+    public String[] getPlayerPlayedLeaderCards() {
+        return this.playerPlayedLeaderCards;
     }
 
-    /**
-     * @param excommunication 
-     * @return
-     */
-    public void setExcommunication(Excommunication excommunication) {
-        // TODO implement here
-        
+    public void setExcommunications(Excommunication[] excommunications) {
+        this.excommunications=excommunications;
     }
 
-    /**
-     * @return
-     */
     public Excommunication[] getExcommunications() {
-        // TODO implement here
-    	return null; // prevent error
+    	return this.excommunications;
     }
 
 }

@@ -20,51 +20,25 @@ public class GameHandler {
     
 	private Integer period;
 
-    /**
-     * 
-     */
     private Integer round;
     
     public BuildingHandler buildingHandler;
-
-    /**
-     * 
-     */
+    
     public TerritoryHandler territoryHandler;
 
-    /**
-     * 
-     */
     public VentureHandler ventureHandler;
 
-    /**
-     * 
-     */
     public CharacterHandler characterHandler;
 
-    /**
-     * 
-     */
     public LeaderHandler leaderHandler;
 
-    /**
-     * 
-     */
     public ExcommunicationHandler excommunicationHandler;
 
-    /**
-     * 
-     */
     public PlayerBoardHandler playerBoardHandler;
 
-    /**
-     * 
-     */
     public CouncilHandler councilHandler;
 
-    /**
-     * @return
-     */
+
     public void rollTheDices() {
     	Integer[] diceValues = new Integer[3];
     	for(int i=0;i<3;i++){
@@ -75,10 +49,6 @@ public class GameHandler {
     	mainBoard.setDiceValues(diceValues);    
     }
 
-    /**
-     * @param cardName 
-     * @return
-     */
     public boolean getCard(String cardName,Player player) {
     	    	FamilyMembersLocation familyMembersLocation;
     	    	familyMembersLocation = mainBoard.getFamilyMembersLocation();
@@ -116,7 +86,7 @@ public class GameHandler {
     	//instantResources
     	territoryHandler.doInstantEffect(territory.getEffect(),player);
     	
-    	String[] possedTerritories = player.getPlayerBoard().getPossession("Territory");
+    	String[] possedTerritories = player.getPlayerBoard().getPossessions("Territory");
     	int i;
     	for (i=0;i<6 && possedTerritories[i]!=null;i++);
     	if (i<6 && possedTerritories[i]==null)
@@ -346,28 +316,17 @@ public class GameHandler {
     		}
     			
     		}
-    /**
-     * @param file File 
-     * @return
-     */
+
     public HashMap<String,Card> loadCards(File file) {
         // TODO implement here
         return null; //to prevent error
     }
 
-    /**
-     * @return
-     */
     public void iniazializeTheGame() {
         // TODO implement here
         
     }
 
-    /**
-     * @param player Player 
-     * @param mainBoard MainBoard 
-     * @return
-     */
     public Integer calculateFinalPoints(Player player,MainBoard mainBoard) {
         // TODO implement here
         return null; //prevent error

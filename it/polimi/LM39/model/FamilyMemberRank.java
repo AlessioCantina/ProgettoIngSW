@@ -1,5 +1,4 @@
 package it.polimi.LM39.model;
-import java.util.*;
 
 /**
  * 
@@ -12,26 +11,15 @@ public class FamilyMemberRank extends FamilyMember {
     public FamilyMemberRank() {
     }
 
-    /**
-     * 
-     */
     private Integer position;
 
-
-    /**
-     * @return
-     */
+    
     public Integer getPosition() {
-        // TODO implement here
-        return null;
+        return this.position;
     }
 
-    /**
-     * @param position 
-     * @return
-     */
     public void setFamilyMemberRank(Integer position) {
-        // TODO implement here
+        this.position=position;
     }
 
 }
