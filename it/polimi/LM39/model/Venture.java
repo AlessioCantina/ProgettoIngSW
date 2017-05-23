@@ -1,6 +1,6 @@
 package it.polimi.LM39.model;
 
-import it.polimi.LM39.model.instanteffect.InstantEffect;
+import it.polimi.LM39.model.instanteffect.*;
 
 public class Venture extends Card {
 
@@ -13,11 +13,5 @@ public class Venture extends Card {
     public Integer finalVictory;
 
     public InstantEffect instant;
-
-
-    public InstantEffect getEffect() {
-        // TODO implement here
-        return null;
-    }
-
+	
 }

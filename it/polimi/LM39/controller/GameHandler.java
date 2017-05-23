@@ -37,6 +37,8 @@ public class GameHandler {
     public PlayerBoardHandler playerBoardHandler;
 
     public CouncilHandler councilHandler;
+    
+    public CardHandler cardHandler;
 
 
     public void rollTheDices() {
@@ -84,7 +86,7 @@ public class GameHandler {
     
     public void getTerritoryCard(Territory territory,Player player){
     	//instantResources
-    	territoryHandler.doInstantEffect(territory.getInstantEffect(),player);
+    	territoryHandler.doInstantEffect(cardHandler.getEffect(territory.instantBonuses),player);
     	
     	String[] possedTerritories = player.getPlayerBoard().getPossessions("Territory");
     	int i;
