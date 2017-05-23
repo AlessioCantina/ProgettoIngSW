@@ -1,6 +1,7 @@
 package it.polimi.LM39.model;
 
 import java.util.ArrayList;
+import it.polimi.LM39.exception.*;
 
 
 public class FamilyMembersLocation {
@@ -43,25 +44,25 @@ public class FamilyMembersLocation {
         return this.familyMembersAtTheMarket; 
     }
 
-    public void setFamilyMemberOnProductionOrHarvest(FamilyMember familyMember, String actionType) {
+    public void setFamilyMemberOnProductionOrHarvest(FamilyMember familyMember, String actionType) throws InvalidActionType{
     	if(actionType.equals("Production"))
     		this.familyMembersAtTheProduction.add(familyMember);
     	else 
     		if (actionType.equals("Harvest"))
     			this.familyMembersAtTheHarvest.add(familyMember);
     		else
-    			System.out.println("invalid actionType"); // invalid action
+    			throw new InvalidActionType("The actionType is invalid"); // invalid action
         
     }
  
-    public ArrayList<FamilyMember> getFamilyMembersOnProductionOrHarvest(String actionType) {
+    public ArrayList<FamilyMember> getFamilyMembersOnProductionOrHarvest(String actionType) throws InvalidActionType{
     	if(actionType.equals("Production"))
     		return this.familyMembersAtTheProduction;
     	else 
     		if (actionType.equals("Harvest"))
     			return this.familyMembersAtTheHarvest;
     		else
-    			return null; // invalid action
+    			throw new InvalidActionType("The actionType is invalid"); // invalid action
     }
 
 }
