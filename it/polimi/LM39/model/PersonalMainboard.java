@@ -1,10 +1,6 @@
 package it.polimi.LM39.model;
 
 
-
-/**
- * 
- */
 public class PersonalMainboard {
 
     public String playerName;

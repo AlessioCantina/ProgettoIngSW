@@ -1,16 +1,7 @@
 package it.polimi.LM39.model;
 
 
-/**
- * 
- */
 public class PlayerBoard {
-
-    /**
-     * Default constructor
-     */
-    public PlayerBoard() {
-    }
 
     private String[] possessedTerritories;
 
@@ -19,7 +10,6 @@ public class PlayerBoard {
     private String[] possessedVentures;
 
     private String[] possessedCharacters;
-
 
 
     public String[] getPossessions(String cardType) {

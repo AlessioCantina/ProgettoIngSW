@@ -2,18 +2,10 @@ package it.polimi.LM39.model;
 
 import java.util.HashMap;
 
-/**
- * 
- */
+
 public class MainBoard {
 
-    /**
-     * Default constructor
-     */
-    public MainBoard() {
-    }
-
-    private String[][] cardsOnTheTowers = new String[4][4];
+	private String[][] cardsOnTheTowers = new String[4][4];
 
     private Integer[] diceValues = new Integer[4];
 
@@ -26,8 +18,11 @@ public class MainBoard {
     private Rankings rankings;
 
     public ActionBonus[][] towerBonuses = new ActionBonus[4][4];
+   
     public ActionBonus[][] playerBoardBonuses = new ActionBonus[6][4];
+    
     public ActionBonus[] faithBonuses = new ActionBonus[6];
+    
     public HashMap<String,Territory> territoryMap = new HashMap<String,Territory>();
 
     public HashMap<String,Building> buildingMap = new HashMap<String,Building>();
@@ -41,64 +36,52 @@ public class MainBoard {
     public HashMap<String,Excommunication> excommunicationMap = new HashMap<String,Excommunication>();
 
 
-    public void setCardsOnTheTowers(String cardOnTheTowers) {
-        // TODO implement here
-        
+    public void setCardsOnTheTowers(String[][] cardOnTheTowers) {
+        this.cardsOnTheTowers=cardOnTheTowers;
     }
 
     public String[][] getCardsOnTheTowers() {
-        // TODO implement here
-        return null; // prevent error
+        return this.cardsOnTheTowers;
     }
 
     public void setDiceValues(Integer[] diceValues) {
-        // TODO implement here
-        
+        this.diceValues=diceValues;
     }
 
     public Integer[] getDiceValues() {
-        // TODO implement here
-       return null; //prevent error 
+       return this.diceValues;  
     }
 
     public void setExcommunicationsOnTheBoard(Excommunication[] excommunicationsOnTheBoard) {
-        // TODO implement here
-        
+        this.excommunicationsOnTheBoard=excommunicationsOnTheBoard;
     }
 
     public Excommunication[] getExcommunicationsOnTheBoard() {
-        // TODO implement here
-    	return null; //prevent error 
+    	return this.excommunicationsOnTheBoard;
     }
 
     public void setPlayedLeaderCard(String[] playedLeaderCard) {
-        // TODO implement here
-        
+        this.playedLeaderCard=playedLeaderCard;
     }
 
     public String[] getPlayedLeaderCard() {
-        // TODO implement here
-    	return null; //prevent error 
+    	return this.playedLeaderCard;
     }
 
     public void setFamilyMembersLocation(FamilyMembersLocation familyMembersLocation) {
-        // TODO implement here
-        
+        this.familyMembersLocation=familyMembersLocation;
     }
 
     public FamilyMembersLocation getFamilyMembersLocation() {
-        // TODO implement here
-    	return null; //prevent error 
+    	return this.familyMembersLocation;
     }
 
     public void setRankings(Rankings rankings) {
-        // TODO implement here
-        
+        this.rankings=rankings;
     }
 
     public Rankings getRankings() {
-        // TODO implement here
-    	return null; //prevent error  
+    	return this.rankings;
     }
 
 }

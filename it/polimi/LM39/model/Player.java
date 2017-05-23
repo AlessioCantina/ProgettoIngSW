@@ -1,18 +1,8 @@
 package it.polimi.LM39.model;
 
-import java.util.*;
 
-/**
- * 
- */
 public class Player {
 
-    /**
-     * Default constructor
-     */
-    public Player() {
-    }
-    
     private String nickname;
 
     private String playerColor;

@@ -1,15 +1,7 @@
 package it.polimi.LM39.model;
 
-/**
- * 
- */
-public class FamilyMemberRank extends FamilyMember {
 
-    /**
-     * Default constructor
-     */
-    public FamilyMemberRank() {
-    }
+public class FamilyMemberRank extends FamilyMember {
 
     private Integer position;
 

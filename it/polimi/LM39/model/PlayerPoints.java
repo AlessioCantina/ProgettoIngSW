@@ -1,101 +1,46 @@
 package it.polimi.LM39.model;
 
-import java.util.*;
 
-/**
- * 
- */
 public class PlayerPoints {
 
-    /**
-     * Default constructor
-     */
-    public PlayerPoints() {
-    }
-
-    /**
-     * 
-     */
     private Integer faith;
 
-    /**
-     * 
-     */
     private Integer military;
 
-    /**
-     * 
-     */
     private Integer victory;
 
-    /**
-     * 
-     */
     private Integer finalVictory;
 
 
-
-    /**
-     * @return
-     */
     public Integer getFaith() {
-        // TODO implement here
-    	return null; // prevent error
+    	return this.faith;
     }
 
-    /**
-     * @return
-     */
     public Integer getMilitary() {
-        // TODO implement here
-    	return null; // prevent error
+    	return this.military;
     }
 
-    /**
-     * @return
-     */
     public Integer getVictory() {
-        // TODO implement here
-    	return null; // prevent error
+    	return this.victory;
     }
     public Integer getFinalVictory() {
-        // TODO implement here
-    	return null; // prevent error
+    	return this.finalVictory;
     }
-    /**
-     * @param qtyFaith 
-     * @return
-     */
+
     public void setFaith(Integer qtyFaith) {
-        // TODO implement here
-        
+    	this.faith=qtyFaith;
     }
 
-    /**
-     * @param qtyMilitary 
-     * @return
-     */
     public void setMilitary(Integer qtyMilitary) {
-        // TODO implement here
-        
+    	this.military=qtyMilitary;
     }
 
-    /**
-     * @param qtyVictory 
-     * @return
-     */
     public void setVictory(Integer qtyVictory) {
-        // TODO implement here
-        
+    	this.victory=qtyVictory;
     }
 
-    /**
-     * @param qtyFinalVictory 
-     * @return
-     */
     public void setFinalVictory(Integer qtyFinalVictory) {
-        // TODO implement here
-        
+    	this.finalVictory=qtyFinalVictory;
     }
 
 }
