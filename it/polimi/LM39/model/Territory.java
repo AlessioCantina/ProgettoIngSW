@@ -2,7 +2,9 @@ package it.polimi.LM39.model;
 
 import it.polimi.LM39.model.instanteffect.InstantEffect;
 
-
+/**
+ * 
+ */
 public class Territory extends Card {
 
     public Integer activationCost;
@@ -12,7 +14,12 @@ public class Territory extends Card {
     public InstantEffect activationReward;
 
 
-    public Effect getEffect() {
+    public InstantEffect getInstantEffect() {
+        // TODO implement here
+        return null;
+    }
+
+    public InstantEffect getHarvestEffect() {
         // TODO implement here
         return null;
     }

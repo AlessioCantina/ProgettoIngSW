@@ -1,6 +1,7 @@
 package it.polimi.LM39.model;
 
 import it.polimi.LM39.model.instanteffect.InstantEffect;
+import it.polimi.LM39.model.instanteffect.Points;
 
 
 public class Building extends Card {
@@ -9,12 +10,12 @@ public class Building extends Card {
 
     public CardResources costResources;
 
-    public InstantEffect instantBonuses;
+    public Points instantBonuses;
 
-    public InstantEffect activationReward;
+    public InstantEffect activationEffect;
 
 
-    public Effect getEffect() {
+    public InstantEffect getProductionEffect() {
         // TODO implement here
         return null;
     }

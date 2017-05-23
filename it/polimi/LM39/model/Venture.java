@@ -2,7 +2,6 @@ package it.polimi.LM39.model;
 
 import it.polimi.LM39.model.instanteffect.InstantEffect;
 
-
 public class Venture extends Card {
 
     public CardResources costResources;
@@ -15,8 +14,8 @@ public class Venture extends Card {
 
     public InstantEffect instant;
 
-    
-    public Effect getEffect() {
+
+    public InstantEffect getEffect() {
         // TODO implement here
         return null;
     }

@@ -2,7 +2,9 @@ package it.polimi.LM39.model;
 
 import it.polimi.LM39.model.instanteffect.InstantEffect;
 
-
+/**
+ * 
+ */
 public class Character extends Card {
 
     public Integer costCoins;
@@ -11,8 +13,13 @@ public class Character extends Card {
 
     public Effect permanentEffect;
 
-    
-    public Effect getEffect() {
+
+    public InstantEffect getInstantEffect() {
+        // TODO implement here
+        return null;
+    }
+
+    public Effect getPermanentEffect() {
         // TODO implement here
         return null;
     }
