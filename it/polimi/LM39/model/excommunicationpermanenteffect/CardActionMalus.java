@@ -16,5 +16,6 @@ public class CardActionMalus extends ExcommunicationPermanentEffect {
      * 
      */
     public Integer malus;
-
+    
+    public String cardType;
 }

@@ -23,17 +23,17 @@ public class MainBoard {
     
     public ActionBonus[] faithBonuses = new ActionBonus[6];
     
-    public HashMap<String,Territory> territoryMap = new HashMap<String,Territory>();
+    public HashMap<Integer,Territory> territoryMap = new HashMap<Integer,Territory>();
 
-    public HashMap<String,Building> buildingMap = new HashMap<String,Building>();
+    public HashMap<Integer,Building> buildingMap = new HashMap<Integer,Building>();
 
-    public HashMap<String,Venture> ventureMap = new HashMap<String,Venture>();
+    public HashMap<Integer,Venture> ventureMap = new HashMap<Integer,Venture>();
 
-    public HashMap<String,Character> characterMap = new HashMap<String,Character>();
+    public HashMap<Integer,Character> characterMap = new HashMap<Integer,Character>();
 
-    public HashMap<String,Leader> leaderMap = new HashMap<String,Leader>();
+    public HashMap<Integer,Leader> leaderMap = new HashMap<Integer,Leader>();
 
-    public HashMap<String,Excommunication> excommunicationMap = new HashMap<String,Excommunication>();
+    public HashMap<Integer,Excommunication> excommunicationMap = new HashMap<Integer,Excommunication>();
 
 
     public void setCardsOnTheTowers(String[][] cardOnTheTowers) {
