@@ -1,5 +1,4 @@
-{  
-   "Leader":[  
+[  
       {  
          "cardName":"Pico della Mirandola",
          "requestedObjects":{  
@@ -334,5 +333,4 @@
             "actionValue":0
          }
       }
-   ]
-}
+]

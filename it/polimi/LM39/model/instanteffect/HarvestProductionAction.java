@@ -5,11 +5,6 @@ package it.polimi.LM39.model.instanteffect;
  */
 public class HarvestProductionAction extends InstantEffect {
 
-    /**
-     * Default constructor
-     */
-    public HarvestProductionAction() {
-    }
 
     /**
      * 

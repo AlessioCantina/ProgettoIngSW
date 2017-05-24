@@ -1,5 +1,4 @@
-{  
-   "Venture":[  
+[  
       {  
          "cardName":"Combattere le Eresie",
          "period":1,
@@ -560,5 +559,4 @@
             "council":0
          }
       }
-   ]
-}
+]

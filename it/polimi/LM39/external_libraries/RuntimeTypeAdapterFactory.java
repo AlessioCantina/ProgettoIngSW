@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.gson.typeadapters;
+package it.polimi.LM39.external_libraries;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;

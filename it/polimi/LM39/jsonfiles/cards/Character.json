@@ -1,5 +1,4 @@
-{  
-   "Character":[  
+[  
       {  
          "cardName":"Predicatore",
          "period":1,
@@ -307,7 +306,9 @@
             "Venture",
             2
          ],
-         "permanentEffect":"NoEffect"
+         "permanentEffect":{
+             "type":"NoEffect"
+         }
       },
       {  
          "cardName":"Governatore",
@@ -390,5 +391,4 @@
             "type":"NoEffect"
          }
       }
-   ]
-}
+]

@@ -1,5 +1,4 @@
-{  
-   "Excommunication":[  
+[  
       {  
          "period":1,
          "effect":{  
@@ -186,5 +185,4 @@
             "victoryQty":-1,
          }
       }
-   ]
-}
+]

@@ -1,5 +1,4 @@
-{  
-   "Territory":[  
+[  
       {  
          "cardName":"Citta",
          "period":1,
@@ -635,5 +634,4 @@
             }
          }
       }
-   ]
-}
+]

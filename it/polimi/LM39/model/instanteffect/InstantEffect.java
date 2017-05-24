@@ -5,13 +5,8 @@ import it.polimi.LM39.model.Effect;
 /**
  * 
  */
-public abstract class InstantEffect extends Effect {
+public class InstantEffect extends Effect {
 
-    /**
-     * Default constructor
-     */
-    public InstantEffect() {
-    }
 
 
 
