@@ -7,7 +7,7 @@ public class Player {
 
     private String playerColor;
 
-    private PlayerBoard possessions;
+    private PersonalBoard personalBoard;
 
     private PlayerPoints points;
 
@@ -34,12 +34,12 @@ public class Player {
         return this.playerColor;
     }
 
-    public void setPlayerBoard(PlayerBoard playerBoard) {
-       this.possessions=playerBoard;
+    public void setPlayerBoard(PersonalBoard playerBoard) {
+       this.personalBoard=playerBoard;
     }
 
-    public PlayerBoard getPlayerBoard() {
-    	return this.possessions;
+    public PersonalBoard getPlayerBoard() {
+    	return this.personalBoard;
     }
 
     public void setPoints(PlayerPoints points) {

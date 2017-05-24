@@ -1,7 +1,7 @@
 package it.polimi.LM39.model;
 
 
-public class PlayerBoard {
+public class PersonalBoard {
 
     private String[] possessedTerritories;
 
@@ -10,7 +10,12 @@ public class PlayerBoard {
     private String[] possessedVentures;
 
     private String[] possessedCharacters;
+    
+    public ActionBonus[] territoryBonuses = new ActionBonus[6]; //the bonuses are loaded from file
 
+    public ActionBonus[] characterBonuses = new ActionBonus[6]; //the bonuses are loaded from file
+    
+    public ActionBonus[][] personalBonusTile = new ActionBonus[2][2]; //the bonuses are loaded from file
 
     public String[] getPossessions(String cardType) {
         switch(cardType){

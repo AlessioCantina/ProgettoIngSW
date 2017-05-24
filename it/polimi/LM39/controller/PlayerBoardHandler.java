@@ -2,7 +2,7 @@ package it.polimi.LM39.controller;
 
 
 import it.polimi.LM39.model.Player;
-import it.polimi.LM39.model.PlayerBoard;
+import it.polimi.LM39.model.PersonalBoard;
 
 /**
  * 
@@ -18,14 +18,14 @@ public class PlayerBoardHandler {
     /**
      * 
      */
-    public PlayerBoard playerBoard;
+    public PersonalBoard playerBoard;
 
 
 
     /**
      * @param playerBoard
      */
-    public void PlayerBoardHandler(PlayerBoard playerBoard) {
+    public void PlayerBoardHandler(PersonalBoard playerBoard) {
         // TODO implement here
     }
 

@@ -17,11 +17,17 @@ public class MainBoard {
 
     private Rankings rankings;
 
-    public ActionBonus[][] towerBonuses = new ActionBonus[4][4];
-   
-    public ActionBonus[][] playerBoardBonuses = new ActionBonus[6][4];
+    public ActionBonus[][] towerBonuses = new ActionBonus[4][4]; //the bonuses are loaded from file
     
-    public ActionBonus[] faithBonuses = new ActionBonus[6];
+    public ActionBonus[] faithBonuses = new ActionBonus[16]; //the bonuses are loaded from file
+    
+    public ActionBonus[] marketBonuses = new ActionBonus[4]; //the bonuses are loaded from file
+    
+    public ActionBonus councilPalaceBonus = new ActionBonus(); //the bonuses are loaded from file
+    
+    public ActionBonus harvestBonus = new ActionBonus(); //the bonuses are loaded from file
+    
+    public ActionBonus productionBonus = new ActionBonus(); //the bonuses are loaded from file
     
     public HashMap<Integer,Territory> territoryMap = new HashMap<Integer,Territory>();
 
