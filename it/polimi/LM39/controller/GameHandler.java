@@ -320,9 +320,8 @@ public class GameHandler {
     			
     		}
 
-    public HashMap<String,Card> loadCards(File file) {
+    public void loadCards(MainBoard mainBoard) {
         // TODO implement here
-        return null; //to prevent error
     }
 
     public void iniazializeTheGame() {
