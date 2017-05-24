@@ -15,7 +15,7 @@ public class Player {
 
     private Excommunication[] excommunications;
 
-    private MainBoard personalMainBoard; // this is a modified version of the mainboard
+    private MainBoard personalMainBoard; // this is a modified version of the mainboard, should be updated every time the board gets modified
 
     private String[] playerPlayedLeaderCards;
     //todo
