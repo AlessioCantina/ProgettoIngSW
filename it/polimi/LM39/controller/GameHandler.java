@@ -16,6 +16,7 @@ public class GameHandler {
 	        this.mainBoard=mainBoard;
 	    }
 	public Integer marketSize;
+	
 	public Integer harvestAndProductionSize;
     
 	private Integer period;
@@ -134,8 +135,8 @@ public class GameHandler {
         boolean coloredFamilyMemberOnTheTower = false;
         boolean uncoloredFamilyMemberOnTheTower = false;
         String[][] cardsOnTheTowers = mainBoard.getCardsOnTheTowers();
-        Integer[] diceValues = mainBoard.getDiceValues();
-        FamilyMember[][] familyMembersOnTheTowers = mainBoard.getFamilyMembersLocation().getFamilyMembersOnTheTowers();
+        Integer[] diceValues = player.getPersonalMainBoard().getDiceValues(); // we use the player Personal MainBaord
+        FamilyMember[][] familyMembersOnTheTowers = player.getPersonalMainBoard().getFamilyMembersLocation().getFamilyMembersOnTheTowers(); // we use the player Personal MainBaord
     	
         for(i=0, j=0;!cardsOnTheTowers[i][j].equals(cardName) && i<4;i++)
         	for(j=0;!cardsOnTheTowers[i][j].equals(cardName) && j<4;j++);
@@ -220,7 +221,7 @@ public class GameHandler {
     }
 
     public void addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, Player player) {
-    	FamilyMember[] familyMembersAtTheMarket = mainBoard.getFamilyMembersLocation().getFamilyMembersOnTheMarket();
+    	FamilyMember[] familyMembersAtTheMarket = player.getPersonalMainBoard().getFamilyMembersLocation().getFamilyMembersOnTheMarket(); // we use the player Personal MainBaord
         if(familyMembersAtTheMarket[position] == null && position<=marketSize){
         	(familyMembersAtTheMarket[position].color) = (familyMember.color);
         	(familyMembersAtTheMarket[position].playerColor) = (familyMember.playerColor);
@@ -310,9 +311,9 @@ public class GameHandler {
     		}
     		if (doAction==true){
     			if (actionType=="Production")
-	    			playerBoardHandler.activateHarvest(mainBoard.getDiceValues()[familyMemberColortoDiceValue(familyMember.color)]-penalty,player);
+	    			playerBoardHandler.activateHarvest(player.getPersonalMainBoard().getDiceValues()[familyMemberColortoDiceValue(familyMember.color)]-penalty,player); // we use the player Personal MainBaord
 	    		if(actionType=="Harvest")
-	    			playerBoardHandler.activateHarvest(mainBoard.getDiceValues()[familyMemberColortoDiceValue(familyMember.color)]-penalty,player);
+	    			playerBoardHandler.activateHarvest(player.getPersonalMainBoard().getDiceValues()[familyMemberColortoDiceValue(familyMember.color)]-penalty,player); // we use the player Personal MainBaord
 	    		else
 	    			System.out.println("Azione non valida! deve essere Production o Harvest");
     		}
