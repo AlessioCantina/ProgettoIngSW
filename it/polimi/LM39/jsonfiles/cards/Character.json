@@ -232,7 +232,7 @@
          "period":2,
          "costCoins":4,
          "instantEffect":{  
-            "type":"GetCardResources",
+            "type":"GetCardAndResources",
             "cardType":"Building",
             "cardValue":6,
             "resources":{  
