@@ -3,7 +3,7 @@
          "period":1,
          "effect":{  
             "type":"HarvestProductionMalus",
-            "malus":-3,
+            "malus":3,
             "modifierType":"Harvest"
          }
       },
@@ -25,7 +25,7 @@
             "resources":{  
                "woods":0,
                "stones":0,
-               "servants":-1,
+               "servants":1,
                "coins":0,
                "council":0
             }
@@ -39,7 +39,7 @@
                "woods":0,
                "stones":0,
                "servants":0,
-               "coins":-1,
+               "coins":1,
                "council":0
             }
          }
@@ -48,7 +48,7 @@
          "period":1,
          "effect":{  
             "type":"HarvestProductionMalus",
-            "malus":-3,
+            "malus":3,
             "modifierType":"Production"
          }
       },
@@ -57,8 +57,8 @@
          "effect":{  
             "type":"ResourcesMalus",
             "resources":{  
-               "woods":-1,
-               "stones":-1,
+               "woods":1,
+               "stones":1,
                "servants":0,
                "coins":0,
                "council":0
@@ -69,7 +69,7 @@
          "period":1,
          "effect":{  
             "type":"DiceMalus",
-            "malus":-1
+            "malus":1
          }
       },
       {  
@@ -95,7 +95,7 @@
          "effect":{  
             "type":"CardActionMalus",
             "cardType":"Building",
-            "malus":-4
+            "malus":4
          }
       },
       {  
@@ -103,7 +103,7 @@
          "effect":{  
             "type":"CardActionMalus",
             "cardType":"Territory",
-            "malus":-4
+            "malus":4
          }
       },
       {  
@@ -111,7 +111,7 @@
          "effect":{  
             "type":"CardActionMalus",
             "cardType":"Character",
-            "malus":-4
+            "malus":4
          }
       },
       {  
@@ -119,7 +119,7 @@
          "effect":{  
             "type":"CardActionMalus",
             "cardType":"Venture",
-            "malus":-4
+            "malus":4
          }
       },
       {  
@@ -160,7 +160,7 @@
          "period":3,
          "effect":{  
             "type":"MalusVictoryForMilitary",
-            "victoryQty":-1,
+            "victoryQty":1,
             "militaryQty":1,
          }
       },
@@ -182,7 +182,7 @@
                 "coins":0,
                 "council":0
             },
-            "victoryQty":-1,
+            "victoryQty":1,
          }
       }
 ]
