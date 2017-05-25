@@ -172,8 +172,8 @@ public class GameHandler {
     		//search the coordinates of the card in the board
         int k=j;
         int p=i;
-        //to store i and j as the coordinates of the position interested
-        if(familyMembersOnTheTowers[i][k] == null && diceValues[familyMemberColortoDiceValue(familyMember.color)]>=(((i+1)*2)-1)){
+        //to store i and j as the coordinates of the position interested, the if check if the player can get the card with a specific family member
+        if(familyMembersOnTheTowers[i][k] == null && ((diceValues[familyMemberColortoDiceValue(familyMember.color)]+familyMember.getServants())>=(((i+1)*2)-1))){
         	//if the place is free and the family member has an high enough value, ((i+1)*2)-1 is to convert the value i of the matrix to the value of the floor in dice
         	for(p=0;p<4;p++){
         		if((familyMembersOnTheTowers[p][k].playerColor).equals(familyMember.playerColor)){
