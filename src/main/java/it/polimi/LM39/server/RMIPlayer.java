@@ -19,8 +19,7 @@ public class RMIPlayer extends InterfacePlayer {
      * @return
      */
     public void send() {
-        // TODO implement here
-        return null;
+
     }
 
 }

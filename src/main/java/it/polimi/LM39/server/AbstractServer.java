@@ -5,27 +5,23 @@ import java.util.*;
 /**
  * 
  */
-public class Room {
+public abstract class AbstractServer {
 
     /**
      * Default constructor
      */
-    public Room() {
+    public AbstractServer() {
     }
 
     /**
      * 
      */
-    private InterfacePlayer players;
-
-
 
     /**
-     * @return
+     * 
      */
-    public void connect() {
+    public void startServer() {
         // TODO implement here
-        return null;
     }
 
 }

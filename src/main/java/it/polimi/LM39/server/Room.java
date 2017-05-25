@@ -5,23 +5,26 @@ import java.util.*;
 /**
  * 
  */
-public class SocketPlayer extends InterfacePlayer {
+public class Room {
 
     /**
      * Default constructor
      */
-    public SocketPlayer() {
+    public Room() {
     }
 
+    /**
+     * 
+     */
+    private InterfacePlayer players;
 
 
 
     /**
      * @return
      */
-    public void send() {
-        // TODO implement here
-        return null;
+    public void connect() {
+
     }
 
 }
