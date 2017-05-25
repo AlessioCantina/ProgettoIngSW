@@ -87,7 +87,7 @@ public class GameHandler {
     
     public void getTerritoryCard(Territory territory,Player player){
     	//instantResources
-    	territoryHandler.doInstantEffect(cardHandler.getEffect(territory.instantBonuses),player);
+    	territoryHandler.doInstantEffect(territory.instantBonuses,player);
     	
     	String[] possedTerritories = player.getPlayerBoard().getPossessions("Territory");
     	int i;
