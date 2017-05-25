@@ -91,9 +91,32 @@ public class GameHandler {
     	
     	String[] possedTerritories = player.getPlayerBoard().getPossessions("Territory");
     	int i;
+    	int militaryPoints = player.getPoints().getMilitary();
     	for (i=0;i<6 && possedTerritories[i]!=null;i++);
-    	if (i<6 && possedTerritories[i]==null)
-    		possedTerritories[i]=territory.cardName;
+    	if (i<6 && possedTerritories[i]==null){
+    		//if there is a place for the territory
+    		switch(i){
+    		//checking if the player has enough military points
+    		case 2: if(militaryPoints >= 3) 
+    			possedTerritories[i]=territory.cardName;
+    		break;
+    		case 3: if(militaryPoints >= 7) 
+    			possedTerritories[i]=territory.cardName;
+    		break;
+    		case 4: if(militaryPoints >= 12) 
+    			possedTerritories[i]=territory.cardName;
+    		break;
+    		case 5: if(militaryPoints >= 18) 
+    			possedTerritories[i]=territory.cardName;
+    		break;
+    		default: possedTerritories[i]=territory.cardName;
+    		break;
+    		}
+    	}
+    	else 
+    		System.out.println("You can't have more than 6 territories! ");
+    	if (possedTerritories[i]!=territory.cardName)
+    		System.out.println("You don't have enough military points");
     }
 
     public void getCharacterCard(Character character){
