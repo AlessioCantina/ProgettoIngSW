@@ -89,34 +89,41 @@ public class GameHandler {
     	//instantResources
     	territoryHandler.doInstantEffect(territory.instantBonuses,player);
     	
-    	String[] possedTerritories = player.getPlayerBoard().getPossessions("Territory");
+    	String[] possedTerritories = player.personalBoard.getPossessions("Territory");
     	int i;
-    	int militaryPoints = player.getPoints().getMilitary();
+    	int militaryPoints = player.points.getMilitary();
+    	boolean canGet=false;
     	for (i=0;i<6 && possedTerritories[i]!=null;i++);
     	if (i<6 && possedTerritories[i]==null){
     		//if there is a place for the territory
     		switch(i){
     		//checking if the player has enough military points
     		case 2: if(militaryPoints >= 3) 
-    			possedTerritories[i]=territory.cardName;
+    			canGet=true;
     		break;
     		case 3: if(militaryPoints >= 7) 
-    			possedTerritories[i]=territory.cardName;
+    			canGet=true;
     		break;
     		case 4: if(militaryPoints >= 12) 
-    			possedTerritories[i]=territory.cardName;
+    			canGet=true;
     		break;
     		case 5: if(militaryPoints >= 18) 
-    			possedTerritories[i]=territory.cardName;
+    			canGet=true;
     		break;
-    		default: possedTerritories[i]=territory.cardName;
+    		default: canGet=true;
     		break;
     		}
+    		if(canGet==true){
+    			//add the torritory to 
+    			possedTerritories[i]=territory.cardName;
+    			player.personalBoard.setPossessions(possedTerritories,"Territory");
+    			territoryHandler.doInstantEffect(territory.instantBonuses, player);
+    			}
+    		else
+        		System.out.println("You don't have enough military points");
     	}
     	else 
     		System.out.println("You can't have more than 6 territories! ");
-    	if (possedTerritories[i]!=territory.cardName)
-    		System.out.println("You don't have enough military points");
     }
 
     public void getCharacterCard(Character character){
@@ -158,8 +165,8 @@ public class GameHandler {
         boolean coloredFamilyMemberOnTheTower = false;
         boolean uncoloredFamilyMemberOnTheTower = false;
         String[][] cardsOnTheTowers = mainBoard.getCardsOnTheTowers();
-        Integer[] diceValues = player.getPersonalMainBoard().getDiceValues(); // we use the player Personal MainBaord
-        FamilyMember[][] familyMembersOnTheTowers = player.getPersonalMainBoard().getFamilyMembersLocation().getFamilyMembersOnTheTowers(); // we use the player Personal MainBaord
+        Integer[] diceValues = player.personalMainBoard.getDiceValues(); // we use the player Personal MainBaord
+        FamilyMember[][] familyMembersOnTheTowers = player.personalMainBoard.getFamilyMembersLocation().getFamilyMembersOnTheTowers(); // we use the player Personal MainBaord
     	
         for(i=0, j=0;!cardsOnTheTowers[i][j].equals(cardName) && i<4;i++)
         	for(j=0;!cardsOnTheTowers[i][j].equals(cardName) && j<4;j++);
@@ -182,10 +189,10 @@ public class GameHandler {
         	}
         	if ((uncoloredFamilyMemberOnTheTower==true && coloredFamilyMemberOnTheTower==false) || (coloredFamilyMemberOnTheTower==true && (familyMember.color).equals("uncolored"))){
         	//if there is an uncolored family member on the tower or there is a colored one but the player uses an uncolored family member
-        		if(getCard(cardName,player) && player.getResources().getCoins()>=3){
+        		if(getCard(cardName,player) && player.resources.getCoins()>=3){
         			(familyMembersOnTheTowers[i][k].playerColor)=(familyMember.playerColor);
 	        		(familyMembersOnTheTowers[i][k].color)=(familyMember.color);
-	        		player.getResources().setCoins(-3);
+	        		player.resources.setCoins(-3);
 	        		setTowerBonus(mainBoard.towerBonuses[j][i],player);
 	        		}
         		else
@@ -202,10 +209,10 @@ public class GameHandler {
         		}
         		else{
         			//if the tower is occupied
-        			if(getCard(cardName,player) && player.getResources().getCoins()>=3){
+        			if(getCard(cardName,player) && player.resources.getCoins()>=3){
         				(familyMembersOnTheTowers[i][k].playerColor)=(familyMember.playerColor);
             			(familyMembersOnTheTowers[i][k].color)=(familyMember.color);
-    	        		player.getResources().setCoins(-3);
+    	        		player.resources.setCoins(-3);
     	        		setTowerBonus(mainBoard.towerBonuses[j][i],player);
         			}
         			else
@@ -225,36 +232,36 @@ public class GameHandler {
     }
     
     public void addResources (PlayerResources resources, Player player){
-    	PlayerResources playerResources = player.getResources();
+    	PlayerResources playerResources = player.resources;
     	playerResources.setCoins(resources.getCoins());
     	playerResources.setWoods(resources.getWoods());
     	playerResources.setStones(resources.getStones());
     	playerResources.setServants(resources.getServants());
     	councilHandler.getCouncil(resources.getCouncil(),player);
-    	player.setResources(playerResources);
+    	player.resources=playerResources;
     }
     
     public void addPoints (PlayerPoints points, Player player){
-    	PlayerPoints playerPoints = player.getPoints();
+    	PlayerPoints playerPoints = player.points;
     	playerPoints.setFaith(points.getFaith());
     	playerPoints.setFaith(points.getVictory());
     	playerPoints.setFinalVictory(points.getFinalVictory());
     	playerPoints.setMilitary(points.getMilitary());
-    	player.setPoints(playerPoints);
+    	player.points=playerPoints;
     }
 
     public void addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, Player player) {
-    	FamilyMember[] familyMembersAtTheMarket = player.getPersonalMainBoard().getFamilyMembersLocation().getFamilyMembersOnTheMarket(); // we use the player Personal MainBaord
+    	FamilyMember[] familyMembersAtTheMarket = player.personalMainBoard.getFamilyMembersLocation().getFamilyMembersOnTheMarket(); // we use the player Personal MainBaord
         if(familyMembersAtTheMarket[position] == null && position<=marketSize){
         	(familyMembersAtTheMarket[position].color) = (familyMember.color);
         	(familyMembersAtTheMarket[position].playerColor) = (familyMember.playerColor);
         	switch(position){
-	        	case 1: player.getResources().setCoins(5);
+	        	case 1: player.resources.setCoins(5);
 	        		break;
-	        	case 2: player.getResources().setServants(5);
+	        	case 2: player.resources.setServants(5);
 	        		break;
-	        	case 3: player.getResources().setCoins(2);
-	    				player.getPoints().setMilitary(3);
+	        	case 3: player.resources.setCoins(2);
+	    				player.points.setMilitary(3);
 	    			break;
 	        	case 4: councilHandler.getCouncil(1,player);
 	        		break;
@@ -334,9 +341,9 @@ public class GameHandler {
     		}
     		if (doAction==true){
     			if (actionType=="Production")
-	    			playerBoardHandler.activateHarvest(player.getPersonalMainBoard().getDiceValues()[familyMemberColortoDiceValue(familyMember.color)]-penalty,player); // we use the player Personal MainBaord
+	    			playerBoardHandler.activateHarvest(player.personalMainBoard.getDiceValues()[familyMemberColortoDiceValue(familyMember.color)]-penalty,player); // we use the player Personal MainBaord
 	    		if(actionType=="Harvest")
-	    			playerBoardHandler.activateHarvest(player.getPersonalMainBoard().getDiceValues()[familyMemberColortoDiceValue(familyMember.color)]-penalty,player); // we use the player Personal MainBaord
+	    			playerBoardHandler.activateHarvest(player.personalMainBoard.getDiceValues()[familyMemberColortoDiceValue(familyMember.color)]-penalty,player); // we use the player Personal MainBaord
 	    		else
 	    			System.out.println("Azione non valida! deve essere Production o Harvest");
     		}

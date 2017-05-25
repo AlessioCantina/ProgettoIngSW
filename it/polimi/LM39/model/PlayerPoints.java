@@ -28,19 +28,19 @@ public class PlayerPoints {
     }
 
     public void setFaith(Integer qtyFaith) {
-    	this.faith=qtyFaith;
+    	this.faith+=qtyFaith;
     }
 
     public void setMilitary(Integer qtyMilitary) {
-    	this.military=qtyMilitary;
+    	this.military+=qtyMilitary;
     }
 
     public void setVictory(Integer qtyVictory) {
-    	this.victory=qtyVictory;
+    	this.victory+=qtyVictory;
     }
 
     public void setFinalVictory(Integer qtyFinalVictory) {
-    	this.finalVictory=qtyFinalVictory;
+    	this.finalVictory+=qtyFinalVictory;
     }
 
 }

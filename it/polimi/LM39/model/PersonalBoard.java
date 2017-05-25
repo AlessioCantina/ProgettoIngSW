@@ -30,7 +30,7 @@ public class PersonalBoard {
         return null;
     }
 
-    public void setPossession(String[] possession, String cardType) {
+    public void setPossessions(String[] possession, String cardType) {
     	switch(cardType){
         	case "Territory": this.possessedTerritories=possession;
         		break;
