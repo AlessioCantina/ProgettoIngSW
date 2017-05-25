@@ -65,16 +65,16 @@ public class GameHandler {
     	    	else{
     	    		switch(j){
     		    		case 0: Territory territory=mainBoard.territoryMap.get(cardName);
-    		    				getTerritoryCard(territory,player);
+    		    				getTerritoryCard(territory,player,mainBoard.towerBonuses[i][j]);
     		    			break;
     		    		case 1: Character character=mainBoard.characterMap.get(cardName);
-    		    				getCharacterCard(character);
+    		    				getCharacterCard(character,player,mainBoard.towerBonuses[i][j]);
     		    			break;
     		    		case 2: Building building=mainBoard.buildingMap.get(cardName);
-    		    				getBuildingCard(building);
+    		    				getBuildingCard(building,player,mainBoard.towerBonuses[i][j]);
     		    			break;
     		    		case 3: Venture venture=mainBoard.ventureMap.get(cardName);
-    		    				getVentureCard(venture);
+    		    				getVentureCard(venture,player,mainBoard.towerBonuses[i][j]);
     		    			break;
     		    		default: System.out.println("This tower doesn't exist!");
     		    			break;
@@ -85,10 +85,9 @@ public class GameHandler {
     }
     
     
-    public void getTerritoryCard(Territory territory,Player player){
+    public void getTerritoryCard(Territory territory,Player player,ActionBonus actionBonus){
     	//instantResources
     	territoryHandler.doInstantEffect(territory.instantBonuses,player);
-    	
     	String[] possedTerritories = player.personalBoard.getPossessions("Territory");
     	int i;
     	int militaryPoints = player.points.getMilitary();
@@ -114,7 +113,7 @@ public class GameHandler {
     		break;
     		}
     		if(canGet==true){
-    			//add the torritory to 
+    			//add the territory to PersonalBoard
     			possedTerritories[i]=territory.cardName;
     			player.personalBoard.setPossessions(possedTerritories,"Territory");
     			territoryHandler.doInstantEffect(territory.instantBonuses, player);
@@ -126,17 +125,17 @@ public class GameHandler {
     		System.out.println("You can't have more than 6 territories! ");
     }
 
-    public void getCharacterCard(Character character){
+    public void getCharacterCard(Character character,Player player,ActionBonus actionBonus){
     	
     	
     }
 
-    public void getBuildingCard(Building building){
+    public void getBuildingCard(Building buildingPlayer,Player player,ActionBonus actionBonus){
 	
 	
     }
     
-    public void getVentureCard(Venture venture){
+    public void getVentureCard(Venture venturePlayer,Player player,ActionBonus actionBonus){
     	
     	
     }
@@ -226,8 +225,8 @@ public class GameHandler {
     }
     
     public void setTowerBonus(ActionBonus towerBonus,Player player){
-    	addResources(towerBonus.getResources(),player);
-    	addPoints(towerBonus.getPoints(),player);
+    	addResources(towerBonus.resources,player);
+    	addPoints(towerBonus.points,player);
     	
     }
     
