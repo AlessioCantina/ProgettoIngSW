@@ -10,7 +10,7 @@ public class Building extends Card {
 
     public CardResources costResources;
 
-    public Points instantBonuses;
+    public CardPoints instantBonuses;
 
     public InstantEffect activationEffect;
 	

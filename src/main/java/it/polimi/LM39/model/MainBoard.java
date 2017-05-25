@@ -5,13 +5,13 @@ import java.util.HashMap;
 
 public class MainBoard {
 
-	private String[][] cardsOnTheTowers = new String[4][4];
+	private Integer[][] cardsOnTheTowers = new Integer[4][4];
 
     private Integer[] diceValues = new Integer[4];
 
-    private Excommunication[] excommunicationsOnTheBoard = new Excommunication[3];
+    private Integer[] excommunicationsOnTheBoard = new Integer[3];
 
-    private String[] playedLeaderCard;
+    private Integer[] playedLeaderCard;
 
     private FamilyMembersLocation familyMembersLocation;
 
@@ -42,11 +42,11 @@ public class MainBoard {
     public HashMap<Integer,Excommunication> excommunicationMap = new HashMap<Integer,Excommunication>();
 
 
-    public void setCardsOnTheTowers(String[][] cardOnTheTowers) {
+    public void setCardsOnTheTowers(Integer[][] cardOnTheTowers) {
         this.cardsOnTheTowers=cardOnTheTowers;
     }
 
-    public String[][] getCardsOnTheTowers() {
+    public Integer[][] getCardsOnTheTowers() {
         return this.cardsOnTheTowers;
     }
 
@@ -58,19 +58,19 @@ public class MainBoard {
        return this.diceValues;  
     }
 
-    public void setExcommunicationsOnTheBoard(Excommunication[] excommunicationsOnTheBoard) {
+    public void setExcommunicationsOnTheBoard(Integer[] excommunicationsOnTheBoard) {
         this.excommunicationsOnTheBoard=excommunicationsOnTheBoard;
     }
 
-    public Excommunication[] getExcommunicationsOnTheBoard() {
+    public Integer[] getExcommunicationsOnTheBoard() {
     	return this.excommunicationsOnTheBoard;
     }
 
-    public void setPlayedLeaderCard(String[] playedLeaderCard) {
+    public void setPlayedLeaderCard(Integer[] playedLeaderCard) {
         this.playedLeaderCard=playedLeaderCard;
     }
 
-    public String[] getPlayedLeaderCard() {
+    public Integer[] getPlayedLeaderCard() {
     	return this.playedLeaderCard;
     }
 
