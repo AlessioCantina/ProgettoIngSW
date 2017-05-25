@@ -8,7 +8,10 @@ import it.polimi.LM39.model.characterpermanenteffect.*;
 import it.polimi.LM39.model.instanteffect.*;
 import it.polimi.LM39.model.leaderpermanenteffect.*;
 
+// probably useless class the reflection must be used only in TerritoryHandler BuildingHandler etc
 public class CardHandler {
+	/*
+	
 	
 	//reflection to call the correct method getEffect
     public Effect getEffect(Effect effect)
@@ -190,4 +193,5 @@ public class CardHandler {
 	{
 		return (NoEffect)effect;
 	}
+	*/
 }

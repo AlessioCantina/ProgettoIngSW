@@ -3,13 +3,13 @@ package it.polimi.LM39.model;
 
 public class PersonalBoard {
 
-    private String[] possessedTerritories;
+    private String[] possessedTerritories = new String[6];
 
-    private String[] possessedBuildings;
+    private String[] possessedBuildings = new String[6];
 
-    private String[] possessedVentures;
+    private String[] possessedVentures = new String[6];
 
-    private String[] possessedCharacters;
+    private String[] possessedCharacters = new String[6];
     
     public ActionBonus[] territoryBonuses = new ActionBonus[6]; //the bonuses are loaded from file
 
@@ -30,7 +30,7 @@ public class PersonalBoard {
         return null;
     }
 
-    public void setPossession(String[] possession, String cardType) {
+    public void setPossessions(String[] possession, String cardType) {
     	switch(cardType){
         	case "Territory": this.possessedTerritories=possession;
         		break;

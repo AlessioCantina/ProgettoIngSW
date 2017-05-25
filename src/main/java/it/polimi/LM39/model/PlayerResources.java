@@ -36,23 +36,23 @@ public class PlayerResources {
     }
 
     public void setWoods(Integer qtywoods) {
-    	this.woods=qtywoods;
+    	this.woods+=qtywoods;
     }
 
     public void setStones(Integer qtystones) {
-        this.stones=qtystones;
+        this.stones+=qtystones;
      }
 
     public void setCoins(Integer qtycoins) {
-        this.coins=qtycoins;
+        this.coins+=qtycoins;
     }
 
     public void setServants(Integer qtyservants) {
-        this.servants=qtyservants;
+        this.servants+=qtyservants;
     }
     
     public void setCouncil (Integer qtycouncil) {
-        this.council=qtycouncil;
+        this.council+=qtycouncil;
     }
 
 }
