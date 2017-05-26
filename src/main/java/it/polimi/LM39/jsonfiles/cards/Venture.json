@@ -1,6 +1,6 @@
 [  
       {  
-         "cardName":"Combattere le Eresie",
+         "cardName":"Fighting Heresies",
          "period":1,
          "costResources":{  
             "woods":0,
@@ -22,7 +22,7 @@
          }
       },
       {  
-         "cardName":"Ospitare i Mendicanti",
+         "cardName":"Hosting Panhandlers",
          "period":1,
          "costResources":{  
             "woods":3,
@@ -46,7 +46,7 @@
          }
       },
       {  
-         "cardName":"Riparare la Chiesa",
+         "cardName":"Repairing the Church",
          "period":1,
          "costResources":{  
             "woods":1,
@@ -68,7 +68,7 @@
          }
       },
       {  
-         "cardName":"Sostegno al Vescovo",
+         "cardName":"Support to the Bishop",
          "period":1,
          "costResources":{  
             "woods":1,
@@ -90,7 +90,7 @@
          }
       },
       {  
-         "cardName":"Ingaggiare Reclute",
+         "cardName":"Hiring Recruits",
          "period":1,
          "costResources":{  
             "woods":0,
@@ -112,7 +112,7 @@
          }
       },
       {  
-         "cardName":"Innalzare una Statua",
+         "cardName":"Raising a Statue",
          "period":1,
          "costResources":{  
             "woods":2,
@@ -136,7 +136,7 @@
          }
       },
       {  
-         "cardName":"Campagna Militare",
+         "cardName":"Military Campaign",
          "period":1,
          "costResources":{  
             "woods":0,
@@ -160,7 +160,7 @@
          }
       },
       {  
-         "cardName":"Costruire le Mura",
+         "cardName":"Building the Walls",
          "period":1,
          "costResources":{  
             "woods":0,
@@ -189,7 +189,7 @@
          }
       },
       {  
-         "cardName":"Sostegno al Cardinale",
+         "cardName":"Support to the Cardinal",
          "period":2,
          "costResources":{  
             "woods":2,
@@ -211,7 +211,7 @@
          }
       },
       {  
-         "cardName":"Ingaggiare Soldati",
+         "cardName":"Hiring Soldiers",
          "period":2,
          "costResources":{  
             "woods":0,
@@ -233,7 +233,7 @@
          }
       },
       {  
-         "cardName":"Accogliere gli Stranieri",
+         "cardName":"Hosting Foreigners",
          "period":2,
          "costResources":{  
             "woods":4,
@@ -257,7 +257,7 @@
          }
       },
       {  
-         "cardName":"Scavare Canalizzazioni",
+         "cardName":"Improving the Canals",
          "period":2,
          "costResources":{  
             "woods":0,
@@ -276,7 +276,7 @@
          }
       },
       {  
-         "cardName":"Supporto al Re",
+         "cardName":"Support to the King",
          "period":2,
          "costResources":{  
             "woods":0,
@@ -300,7 +300,7 @@
          }
       },
       {  
-         "cardName":"Riparare l'Abbazia",
+         "cardName":"Repairing the Abbey",
          "period":2,
          "costResources":{  
             "woods":2,
@@ -322,7 +322,7 @@
          }
       },
       {  
-         "cardName":"Crociata",
+         "cardName":"Crusade",
          "points":2,
          "costResources":{  
             "woods":0,
@@ -351,7 +351,7 @@
          }
       },
       {  
-         "cardName":"Costruire i Bastioni",
+         "cardName":"Building the Bastions",
          "period":2,
          "costResources":{  
             "woods":0,
@@ -380,7 +380,7 @@
          }
       },
       {  
-         "cardName":"Costruire le Torri",
+         "cardName":"Building the Towers",
          "period":3,
          "costResources":{  
             "woods":0,
@@ -409,7 +409,7 @@
          }
       },
       {  
-         "cardName":"Ingaggiare Mercenari",
+         "cardName":"Hiring Mercenaries",
          "period":3,
          "costResources":{  
             "woods":0,
@@ -431,7 +431,7 @@
          }
       },
       {  
-         "cardName":"Riparare la Cattedrale",
+         "cardName":"Repairing the Cathedral",
          "period":3,
          "costResources":{  
             "woods":3,
@@ -455,7 +455,7 @@
          }
       },
       {  
-         "cardName":"Guerra Santa",
+         "cardName":"Sacred War",
          "period":3,
          "costResources":{  
             "woods":0,
@@ -477,7 +477,7 @@
          }
       },
       {  
-         "cardName":"Commissionare Arte Sacra",
+         "cardName":"Promoting Sacred Art",
          "period":3,
          "costResources":{  
             "woods":6,
@@ -497,7 +497,7 @@
          }
       },
       {  
-         "cardName":"Migliorare le Strade",
+         "cardName":"Improving the Roads",
          "period":3,
          "costResources":{  
             "woods":0,
@@ -516,7 +516,7 @@
          }
       },
       {  
-         "cardName":"Sostegno al Papa",
+         "cardName":"Support to the Pope",
          "period":3,
          "costResources":{  
             "woods":3,
@@ -538,7 +538,7 @@
          }
       },
       {  
-         "cardName":"Conquista Militare",
+         "cardName":"Military Conquest",
          "period":3,
          "costResources":{  
             "woods":0,

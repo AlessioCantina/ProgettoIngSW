@@ -1,6 +1,6 @@
 [  
       {  
-         "cardName":"Cappella",
+         "cardName":"Chapel",
          "period":1,
          "activationCost":2,
          "costResources":{  
@@ -32,7 +32,7 @@
          }
       },
       {  
-         "cardName":"Zecca",
+         "cardName":"Mint",
          "period":1,
          "activationCost":5,
          "costResources":{  
@@ -54,7 +54,7 @@
          }
       },
       {  
-         "cardName":"Arco di Trionfo",
+         "cardName":"Triumphal Arch",
          "period":1,
          "activationCost":6,
          "costResources":{  
@@ -76,7 +76,7 @@
          }
       },
       {  
-         "cardName":"Esattoria",
+         "cardName":"Tax Office",
          "period":1,
          "activationCost":5,
          "costResources":{  
@@ -98,7 +98,7 @@
          }
       },
       {  
-         "cardName":"Teatro",
+         "cardName":"Theater",
          "period":1,
          "activationCost":6,
          "costResources":{  
@@ -120,7 +120,55 @@
          }
       },
       {  
-         "cardName":"Tagliapietre",
+         "cardName":"Carpenter's Shop",
+         "period":1,
+         "activationCost":4,
+         "costResources":{  
+            "woods":2,
+            "stones":0,
+            "servants":0,
+            "coins":1,
+            "council":0
+         },
+         "instantBonuses":{  
+            "victory":3,
+            "faith":0,
+            "military":0
+         },
+         "activationEffect":{  
+            "type":"DoubleResourcesTrasformation",
+            "resources":{  
+               "woods":0,
+               "stones":0,
+               "servants":0,
+               "coins":3,
+               "council":0
+            },
+            "resources2":{  
+               "woods":0,
+               "stones":0,
+               "servants":0,
+               "coins":5,
+               "council":0
+            },
+            "requestedForTrasformation":{  
+               "woods":1,
+               "stones":0,
+               "servants":0,
+               "coins":0,
+               "council":0
+            },
+            "requestedForTrasformation2":{  
+               "woods":2,
+               "stones":0,
+               "servants":0,
+               "coins":0,
+               "council":0
+            }
+         }
+      },
+      {  
+         "cardName":"Stonemason's Shop",
          "period":1,
          "activationCost":3,
          "costResources":{  
@@ -168,55 +216,7 @@
          }
       },
       {  
-         "cardName":"Falegnameria",
-         "period":1,
-         "activationCost":4,
-         "costResources":{  
-            "woods":2,
-            "stones":0,
-            "servants":0,
-            "coins":1,
-            "council":0
-         },
-         "instantBonuses":{  
-            "victory":3,
-            "faith":0,
-            "military":0
-         },
-         "activationEffect":{  
-            "type":"DoubleResourcesTrasformation",
-            "resources":{  
-               "woods":0,
-               "stones":0,
-               "servants":0,
-               "coins":3,
-               "council":0
-            },
-            "resources2":{  
-               "woods":0,
-               "stones":0,
-               "servants":0,
-               "coins":5,
-               "council":0
-            },
-            "requestedForTrasformation":{  
-               "woods":0,
-               "stones":1,
-               "servants":0,
-               "coins":0,
-               "council":0
-            },
-            "requestedForTrasformation2":{  
-               "woods":0,
-               "stones":2,
-               "servants":0,
-               "coins":0,
-               "council":0
-            }
-         }
-      },
-      {  
-         "cardName":"Residenza",
+         "cardName":"Residence",
          "period":1,
          "activationCost":1,
          "costResources":{  
@@ -250,7 +250,7 @@
          }
       },
       {  
-         "cardName":"Gilda degli Scultori",
+         "cardName":"Sculptors' Guild",
          "period":2,
          "activationCost":5,
          "costResources":{  
@@ -294,9 +294,9 @@
          }
       },
       {  
-         "cardName":"Fortezza",
+         "cardName":"Stronghold",
          "period":2,
-         "activationCost":8,
+         "activationCost":6,
          "costResources":{  
             "woods":2,
             "stones":2,
@@ -319,7 +319,7 @@
          }
       },
       {  
-         "cardName":"Tesoreria",
+         "cardName":"Treasury",
          "period":2,
          "activationCost":3,
          "costResources":{  
@@ -363,7 +363,7 @@
          }
       },
       {  
-         "cardName":"Gilda dei Pittori",
+         "cardName":"Painters' Guild",
          "period":2,
          "activationCost":4,
          "costResources":{  
@@ -407,7 +407,7 @@
          }
       },
       {  
-         "cardName":"Gilda dei Costruttori",
+         "cardName":"Stonemasons' Guild",
          "period":2,
          "activationCost":4,
          "costResources":{  
@@ -439,7 +439,7 @@
          }
       },
       {  
-         "cardName":"Mercato",
+         "cardName":"Marketplace",
          "period":2,
          "activationCost":3,
          "costResources":{  
@@ -473,7 +473,7 @@
          }
       },
       {  
-         "cardName":"Battistero",
+         "cardName":"Baptistery",
          "period":2,
          "activationCost":2,
          "costResources":{  
@@ -510,7 +510,7 @@
          }
       },
       {  
-         "cardName":"Caserma",
+         "cardName":"Barracks",
          "period":2,
          "activationCost":1,
          "costResources":{  
@@ -542,7 +542,7 @@
          }
       },
       {  
-         "cardName":"Banca",
+         "cardName":"Bank",
          "period":3,
          "activationCost":2,
          "costResources":{  
@@ -569,7 +569,7 @@
          }
       },
       {  
-         "cardName":"Giardino",
+         "cardName":"Garden",
          "period":3,
          "activationCost":1,
          "costResources":{  
@@ -594,7 +594,7 @@
          }
       },
       {  
-         "cardName":"Castelletto",
+         "cardName":"Fortress",
          "period":3,
          "activationCost":5,
          "costResources":{  
@@ -626,7 +626,7 @@
          }
       },
       {  
-         "cardName":"Cattedrale",
+         "cardName":"Cathedral",
          "period":3,
          "activationCost":2,
          "costResources":{  
@@ -636,7 +636,7 @@
             "coins":0,
             "council":0
          },
-         "      instantBonuses":{  
+         "instantBonuses":{  
             "victory":7,
             "faith":3,
             "military":0
@@ -651,7 +651,7 @@
          }
       },
       {  
-         "cardName":"Fiera",
+         "cardName":"Fair",
          "period":3,
          "activationCost":4,
          "costResources":{  
@@ -685,7 +685,7 @@
          }
       },
       {  
-         "cardName":"Palazzo",
+         "cardName":"Palace",
          "period":3,
          "activationCost":6,
          "costResources":{  
@@ -724,7 +724,7 @@
          }
       },
       {  
-         "cardName":"Accademia Militare",
+         "cardName":"Military Academy",
          "period":3,
          "activationCost":3,
          "costResources":{  
@@ -756,7 +756,7 @@
          }
       },
       {  
-         "cardName":"Basilica",
+         "cardName":"Church",
          "period":3,
          "activationCost":1,
          "costResources":{  

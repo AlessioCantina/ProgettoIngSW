@@ -1,6 +1,6 @@
 [  
       {  
-         "cardName":"Predicatore",
+         "cardName":"Preacher",
          "period":1,
          "costCoins":2,
          "instantBonuses":{  
@@ -16,7 +16,7 @@
          }
       },
       {  
-         "cardName":"Dama",
+         "cardName":"Dame",
          "period":1,
          "costCoins":4,
          "instantBonuses":{  
@@ -36,7 +36,7 @@
          }
       },
       {  
-         "cardName":"Costruttore",
+         "cardName":"Stonemason",
          "period":1,
          "costCoins":4,
          "instantBonuses":{  
@@ -56,7 +56,7 @@
          }
       },
       {  
-         "cardName":"Cavaliere",
+         "cardName":"Knight",
          "period":1,
          "costCoins":2,
          "instantBonuses":{  
@@ -76,7 +76,7 @@
          }
       },
       {  
-         "cardName":"Condottiero",
+         "cardName":"Warlord",
          "period":1,
          "costCoins":2,
          "instantBonuses":{  
@@ -94,7 +94,7 @@
          }
       },
       {  
-         "cardName":"Badessa",
+         "cardName":"Abbess",
          "period":1,
          "costCoins":3,
          "instantBonuses":{  
@@ -112,7 +112,7 @@
          }
       },
       {  
-         "cardName":"Artigiano",
+         "cardName":"Artisan",
          "period":1,
          "costCoins":3,
          "instantEffect":{  
@@ -125,7 +125,7 @@
          }
       },
       {  
-         "cardName":"Contadino",
+         "cardName":"Farmer",
          "period":1,
          "costCoins":3,
          "instantEffect":{  
@@ -138,7 +138,7 @@
          }
       },
       {  
-         "cardName":"Messo Papale",
+         "cardName":"Papal Messenger",
          "period":2,
          "costCoins":5,
          "instantEffect":{  
@@ -152,7 +152,7 @@
          }
       },
       {  
-         "cardName":"Messo Reale",
+         "cardName":"Royal Messenger",
          "costCoins":5,
          "instantEffect":{  
             "type":"Resources",
@@ -169,7 +169,7 @@
          }
       },
       {  
-         "cardName":"Capitano",
+         "cardName":"Captain",
          "period":2,
          "costCoins":4,
          "instantEffect":{  
@@ -187,7 +187,7 @@
          }
       },
       {  
-         "cardName":"Eroe",
+         "cardName":"Hero",
          "period":2,
          "costCoins":4,
          "instantEffect":{  
@@ -207,7 +207,7 @@
          }
       },
       {  
-         "cardName":"Mecenate",
+         "cardName":"Patron",
          "period":2,
          "costCoins":3,
          "instantEffect":{  
@@ -227,7 +227,7 @@
          }
       },
       {  
-         "cardName":"Architetto",
+         "cardName":"Architect",
          "period":2,
          "costCoins":4,
          "instantEffect":{  
@@ -247,7 +247,7 @@
          }
       },
       {  
-         "cardName":"Fattore",
+         "cardName":"Peasant",
          "period":2,
          "costCoins":4,
          "instantEffect":{  
@@ -260,7 +260,7 @@
          }
       },
       {  
-         "cardName":"Studioso",
+         "cardName":"Scholar",
          "period":2,
          "costCoins":4,
          "instantEffect":{  
@@ -273,7 +273,7 @@
          }
       },
       {  
-         "cardName":"Nobile",
+         "cardName":"Noble",
          "period":3,
          "costCoins":6,
          "instantEffect":{  
@@ -286,7 +286,7 @@
          }
       },
       {  
-         "cardName":"Cortigiana",
+         "cardName":"Paramour",
          "period":3,
          "costCoins":7,
          "instantEffect":{  
@@ -299,7 +299,7 @@
          }
       },
       {  
-         "cardName":"Araldo",
+         "cardName":"Herald",
          "period":3,
          "costCoins":6,
          "instantEffect":[  
@@ -311,7 +311,7 @@
          }
       },
       {  
-         "cardName":"Governatore",
+         "cardName":"Governor",
          "costCoins":6,
          "instantEffect":{  
             "type":"VictoryForCard",
@@ -323,7 +323,7 @@
          }
       },
       {  
-         "cardName":"Ambasciatore",
+         "cardName":"Ambassador",
          "period":3,
          "costCoins":6,
          "instantEffect":{  
@@ -343,7 +343,7 @@
          }
       },
       {  
-         "cardName":"Cardinale",
+         "cardName":"Cardinal",
          "period":3,
          "costCoins":4,
          "instantEffect":{  
@@ -361,7 +361,7 @@
          }
       },
       {  
-         "cardName":"Generale",
+         "cardName":"General",
          "period":3,
          "costCoins":5,
          "instantEffect":{  
@@ -374,7 +374,7 @@
          }
       },
       {  
-         "cardName":"Vescovo",
+         "cardName":"Bishop",
          "period":3,
          "costCoins":5,
          "instantEffect":{  

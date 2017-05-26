@@ -1,6 +1,6 @@
 [  
       {  
-         "cardName":"Citta",
+         "cardName":"City",
          "period":1,
          "activationCost":6,
          "instantBonuses":{  
@@ -25,7 +25,7 @@
          }
       },
       {  
-         "cardName":"Avamposto Commerciale",
+         "cardName":"Commercial Hub",
          "period":1,
          "activationCost":1,
          "instantBonuses":{  
@@ -43,7 +43,7 @@
          }
       },
       {  
-         "cardName":"Monastero",
+         "cardName":"Monastery",
          "period":1,
          "activationCost":6,
          "instantBonuses":{  
@@ -78,7 +78,7 @@
          }
       },
       {  
-         "cardName":"Rocca",
+         "cardName":"Citadel",
          "period":1,
          "activationCost":5,
          "instantBonuses":{  
@@ -101,7 +101,7 @@
          }
       },
       {  
-         "cardName":"Foresta",
+         "cardName":"Forest",
          "period":1,
          "activationCost":5,
          "instantBonuses":{  
@@ -126,7 +126,7 @@
          }
       },
       {  
-         "cardName":"Cava di Ghiaia",
+         "cardName":"Gravel Pit",
          "period":1,
          "activationCost":4,
          "instantBonuses":{  
@@ -151,7 +151,7 @@
          }
       },
       {  
-         "cardName":"Borgo",
+         "cardName":"Village",
          "activationCost":3,
          "period":1,
          "instantBonuses":{  
@@ -169,7 +169,7 @@
          }
       },
       {  
-         "cardName":"Bosco",
+         "cardName":"Woods",
          "activationCost":2,
          "period":1,
          "instantBonuses":{  
@@ -194,7 +194,7 @@
          }
       },
       {  
-         "cardName":"Possedimento",
+         "cardName":"Estate",
          "activationCost":4,
          "period":2,
          "instantBonuses":{  
@@ -219,7 +219,7 @@
          }
       },
       {  
-         "cardName":"Cava di Pietra",
+         "cardName":"Rock Pit",
          "period":2,
          "activationCost":3,
          "instantBonuses":{  
@@ -244,7 +244,7 @@
          }
       },
       {  
-         "cardName":"Ducato",
+         "cardName":"Dukedom",
          "period":2,
          "activationCost":6,
          "instantBonuses":{  
@@ -269,7 +269,7 @@
          }
       },
       {  
-         "cardName":"Villaggio Minerario",
+         "cardName":"Mining Town",
          "period":2,
          "activationCost":4,
          "instantBonuses":{  
@@ -294,7 +294,7 @@
          }
       },
       {  
-         "cardName":"Eremo",
+         "cardName":"Hermitage",
          "activationCost":2,
          "period":2,
          "instantBonuses":{  
@@ -315,7 +315,7 @@
          }
       },
       {  
-         "cardName":"Maniero",
+         "cardName":"Manor House",
          "activationCost":5,
          "period":2,
          "instantBonuses":{  
@@ -338,7 +338,7 @@
          }
       },
       {  
-         "cardName":"Miniera d'Oro",
+         "cardName":"Gold Mine",
          "period":2,
          "activationCost":1,
          "instantReward":{  
@@ -363,7 +363,7 @@
          }
       },
       {  
-         "cardName":"Villaggio Montano",
+         "cardName":"Mountain Town",
          "period":2,
          "activationCost":3,
          "instantReward":{  
@@ -393,7 +393,7 @@
          }
       },
       {  
-         "cardName":"Citta Mercantile",
+         "cardName":"Trading Town",
          "period":3,
          "activationCost":1,
          "instantReward":{  
@@ -418,7 +418,7 @@
          }
       },
       {  
-         "cardName":"Tenuta",
+         "cardName":"Farm",
          "perdiod":3,
          "activationCost":3,
          "instantReward":{  
@@ -453,7 +453,7 @@
          }
       },
       {  
-         "cardName":"Santuario",
+         "cardName":"Sanctuary",
          "activationCost":1,
          "instantReward":{  
             "type":"Points",
@@ -480,7 +480,7 @@
          }
       },
       {  
-         "cardName":"Provincia",
+         "cardName":"Province",
          "activationCost":6,
          "period":3,
          "instantReward":{  
@@ -510,7 +510,7 @@
          }
       },
       {  
-         "cardName":"Castello",
+         "cardName":"Castle",
          "period":3,
          "activationCost":4,
          "instantReward":{  
@@ -545,7 +545,7 @@
          }
       },
       {  
-         "cardName":"Colonia",
+         "cardName":"Colony",
          "period":3,
          "activationCost":5,
          "instantReward":{  
@@ -573,7 +573,7 @@
          }
       },
       {  
-         "cardName":"Citta Fortificata",
+         "cardName":"Fortified Town",
          "period":3,
          "activationCost":2,
          "instantReward":{  
@@ -608,7 +608,7 @@
          }
       },
       {  
-         "cardName":"Cava di Marmo",
+         "cardName":"Marble Pit",
          "activationCost":2,
          "instantReward":{  
             "type":"Points",
