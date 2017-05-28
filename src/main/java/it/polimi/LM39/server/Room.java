@@ -25,7 +25,8 @@ public class Room {
     }
 
     public void connect(InterfacePlayer player) {
-    	if(this.getConnectedPlayers() == ROOM_CAPACITY || this.getConnectedPlayers() == 0){
+    	if(this.getConnectedPlayers() == ROOM_CAPACITY){
+    		System.out.println("Room has reached max capacity. Creating new room...");
     		Room room = new Room();
     		room.players.add(player);
     	}

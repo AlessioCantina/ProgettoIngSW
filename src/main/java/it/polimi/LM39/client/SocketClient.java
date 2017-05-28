@@ -31,6 +31,7 @@ public class SocketClient extends AbstractClient {
     	this.userName = userName;
     	scanner = new Scanner(System.in);
     	socket = new Socket(ip,port);
+    	socket.setKeepAlive(true);		
     	executor.submit(new SocketHandler(this.socket));
     }
     public void sendMessage() {
@@ -39,6 +40,7 @@ public class SocketClient extends AbstractClient {
 		try {
 			socketOut = new PrintWriter(socket.getOutputStream());
 			socketOut.println(message);
+			socketOut.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
