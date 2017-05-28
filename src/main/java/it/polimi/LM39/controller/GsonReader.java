@@ -98,7 +98,7 @@ public class GsonReader {
 	//wildcard allow us to cast the HashMap to the correct static type, we cannot do that with Card 
 	public HashMap<Integer,?> hashMapCreator(Card cardType) throws IOException {
 		//jsonreader which scans the array of cards contained in the json files. Filereader get the path using a getClass on cardType
-		 JsonReader jsonReader = new JsonReader(new FileReader("./it/polimi/LM39/jsonfiles/cards/" + cardType.getClass().getSimpleName() + ".json"));
+		 JsonReader jsonReader = new JsonReader(new FileReader(".main/java/it/polimi/LM39/jsonfiles/cards/" + cardType.getClass().getSimpleName() + ".json"));
 		 HashMap<Integer,?> cardHashMap;
 		 //runtimetypeadapterfactory allow us to have multiple subtypes of a class (in our case, Effect)
 		 //it will pick the correct structure from the json field "type"
