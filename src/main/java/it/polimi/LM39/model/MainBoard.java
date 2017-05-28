@@ -42,8 +42,8 @@ public class MainBoard {
     public HashMap<Integer,Excommunication> excommunicationMap = new HashMap<Integer,Excommunication>();
 
 
-    public void setCardsOnTheTowers(Integer[][] cardOnTheTowers) {
-        this.cardsOnTheTowers=cardOnTheTowers;
+    public void setCardsOnTheTowers(Integer[][] cardsOnTheTowers) {
+        this.cardsOnTheTowers=cardsOnTheTowers;
     }
 
     public Integer[][] getCardsOnTheTowers() {

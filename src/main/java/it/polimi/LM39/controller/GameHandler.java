@@ -15,35 +15,41 @@ public class GameHandler {
 	public GameHandler(MainBoard mainBoard) {
 	        this.mainBoard=mainBoard;
 	    }
-	public Integer marketSize;
+	public Integer marketSize = new Integer(0);
 	
-	public Integer harvestAndProductionSize;
+	public Integer harvestAndProductionSize = new Integer(0);
     
-	private Integer period;
+	private Integer period = 1;
 
-    private Integer round;
+    private Integer round = 1;
     
-    public BuildingHandler buildingHandler;
+    public BuildingHandler buildingHandler = new BuildingHandler();
     
-    public TerritoryHandler territoryHandler;
+    public TerritoryHandler territoryHandler = new TerritoryHandler();
 
-    public VentureHandler ventureHandler;
+    public VentureHandler ventureHandler = new VentureHandler();
 
-    public CharacterHandler characterHandler;
+    public CharacterHandler characterHandler = new CharacterHandler();
 
-    public LeaderHandler leaderHandler;
+    public LeaderHandler leaderHandler = new LeaderHandler();
 
-    public ExcommunicationHandler excommunicationHandler;
+    public ExcommunicationHandler excommunicationHandler = new ExcommunicationHandler();
 
-    public PlayerBoardHandler playerBoardHandler;
+    public PlayerBoardHandler playerBoardHandler = new PlayerBoardHandler();
 
-    public CouncilHandler councilHandler;
+    public CouncilHandler councilHandler = new CouncilHandler();
     
-    public CardHandler cardHandler;
+    public CardHandler cardHandler = new CardHandler();
     
-    public GsonReader gsonReader;
+    public GsonReader gsonReader = new GsonReader();
 
-
+    public void setPeriod(Integer period){
+    	this.period=period;
+    }
+    public void setRound(Integer round){
+    	this.round=round;
+    }
+    
     public void rollTheDices() {
     	Integer[] diceValues = new Integer[3];
     	for(int i=0;i<3;i++){
@@ -354,7 +360,7 @@ public class GameHandler {
 	    			break;
 	        	case 4: councilHandler.getCouncil(1,player);
 	        		break;
-	        	default: System.out.println("Posizione invalida! la posizione deve essere compresa fra 1 e 4");
+	        	default: System.out.println("Invalid position! the position must be between 1 and 4");
 	        		break;
         	}
         }
@@ -439,7 +445,7 @@ public class GameHandler {
     			
     		}
 
-    public void iniazializeTheGame() {
+    public void inizializeTheGame() {
         // TODO implement here
         try {
 			gsonReader.fileToCard(mainBoard);
@@ -447,6 +453,89 @@ public class GameHandler {
 			e.printStackTrace();
 		}
         
+    }
+    
+    public void loadCardsOnTheMainBoard(){
+    	int j = 0;
+    	Integer[][] cardsOnTheTowers = mainBoard.getCardsOnTheTowers();
+    	//checking the period to load the correct cards, we are using integers because
+    	//the cards on the hashmaps use an integer as a key
+    	//keys 1-8 first period, 9-16 second period, 17-24 third period
+    	if(period==1){
+    			j=1;
+    			}
+    		else if(period==2){
+    			j=9;
+    		}
+    		else{
+    			j=17;
+    		}
+    	//if it is the first round of a period it loads four random cards of the correct period
+    	if(round==1){
+    		ArrayList<Integer> list = new ArrayList<Integer>();
+	    	for(int i=0;i<4;i++,list.clear()){
+	            for (int r=0+j; r<8+j; r++) {
+	                list.add(new Integer(r));
+	            }
+	            //ordering randomly the numbers on the list
+	            Collections.shuffle(list);
+		    	for(int k=0;k<4;k++){
+			    	cardsOnTheTowers[k][i] = list.get(k);
+			    }
+	    	}
+    	}
+    	//if it is the second round of a period, we load the four remaining cards for this period
+    	else{
+    		int l=0;
+    		int k=0;
+    		int p=0;
+    		boolean alreadyOnTheBoard = false;
+    		ArrayList<Integer> list = new ArrayList<Integer>();
+    		for(int i=0;i<4;i++,list.clear()){
+    			//checking if a number l generated in the range of possible values 
+    			//for the specific period is present or not
+    			for(p=0,l=0;l<8 && p<4; l++){
+		    	    for(alreadyOnTheBoard=false, k=0;k<4;k++){
+		    	    	if(cardsOnTheTowers[k][i]==(l+j)){
+		    	    		alreadyOnTheBoard=true;}
+		    	    }
+		    	    //if l is not present 
+	    	    	if(alreadyOnTheBoard==false){
+	    	    		list.add(new Integer(l+j));
+	    	    		p++;
+	    	    	}
+    			}	
+    			//ordering randomly the numbers on the list
+    			Collections.shuffle(list);
+    		    for(k=0;k<4;k++){
+    			    cardsOnTheTowers[k][i] = list.get(k);
+    		    }		
+    		}
+    	}
+    	this.mainBoard.setCardsOnTheTowers(cardsOnTheTowers);
+    	
+    }
+   
+    public String[][] cardNameOnTheMainBoard(){
+    	Integer[][] cardsOnTheTowers = mainBoard.getCardsOnTheTowers();
+    	String[][] cardNamesOnTheTowers = new String[4][4]; 
+    	for(int i=0;i<4;i++){
+            for (int j=0; j<4; j++){
+            	switch(i){
+	        	case 0: cardNamesOnTheTowers[j][i] = mainBoard.territoryMap.get(cardsOnTheTowers[j][i]).cardName;
+	        		break;
+	        	case 1: cardNamesOnTheTowers[j][i] = mainBoard.characterMap.get(cardsOnTheTowers[j][i]).cardName;
+	        		break;
+	        	case 2: cardNamesOnTheTowers[j][i] = mainBoard.buildingMap.get(cardsOnTheTowers[j][i]).cardName;
+	    			break;
+	        	case 3: cardNamesOnTheTowers[j][i] = mainBoard.ventureMap.get(cardsOnTheTowers[j][i]).cardName;
+	        		break;
+	        	default: System.out.println("Invalid position it has to be between 0 and 3");
+	        		break;
+            	}
+            }
+        }
+    	return cardNamesOnTheTowers;
     }
 
     public Integer calculateFinalPoints(Player player,MainBoard mainBoard) {
