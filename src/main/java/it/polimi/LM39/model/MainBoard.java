@@ -1,5 +1,6 @@
 package it.polimi.LM39.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -11,7 +12,7 @@ public class MainBoard {
 
     private Integer[] excommunicationsOnTheBoard = new Integer[3];
 
-    private Integer[] playedLeaderCard;
+    private ArrayList<Integer> playedLeaderCard = new ArrayList<Integer>();
 
     private FamilyMembersLocation familyMembersLocation;
 
@@ -66,11 +67,11 @@ public class MainBoard {
     	return this.excommunicationsOnTheBoard;
     }
 
-    public void setPlayedLeaderCard(Integer[] playedLeaderCard) {
+    public void setPlayedLeaderCard(ArrayList<Integer> playedLeaderCard) {
         this.playedLeaderCard=playedLeaderCard;
     }
 
-    public Integer[] getPlayedLeaderCard() {
+    public ArrayList<Integer> getPlayedLeaderCard() {
     	return this.playedLeaderCard;
     }
 

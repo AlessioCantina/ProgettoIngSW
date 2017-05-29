@@ -1,5 +1,6 @@
 package it.polimi.LM39.model;
 
+import it.polimi.LM39.exception.NotEnoughResources;
 
 public class PlayerResources {
 
@@ -35,20 +36,28 @@ public class PlayerResources {
     	return this.council;
     }
 
-    public void setWoods(Integer qtywoods) {
-    	this.woods+=qtywoods;
+    public void setWoods(Integer qtywoods) throws NotEnoughResources{
+    	if(this.woods+qtywoods>=0)
+    		this.woods+=qtywoods;
+    	else throw new NotEnoughResources ("Not enough woods!");
     }
 
-    public void setStones(Integer qtystones) {
-        this.stones+=qtystones;
+    public void setStones(Integer qtystones) throws NotEnoughResources {
+    	if(this.stones+qtystones>=0)
+    		this.stones+=qtystones;
+    	else throw new NotEnoughResources ("Not enough stones!");
      }
 
-    public void setCoins(Integer qtycoins) {
-        this.coins+=qtycoins;
+    public void setCoins(Integer qtycoins) throws NotEnoughResources{
+    	if(this.coins+qtycoins>=0)
+    		this.coins+=qtycoins;
+    	else throw new NotEnoughResources ("Not enough coins!");
     }
 
-    public void setServants(Integer qtyservants) {
-        this.servants+=qtyservants;
+    public void setServants(Integer qtyservants) throws NotEnoughResources{
+    	if(this.servants+qtyservants>=0)
+    		this.servants+=qtyservants;
+    	else throw new NotEnoughResources ("Not enough servants!");
     }
     
     public void setCouncil (Integer qtycouncil) {

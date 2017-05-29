@@ -3,6 +3,8 @@ package it.polimi.LM39.controller;
 import java.io.IOException;
 import java.util.*;
 
+import it.polimi.LM39.exception.NotEnoughPoints;
+import it.polimi.LM39.exception.NotEnoughResources;
 import it.polimi.LM39.model.*;
 import it.polimi.LM39.model.Character;
 
@@ -96,14 +98,12 @@ public class GameHandler {
     public boolean getTerritoryCard(Territory territory,Player player,ActionBonus actionBonus){
     	//instantResources
     	territoryHandler.doInstantEffect(territory.instantBonuses,player);
-    	String[] possessedTerritories = player.personalBoard.getPossessions("Territory");
-    	int i;
+    	ArrayList<String> possessedTerritories = player.personalBoard.getPossessions("Territory");
     	int militaryPoints = player.points.getMilitary();
     	boolean canGet=false;
-    	for (i=0;i<6 && possessedTerritories[i]!=null;i++);
-    	if (i<6 && possessedTerritories[i]==null){
+    	if (possessedTerritories.size()<6){
     		//if there is a place for the territory
-    		switch(i){
+    		switch(possessedTerritories.size()){
     		//checking if the player has enough military points
     		case 2: if(militaryPoints >= 3) 
     			canGet=true;
@@ -122,7 +122,7 @@ public class GameHandler {
     		}
     		if(canGet==true){
     			//add the territory to PersonalBoard
-    			possessedTerritories[i]=territory.cardName;
+    			possessedTerritories.add(territory.cardName);
     			player.personalBoard.setPossessions(possessedTerritories,"Territory");
     			territoryHandler.doInstantEffect(territory.instantBonuses, player);
     			return true;
@@ -136,19 +136,19 @@ public class GameHandler {
     }
 
     public boolean getCharacterCard(Character character,Player player,ActionBonus actionBonus){
-    	int i=0;
-    	String[] possessedCharacters = player.personalBoard.getPossessions("Character");
-		for (i=0;i<6 && possessedCharacters[i]!=null;i++);
-		if (i<6 && possessedCharacters[i]==null){
-	    	if (player.resources.getCoins() >= character.costCoins){
-	    		player.resources.setCoins(-character.costCoins);
+    	ArrayList<String> possessedCharacters = player.personalBoard.getPossessions("Character");
+		if (possessedCharacters.size()<6){
+	    		try {
+					player.resources.setCoins(-character.costCoins);
+				} catch (NotEnoughResources e) {
+					e.printStackTrace();
+					return false;
+				}
+	    		possessedCharacters.add(character.cardName);
     			player.personalBoard.setPossessions(possessedCharacters,"Character");
     			characterHandler.doInstantEffect(character.instantBonuses, player);
     			characterHandler.activate(character.permanentEffect, player);
     			return true;
-    		}
-    		else
-    			System.out.println("You don't have enough coins!");
     	}
 		else
 			System.out.println("You can't have more than 6 characters!");
@@ -156,21 +156,19 @@ public class GameHandler {
     }
 
     public boolean getBuildingCard(Building building,Player player,ActionBonus actionBonus){
-    	int i=0;
-    	String[] possessedBuildings = player.personalBoard.getPossessions("Building");
-		for (i=0;i<6 && possessedBuildings[i]!=null;i++);
-		if (i<6 && possessedBuildings[i]==null){
-	    	if(player.resources.getCoins() >= building.costResources.coins && 
-	    			player.resources.getWoods() >= building.costResources.woods && 
-	    			player.resources.getStones() >= building.costResources.stones && 
-	    			player.resources.getServants() >= building.costResources.servants){
+    	ArrayList<String> possessedBuildings = player.personalBoard.getPossessions("Building");
+		if (possessedBuildings.size()<6){
+	    		try {
+					subCardResources(building.costResources,player);
+					addCardPoints(building.instantBonuses,player);
+				} catch (NotEnoughResources | NotEnoughPoints e) {
+					e.printStackTrace();
+					return false;
+				}
+	    		possessedBuildings.add(building.cardName);
 	    		player.personalBoard.setPossessions(possessedBuildings,"Building");
-	    		subCardResources(building.costResources,player);
-	    		addCardPoints(building.instantBonuses,player);
 	    		return true;
-	    	}
-    		else
-    			System.out.println("You don't have enough Resources!");
+	    	
     	}
 		else
 			System.out.println("You can't have more than 6 buildings!");
@@ -178,24 +176,29 @@ public class GameHandler {
     }
     
     public boolean getVentureCard(Venture venture,Player player,ActionBonus actionBonus){
-    	int i=0;
-    	String[] possessedVentures = player.personalBoard.getPossessions("Venture");
-		for (i=0;i<6 && possessedVentures[i]!=null;i++);
-		if (i<6 && possessedVentures[i]==null){
-	    	if(player.resources.getCoins() >= venture.costResources.coins && 
-	    			player.resources.getWoods() >= venture.costResources.woods && 
-	    			player.resources.getStones() >= venture.costResources.stones && 
-	    			player.resources.getServants() >= venture.costResources.servants &&
-	    			player.points.getMilitary() >= venture.neededMilitary){
+    	ArrayList<String> possessedVentures = player.personalBoard.getPossessions("Venture");
+		if (possessedVentures.size()<6){
+	    	if(player.points.getMilitary() >= venture.neededMilitary){
+	    		try {
+					subCardResources(venture.costResources,player);
+				} catch (NotEnoughResources e1) {
+					e1.printStackTrace();
+					return false;
+				}
+	    		try {
+					player.points.setMilitary(-venture.costMilitary);
+				} catch (NotEnoughPoints e) {
+					e.printStackTrace();
+					return false;
+				}
+	    		possessedVentures.add(venture.cardName);
 	    		player.personalBoard.setPossessions(possessedVentures,"Venture");
-	    		subCardResources(venture.costResources,player);
-	    		player.points.setMilitary(-venture.costMilitary);
 	    		player.points.setFinalVictory(venture.finalVictory);
 	    		ventureHandler.doInstantEffect(venture.instant, player);
 	    		return true;
 	    	}
     		else
-    			System.out.println("You don't have enough Resources or Military Points!");
+    			System.out.println("You don't have enough Military Points!");
     	}
 		else
 			System.out.println("You can't have more than 6 ventures!");
@@ -250,10 +253,14 @@ public class GameHandler {
         	}
         	if ((uncoloredFamilyMemberOnTheTower==true && coloredFamilyMemberOnTheTower==false) || (coloredFamilyMemberOnTheTower==true && (familyMember.color).equals("uncolored"))){
         	//if there is an uncolored family member on the tower or there is a colored one but the player uses an uncolored family member
-        		if(getCard(cardNumber,player) && player.resources.getCoins()>=3){
+        		if(player.resources.getCoins()>=3 && getCard(cardNumber,player)){
         			(familyMembersOnTheTowers[i][k].playerColor)=(familyMember.playerColor);
 	        		(familyMembersOnTheTowers[i][k].color)=(familyMember.color);
-	        		player.resources.setCoins(-3);
+	        		try {
+						player.resources.setCoins(-3);
+					} catch (NotEnoughResources e) {
+						e.printStackTrace();
+					}
 	        		setTowerBonus(mainBoard.towerBonuses[j][i],player);
 	        		}
         		else
@@ -270,10 +277,14 @@ public class GameHandler {
         		}
         		else{
         			//if the tower is occupied
-        			if(getCard(cardNumber,player) && player.resources.getCoins()>=3){
+        			if(player.resources.getCoins()>=3 && getCard(cardNumber,player)){
         				(familyMembersOnTheTowers[i][k].playerColor)=(familyMember.playerColor);
             			(familyMembersOnTheTowers[i][k].color)=(familyMember.color);
-    	        		player.resources.setCoins(-3);
+    	        		try {
+							player.resources.setCoins(-3);
+						} catch (NotEnoughResources e) {
+							e.printStackTrace();
+						}
     	        		setTowerBonus(mainBoard.towerBonuses[j][i],player);
         			}
         			else
@@ -287,12 +298,17 @@ public class GameHandler {
     }
     
     public void setTowerBonus(ActionBonus towerBonus,Player player){
-    	addPlayerResources(towerBonus.resources,player);
-    	addPlayerPoints(towerBonus.points,player);
+    	try {
+			addPlayerResources(towerBonus.resources,player);
+			addPlayerPoints(towerBonus.points,player);
+		} catch (NotEnoughResources | NotEnoughPoints e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	
     }
     
-    public void addPlayerResources (PlayerResources resources, Player player){
+    public void addPlayerResources (PlayerResources resources, Player player) throws NotEnoughResources{
     	PlayerResources playerResources = player.resources;
     	playerResources.setCoins(resources.getCoins());
     	playerResources.setWoods(resources.getWoods());
@@ -302,7 +318,7 @@ public class GameHandler {
     	player.resources=playerResources;
     }
     
-    public void subCardResources (CardResources resources, Player player){
+    public void subCardResources (CardResources resources, Player player) throws NotEnoughResources{
     	PlayerResources playerResources = player.resources;
     	playerResources.setCoins(-resources.coins);
     	playerResources.setWoods(-resources.woods);
@@ -311,7 +327,7 @@ public class GameHandler {
     	player.resources=playerResources;
     }
     
-    public void addCardResources (CardResources resources, Player player){
+    public void addCardResources (CardResources resources, Player player) throws NotEnoughResources{
     	PlayerResources playerResources = player.resources;
     	playerResources.setCoins(resources.coins);
     	playerResources.setWoods(resources.woods);
@@ -320,7 +336,7 @@ public class GameHandler {
     	player.resources=playerResources;
     }
     
-    public void addPlayerPoints (PlayerPoints points, Player player){
+    public void addPlayerPoints (PlayerPoints points, Player player) throws NotEnoughPoints{
     	PlayerPoints playerPoints = player.points;
     	playerPoints.setFaith(points.getFaith());
     	playerPoints.setFaith(points.getVictory());
@@ -329,7 +345,7 @@ public class GameHandler {
     	player.points=playerPoints;
     }
     
-    public void subCardPoints (CardPoints points, Player player){
+    public void subCardPoints (CardPoints points, Player player) throws NotEnoughPoints{
     	PlayerPoints playerPoints = player.points;
     	playerPoints.setFaith(-points.faith);
     	playerPoints.setFaith(-points.victory);
@@ -337,7 +353,7 @@ public class GameHandler {
     	player.points=playerPoints;
     }
     
-    public void addCardPoints (CardPoints points, Player player){
+    public void addCardPoints (CardPoints points, Player player) throws NotEnoughPoints{
     	PlayerPoints playerPoints = player.points;
     	playerPoints.setFaith(points.faith);
     	playerPoints.setFaith(points.victory);
@@ -351,12 +367,24 @@ public class GameHandler {
         	(familyMembersAtTheMarket[position].color) = (familyMember.color);
         	(familyMembersAtTheMarket[position].playerColor) = (familyMember.playerColor);
         	switch(position){
-	        	case 1: player.resources.setCoins(5);
+	        	case 1: try {
+					player.resources.setCoins(5);
+				} catch (NotEnoughResources e) {
+					e.printStackTrace();
+				}
 	        		break;
-	        	case 2: player.resources.setServants(5);
+	        	case 2: try {
+					player.resources.setServants(5);
+				} catch (NotEnoughResources e) {
+					e.printStackTrace();
+				}
 	        		break;
-	        	case 3: player.resources.setCoins(2);
-	    				player.points.setMilitary(3);
+	        	case 3: try {
+					player.resources.setCoins(2);
+					player.points.setMilitary(3);
+				} catch (NotEnoughResources | NotEnoughPoints e) {
+					e.printStackTrace();
+				}
 	    			break;
 	        	case 4: councilHandler.getCouncil(1,player);
 	        		break;

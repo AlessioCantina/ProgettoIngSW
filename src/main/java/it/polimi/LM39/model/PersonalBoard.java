@@ -1,15 +1,16 @@
 package it.polimi.LM39.model;
 
+import java.util.ArrayList;
 
 public class PersonalBoard {
 
-    private String[] possessedTerritories = new String[6];
+	ArrayList<String> possessedTerritories = new ArrayList<String>();
 
-    private String[] possessedBuildings = new String[6];
+	ArrayList<String> possessedBuildings = new ArrayList<String>();
 
-    private String[] possessedVentures = new String[6];
+	ArrayList<String> possessedVentures = new ArrayList<String>();
 
-    private String[] possessedCharacters = new String[6];
+	ArrayList<String> possessedCharacters = new ArrayList<String>();
     
     public ActionBonus[] territoryBonuses = new ActionBonus[6]; //the bonuses are loaded from file
 
@@ -17,7 +18,7 @@ public class PersonalBoard {
     
     public ActionBonus[][] personalBonusTile = new ActionBonus[2][2]; //the bonuses are loaded from file
 
-    public String[] getPossessions(String cardType) {
+    public ArrayList<String> getPossessions(String cardType) {
         switch(cardType){
         //break is not needed in every case because return acts like a break
         	case "Territory": return this.possessedTerritories;
@@ -30,7 +31,7 @@ public class PersonalBoard {
         return null;
     }
 
-    public void setPossessions(String[] possession, String cardType) {
+    public void setPossessions(ArrayList<String> possession, String cardType) {
     	switch(cardType){
         	case "Territory": this.possessedTerritories=possession;
         		break;

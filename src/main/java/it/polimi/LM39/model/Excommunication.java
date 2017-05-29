@@ -10,8 +10,8 @@ public class Excommunication {
     public Integer period;
 
     public ExcommunicationPermanentEffect effect;
-
-
+//probably useless reflection
+/*
     public ExcommunicationPermanentEffect getEffect()
     	{
     	try{
@@ -88,5 +88,5 @@ public class Excommunication {
    	{
    		return (NoVictoryForCard)effect;
    	}
-   
+   */
 }

@@ -1,36 +1,37 @@
 package it.polimi.LM39.model;
 
+import java.util.ArrayList;
 
 public class Rankings {
 
-    private FamilyMemberRank[] victoryRanking = new FamilyMemberRank[4];
+    private ArrayList<FamilyMemberRank> victoryRanking = new ArrayList<FamilyMemberRank>();
 
-    private FamilyMemberRank[] faithRanking = new FamilyMemberRank[4];
+    private ArrayList<FamilyMemberRank> faithRanking = new ArrayList<FamilyMemberRank>();
 
-    private FamilyMemberRank[] militaryRanking = new FamilyMemberRank[4];
+    private ArrayList<FamilyMemberRank> militaryRanking = new ArrayList<FamilyMemberRank>();
     
     
-    public void setVictoryRanking(FamilyMemberRank[] victoryRanking) {
+    public void setVictoryRanking(ArrayList<FamilyMemberRank> victoryRanking) {
         this.victoryRanking=victoryRanking;
     }
 
-    public FamilyMemberRank[] getVictoryRanking() {
+    public ArrayList<FamilyMemberRank> getVictoryRanking() {
         return this.victoryRanking;
     }
 
-    public void setFaithRanking(FamilyMemberRank[] faithRanking) {
+    public void setFaithRanking(ArrayList<FamilyMemberRank> faithRanking) {
     	this.faithRanking=faithRanking;
     }
 
-    public FamilyMemberRank[] getFaithRanking() {
+    public ArrayList<FamilyMemberRank> getFaithRanking() {
         return this.faithRanking;
     }
 
-    public void setMilitaryRanking(FamilyMemberRank[] militaryRanking) {
+    public void setMilitaryRanking(ArrayList<FamilyMemberRank> militaryRanking) {
     	this.militaryRanking=militaryRanking;
     }
 
-    public FamilyMemberRank[] getMilitaryRanking() {
+    public ArrayList<FamilyMemberRank> getMilitaryRanking() {
     	return this.militaryRanking;
     }
 

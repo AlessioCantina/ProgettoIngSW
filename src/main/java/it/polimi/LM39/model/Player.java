@@ -1,5 +1,6 @@
 package it.polimi.LM39.model;
 
+import java.util.ArrayList;
 
 public class Player {
 
@@ -13,11 +14,11 @@ public class Player {
 
     public PlayerResources resources;
 
-    private Excommunication[] excommunications;
+    private ArrayList<Excommunication> excommunications = new ArrayList<Excommunication>();
 
     public MainBoard personalMainBoard; // this is a modified version of the mainboard, should be updated every time the board gets modified
 
-    private String[] playerPlayedLeaderCards;
+    private ArrayList<String> playerPlayedLeaderCards = new ArrayList<String>();
     //todo
 
     
@@ -26,15 +27,15 @@ public class Player {
     	// TODO implement here
     }
 
-    public String[] getPlayerPlayedLeaderCards() {
+    public ArrayList<String> getPlayerPlayedLeaderCards() {
         return this.playerPlayedLeaderCards;
     }
 
-    public void setExcommunications(Excommunication[] excommunications) {
+    public void setExcommunications(ArrayList<Excommunication> excommunications) {
         this.excommunications=excommunications;
     }
 
-    public Excommunication[] getExcommunications() {
+    public ArrayList<Excommunication> getExcommunications() {
     	return this.excommunications;
     }
 
