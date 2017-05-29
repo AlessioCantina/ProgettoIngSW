@@ -10,30 +10,32 @@ import java.net.Socket;
 public class SocketServer extends AbstractServer{
 
 	private Integer port;
-    public SocketServer(Integer port) {
-    	this.port = port;
+	private ServerSocket serverSocket;
+    public SocketServer(ServerInterface serverInterface) {
+    	super(serverInterface);
     }
-
-    public void startSocketServer() {
-    	ServerSocket serverSocket = null;
-    	Socket socket = null;
-    	Room room = new Room();
+    
+    @Override
+    public void startServer(){
     	try{
     		serverSocket = new ServerSocket(port);
-    	}
-    	catch(IOException e){
-    		e.printStackTrace();
-    	}
-    	while(true){
-            try {
-                socket = serverSocket.accept();
-            } catch (IOException e) {
-                System.out.println("I/O error: " + e);
-            }
-            new SocketPlayer(socket,room).run();
+    		new SocketListener().start();
+    	} catch(IOException e){
+    		System.out.println(e.getMessage());
     	}
     }
-
-
-
+    
+    private class SocketListener extends Thread{
+    	@Override
+    	public void run(){
+    		while(true){
+    			try{
+    				Socket socket = serverSocket.accept();
+    				SocketPlayer socketPlayer = new SocketPlayer(getServerController(),socket);
+    			}catch (IOException e) {
+                    System.out.println(e.getMessage());
+    		}
+    	}
+    }
+    }
 }

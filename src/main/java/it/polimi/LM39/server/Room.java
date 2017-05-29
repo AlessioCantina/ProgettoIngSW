@@ -6,31 +6,22 @@ import java.util.*;
  * 
  */
 public class Room {
-	public static final Integer ROOM_CAPACITY = 4;
-	private static Integer roomCounter;
-	private ArrayList<InterfacePlayer> players;
+	protected static Integer roomCounter;
+	private ArrayList<NetworkPlayer> players;
     /**
      * Default constructor
      */
-    public Room() {
-    	players = new ArrayList<InterfacePlayer>();
+    public Room(NetworkPlayer player){
+    	players = new ArrayList<NetworkPlayer>();
+    	this.addPlayer(player);
     	roomCounter++;
+    }
+    public void addPlayer(NetworkPlayer player){
+    	this.players.add(player);
     }
     
     public Integer getConnectedPlayers(){
     	return this.players.size();
     }
-    public Integer getNumberOfRooms(){
-    	return roomCounter;
-    }
 
-    public void connect(InterfacePlayer player) {
-    	if(this.getConnectedPlayers() == ROOM_CAPACITY){
-    		System.out.println("Room has reached max capacity. Creating new room...");
-    		Room room = new Room();
-    		room.players.add(player);
-    	}
-    	else
-    		this.players.add(player);
-    }
 }

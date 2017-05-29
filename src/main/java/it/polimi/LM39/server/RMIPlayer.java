@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * 
  */
-public class RMIPlayer extends InterfacePlayer {
+public class RMIPlayer extends NetworkPlayer {
 
     /**
      * Default constructor
@@ -21,5 +21,8 @@ public class RMIPlayer extends InterfacePlayer {
     public void send() {
 
     }
+
+
+
 
 }

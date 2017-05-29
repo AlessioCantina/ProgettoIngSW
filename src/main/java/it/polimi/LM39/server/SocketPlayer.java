@@ -10,18 +10,17 @@ import java.net.Socket;
 /**
  * 
  */
-public class SocketPlayer extends InterfacePlayer implements Runnable{
+public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    private Socket socket;
-	    private Room room;
-	    public SocketPlayer(Socket socket, Room room) {
+	    private ServerInterface serverInterface;
+	    public SocketPlayer(ServerInterface serverInterface, Socket socket) {
 	          this.socket = socket;
-	          this.room = room;
+	          this.serverInterface = serverInterface;
 	    }
 	    public void run() {
 	    	InputStream input;
 	        BufferedReader buffReader;
 	        DataOutputStream output;
-	        room.connect(this);
 	        try {
 	            input = socket.getInputStream();
 	            buffReader = new BufferedReader(new InputStreamReader(input));
