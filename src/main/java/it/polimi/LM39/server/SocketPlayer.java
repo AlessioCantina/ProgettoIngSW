@@ -23,8 +23,10 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    public SocketPlayer(ServerInterface serverInterface, Socket socket) throws IOException {
 	          this.socket = socket;
 	          this.serverInterface = serverInterface;
-	          this.objInput = new ObjectInputStream(new BufferedInputStream(this.socket.getInputStream()));
 	          this.stringOutput = new ObjectOutputStream(this.socket.getOutputStream()); 
+	          this.stringOutput.flush();
+	          this.objInput = new ObjectInputStream(new BufferedInputStream(this.socket.getInputStream()));
+	          this.run();
 	    }
 	    private void setMessages(String message,MainBoard mainBoard){
 	    	this.message = message;
@@ -33,8 +35,10 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    public void run() {
 	        try {
 	        	while(true){
+	        		System.out.println("SocketReader up");
 	        		String clientAction = objInput.readUTF();
-	        		sendToController(clientAction);
+	        		System.out.println(clientAction);
+	        		//sendToController(clientAction);
 	        	}
 	        }catch (Exception e) {
 	            return;

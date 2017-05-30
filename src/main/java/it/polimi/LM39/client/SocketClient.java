@@ -7,6 +7,7 @@ import java.util.Scanner;
 import java.util.concurrent.*;
 
 import it.polimi.LM39.model.MainBoard;
+import it.polimi.LM39.server.Server;
 
 
 /**
@@ -18,9 +19,8 @@ public class SocketClient extends AbstractClient {
 	private String userName;
 	private Scanner scanner;
 	private Socket socket;
-	private PrintWriter socketOut;
+	private ObjectOutputStream socketOut;
 	private ObjectInputStream socketIn;
-	private static ExecutorService executor = Executors.newCachedThreadPool();
 
     /**
      * Default constructor
@@ -31,22 +31,32 @@ public class SocketClient extends AbstractClient {
     	this.ip = ip;
     	this.port = port;
     	this.userName = userName;
-    	scanner = new Scanner(System.in);
     	socket = new Socket(ip,port);
     	socket.setKeepAlive(true);	
-    	socketOut = new PrintWriter(socket.getOutputStream());
-    	socketIn = new ObjectInputStream(socket.getInputStream());
-    	executor.submit(new SocketHandler(this.socket));
+    	socketOut = new ObjectOutputStream(socket.getOutputStream());
+    	socketOut.flush();
+    	socketIn = new ObjectInputStream(socket.getInputStream());   
+    	new SocketHandler().start();
     }
-    public void sendMessage() {
-    	String message = scanner.nextLine();	//print to cli available actions then grab the user's choice
-		try {
-			socketOut = new PrintWriter(socket.getOutputStream());
-			socketOut.println(message);
-			socketOut.flush();
-			socketOut.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
- }
+    private class SocketHandler extends Thread{
+    	
+    	@Override
+    	public void run() {		//output thread
+    		System.out.println("started sockethandler");
+    		try {
+    			while (true){		
+    				scanner = new Scanner(System.in);
+    				System.out.println("scanner ready");
+    				//Object input = socketIn.readObject();
+    				//System.out.println(input.toString());
+    				String string = scanner.next();
+    				System.out.println(string);
+    				socketOut.writeUTF(string);
+    				socketOut.flush();
+    			}
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		} 	
+    	}
+    }
+}

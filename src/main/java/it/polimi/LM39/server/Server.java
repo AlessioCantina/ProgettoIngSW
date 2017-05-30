@@ -8,8 +8,8 @@ import java.util.*;
 public class Server implements ServerInterface{
 
 	public static final Integer ROOM_CAPACITY = 4;
-	public static final int SOCKET_PORT = 3333;
-	public static final int RMI_PORT = 3334;
+	public static final Integer SOCKET_PORT = 3333;
+	public static final Integer RMI_PORT = 3334;
     /**
      * Default constructor
      */
@@ -18,6 +18,18 @@ public class Server implements ServerInterface{
     	rooms = new ArrayList<>();
     	socketServer = new SocketServer(this);
     	//RMIserver = new RMIserver(RMI_PORT);
+    }
+    public static void main(String[] args) {
+     try {
+            Server server = new Server();
+            server.StartServer();
+        } catch (Exception e) {
+            
+        }
+    }
+    private void StartServer(){
+    	System.out.println("SocketServer Creato");
+    	socketServer.StartServer(SOCKET_PORT);
     }
 
     /**

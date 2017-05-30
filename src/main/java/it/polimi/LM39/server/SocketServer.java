@@ -9,16 +9,15 @@ import java.net.Socket;
  */
 public class SocketServer extends AbstractServer{
 
-	private Integer port;
 	private ServerSocket serverSocket;
     public SocketServer(ServerInterface serverInterface) {
     	super(serverInterface);
     }
     
     @Override
-    public void startServer(){
+    public void StartServer(Integer socketPort){
     	try{
-    		serverSocket = new ServerSocket(port);
+    		serverSocket = new ServerSocket(socketPort);
     		new SocketListener().start();
     	} catch(IOException e){
     		System.out.println(e.getMessage());
@@ -30,6 +29,7 @@ public class SocketServer extends AbstractServer{
     	public void run(){
     		while(true){
     			try{
+    				System.out.println("Socket Listener UP");
     				Socket socket = serverSocket.accept();
     				SocketPlayer socketPlayer = new SocketPlayer(getServerController(),socket);
     			}catch (IOException e) {
