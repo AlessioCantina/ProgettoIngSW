@@ -11,22 +11,22 @@ import it.polimi.LM39.model.PlayerResources;
 import it.polimi.LM39.model.characterpermanenteffect.*;
 import it.polimi.LM39.model.instanteffect.*;
 import it.polimi.LM39.model.leaderpermanenteffect.*;
+import it.polimi.LM39.model.leaderobject.*;
 
 public class CardHandler {
 	
 	
-	public void doInstantEffect(Effect instantEffect,Player player){	
+	public void doInstantEffect(Effect instantEffect,Player player)	
 		{									
 			try{
 				Class[] cArg = new Class[2];
 		        cArg[0] = instantEffect.getClass();
 		        cArg[1] = player.getClass();
 				Method lMethod = (this.getClass().getMethod("doInstantEffect",cArg));
-				lMethod.invoke(this,instantEffect,player);
+				lMethod.invoke(instantEffect,player);
 			}catch(Exception e){
 				e.printStackTrace();}
 			}
-	}
 	public void doInstantEffect(CoinForCard instantEffect,Player player){
 		//calculate the coin to receive by multiplying the possessed cards of a specific type by the coin quantity given by card
 		Integer coinQty=(player.personalBoard.getPossessions(instantEffect.cardType).size())*instantEffect.coinQty;
@@ -196,6 +196,98 @@ public class CardHandler {
 	
 	
 	
+	public boolean checkLeaderRequestedObject(LeaderRequestedObjects requestedObject,Player player)	
+		{	
+			boolean flag = false;
+			try{
+				Class[] cArg = new Class[2];
+		        cArg[0] = requestedObject.getClass();
+		        cArg[1] = player.getClass();
+				Method lMethod = (this.getClass().getMethod("checkLeaderRequestedObject",cArg));
+				flag = (boolean)lMethod.invoke(requestedObject,player);
+			}catch(Exception e){
+				e.printStackTrace();}
+		return flag;
+	}
+	
+	public boolean checkLeaderRequestedObject(RequestedCard requestedObject,Player player){
+		//check if the player has enough card of a type
+		if (player.personalBoard.getPossessions(requestedObject.cardType).size() >= requestedObject.cardQty)
+			return true;
+		return false;
+	}
+	
+	public boolean checkLeaderRequestedObject(RequestedCardPointsResources requestedObject,Player player){
+		//making a RequestedCard effect to call his specific method
+		RequestedCard requestedCard = new RequestedCard();
+		requestedCard.cardQty = requestedObject.cardQty;
+		requestedCard.cardType = requestedObject.cardType;
+		boolean flag1 = checkLeaderRequestedObject(requestedCard, player);
+		//making a RequestedPoints effect to call his specific method
+		RequestedPoints requestedPoints = new RequestedPoints();
+		requestedPoints.points = requestedObject.points;
+		boolean flag2 = checkLeaderRequestedObject(requestedPoints, player);
+		//making a RequestedResources effect to call his specific method
+		RequestedResources requestedResources = new RequestedResources();
+		requestedResources.resources = requestedObject.resources;
+		boolean flag3 = checkLeaderRequestedObject(requestedResources, player);
+		// if all the methods returned true the card can be activated
+		return (flag1 && flag2 && flag3);
+	}
+	
+	public boolean checkLeaderRequestedObject(RequestedPoints requestedObject,Player player){
+		if(player.points.getMilitary() >= requestedObject.points.military &&
+				player.points.getFaith() >= requestedObject.points.faith &&
+					player.points.getVictory() >= requestedObject.points.victory)
+			return true;
+		return false;
+	}
+	
+	public boolean checkLeaderRequestedObject(RequestedResources requestedObject,Player player){
+		if(player.resources.getWoods() >= requestedObject.resources.woods &&
+				player.resources.getStones() >= requestedObject.resources.stones &&
+				player.resources.getServants() >= requestedObject.resources.servants &&
+				player.resources.getCoins() >= requestedObject.resources.coins)
+			return true;
+		return false;
+	}
+	
+	public boolean checkLeaderRequestedObject(RequestedSameCard requestedObject,Player player){
+		boolean flag=false;
+		RequestedCard requestedCard = new RequestedCard();
+		requestedCard.cardQty = requestedObject.cardQty;
+		//check if the player has enough card of any type
+		String[] cardTypeArray = {"Territory","Character","Building","Venture"};
+		for(int i=0;i<4;i++){
+			requestedCard.cardType = cardTypeArray[i];
+			flag = checkLeaderRequestedObject(requestedCard,player);
+			if(flag == true)
+				return flag;
+		}
+		return false;
+	}
+		
+	public boolean checkLeaderRequestedObject(RequestedTwoCards requestedObject,Player player){
+		boolean flag1 = false;
+		boolean flag2 = false;
+		RequestedCard requestedCard = new RequestedCard();
+		//check the first condition on the requeted cards
+		requestedCard.cardQty=requestedObject.cardQty;
+		requestedCard.cardType=requestedObject.cardType;
+		flag1 = checkLeaderRequestedObject(requestedCard,player);
+		//check the second condition on the requeted cards
+		requestedCard.cardQty=requestedObject.cardQty2;
+		requestedCard.cardType=requestedObject.cardType2;
+		flag2 = checkLeaderRequestedObject(requestedCard,player);
+		//the two condition returned true the leader can be used
+		return (flag1 && flag2);
+	}
+		
+		
+		
+	
+		
+		
 	
 	/*
 	

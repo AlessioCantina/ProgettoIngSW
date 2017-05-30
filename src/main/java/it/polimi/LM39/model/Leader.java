@@ -13,7 +13,8 @@ public class Leader {
 
     public String cardName;
 
-   
+    //probably useless code
+   /*
     public LeaderRequestedObjects getRequestedObject()
    	{
    	try{
@@ -57,5 +58,5 @@ public class Leader {
   	{
   		return (RequestedPoints)requestedObjects;
   	}
-
+*/
 }
