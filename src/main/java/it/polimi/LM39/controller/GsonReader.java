@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -28,7 +29,7 @@ public class GsonReader {
 			Method lMethod = (this.getClass().getMethod("subEffectRegister",cArg));
 			lMethod.invoke(this,adapter,cardType);
 		}catch(Exception e){
-			e.printStackTrace();}
+			throw new RuntimeException(e);}
 	}
 	@SuppressWarnings("unchecked")
 	public void subEffectRegister(RuntimeTypeAdapterFactory adapter, Territory cardType)
@@ -113,12 +114,13 @@ public class GsonReader {
 					Method lMethod = (this.getClass().getMethod("hashMapCreator",cArg));
 					cardHashMap = (HashMap<Integer,?>)lMethod.invoke(this,cardType);	//reflection necessary to remove the wildcard value
 					jsonReader.beginArray();  											//and instantiate the correct type for card
-					for(int i = 0; jsonReader.hasNext() ; i++)  //read the card array and put objects into an hashmap
-						cardHashMap.put(i+1,gson.fromJson(jsonReader,cardType.getClass()));
+					int i = 1;
+					while(jsonReader.hasNext()){  //read the card array and put objects into an hashmap
+						cardHashMap.put(i,gson.fromJson(jsonReader,cardType.getClass()));
+						i++;}
 					return cardHashMap;
 				}catch(Exception e){
-					e.printStackTrace();
-					return null;}
+					throw new RuntimeException(e);}
 		 }
 
 	 }
