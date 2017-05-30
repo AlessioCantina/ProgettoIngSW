@@ -28,7 +28,8 @@ public class CardHandler {
 			}
 	}
 	public void doInstantEffect(CoinForCard instantEffect,Player player){
-		int coinQty=(player.personalBoard.getPossessions(instantEffect.cardType).size())*instantEffect.coinQty;
+		//calculate the coin to receive by multiplying the possessed cards of a specific type by the coin quantity given by card
+		Integer coinQty=(player.personalBoard.getPossessions(instantEffect.cardType).size())*instantEffect.coinQty;
 		try {
 			player.resources.setCoins(coinQty);
 		} catch (NotEnoughResources e) {
@@ -82,6 +83,7 @@ public class CardHandler {
 	
 	public void doInstantEffect(HarvestProductionAction instantEffect,Player player){
 		PlayerBoardHandler playerBoardHandler = new PlayerBoardHandler();
+		//check if the effect is for harvest o production and call the carrect method
 		if(instantEffect.actionType.equals("Harvest"))
 			playerBoardHandler.activateHarvest(instantEffect.actionValue, player);
 		else if(instantEffect.actionType.equals("Production"))
@@ -172,10 +174,25 @@ public class CardHandler {
 		Resources resourcesEffect = new Resources();
 		resourcesEffect.resources = instantEffect.resources;
 		doInstantEffect(resourcesEffect,player);
-		
 	}
 	
+	public void doInstantEffect(SetFamilyMember instantEffect,Player player){
+		//the color will be chosen by the user
+		//TODO
+	}
 	
+	public void doInstantEffect(VictoryForCard instantEffect,Player player){
+		//calculate the victory points to receive by multiplying the possessed cards of a specific type by the victory quantity given by card
+		Integer victoryQty=(player.personalBoard.getPossessions(instantEffect.cardType).size())*instantEffect.victoryQty;
+			player.points.setVictory(victoryQty);
+	}
+	
+	public void doInstantEffect(VictoryForMilitary instantEffect,Player player){
+		//calculate the victory points to receive by multiplying the possessed cards of a specific type by the victory quantity given by card
+		Integer victoryQty=(player.points.getMilitary())*instantEffect.victoryQty;
+		player.points.setVictory(victoryQty);
+		
+	}
 	
 	
 	

@@ -1,5 +1,6 @@
 package it.polimi.LM39.model;
 
+import it.polimi.LM39.model.characterpermanenteffect.CharacterPermanentEffect;
 import it.polimi.LM39.model.instanteffect.InstantEffect;
 
 
@@ -9,6 +10,6 @@ public class Character extends Card {
 
     public InstantEffect instantBonuses;
 
-    public Effect permanentEffect;
+    public CharacterPermanentEffect permanentEffect;
 
 }
