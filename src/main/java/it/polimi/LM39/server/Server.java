@@ -55,9 +55,7 @@ public class Server implements ServerInterface{
 				players.put(nickName, networkPlayer);
 				networkPlayer.setNickName(nickName);
 			}
-		}
-		// TODO Auto-generated method stub
-		
+		}	
 	}
 
 
@@ -71,21 +69,23 @@ public class Server implements ServerInterface{
 
 	@Override
 	public void joinRoom(NetworkPlayer networkPlayer) {
-		if(Room.roomCounter == 0)
-		{
-			Room room = new Room(networkPlayer);
-			this.rooms.add(room);
-		}
-		else
-		{
-			Room room = this.getRoom(Room.roomCounter);
-			if(room.getConnectedPlayers() == ROOM_CAPACITY)
+		synchronized(ROOM_LOCK){ //avoid multiple room creation from different thread
+			if(Room.roomCounter == 0)
 			{
-				Room newRoom = new Room(networkPlayer);
-				this.rooms.add(newRoom);
+				Room room = new Room(networkPlayer);
+				this.rooms.add(room);
 			}
 			else
-				room.addPlayer(networkPlayer);
+			{
+				Room room = this.getRoom(Room.roomCounter);
+				if(room.getConnectedPlayers() == ROOM_CAPACITY)
+				{
+					Room newRoom = new Room(networkPlayer);
+					this.rooms.add(newRoom);
+				}
+				else
+					room.addPlayer(networkPlayer);
+			}
 		}
 	}
 	public Room getRoom(Integer roomNumber){
