@@ -13,7 +13,6 @@ import it.polimi.LM39.model.Character;
  */
 public class GameHandler {
 	
-	private MainBoard mainBoard;
 
 	public Integer marketSize = new Integer(0);
 	
@@ -22,6 +21,8 @@ public class GameHandler {
 	private Integer period = 1;
 
     private Integer round = 1;
+    
+    public MainBoard mainBoard;
     
     public BuildingHandler buildingHandler = new BuildingHandler();
     
@@ -50,6 +51,7 @@ public class GameHandler {
     	this.round=round;
     }
     
+    
     public void rollTheDices() {
     	Integer[] diceValues = new Integer[3];
     	for(int i=0;i<3;i++){
@@ -60,36 +62,25 @@ public class GameHandler {
     	mainBoard.setDiceValues(diceValues);    
     }
 
-    public boolean getCard(Integer cardNumber,Player player) {
+    public boolean getCard(Integer cardNumber,Player player, Integer k) {
     	boolean cardGotten=false;
-    	FamilyMembersLocation familyMembersLocation;
-    	familyMembersLocation = mainBoard.getFamilyMembersLocation();
-    	FamilyMember[][] familyMembersOnTheTowers = familyMembersLocation.getFamilyMembersOnTheTowers();
-    	int i,j;
-    	for(i=0,j=0;!familyMembersOnTheTowers[i][j].equals(cardNumber) && i<4;i++){
-    		for(j=0;!familyMembersOnTheTowers[i][j].equals(cardNumber) && j<4;j++);}
-    	    	if (!familyMembersOnTheTowers[i][j].equals(cardNumber))
-    	    		System.out.println("This card is not on the Game Board!");
-    	    	else{
-    	    		switch(j){
-    		    		case 0: Territory territory=mainBoard.territoryMap.get(cardNumber);
+    	    		switch(k){
+    		    		case 0: Territory territory=MainBoard.territoryMap.get(cardNumber);
     		    			cardGotten=getTerritoryCard(territory,player,cardNumber);
     		    			break;
-    		    		case 1: Character character=mainBoard.characterMap.get(cardNumber);
+    		    		case 1: Character character=MainBoard.characterMap.get(cardNumber);
     		    			cardGotten=getCharacterCard(character,player,cardNumber);
     		    			break;
-    		    		case 2: Building building=mainBoard.buildingMap.get(cardNumber);
+    		    		case 2: Building building=MainBoard.buildingMap.get(cardNumber);
     		    			cardGotten=getBuildingCard(building,player,cardNumber);
     		    			break;
-    		    		case 3: Venture venture=mainBoard.ventureMap.get(cardNumber);
+    		    		case 3: Venture venture=MainBoard.ventureMap.get(cardNumber);
     		    			cardGotten=getVentureCard(venture,player,cardNumber);
     		    			break;
     		    		default: System.out.println("This tower doesn't exist!");
     		    			break;
     	    		}
     	    		return cardGotten;
-    	    	}
-        return false;
     }
     
     
@@ -234,15 +225,15 @@ public class GameHandler {
         for(i=0, j=0;!cardsOnTheTowers[i][j].equals(cardNumber) && i<4;i++)
         	for(j=0;!cardsOnTheTowers[i][j].equals(cardNumber) && j<4;j++);
     		//search the coordinates of the card in the board
+        int p=i-1;
         int k=j;
-        int p=i;
         //to store i and j as the coordinates of the position interested, the if check if the player can get the card with a specific family member
-        if(familyMembersOnTheTowers[i][k] == null && ((diceValues[familyMemberColortoDiceValue(familyMember.color)]+familyMember.getServants())>=(((i+1)*2)-1))){
+        if(familyMembersOnTheTowers[p][k] == null && ((diceValues[familyMemberColortoDiceValue(familyMember.color)]+familyMember.getServants())>=(((i+1)*2)-1))){
         	//if the place is free and the family member has an high enough value, ((i+1)*2)-1 is to convert the value i of the matrix to the value of the floor in dice
-        	for(p=0;p<4;p++){
-        		if((familyMembersOnTheTowers[p][k].playerColor).equals(familyMember.playerColor)){
+        	for(i=0;i<4;i++){
+        		if((familyMembersOnTheTowers[i][k].playerColor).equals(familyMember.playerColor)){
         			//if there is one of my family members on the tower
-        			if ((familyMembersOnTheTowers[p][k].color).equals("uncolored"))
+        			if ((familyMembersOnTheTowers[i][k].color).equals("uncolored"))
         				//if this family member is uncolored
         				uncoloredFamilyMemberOnTheTower=true;
         			else
@@ -252,39 +243,39 @@ public class GameHandler {
         	}
         	if ((uncoloredFamilyMemberOnTheTower==true && coloredFamilyMemberOnTheTower==false) || (coloredFamilyMemberOnTheTower==true && (familyMember.color).equals("uncolored"))){
         	//if there is an uncolored family member on the tower or there is a colored one but the player uses an uncolored family member
-        		if(player.resources.getCoins()>=3 && getCard(cardNumber,player)){
-        			(familyMembersOnTheTowers[i][k].playerColor)=(familyMember.playerColor);
-	        		(familyMembersOnTheTowers[i][k].color)=(familyMember.color);
+        		if(player.resources.getCoins()>=3 && getCard(cardNumber,player,k)){
+        			(familyMembersOnTheTowers[p][k].playerColor)=(familyMember.playerColor);
+	        		(familyMembersOnTheTowers[p][k].color)=(familyMember.color);
 	        		try {
 						player.resources.setCoins(-3);
 					} catch (NotEnoughResources e) {
 						e.printStackTrace();
 					}
-	        		setTowerBonus(mainBoard.towerBonuses[j][i],player);
+	        		setTowerBonus(mainBoard.towerBonuses[p][k],player);
 	        		}
         		else
         			System.out.println("You don't have the necessary resources!");
 	        	}
         	if (uncoloredFamilyMemberOnTheTower==false && coloredFamilyMemberOnTheTower==false){
         		//if there is none of my family members
-        		for(p=0;p<4 && familyMembersOnTheTowers[p][k]==null;p++);
-        		if(p==5 && getCard(cardNumber,player)){
+        		for(i=0;i<4 && familyMembersOnTheTowers[i][k]==null;i++);
+        		if(i==5 && getCard(cardNumber,player,k)){
         			//if the tower is free
         			(familyMembersOnTheTowers[i][k].playerColor)=(familyMember.playerColor);
         			(familyMembersOnTheTowers[i][k].color)=(familyMember.color);
-	        		setTowerBonus(mainBoard.towerBonuses[j][i],player);
+	        		setTowerBonus(mainBoard.towerBonuses[p][k],player);
         		}
         		else{
         			//if the tower is occupied
-        			if(player.resources.getCoins()>=3 && getCard(cardNumber,player)){
-        				(familyMembersOnTheTowers[i][k].playerColor)=(familyMember.playerColor);
-            			(familyMembersOnTheTowers[i][k].color)=(familyMember.color);
+        			if(player.resources.getCoins()>=3 && getCard(cardNumber,player,k)){
+        				(familyMembersOnTheTowers[p][k].playerColor)=(familyMember.playerColor);
+            			(familyMembersOnTheTowers[p][k].color)=(familyMember.color);
     	        		try {
 							player.resources.setCoins(-3);
 						} catch (NotEnoughResources e) {
 							e.printStackTrace();
 						}
-    	        		setTowerBonus(mainBoard.towerBonuses[j][i],player);
+    	        		setTowerBonus(mainBoard.towerBonuses[p][k],player);
         			}
         			else
             			System.out.println("You don't have the necessary resources!");
@@ -548,13 +539,13 @@ public class GameHandler {
     	for(int i=0;i<4;i++){
             for (int j=0; j<4; j++){
             	switch(i){
-	        	case 0: cardNamesOnTheTowers[j][i] = mainBoard.territoryMap.get(cardsOnTheTowers[j][i]).cardName;
+	        	case 0: cardNamesOnTheTowers[j][i] = MainBoard.territoryMap.get(cardsOnTheTowers[j][i]).cardName;
 	        		break;
-	        	case 1: cardNamesOnTheTowers[j][i] = mainBoard.characterMap.get(cardsOnTheTowers[j][i]).cardName;
+	        	case 1: cardNamesOnTheTowers[j][i] = MainBoard.characterMap.get(cardsOnTheTowers[j][i]).cardName;
 	        		break;
-	        	case 2: cardNamesOnTheTowers[j][i] = mainBoard.buildingMap.get(cardsOnTheTowers[j][i]).cardName;
+	        	case 2: cardNamesOnTheTowers[j][i] = MainBoard.buildingMap.get(cardsOnTheTowers[j][i]).cardName;
 	    			break;
-	        	case 3: cardNamesOnTheTowers[j][i] = mainBoard.ventureMap.get(cardsOnTheTowers[j][i]).cardName;
+	        	case 3: cardNamesOnTheTowers[j][i] = MainBoard.ventureMap.get(cardsOnTheTowers[j][i]).cardName;
 	        		break;
 	        	default: System.out.println("Invalid position it has to be between 0 and 3");
 	        		break;

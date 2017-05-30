@@ -84,7 +84,8 @@ public class Game {
     	//code to test the method loadCardsOnTheMainBoard();
     	/*
     	MainBoard mainBoard = new MainBoard();
-        GameHandler gameHandler = new GameHandler(mainBoard);
+        GameHandler gameHandler = new GameHandler();
+        gameHandler.mainBoard = mainBoard;
         //calls the gsonReader to populate the hashmaps
         gameHandler.inizializeTheGame();
         gameHandler.loadCardsOnTheMainBoard();
