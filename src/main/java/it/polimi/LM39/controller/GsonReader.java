@@ -123,14 +123,14 @@ public class GsonReader {
 
 	 }
 	 @SuppressWarnings("unchecked")
-	public void fileToCard(MainBoard mainBoard) throws IOException{
+	public void fileToCard() throws IOException{
 		 Card territory = new Territory();  //objects needed to use java reflection which checks parameters types
 		 Card building = new Building();
 		 Card venture = new Venture();
 		 Card character = new Character();
-		 mainBoard.territoryMap = (HashMap<Integer,Territory>)hashMapCreator(territory);	
-		 mainBoard.buildingMap = (HashMap<Integer,Building>)hashMapCreator(building);
-		 mainBoard.characterMap = (HashMap<Integer,Character>)hashMapCreator(character);
-		 mainBoard.ventureMap = (HashMap<Integer,Venture>)hashMapCreator(venture);	 
+		 MainBoard.territoryMap = (HashMap<Integer,Territory>)hashMapCreator(territory);	
+		 MainBoard.buildingMap = (HashMap<Integer,Building>)hashMapCreator(building);
+		 MainBoard.characterMap = (HashMap<Integer,Character>)hashMapCreator(character);
+		 MainBoard.ventureMap = (HashMap<Integer,Venture>)hashMapCreator(venture);	 
 	 }
 }

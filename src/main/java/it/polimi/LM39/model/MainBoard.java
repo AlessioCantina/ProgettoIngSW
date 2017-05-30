@@ -30,17 +30,17 @@ public class MainBoard {
     
     public ActionBonus productionBonus = new ActionBonus(); //the bonuses are loaded from file
     
-    public HashMap<Integer,Territory> territoryMap = new HashMap<Integer,Territory>();
+    public static HashMap<Integer,Territory> territoryMap = new HashMap<Integer,Territory>();
 
-    public HashMap<Integer,Building> buildingMap = new HashMap<Integer,Building>();
+    public static HashMap<Integer,Building> buildingMap = new HashMap<Integer,Building>();
 
-    public HashMap<Integer,Venture> ventureMap = new HashMap<Integer,Venture>();
+    public static HashMap<Integer,Venture> ventureMap = new HashMap<Integer,Venture>();
 
-    public HashMap<Integer,Character> characterMap = new HashMap<Integer,Character>();
+    public static HashMap<Integer,Character> characterMap = new HashMap<Integer,Character>();
 
-    public HashMap<Integer,Leader> leaderMap = new HashMap<Integer,Leader>();
+    public static HashMap<Integer,Leader> leaderMap = new HashMap<Integer,Leader>();
 
-    public HashMap<Integer,Excommunication> excommunicationMap = new HashMap<Integer,Excommunication>();
+    public static HashMap<Integer,Excommunication> excommunicationMap = new HashMap<Integer,Excommunication>();
 
 
     public void setCardsOnTheTowers(Integer[][] cardsOnTheTowers) {

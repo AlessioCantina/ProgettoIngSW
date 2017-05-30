@@ -4,5 +4,8 @@ import it.polimi.LM39.model.Player;
 
 public class CouncilHandler {
 
-	public void getCouncil(Integer qty,Player player){}
+	public void getCouncil(Integer qty,Player player){
+		//TODO
+		//ask the player what council favor he wants
+	}
 }

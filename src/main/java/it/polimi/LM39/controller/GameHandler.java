@@ -73,16 +73,16 @@ public class GameHandler {
     	    	else{
     	    		switch(j){
     		    		case 0: Territory territory=mainBoard.territoryMap.get(cardNumber);
-    		    			cardGotten=getTerritoryCard(territory,player,mainBoard.towerBonuses[i][j]);
+    		    			cardGotten=getTerritoryCard(territory,player,cardNumber);
     		    			break;
     		    		case 1: Character character=mainBoard.characterMap.get(cardNumber);
-    		    			cardGotten=getCharacterCard(character,player,mainBoard.towerBonuses[i][j]);
+    		    			cardGotten=getCharacterCard(character,player,cardNumber);
     		    			break;
     		    		case 2: Building building=mainBoard.buildingMap.get(cardNumber);
-    		    			cardGotten=getBuildingCard(building,player,mainBoard.towerBonuses[i][j]);
+    		    			cardGotten=getBuildingCard(building,player,cardNumber);
     		    			break;
     		    		case 3: Venture venture=mainBoard.ventureMap.get(cardNumber);
-    		    			cardGotten=getVentureCard(venture,player,mainBoard.towerBonuses[i][j]);
+    		    			cardGotten=getVentureCard(venture,player,cardNumber);
     		    			break;
     		    		default: System.out.println("This tower doesn't exist!");
     		    			break;
@@ -93,10 +93,10 @@ public class GameHandler {
     }
     
     
-    public boolean getTerritoryCard(Territory territory,Player player,ActionBonus actionBonus){
+    public boolean getTerritoryCard(Territory territory,Player player,Integer cardNumber){
     	//instantResources
     	territoryHandler.doInstantEffect(territory.instantBonuses,player);
-    	ArrayList<String> possessedTerritories = player.personalBoard.getPossessions("Territory");
+    	ArrayList<Integer> possessedTerritories = player.personalBoard.getPossessions("Territory");
     	int militaryPoints = player.points.getMilitary();
     	boolean canGet=false;
     	if (possessedTerritories.size()<6){
@@ -120,8 +120,9 @@ public class GameHandler {
     		}
     		if(canGet==true){
     			//add the territory to PersonalBoard
-    			possessedTerritories.add(territory.cardName);
+    			possessedTerritories.add(cardNumber);
     			player.personalBoard.setPossessions(possessedTerritories,"Territory");
+    			
     			territoryHandler.doInstantEffect(territory.instantBonuses, player);
     			return true;
     			}
@@ -133,8 +134,8 @@ public class GameHandler {
     	return false;
     }
 
-    public boolean getCharacterCard(Character character,Player player,ActionBonus actionBonus){
-    	ArrayList<String> possessedCharacters = player.personalBoard.getPossessions("Character");
+    public boolean getCharacterCard(Character character,Player player,Integer cardNumber){
+    	ArrayList<Integer> possessedCharacters = player.personalBoard.getPossessions("Character");
 		if (possessedCharacters.size()<6){
 	    		try {
 					player.resources.setCoins(-character.costCoins);
@@ -142,7 +143,7 @@ public class GameHandler {
 					e.printStackTrace();
 					return false;
 				}
-	    		possessedCharacters.add(character.cardName);
+	    		possessedCharacters.add(cardNumber);
     			player.personalBoard.setPossessions(possessedCharacters,"Character");
     			characterHandler.doInstantEffect(character.instantBonuses, player);
     			characterHandler.activate(character.permanentEffect, player);
@@ -153,8 +154,8 @@ public class GameHandler {
     	return false;
     }
 
-    public boolean getBuildingCard(Building building,Player player,ActionBonus actionBonus){
-    	ArrayList<String> possessedBuildings = player.personalBoard.getPossessions("Building");
+    public boolean getBuildingCard(Building building,Player player,Integer cardNumber){
+    	ArrayList<Integer> possessedBuildings = player.personalBoard.getPossessions("Building");
 		if (possessedBuildings.size()<6){
 	    		try {
 					subCardResources(building.costResources,player);
@@ -163,7 +164,7 @@ public class GameHandler {
 					e.printStackTrace();
 					return false;
 				}
-	    		possessedBuildings.add(building.cardName);
+	    		possessedBuildings.add(cardNumber);
 	    		player.personalBoard.setPossessions(possessedBuildings,"Building");
 	    		return true;
 	    	
@@ -173,8 +174,8 @@ public class GameHandler {
     	return false;
     }
     
-    public boolean getVentureCard(Venture venture,Player player,ActionBonus actionBonus){
-    	ArrayList<String> possessedVentures = player.personalBoard.getPossessions("Venture");
+    public boolean getVentureCard(Venture venture,Player player,Integer cardNumber){
+    	ArrayList<Integer> possessedVentures = player.personalBoard.getPossessions("Venture");
 		if (possessedVentures.size()<6){
 	    	if(player.points.getMilitary() >= venture.neededMilitary){
 	    		try {
@@ -189,7 +190,7 @@ public class GameHandler {
 					e.printStackTrace();
 					return false;
 				}
-	    		possessedVentures.add(venture.cardName);
+	    		possessedVentures.add(cardNumber);
 	    		player.personalBoard.setPossessions(possessedVentures,"Venture");
 	    		player.points.setFinalVictory(venture.finalVictory);
 	    		ventureHandler.doInstantEffect(venture.instant, player);
@@ -472,9 +473,8 @@ public class GameHandler {
     		}
 
     public void inizializeTheGame() {
-        // TODO implement here
         try {
-			gsonReader.fileToCard(mainBoard);
+			gsonReader.fileToCard();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

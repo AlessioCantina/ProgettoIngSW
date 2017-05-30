@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 public class PersonalBoard {
 
-	ArrayList<String> possessedTerritories = new ArrayList<String>();
+	ArrayList<Integer> possessedTerritories = new ArrayList<Integer>();
 
-	ArrayList<String> possessedBuildings = new ArrayList<String>();
+	ArrayList<Integer> possessedBuildings = new ArrayList<Integer>();
 
-	ArrayList<String> possessedVentures = new ArrayList<String>();
+	ArrayList<Integer> possessedVentures = new ArrayList<Integer>();
 
-	ArrayList<String> possessedCharacters = new ArrayList<String>();
+	ArrayList<Integer> possessedCharacters = new ArrayList<Integer>();
     
     public ActionBonus[] territoryBonuses = new ActionBonus[6]; //the bonuses are loaded from file
 
@@ -18,7 +18,7 @@ public class PersonalBoard {
     
     public ActionBonus[][] personalBonusTile = new ActionBonus[2][2]; //the bonuses are loaded from file
 
-    public ArrayList<String> getPossessions(String cardType) {
+    public ArrayList<Integer> getPossessions(String cardType) {
         switch(cardType){
         //break is not needed in every case because return acts like a break
         	case "Territory": return this.possessedTerritories;
@@ -31,7 +31,7 @@ public class PersonalBoard {
         return null;
     }
 
-    public void setPossessions(ArrayList<String> possession, String cardType) {
+    public void setPossessions(ArrayList<Integer> possession, String cardType) {
     	switch(cardType){
         	case "Territory": this.possessedTerritories=possession;
         		break;
