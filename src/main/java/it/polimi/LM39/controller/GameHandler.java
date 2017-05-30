@@ -12,11 +12,9 @@ import it.polimi.LM39.model.Character;
  * 
  */
 public class GameHandler {
-	private MainBoard mainBoard;
 	
-	public GameHandler(MainBoard mainBoard) {
-	        this.mainBoard=mainBoard;
-	    }
+	private MainBoard mainBoard;
+
 	public Integer marketSize = new Integer(0);
 	
 	public Integer harvestAndProductionSize = new Integer(0);
@@ -566,6 +564,16 @@ public class GameHandler {
     	return cardNamesOnTheTowers;
     }
 
+    public Integer cardNameToInteger (String card, String[][] cardNamesOnTheTowers, Integer[][] cardOnTheTowers){
+    	for(int i=0;i<4;i++)
+    		for(int j=0;j<4;j++)
+    			if(cardNamesOnTheTowers[i][j].equals(card))
+    				return cardOnTheTowers[i][j];
+    	return null; //card not found
+    			
+    }
+    
+    
     public Integer calculateFinalPoints(Player player,MainBoard mainBoard) {
         // TODO implement here
     	//remember of excommunications!

@@ -2,15 +2,16 @@ package it.polimi.LM39.controller;
 
 import java.lang.reflect.Method;
 
+import it.polimi.LM39.exception.NotEnoughPoints;
 import it.polimi.LM39.exception.NotEnoughResources;
 import it.polimi.LM39.model.Effect;
 import it.polimi.LM39.model.NoEffect;
 import it.polimi.LM39.model.Player;
+import it.polimi.LM39.model.PlayerResources;
 import it.polimi.LM39.model.characterpermanenteffect.*;
 import it.polimi.LM39.model.instanteffect.*;
 import it.polimi.LM39.model.leaderpermanenteffect.*;
 
-// probably useless class the reflection must be used only in TerritoryHandler BuildingHandler etc
 public class CardHandler {
 	
 	
@@ -51,34 +52,137 @@ public class CardHandler {
 	}
 	
 	public void doInstantEffect(GetCardAndPoints instantEffect,Player player){
+		//making a GetCard effect and calling his method
 		GetCard effect = new GetCard();
 		effect.cardType=instantEffect.cardType;
 		effect.cardValue=instantEffect.cardValue;
 		doInstantEffect(effect,player);
-		Points points = new Points();
-		points.points=instantEffect.points;
-		doInstantEffect(points,player);
+		//making a Resources effect and calling his method
+		Points pointsEffect = new Points();
+		pointsEffect.points=instantEffect.points;
+		doInstantEffect(pointsEffect,player);
 	}
 	
 	public void doInstantEffect(GetCardAndResources instantEffect,Player player){
+		//making a GetCard effect and calling his method
 		GetCard effect = new GetCard();
 		effect.cardType=instantEffect.cardType;
 		effect.cardValue=instantEffect.cardValue;
 		doInstantEffect(effect,player);
-		Resources resources = new Resources();
-		resources.resources=instantEffect.resources;
-		doInstantEffect(resources,player);
+		//making a Resources effect and calling his method
+		Resources resourcesEffect = new Resources();
+		resourcesEffect.resources=instantEffect.resources;
+		doInstantEffect(resourcesEffect,player);
 	}
 	
 	public void doInstantEffect(GetDiscountedCard instantEffect,Player player){
-		
+		//TODO
+		//ask the player what card he wants then check the card cost and evaluate how many bonuses to give
+	}
+	
+	public void doInstantEffect(HarvestProductionAction instantEffect,Player player){
+		PlayerBoardHandler playerBoardHandler = new PlayerBoardHandler();
+		if(instantEffect.actionType.equals("Harvest"))
+			playerBoardHandler.activateHarvest(instantEffect.actionValue, player);
+		else if(instantEffect.actionType.equals("Production"))
+			playerBoardHandler.activateProduction(instantEffect.actionValue, player);
+	}
+	
+	public void doInstantEffect(HarvestProductionAndPoints instantEffect,Player player){
+		//making an HarvestProductionAction effect and calling his method
+		HarvestProductionAction effect = new HarvestProductionAction();
+		effect.actionType = instantEffect.actionType;
+		effect.actionValue = instantEffect.actionValue;
+		doInstantEffect(effect,player);
+		//making a Points effect and calling his method
+		Points pointsEffect = new Points();
+		pointsEffect.points = instantEffect.points;
+		doInstantEffect(pointsEffect,player);
+	}
+	
+	public void doInstantEffect(Points instantEffect,Player player){
+		GameHandler gameHandler = new GameHandler();
+		try {
+			gameHandler.addCardPoints(instantEffect.points, player);
+		} catch (NotEnoughPoints e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void doInstantEffect(PointsTransformation instantEffect,Player player){
+		GameHandler gameHandler = new GameHandler();
+		//check if the player has enough resources
+		try {
+			gameHandler.subCardResources(instantEffect.requestedForTransformation, player);
+		} catch (NotEnoughResources e) {
+			e.printStackTrace();
+		}
+		//add points to the player
+		try {
+			gameHandler.addCardPoints(instantEffect.points, player);
+		} catch (NotEnoughPoints e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void doInstantEffect(Resources instantEffect,Player player){
+		GameHandler gameHandler = new GameHandler();
+		try {
+			gameHandler.addCardResources(instantEffect.resources, player);
+		} catch (NotEnoughResources e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void doInstantEffect(ResourcesAndPoints instantEffect,Player player){
+		//making a Resources effect and calling his method
+		Resources resourcesEffect = new Resources();
+		resourcesEffect.resources = instantEffect.resources;
+		doInstantEffect(resourcesEffect,player);
+		//making a Points effect and calling his method
+		Points pointsEffect = new Points();
+		pointsEffect.points = instantEffect.points;
+		doInstantEffect(pointsEffect,player);
+	}
+	
+	public void doInstantEffect(ResourcesAndPointsTransformation instantEffect,Player player){
+		GameHandler gameHandler = new GameHandler();
+		//check if the player has enough points for the transformation
+		try {
+			gameHandler.subCardPoints(instantEffect.requestedForTransformation, player);
+		} catch (NotEnoughPoints e) {
+			e.printStackTrace();
+		}
+		//making a ResourcesAndPoints effect and calling his method
+		ResourcesAndPoints effect = new ResourcesAndPoints();
+		effect.points = instantEffect.points;
+		effect.resources = instantEffect.resources;
+		doInstantEffect(effect,player);
+	}
+	
+	public void doInstantEffect(ResourcesTransformation instantEffect,Player player){
+		GameHandler gameHandler = new GameHandler();
+		//checking if the player has enough resources
+		try {
+			gameHandler.subCardResources(instantEffect.requestedForTransformation, player);
+		} catch (NotEnoughResources e) {
+			e.printStackTrace();
+		}
+		//making a Resources effect and calling his method
+		Resources resourcesEffect = new Resources();
+		resourcesEffect.resources = instantEffect.resources;
+		doInstantEffect(resourcesEffect,player);
 		
 	}
+	
+	
+	
+	
 	
 	
 	/*
 	
-	
+	//probably useless code
 	//reflection to call the correct method getEffect
     public Effect getEffect(Effect effect)
 	{
