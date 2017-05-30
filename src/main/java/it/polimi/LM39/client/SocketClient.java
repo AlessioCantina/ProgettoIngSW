@@ -18,6 +18,8 @@ public class SocketClient extends AbstractClient {
 	private String userName;
 	private Scanner scanner;
 	private Socket socket;
+	private PrintWriter socketOut;
+	private ObjectInputStream socketIn;
 	private static ExecutorService executor = Executors.newCachedThreadPool();
 
     /**
@@ -31,30 +33,20 @@ public class SocketClient extends AbstractClient {
     	this.userName = userName;
     	scanner = new Scanner(System.in);
     	socket = new Socket(ip,port);
-    	socket.setKeepAlive(true);		
+    	socket.setKeepAlive(true);	
+    	socketOut = new PrintWriter(socket.getOutputStream());
+    	socketIn = new ObjectInputStream(socket.getInputStream());
     	executor.submit(new SocketHandler(this.socket));
     }
     public void sendMessage() {
-    	String message = scanner.nextLine();
-		PrintWriter socketOut;
+    	String message = scanner.nextLine();	//print to cli available actions then grab the user's choice
 		try {
 			socketOut = new PrintWriter(socket.getOutputStream());
 			socketOut.println(message);
 			socketOut.flush();
+			socketOut.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-    public void sendMainboard(MainBoard mainBoard){		//can be extended to all objects
-		try {
-	         FileOutputStream fileOut = new FileOutputStream("mainboard.ser");
-	         ObjectOutputStream out = new ObjectOutputStream(fileOut);
-	         out.writeObject(mainBoard);
-	         out.close();
-	         fileOut.close();
-	         System.out.println("Serialized data is saved in mainboard.ser");
-	      }catch(IOException i) {
-	         i.printStackTrace();
-	      }    	
-    }
-}
+ }

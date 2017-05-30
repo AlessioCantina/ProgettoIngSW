@@ -1,6 +1,6 @@
 package it.polimi.LM39.server;
-
-public abstract class NetworkPlayer{
+import it.polimi.LM39.model.Player;
+public abstract class NetworkPlayer extends Player{
 	private Room room;
 	private String nickName;
 	
@@ -9,6 +9,9 @@ public abstract class NetworkPlayer{
 	}
 	public Room getRoom(){
 		return this.room;
+	}
+	public String getNickName(){
+		return this.nickName;
 	}
 	public void setNickName(String nickName){
 		this.nickName = nickName;

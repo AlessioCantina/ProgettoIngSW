@@ -12,7 +12,7 @@ public class Game {
     /**
      * Default constructor
      */
-    public Game() {
+    public Game(Integer playerNumber) {
     }
 
     /**

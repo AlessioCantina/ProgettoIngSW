@@ -47,7 +47,6 @@ public class Server implements ServerInterface{
 
 
 
-
 	@Override
 	public void loginPlayer(String nickName, NetworkPlayer networkPlayer) {
 		synchronized(LOGIN_LOCK){

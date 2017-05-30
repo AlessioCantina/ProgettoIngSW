@@ -14,9 +14,8 @@ public class SocketHandler implements Runnable{
 	@Override
 	public void run() {
 		try {
-			Scanner input = new Scanner(socket.getInputStream());
 			while (true){		//need to implement a socket heartbeat where server informs client of his state
-				String inputLine = input.nextLine();
+				String inputLine = 
 				System.out.println(inputLine);
 			}
 		} catch (IOException e) {
