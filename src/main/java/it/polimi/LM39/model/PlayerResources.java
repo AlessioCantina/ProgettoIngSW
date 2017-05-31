@@ -1,6 +1,6 @@
 package it.polimi.LM39.model;
 
-import it.polimi.LM39.exception.NotEnoughResources;
+import it.polimi.LM39.exception.NotEnoughResourcesException;
 
 public class PlayerResources {
 
@@ -36,28 +36,28 @@ public class PlayerResources {
     	return this.council;
     }
 
-    public void setWoods(Integer qtywoods) throws NotEnoughResources{
+    public void setWoods(Integer qtywoods) throws NotEnoughResourcesException{
     	if(this.woods+qtywoods>=0)
     		this.woods+=qtywoods;
-    	else throw new NotEnoughResources ("Not enough woods!");
+    	else throw new NotEnoughResourcesException ("Not enough woods!");
     }
 
-    public void setStones(Integer qtystones) throws NotEnoughResources {
+    public void setStones(Integer qtystones) throws NotEnoughResourcesException {
     	if(this.stones+qtystones>=0)
     		this.stones+=qtystones;
-    	else throw new NotEnoughResources ("Not enough stones!");
+    	else throw new NotEnoughResourcesException ("Not enough stones!");
      }
 
-    public void setCoins(Integer qtycoins) throws NotEnoughResources{
+    public void setCoins(Integer qtycoins) throws NotEnoughResourcesException{
     	if(this.coins+qtycoins>=0)
     		this.coins+=qtycoins;
-    	else throw new NotEnoughResources ("Not enough coins!");
+    	else throw new NotEnoughResourcesException ("Not enough coins!");
     }
 
-    public void setServants(Integer qtyservants) throws NotEnoughResources{
+    public void setServants(Integer qtyservants) throws NotEnoughResourcesException{
     	if(this.servants+qtyservants>=0)
     		this.servants+=qtyservants;
-    	else throw new NotEnoughResources ("Not enough servants!");
+    	else throw new NotEnoughResourcesException ("Not enough servants!");
     }
     
     public void setCouncil (Integer qtycouncil) {

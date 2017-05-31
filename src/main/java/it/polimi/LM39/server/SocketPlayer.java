@@ -1,6 +1,5 @@
 package it.polimi.LM39.server;
 import it.polimi.LM39.model.MainBoard;
-import it.polimi.LM39.model.Player;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -56,7 +55,9 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    	stringOutput.writeUTF(message);
 	    	stringOutput.flush();
 	    }
-	    public String sendToController(String clientAction){
+	    public String sendToController(){
+	    	//TODO
+	    	String clientAction = new String();
 	    	return clientAction;
 	    }
 	    public void receiveFromController(String message, MainBoard mainBoard){

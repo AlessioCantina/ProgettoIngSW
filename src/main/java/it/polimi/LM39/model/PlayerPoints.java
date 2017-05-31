@@ -1,7 +1,7 @@
 package it.polimi.LM39.model;
 
-import it.polimi.LM39.exception.NotEnoughPoints;
-import it.polimi.LM39.exception.NotEnoughResources;
+import it.polimi.LM39.exception.NotEnoughPointsException;
+import it.polimi.LM39.exception.NotEnoughResourcesException;
 
 public class PlayerPoints {
 
@@ -29,16 +29,16 @@ public class PlayerPoints {
     	return this.finalVictory;
     }
 
-    public void setFaith(Integer qtyFaith) throws NotEnoughPoints {
+    public void setFaith(Integer qtyFaith) throws NotEnoughPointsException {
     	if(this.faith+qtyFaith>=0)
     		this.faith+=qtyFaith;
-    	else throw new NotEnoughPoints ("Not enough faith points!");
+    	else throw new NotEnoughPointsException ("Not enough faith points!");
     }
 
-    public void setMilitary(Integer qtyMilitary) throws NotEnoughPoints {
+    public void setMilitary(Integer qtyMilitary) throws NotEnoughPointsException {
     	if(this.military+qtyMilitary>=0)
     		this.military+=qtyMilitary;
-    	else throw new NotEnoughPoints ("Not enough military points!");
+    	else throw new NotEnoughPointsException ("Not enough military points!");
     }
 
     public void setVictory(Integer qtyVictory) {

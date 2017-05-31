@@ -7,6 +7,8 @@ import java.util.HashMap;
 public class MainBoard {
 
 	private Integer[][] cardsOnTheTowers = new Integer[4][4];
+	
+	private String[][] cardNamesOnTheTowers = new String[4][4];
 
     private Integer[] diceValues = new Integer[4];
 
@@ -49,6 +51,14 @@ public class MainBoard {
 
     public Integer[][] getCardsOnTheTowers() {
         return this.cardsOnTheTowers;
+    }
+    
+    public void setCardNamesOnTheTowers(String[][] cardNamesOnTheTowers) {
+        this.cardNamesOnTheTowers=cardNamesOnTheTowers;
+    }
+    
+    public String[][] getCardNamesOnTheTowers() {
+        return this.cardNamesOnTheTowers;
     }
 
     public void setDiceValues(Integer[] diceValues) {

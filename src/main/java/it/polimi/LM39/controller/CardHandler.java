@@ -1,12 +1,14 @@
 package it.polimi.LM39.controller;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 
-import it.polimi.LM39.exception.NotEnoughPoints;
-import it.polimi.LM39.exception.NotEnoughResources;
+import it.polimi.LM39.exception.CardNotFoundException;
+import it.polimi.LM39.exception.NotEnoughPointsException;
+import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.Effect;
 import it.polimi.LM39.model.NoEffect;
-import it.polimi.LM39.model.Player;
+import it.polimi.LM39.server.SocketPlayer;
 import it.polimi.LM39.model.PlayerResources;
 import it.polimi.LM39.model.characterpermanenteffect.*;
 import it.polimi.LM39.model.instanteffect.*;
@@ -16,7 +18,7 @@ import it.polimi.LM39.model.leaderobject.*;
 public class CardHandler {
 	
 	
-	public void doInstantEffect(Effect instantEffect,Player player)	
+ void doInstantEffect(Effect instantEffect,SocketPlayer player)	
 		{									
 			try{
 				Class[] cArg = new Class[2];
@@ -27,32 +29,40 @@ public class CardHandler {
 			}catch(Exception e){
 				e.printStackTrace();}
 			}
-	public void doInstantEffect(CoinForCard instantEffect,Player player){
+	public void doInstantEffect(CoinForCard instantEffect,SocketPlayer player) throws NotEnoughResourcesException{
 		//calculate the coin to receive by multiplying the possessed cards of a specific type by the coin quantity given by card
 		Integer coinQty=(player.personalBoard.getPossessions(instantEffect.cardType).size())*instantEffect.coinQty;
-		try {
-			player.resources.setCoins(coinQty);
-		} catch (NotEnoughResources e) {
-			e.printStackTrace();
-		}	
+			player.resources.setCoins(coinQty);	
 	}
 	
-	public void doInstantEffect(DoublePointsTransformation instantEffect,Player player){
+	public void doInstantEffect(DoublePointsTransformation instantEffect,SocketPlayer player){
 		//need to ask to the player what exchange he wants to do
 		//TODO
 	}
 	
-	public void doInstantEffect(DoubleResourcesTransformation instantEffect,Player player){
+	public void doInstantEffect(DoubleResourcesTransformation instantEffect,SocketPlayer player){
 		//need to ask to the player what exchange he wants to do
 		//TODO
 	}
 	
-	public void doInstantEffect(GetCard instantEffect,Player player){
-		//need to ask to the player what card he wants
-		//TODO
+	public void doInstantEffect(GetCard instantEffect,SocketPlayer player) throws IOException, CardNotFoundException{
+		// ask to the player what card he wants
+		player.sendToClient("What card do you want?");
+		//get the player response
+		String cardName = player.sendToController();
+		GameHandler gameHandler = new GameHandler();
+		//converting the card name to cardNumber
+		Integer cardNumber = gameHandler.cardNameToInteger(cardName,player.personalMainBoard.getCardNamesOnTheTowers(),player.personalMainBoard.getCardsOnTheTowers());
+		Integer[][] CardsOnTheTowers = player.personalMainBoard.getCardsOnTheTowers();
+		//looking for this card on the Towers
+		for(int i=0;i<4;i++)
+			for(int j=0;j<4;j++)
+				if(CardsOnTheTowers[i][j]==cardNumber)
+					//once found the card get it
+					gameHandler.getCard(cardNumber, player, j);
 	}
 	
-	public void doInstantEffect(GetCardAndPoints instantEffect,Player player){
+	public void doInstantEffect(GetCardAndPoints instantEffect,SocketPlayer player) throws IOException, NotEnoughPointsException, CardNotFoundException{
 		//making a GetCard effect and calling his method
 		GetCard effect = new GetCard();
 		effect.cardType=instantEffect.cardType;
@@ -64,7 +74,7 @@ public class CardHandler {
 		doInstantEffect(pointsEffect,player);
 	}
 	
-	public void doInstantEffect(GetCardAndResources instantEffect,Player player){
+	public void doInstantEffect(GetCardAndResources instantEffect,SocketPlayer player) throws IOException, NotEnoughResourcesException, CardNotFoundException{
 		//making a GetCard effect and calling his method
 		GetCard effect = new GetCard();
 		effect.cardType=instantEffect.cardType;
@@ -76,12 +86,12 @@ public class CardHandler {
 		doInstantEffect(resourcesEffect,player);
 	}
 	
-	public void doInstantEffect(GetDiscountedCard instantEffect,Player player){
+	public void doInstantEffect(GetDiscountedCard instantEffect,SocketPlayer player){
 		//TODO
 		//ask the player what card he wants then check the card cost and evaluate how many bonuses to give
 	}
 	
-	public void doInstantEffect(HarvestProductionAction instantEffect,Player player){
+	public void doInstantEffect(HarvestProductionAction instantEffect,SocketPlayer player){
 		PlayerBoardHandler playerBoardHandler = new PlayerBoardHandler();
 		//check if the effect is for harvest o production and call the carrect method
 		if(instantEffect.actionType.equals("Harvest"))
@@ -90,7 +100,7 @@ public class CardHandler {
 			playerBoardHandler.activateProduction(instantEffect.actionValue, player);
 	}
 	
-	public void doInstantEffect(HarvestProductionAndPoints instantEffect,Player player){
+	public void doInstantEffect(HarvestProductionAndPoints instantEffect,SocketPlayer player) throws NotEnoughPointsException{
 		//making an HarvestProductionAction effect and calling his method
 		HarvestProductionAction effect = new HarvestProductionAction();
 		effect.actionType = instantEffect.actionType;
@@ -102,41 +112,25 @@ public class CardHandler {
 		doInstantEffect(pointsEffect,player);
 	}
 	
-	public void doInstantEffect(Points instantEffect,Player player){
+	public void doInstantEffect(Points instantEffect,SocketPlayer player) throws NotEnoughPointsException{
 		GameHandler gameHandler = new GameHandler();
-		try {
-			gameHandler.addCardPoints(instantEffect.points, player);
-		} catch (NotEnoughPoints e) {
-			e.printStackTrace();
-		}
+		gameHandler.addCardPoints(instantEffect.points, player);
 	}
 	
-	public void doInstantEffect(PointsTransformation instantEffect,Player player){
+	public void doInstantEffect(PointsTransformation instantEffect,SocketPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
 		GameHandler gameHandler = new GameHandler();
 		//check if the player has enough resources
-		try {
-			gameHandler.subCardResources(instantEffect.requestedForTransformation, player);
-		} catch (NotEnoughResources e) {
-			e.printStackTrace();
-		}
+		gameHandler.subCardResources(instantEffect.requestedForTransformation, player);
 		//add points to the player
-		try {
-			gameHandler.addCardPoints(instantEffect.points, player);
-		} catch (NotEnoughPoints e) {
-			e.printStackTrace();
-		}
+		gameHandler.addCardPoints(instantEffect.points, player);
 	}
 
-	public void doInstantEffect(Resources instantEffect,Player player){
+	public void doInstantEffect(Resources instantEffect,SocketPlayer player) throws NotEnoughResourcesException{
 		GameHandler gameHandler = new GameHandler();
-		try {
-			gameHandler.addCardResources(instantEffect.resources, player);
-		} catch (NotEnoughResources e) {
-			e.printStackTrace();
-		}
+		gameHandler.addCardResources(instantEffect.resources, player);
 	}
 	
-	public void doInstantEffect(ResourcesAndPoints instantEffect,Player player){
+	public void doInstantEffect(ResourcesAndPoints instantEffect,SocketPlayer player) throws NotEnoughPointsException, NotEnoughResourcesException{
 		//making a Resources effect and calling his method
 		Resources resourcesEffect = new Resources();
 		resourcesEffect.resources = instantEffect.resources;
@@ -147,14 +141,10 @@ public class CardHandler {
 		doInstantEffect(pointsEffect,player);
 	}
 	
-	public void doInstantEffect(ResourcesAndPointsTransformation instantEffect,Player player){
+	public void doInstantEffect(ResourcesAndPointsTransformation instantEffect,SocketPlayer player) throws NotEnoughPointsException, NotEnoughResourcesException{
 		GameHandler gameHandler = new GameHandler();
 		//check if the player has enough points for the transformation
-		try {
-			gameHandler.subCardPoints(instantEffect.requestedForTransformation, player);
-		} catch (NotEnoughPoints e) {
-			e.printStackTrace();
-		}
+		gameHandler.subCardPoints(instantEffect.requestedForTransformation, player);
 		//making a ResourcesAndPoints effect and calling his method
 		ResourcesAndPoints effect = new ResourcesAndPoints();
 		effect.points = instantEffect.points;
@@ -162,32 +152,28 @@ public class CardHandler {
 		doInstantEffect(effect,player);
 	}
 	
-	public void doInstantEffect(ResourcesTransformation instantEffect,Player player){
+	public void doInstantEffect(ResourcesTransformation instantEffect,SocketPlayer player) throws NotEnoughResourcesException{
 		GameHandler gameHandler = new GameHandler();
 		//checking if the player has enough resources
-		try {
-			gameHandler.subCardResources(instantEffect.requestedForTransformation, player);
-		} catch (NotEnoughResources e) {
-			e.printStackTrace();
-		}
+		gameHandler.subCardResources(instantEffect.requestedForTransformation, player);
 		//making a Resources effect and calling his method
 		Resources resourcesEffect = new Resources();
 		resourcesEffect.resources = instantEffect.resources;
 		doInstantEffect(resourcesEffect,player);
 	}
 	
-	public void doInstantEffect(SetFamilyMember instantEffect,Player player){
+	public void doInstantEffect(SetFamilyMember instantEffect,SocketPlayer player){
 		//the color will be chosen by the user
 		//TODO
 	}
 	
-	public void doInstantEffect(VictoryForCard instantEffect,Player player){
+	public void doInstantEffect(VictoryForCard instantEffect,SocketPlayer player){
 		//calculate the victory points to receive by multiplying the possessed cards of a specific type by the victory quantity given by card
 		Integer victoryQty=(player.personalBoard.getPossessions(instantEffect.cardType).size())*instantEffect.victoryQty;
 			player.points.setVictory(victoryQty);
 	}
 	
-	public void doInstantEffect(VictoryForMilitary instantEffect,Player player){
+	public void doInstantEffect(VictoryForMilitary instantEffect,SocketPlayer player){
 		//calculate the victory points to receive by multiplying the possessed cards of a specific type by the victory quantity given by card
 		Integer victoryQty=(player.points.getMilitary())*instantEffect.victoryQty;
 		player.points.setVictory(victoryQty);
@@ -196,7 +182,7 @@ public class CardHandler {
 	
 	
 	
-	public boolean checkLeaderRequestedObject(LeaderRequestedObjects requestedObject,Player player)	
+	public boolean checkLeaderRequestedObject(LeaderRequestedObjects requestedObject,SocketPlayer player)	
 		{	
 			boolean flag = false;
 			try{
@@ -210,14 +196,14 @@ public class CardHandler {
 		return flag;
 	}
 	
-	public boolean checkLeaderRequestedObject(RequestedCard requestedObject,Player player){
+	public boolean checkLeaderRequestedObject(RequestedCard requestedObject,SocketPlayer player){
 		//check if the player has enough card of a type
 		if (player.personalBoard.getPossessions(requestedObject.cardType).size() >= requestedObject.cardQty)
 			return true;
 		return false;
 	}
 	
-	public boolean checkLeaderRequestedObject(RequestedCardPointsResources requestedObject,Player player){
+	public boolean checkLeaderRequestedObject(RequestedCardPointsResources requestedObject,SocketPlayer player){
 		//making a RequestedCard effect to call his specific method
 		RequestedCard requestedCard = new RequestedCard();
 		requestedCard.cardQty = requestedObject.cardQty;
@@ -235,7 +221,7 @@ public class CardHandler {
 		return (flag1 && flag2 && flag3);
 	}
 	
-	public boolean checkLeaderRequestedObject(RequestedPoints requestedObject,Player player){
+	public boolean checkLeaderRequestedObject(RequestedPoints requestedObject,SocketPlayer player){
 		if(player.points.getMilitary() >= requestedObject.points.military &&
 				player.points.getFaith() >= requestedObject.points.faith &&
 					player.points.getVictory() >= requestedObject.points.victory)
@@ -243,7 +229,7 @@ public class CardHandler {
 		return false;
 	}
 	
-	public boolean checkLeaderRequestedObject(RequestedResources requestedObject,Player player){
+	public boolean checkLeaderRequestedObject(RequestedResources requestedObject,SocketPlayer player){
 		if(player.resources.getWoods() >= requestedObject.resources.woods &&
 				player.resources.getStones() >= requestedObject.resources.stones &&
 				player.resources.getServants() >= requestedObject.resources.servants &&
@@ -252,7 +238,7 @@ public class CardHandler {
 		return false;
 	}
 	
-	public boolean checkLeaderRequestedObject(RequestedSameCard requestedObject,Player player){
+	public boolean checkLeaderRequestedObject(RequestedSameCard requestedObject,SocketPlayer player){
 		boolean flag=false;
 		RequestedCard requestedCard = new RequestedCard();
 		requestedCard.cardQty = requestedObject.cardQty;
@@ -267,7 +253,7 @@ public class CardHandler {
 		return false;
 	}
 		
-	public boolean checkLeaderRequestedObject(RequestedTwoCards requestedObject,Player player){
+	public boolean checkLeaderRequestedObject(RequestedTwoCards requestedObject,SocketPlayer player){
 		boolean flag1 = false;
 		boolean flag2 = false;
 		RequestedCard requestedCard = new RequestedCard();
