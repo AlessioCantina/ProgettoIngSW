@@ -3,10 +3,9 @@ package it.polimi.LM39.controller;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
-import it.polimi.LM39.exception.CardNotFoundException;
-import it.polimi.LM39.exception.NotEnoughPointsException;
-import it.polimi.LM39.exception.NotEnoughResourcesException;
+import it.polimi.LM39.exception.*;
 import it.polimi.LM39.model.Effect;
+import it.polimi.LM39.model.MainBoard;
 import it.polimi.LM39.model.NoEffect;
 import it.polimi.LM39.server.SocketPlayer;
 import it.polimi.LM39.model.PlayerResources;
@@ -14,6 +13,11 @@ import it.polimi.LM39.model.characterpermanenteffect.*;
 import it.polimi.LM39.model.instanteffect.*;
 import it.polimi.LM39.model.leaderpermanenteffect.*;
 import it.polimi.LM39.model.leaderobject.*;
+import it.polimi.LM39.model.ActionBonus;
+import it.polimi.LM39.model.Building;
+import it.polimi.LM39.model.CardResources;
+import it.polimi.LM39.model.Venture;
+import it.polimi.LM39.model.Character;
 
 public class CardHandler {
 	
@@ -29,20 +33,53 @@ public class CardHandler {
 			}catch(Exception e){
 				e.printStackTrace();}
 			}
-	public void doInstantEffect(CoinForCard instantEffect,SocketPlayer player) throws NotEnoughResourcesException{
+	
+ 	public void doInstantEffect(CoinForCard instantEffect,SocketPlayer player) throws NotEnoughResourcesException{
 		//calculate the coin to receive by multiplying the possessed cards of a specific type by the coin quantity given by card
 		Integer coinQty=(player.personalBoard.getPossessions(instantEffect.cardType).size())*instantEffect.coinQty;
 			player.resources.setCoins(coinQty);	
 	}
 	
-	public void doInstantEffect(DoublePointsTransformation instantEffect,SocketPlayer player){
-		//need to ask to the player what exchange he wants to do
-		//TODO
+	public void doInstantEffect(DoublePointsTransformation instantEffect,SocketPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidInputException{
+		//ask to the player what exchange he wants to do
+		player.sendToClient("What exchange do you want to do? 1 or 2");
+		//get the player response
+		Integer choice = Integer.parseInt(player.sendToController());
+		GameHandler gameHandler = new GameHandler();
+		if (choice==1){
+			//subtract the resources from the player
+			gameHandler.subCardResources(instantEffect.requestedForTransformation, player);
+			//add points to the player
+			gameHandler.addCardPoints(instantEffect.points, player);}
+		else if(choice==2){
+			//subtract the resources from the player
+			gameHandler.subCardResources(instantEffect.requestedForTransformation2, player);
+			//add points to the player
+			gameHandler.addCardPoints(instantEffect.points2, player);}
+		else
+			throw new InvalidInputException("The exchange must be choosen between 1 and 2");
+			
+		
 	}
 	
-	public void doInstantEffect(DoubleResourcesTransformation instantEffect,SocketPlayer player){
-		//need to ask to the player what exchange he wants to do
-		//TODO
+	public void doInstantEffect(DoubleResourcesTransformation instantEffect,SocketPlayer player) throws IOException, NotEnoughResourcesException, InvalidInputException{
+		//ask to the player what exchange he wants to do
+				player.sendToClient("What exchange do you want to do? 1 or 2");
+				//get the player response
+				Integer choice = Integer.parseInt(player.sendToController());
+				GameHandler gameHandler = new GameHandler();
+				if (choice==1){
+					//subtract the resources from the player
+					gameHandler.subCardResources(instantEffect.requestedForTransformation, player);
+					//add resources to the player
+					gameHandler.addCardResources(instantEffect.resources, player);}
+				else if(choice==2){
+					//subtract the resources from the player
+					gameHandler.subCardResources(instantEffect.requestedForTransformation2, player);
+					//add resources to the player
+					gameHandler.addCardResources(instantEffect.resources2, player);}
+				else
+					throw new InvalidInputException("The exchange must be choosen between 1 and 2");
 	}
 	
 	public void doInstantEffect(GetCard instantEffect,SocketPlayer player) throws IOException, CardNotFoundException{
@@ -57,9 +94,12 @@ public class CardHandler {
 		//looking for this card on the Towers
 		for(int i=0;i<4;i++)
 			for(int j=0;j<4;j++)
-				if(CardsOnTheTowers[i][j]==cardNumber)
+				if(CardsOnTheTowers[i][j]==cardNumber){
 					//once found the card get it
 					gameHandler.getCard(cardNumber, player, j);
+					//avoid useless cicles
+					return;
+					}
 	}
 	
 	public void doInstantEffect(GetCardAndPoints instantEffect,SocketPlayer player) throws IOException, NotEnoughPointsException, CardNotFoundException{
@@ -86,9 +126,74 @@ public class CardHandler {
 		doInstantEffect(resourcesEffect,player);
 	}
 	
-	public void doInstantEffect(GetDiscountedCard instantEffect,SocketPlayer player){
-		//TODO
-		//ask the player what card he wants then check the card cost and evaluate how many bonuses to give
+	public void doInstantEffect(GetDiscountedCard instantEffect,SocketPlayer player) throws IOException, CardNotFoundException, NotEnoughResourcesException{
+		// ask to the player what card he wants
+		player.sendToClient("What card do you want?");
+		String cardName = player.sendToController();
+		GameHandler gameHandler = new GameHandler();
+		//converting the card name to cardNumber
+		Integer cardNumber = gameHandler.cardNameToInteger(cardName,player.personalMainBoard.getCardNamesOnTheTowers(),player.personalMainBoard.getCardsOnTheTowers());
+		Integer[][] CardsOnTheTowers = player.personalMainBoard.getCardsOnTheTowers();
+		//looking for this card on the Towers
+		for(int i=0;i<4;i++)
+			for(int j=0;j<4;j++)
+				if(CardsOnTheTowers[i][j]==cardNumber){
+					//if the card is a Territory the discount get lost
+					if(j==1)
+						gameHandler.getCard(cardNumber, player, j);
+					//if the card is Character the discount is only on coins
+					else if(j==2){
+							Character character = MainBoard.characterMap.get(cardNumber);
+							Integer costCoins = character.costCoins;
+							if(costCoins >= instantEffect.cardDiscount.coins)
+								player.resources.setCoins(instantEffect.cardDiscount.coins);
+							else
+								player.resources.setCoins(costCoins);
+							gameHandler.getCard(cardNumber, player, j);
+						}
+					else {
+						CardResources costResources = new CardResources();
+						//if the card is a Building
+						if(j==3){
+							Building building = MainBoard.buildingMap.get(cardNumber);
+							costResources = building.costResources;
+						}
+						//if the card is a Venture
+						else if(j==4){
+							Venture venture = MainBoard.ventureMap.get(cardNumber);
+							costResources = venture.costResources;
+					    }
+						CardResources bonusResources = new CardResources();
+						//check the card costs and confront it with the bonus to know how many resources to give to the player as discount
+						if(costResources.coins >= instantEffect.cardDiscount.coins)
+							bonusResources.coins=costResources.coins;
+						else
+							bonusResources.coins=instantEffect.cardDiscount.coins;
+						
+						if(costResources.stones >= instantEffect.cardDiscount.stones)
+							bonusResources.stones=costResources.stones;
+						else
+							bonusResources.stones=instantEffect.cardDiscount.stones;
+						
+						if(costResources.woods >= instantEffect.cardDiscount.woods)
+							bonusResources.woods=costResources.woods;
+						else
+							bonusResources.woods=instantEffect.cardDiscount.woods;
+						
+						if(costResources.servants >= instantEffect.cardDiscount.servants)
+							bonusResources.servants=costResources.servants;
+						else
+							bonusResources.servants=instantEffect.cardDiscount.servants;
+						bonusResources.council = 0;
+						//give the discount to the player
+						gameHandler.addCardResources(bonusResources, player);
+						//if the player failed to get the card for lack of resources or not enough space on the PersonalBoard, remove the bonus given
+						if(!gameHandler.getCard(cardNumber, player, j))
+							gameHandler.subCardResources(bonusResources, player);
+					}
+					//avoid useless cicles
+					return;
+				}
 	}
 	
 	public void doInstantEffect(HarvestProductionAction instantEffect,SocketPlayer player){
@@ -162,9 +267,23 @@ public class CardHandler {
 		doInstantEffect(resourcesEffect,player);
 	}
 	
-	public void doInstantEffect(SetFamilyMember instantEffect,SocketPlayer player){
+	public void doInstantEffect(SetFamilyMember instantEffect,SocketPlayer player) throws IOException, InvalidActionTypeException{
 		//the color will be chosen by the user
-		//TODO
+		player.sendToClient("What FamilyMemebr color do you want to set the value?");
+		//get the FamilyMember color from the player
+		String color = player.sendToController();
+		//make a copy of diceValues then set the desired FamilyMember to the value of the bonus
+		Integer[] diceValues = player.personalMainBoard.getDiceValues();
+		switch(color){
+	    	case "black": diceValues[0] = instantEffect.familyMemberValue;
+	    		break;
+	    	case "white": diceValues[1] = instantEffect.familyMemberValue;
+	    		break;
+	    	case "orange": diceValues[2] = instantEffect.familyMemberValue;
+	    		break;
+	    	default: throw new InvalidActionTypeException("Invalid FamilyMember color!");
+	}
+		player.personalMainBoard.setDiceValues(diceValues);
 	}
 	
 	public void doInstantEffect(VictoryForCard instantEffect,SocketPlayer player){
@@ -270,6 +389,57 @@ public class CardHandler {
 	}
 		
 		
+	
+	void activateCharacter(Effect permanentEffect,SocketPlayer player)	
+	{									
+		try{
+			Class[] cArg = new Class[2];
+	        cArg[0] = permanentEffect.getClass();
+	        cArg[1] = player.getClass();
+			Method lMethod = (this.getClass().getMethod("activateCharacter",cArg));
+			lMethod.invoke(permanentEffect,player);
+		}catch(Exception e){
+			e.printStackTrace();}
+		}
+	
+	public void activateCharacter(CardActionDiscount permanentEffect, SocketPlayer player){
+		//reducing the towersValue by the discount the effect gives
+		Integer[][] towersValue = player.personalMainBoard.getTowersValue();
+		int i = 0;
+		switch(permanentEffect.cardType){
+	    	case "Territory": i=0;
+	    		break;
+	    	case "Character": i=1;;
+	    		break;
+	    	case "Building": i=2;
+	    		break;
+	    	case "Venture": i=3;
+				break;
+		}
+		for(int j=0;j<4;j++)
+			towersValue[j][i]-=permanentEffect.discount;
+	}
+	
+	public void activateCharacter(CardActionResourcesDiscount permanentEffect, SocketPlayer player){
+		CardActionDiscount effect = new CardActionDiscount();
+		effect.cardType = permanentEffect.cardType;
+		effect.discount = permanentEffect.discount;
+		activateCharacter(effect,player);
+		//need to check when a player get a card to set the discount like done for the GetDiscountedCard effect
+		//TODO (observer needed)
+	}
+	
+	public void activateCharacter(HarvestProductionBoost permanentEffect, SocketPlayer player){
+		//need to check when a player try to do a Production or Harvest and give him the bonus
+		//possible also modifying the personalMainBoard
+		//TODO (observer needed)
+	}
+	
+	public void activateCharacter(NoBoardBonuses permanentEffect, SocketPlayer player){
+		//create an empty towersBonuses and set it to the playerPersonalBoard
+		ActionBonus[][] towersBonuses = new ActionBonus[4][4];
+		player.personalMainBoard.setTowersBonuses(towersBonuses);
+	}
 		
 	
 		

@@ -13,14 +13,16 @@ public class MainBoard {
     private Integer[] diceValues = new Integer[4];
 
     private Integer[] excommunicationsOnTheBoard = new Integer[3];
-
+    
+    private Integer[][] towersValue = new Integer[4][4];
+    
     private ArrayList<Integer> playedLeaderCard = new ArrayList<Integer>();
 
     private FamilyMembersLocation familyMembersLocation;
 
     private Rankings rankings;
 
-    public ActionBonus[][] towerBonuses = new ActionBonus[4][4]; //the bonuses are loaded from file
+    private ActionBonus[][] towersBonuses = new ActionBonus[4][4]; //the bonuses are loaded from file
     
     public ActionBonus[] faithBonuses = new ActionBonus[16]; //the bonuses are loaded from file
     
@@ -44,7 +46,23 @@ public class MainBoard {
 
     public static HashMap<Integer,Excommunication> excommunicationMap = new HashMap<Integer,Excommunication>();
 
+   
+    public void setTowersBonuses(ActionBonus[][] towersBonuses) {
+        this.towersBonuses=towersBonuses;
+    }
 
+    public ActionBonus[][] getTowersBonuses() {
+        return this.towersBonuses;
+    }
+    
+    public void setTowersValue(Integer[][] towersValue) {
+        this.towersValue=towersValue;
+    }
+
+    public Integer[][] getTowersValue() {
+        return this.towersValue;
+    }
+    
     public void setCardsOnTheTowers(Integer[][] cardsOnTheTowers) {
         this.cardsOnTheTowers=cardsOnTheTowers;
     }

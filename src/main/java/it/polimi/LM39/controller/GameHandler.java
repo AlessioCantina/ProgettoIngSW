@@ -229,7 +229,7 @@ public class GameHandler {
         int p=i-1;
         int k=j;
         //to store i and j as the coordinates of the position interested, the if check if the player can get the card with a specific family member
-        if(familyMembersOnTheTowers[p][k] == null && ((diceValues[familyMemberColortoDiceValue(familyMember.color)]+familyMember.getServants())>=(((i+1)*2)-1))){
+        if(familyMembersOnTheTowers[p][k] == null && ((diceValues[familyMemberColortoDiceValue(familyMember.color)]+familyMember.getServants()) >= (mainBoard.getTowersValue())[p][k])){
         	//if the place is free and the family member has an high enough value, ((i+1)*2)-1 is to convert the value i of the matrix to the value of the floor in dice
         	for(i=0;i<4;i++){
         		if((familyMembersOnTheTowers[i][k].playerColor).equals(familyMember.playerColor)){
@@ -252,7 +252,7 @@ public class GameHandler {
 					} catch (NotEnoughResourcesException e) {
 						e.printStackTrace();
 					}
-	        		setTowerBonus(mainBoard.towerBonuses[p][k],player);
+	        		setTowerBonus((mainBoard.getTowersBonuses())[p][k],player);
 	        		}
         		else
         			System.out.println("You don't have the necessary resources!");
@@ -264,7 +264,7 @@ public class GameHandler {
         			//if the tower is free
         			(familyMembersOnTheTowers[i][k].playerColor)=(familyMember.playerColor);
         			(familyMembersOnTheTowers[i][k].color)=(familyMember.color);
-	        		setTowerBonus(mainBoard.towerBonuses[p][k],player);
+	        		setTowerBonus((mainBoard.getTowersBonuses())[p][k],player);
         		}
         		else{
         			//if the tower is occupied
@@ -276,7 +276,7 @@ public class GameHandler {
 						} catch (NotEnoughResourcesException e) {
 							e.printStackTrace();
 						}
-    	        		setTowerBonus(mainBoard.towerBonuses[p][k],player);
+    	        		setTowerBonus((mainBoard.getTowersBonuses())[p][k],player);
         			}
         			else
             			System.out.println("You don't have the necessary resources!");
@@ -465,7 +465,15 @@ public class GameHandler {
     		}
 
     public void inizializeTheGame() {
-        try {
+    	//inizialize the value of an action space on the Towers
+    	Integer [] towerValue = {1,3,5,7};
+    	Integer[][] towersValue = new Integer[4][4];
+    	for(int i=0;i<4;i++)
+    		for(int j=0;j<4;j++)
+    			towersValue[j][i]=towerValue[j];
+    	mainBoard.setTowersValue(towersValue);
+        //read the files
+    	try {
 			gsonReader.fileToCard();
 		} catch (IOException e) {
 			e.printStackTrace();

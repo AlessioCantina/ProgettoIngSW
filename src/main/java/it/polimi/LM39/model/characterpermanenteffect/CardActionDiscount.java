@@ -15,6 +15,8 @@ public class CardActionDiscount extends CharacterPermanentEffect {
     /**
      * 
      */
+    public String cardType;
+    
     public Integer discount;
 
 }
