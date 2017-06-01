@@ -18,9 +18,9 @@ public class MainBoard {
     
     private ArrayList<Integer> playedLeaderCard = new ArrayList<Integer>();
 
-    private FamilyMembersLocation familyMembersLocation;
+    public FamilyMembersLocation familyMembersLocation;
 
-    private Rankings rankings;
+    public Rankings rankings;
 
     private ActionBonus[][] towersBonuses = new ActionBonus[4][4]; //the bonuses are loaded from file
     

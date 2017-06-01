@@ -37,11 +37,9 @@ public class GameHandler {
 
     public ExcommunicationHandler excommunicationHandler = new ExcommunicationHandler();
 
-    public PlayerBoardHandler playerBoardHandler = new PlayerBoardHandler();
+    public PlayerBoardHandler playerBoardHandler = new PlayerBoardHandler(this);
 
     public CouncilHandler councilHandler = new CouncilHandler();
-    
-    public CardHandler cardHandler = new CardHandler();
     
     public GsonReader gsonReader = new GsonReader();
 
@@ -78,14 +76,14 @@ public class GameHandler {
     		    		case 3: Venture venture=MainBoard.ventureMap.get(cardNumber);
     		    			cardGotten=getVentureCard(venture,player,cardNumber);
     		    			break;
-    		    		default: System.out.println("This tower doesn't exist!");
+    		    		default: player.sendToClient("This tower doesn't exist!");
     		    			break;
     	    		}
     	    		return cardGotten;
     }
     
     
-    public boolean getTerritoryCard(Territory territory,SocketPlayer player,Integer cardNumber){
+    public boolean getTerritoryCard(Territory territory,SocketPlayer player,Integer cardNumber) throws IOException{
     	//instantResources
     	territoryHandler.doInstantEffect(territory.instantBonuses,player);
     	ArrayList<Integer> possessedTerritories = player.personalBoard.getPossessions("Territory");
@@ -119,14 +117,14 @@ public class GameHandler {
     			return true;
     			}
     		else
-        		System.out.println("You don't have enough military points");
+        		player.sendToClient("You don't have enough military points");
     	}
     	else 
-    		System.out.println("You can't have more than 6 territories! ");
+    		player.sendToClient("You can't have more than 6 territories! ");
     	return false;
     }
 
-    public boolean getCharacterCard(Character character,SocketPlayer player,Integer cardNumber){
+    public boolean getCharacterCard(Character character,SocketPlayer player,Integer cardNumber) throws IOException{
     	ArrayList<Integer> possessedCharacters = player.personalBoard.getPossessions("Character");
 		if (possessedCharacters.size()<6){
 	    		try {
@@ -142,11 +140,11 @@ public class GameHandler {
     			return true;
     	}
 		else
-			System.out.println("You can't have more than 6 characters!");
+			player.sendToClient("You can't have more than 6 characters!");
     	return false;
     }
 
-    public boolean getBuildingCard(Building building,SocketPlayer player,Integer cardNumber){
+    public boolean getBuildingCard(Building building,SocketPlayer player,Integer cardNumber) throws IOException{
     	ArrayList<Integer> possessedBuildings = player.personalBoard.getPossessions("Building");
 		if (possessedBuildings.size()<6){
 	    		try {
@@ -162,7 +160,7 @@ public class GameHandler {
 	    	
     	}
 		else
-			System.out.println("You can't have more than 6 buildings!");
+			player.sendToClient("You can't have more than 6 buildings!");
     	return false;
     }
     
@@ -211,7 +209,7 @@ public class GameHandler {
     	return false;
     }
     
-    public Integer familyMemberColortoDiceValue(String familyMemberColor){
+    public Integer familyMemberColorToDiceValue(String familyMemberColor,SocketPlayer player) throws IOException{
     	//The order followed is the one on the Game Board for the dices positions
     	Integer value = new Integer(-1);
     	Integer[] diceValues = mainBoard.getDiceValues();
@@ -224,13 +222,13 @@ public class GameHandler {
 	    		break;
 	    	case "uncolored": value = diceValues[3];
 	    		break;
-	    	default: System.out.println("Invalid familyMemberColor");
+	    	default: player.sendToClient("Invalid familyMemberColor");
 	    		break;
     	}
     	return value;
     }
     
-    public void addFamilyMemberToTheTower(FamilyMember familyMember , Integer cardNumber, SocketPlayer player) throws IOException {
+    public boolean addFamilyMemberToTheTower(FamilyMember familyMember , Integer cardNumber, SocketPlayer player) throws IOException {
         int i,j;
         boolean coloredFamilyMemberOnTheTower = false;
         boolean uncoloredFamilyMemberOnTheTower = false;
@@ -244,7 +242,7 @@ public class GameHandler {
         int p=i-1;
         int k=j;
         //to store i and j as the coordinates of the position interested, the if check if the player can get the card with a specific family member
-        if(familyMembersOnTheTowers[p][k] == null && ((diceValues[familyMemberColortoDiceValue(familyMember.color)]+familyMember.getServants()) >= (mainBoard.getTowersValue())[p][k])){
+        if(familyMembersOnTheTowers[p][k] == null && ((diceValues[familyMemberColorToDiceValue(familyMember.color,player)]+familyMember.getServants()) >= (mainBoard.getTowersValue())[p][k])){
         	//if the place is free and the family member has an high enough value, ((i+1)*2)-1 is to convert the value i of the matrix to the value of the floor in dice
         	for(i=0;i<4;i++){
         		if((familyMembersOnTheTowers[i][k].playerColor).equals(familyMember.playerColor)){
@@ -266,11 +264,13 @@ public class GameHandler {
 						player.resources.setCoins(-3);
 					} catch (NotEnoughResourcesException e) {
 						e.printStackTrace();
+						return false;
 					}
 	        		setTowerBonus((mainBoard.getTowersBonuses())[p][k],player);
+	        		return true;
 	        		}
         		else
-        			System.out.println("You don't have the necessary resources!");
+        			player.sendToClient("You don't have the necessary resources!");
 	        	}
         	if (uncoloredFamilyMemberOnTheTower==false && coloredFamilyMemberOnTheTower==false){
         		//if there is none of my family members
@@ -280,6 +280,7 @@ public class GameHandler {
         			(familyMembersOnTheTowers[i][k].playerColor)=(familyMember.playerColor);
         			(familyMembersOnTheTowers[i][k].color)=(familyMember.color);
 	        		setTowerBonus((mainBoard.getTowersBonuses())[p][k],player);
+	        		return true;
         		}
         		else{
         			//if the tower is occupied
@@ -290,17 +291,23 @@ public class GameHandler {
 							player.resources.setCoins(-3);
 						} catch (NotEnoughResourcesException e) {
 							e.printStackTrace();
+							return false;
 						}
     	        		setTowerBonus((mainBoard.getTowersBonuses())[p][k],player);
+    	        		return true;
         			}
-        			else
-            			System.out.println("You don't have the necessary resources!");
+        			else{
+        				player.sendToClient("You don't have the necessary resources!");
+        				return false;
+        				}
         		}
         	}
         }
-        else	
-        	System.out.println("This position is occupied or your family mmeber hasn't a value high enough!");	
-        
+        else{
+        	player.sendToClient("This position is occupied or your family mmeber hasn't a value high enough!");	
+        	return false;
+        }
+       return false; 
     }
     
     public void setTowerBonus(ActionBonus towerBonus,SocketPlayer player){
@@ -367,7 +374,7 @@ public class GameHandler {
     	player.points=playerPoints;
     }
 
-    public void addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, SocketPlayer player) {
+    public void addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, SocketPlayer player) throws IOException {
     	FamilyMember[] familyMembersAtTheMarket = player.personalMainBoard.getFamilyMembersLocation().getFamilyMembersOnTheMarket(); // we use the player Personal MainBaord
         if(familyMembersAtTheMarket[position] == null && position<=marketSize){
         	(familyMembersAtTheMarket[position].color) = (familyMember.color);
@@ -394,16 +401,16 @@ public class GameHandler {
 	    			break;
 	        	case 4: councilHandler.getCouncil(1,player);
 	        		break;
-	        	default: System.out.println("Invalid position! the position must be between 1 and 4");
+	        	default: player.sendToClient("Invalid position! the position must be between 1 and 4");
 	        		break;
         	}
         }
         else {
-        	System.out.println("This place is occupied or not usable if two player game");
+        	player.sendToClient("This place is occupied or not usable if two player game");
         }
     }
     
-    public void addFamilyMemberToProductionOrHarvest(FamilyMember familyMember, FamilyMember[] familyMembersAtProductionOrHarvest, String actionType,SocketPlayer player) {
+    public void addFamilyMemberToProductionOrHarvest(FamilyMember familyMember, FamilyMember[] familyMembersAtProductionOrHarvest, String actionType,SocketPlayer player) throws IOException {
     	int i;
     	boolean doAction=false;
     	//to know if the action Harvest or Production can be done
@@ -432,7 +439,7 @@ public class GameHandler {
     				}
     			else {
     				//this happens only in matches of 2 players
-    				System.out.println("The production area is full!");
+    				player.sendToClient("The production area is full!");
     			}
     		}
     		
@@ -449,7 +456,7 @@ public class GameHandler {
     			}
     			if(j==0)
     				//if there are already two of my family members
-    				System.out.println("You can't place another family member");
+    				player.sendToClient("You can't place another family member");
     			for(i=0;familyMembersAtProductionOrHarvest[i]!=null && i<harvestAndProductionSize;i++);
     			//move i to the first free slot
     			if(j==-1){
@@ -459,7 +466,7 @@ public class GameHandler {
     		    		familyMembersAtProductionOrHarvest[i].playerColor=familyMember.playerColor;
 		    			doAction=true;}
     				else
-    					System.out.println("You can place just one uncolored family member");
+    					player.sendToClient("You can place just one uncolored family member");
     				}
     			else {
     				//if there is an uncolored family member
@@ -470,11 +477,11 @@ public class GameHandler {
     		}
     		if (doAction==true){
     			if (actionType=="Production")
-	    			playerBoardHandler.activateHarvest(player.personalMainBoard.getDiceValues()[familyMemberColortoDiceValue(familyMember.color)]-penalty,player); // we use the player Personal MainBaord
+	    			playerBoardHandler.activateHarvest(player.personalMainBoard.getDiceValues()[familyMemberColorToDiceValue(familyMember.color,player)]-penalty,player); // we use the player Personal MainBaord
 	    		if(actionType=="Harvest")
-	    			playerBoardHandler.activateHarvest(player.personalMainBoard.getDiceValues()[familyMemberColortoDiceValue(familyMember.color)]-penalty,player); // we use the player Personal MainBaord
+	    			playerBoardHandler.activateHarvest(player.personalMainBoard.getDiceValues()[familyMemberColorToDiceValue(familyMember.color,player)]-penalty,player); // we use the player Personal MainBaord
 	    		else
-	    			System.out.println("Invalid action it must be Production or Harvest");
+	    			player.sendToClient("Invalid action it must be Production or Harvest");
     		}
     			
     		}
@@ -557,7 +564,7 @@ public class GameHandler {
     	
     }
    
-    public String[][] cardNameOnTheMainBoard(){
+    public String[][] cardNameOnTheMainBoard(SocketPlayer player) throws IOException{
     	Integer[][] cardsOnTheTowers = mainBoard.getCardsOnTheTowers();
     	String[][] cardNamesOnTheTowers = new String[4][4]; 
     	for(int i=0;i<4;i++){
@@ -571,7 +578,7 @@ public class GameHandler {
 	    			break;
 	        	case 3: cardNamesOnTheTowers[j][i] = MainBoard.ventureMap.get(cardsOnTheTowers[j][i]).cardName;
 	        		break;
-	        	default: System.out.println("Invalid position it has to be between 0 and 3");
+	        	default: player.sendToClient("Invalid position it has to be between 0 and 3");
 	        		break;
             	}
             	mainBoard.setCardNamesOnTheTowers(cardNamesOnTheTowers);
@@ -596,4 +603,17 @@ public class GameHandler {
         return null; //prevent error
     }
 
+    //ask to the player if he wants to add servants to the action
+    public Integer addServants(SocketPlayer player) throws IOException, NotEnoughResourcesException{
+    	player.sendToClient("Do you want to add servants? yes or no");
+    	String response = player.sendToController();
+    	if(response.equals("yes")){
+    		player.sendToClient("How many?");
+    		Integer qty = Integer.parseInt(player.sendToController());
+    		player.resources.setServants(-qty);
+    		return qty;
+    	}
+    	else
+    		return 0;
+    }
 }
