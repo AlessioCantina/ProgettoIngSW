@@ -63,7 +63,7 @@ public class GameHandler {
     	mainBoard.setDiceValues(diceValues);    
     }
 
-    public boolean getCard(Integer cardNumber,SocketPlayer player, Integer k) {
+    public boolean getCard(Integer cardNumber,SocketPlayer player, Integer k) throws IOException {
     	boolean cardGotten=false;
     	    		switch(k){
     		    		case 0: Territory territory=MainBoard.territoryMap.get(cardNumber);
@@ -166,33 +166,48 @@ public class GameHandler {
     	return false;
     }
     
-    public boolean getVentureCard(Venture venture,SocketPlayer player,Integer cardNumber){
+    public boolean getVentureCard(Venture venture,SocketPlayer player,Integer cardNumber) throws IOException{
     	ArrayList<Integer> possessedVentures = player.personalBoard.getPossessions("Venture");
+    	Integer choice = new Integer(0);
 		if (possessedVentures.size()<6){
-	    	if(player.points.getMilitary() >= venture.neededMilitary){
-	    		try {
-					subCardResources(venture.costResources,player);
-				} catch (NotEnoughResourcesException e1) {
-					e1.printStackTrace();
-					return false;
-				}
-	    		try {
-					player.points.setMilitary(-venture.costMilitary);
-				} catch (NotEnoughPointsException e) {
-					e.printStackTrace();
-					return false;
-				}
-	    		possessedVentures.add(cardNumber);
-	    		player.personalBoard.setPossessions(possessedVentures,"Venture");
-	    		player.points.setFinalVictory(venture.finalVictory);
-	    		ventureHandler.doInstantEffect(venture.instant, player);
-	    		return true;
+	    	if(venture.costMilitary!=0 && (venture.costResources.coins!=0 || venture.costResources.woods!=0 || venture.costResources.stones!=0 || venture.costResources.servants!=0)) {
+	    		//ask to the player what payment he wants to do
+	    		player.sendToClient("What payment do you want to do? 1 or 2");
+	    		//get the player response
+	    		choice = Integer.parseInt(player.sendToController());
 	    	}
-    		else
-    			System.out.println("You don't have enough Military Points!");
-    	}
+	    	if(venture.costMilitary==0 || choice == 2){
+	    		try {
+	    			subCardResources(venture.costResources,player);
+	    		} catch (NotEnoughResourcesException e1) {
+	    			e1.printStackTrace();
+	    			player.sendToClient("You don't have enough resources!");
+	    			return false;
+				}
+	    	}
+	    
+	    	else if((venture.costMilitary!=0 || choice ==1) && (player.points.getMilitary() >= venture.neededMilitary)){
+	    		try {
+	    			player.points.setMilitary(-venture.costMilitary);
+	    		} catch (NotEnoughPointsException e) {
+	    			e.printStackTrace();
+	    			player.sendToClient("You don't have enough military points");
+	    			return false;
+	    		}
+	    	}
+	    	else{
+	    		player.sendToClient("You don't have enough military points");
+    			return false;
+    			}
+	    
+	    	possessedVentures.add(cardNumber);
+	    	player.personalBoard.setPossessions(possessedVentures,"Venture");
+	    	player.points.setFinalVictory(venture.finalVictory);
+	    	ventureHandler.doInstantEffect(venture.instant, player);
+	    	return true;
+	   }
 		else
-			System.out.println("You can't have more than 6 ventures!");
+			player.sendToClient("You can't have more than 6 ventures!");
     	return false;
     }
     
@@ -215,7 +230,7 @@ public class GameHandler {
     	return value;
     }
     
-    public void addFamilyMemberToTheTower(FamilyMember familyMember , Integer cardNumber, SocketPlayer player) {
+    public void addFamilyMemberToTheTower(FamilyMember familyMember , Integer cardNumber, SocketPlayer player) throws IOException {
         int i,j;
         boolean coloredFamilyMemberOnTheTower = false;
         boolean uncoloredFamilyMemberOnTheTower = false;
