@@ -5,7 +5,6 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
@@ -15,52 +14,65 @@ import java.net.Socket;
 public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    private Socket socket;
 	    private ServerInterface serverInterface;
-	    private ObjectInputStream objInput;		//change this to something that manipulates string only
-	    private ObjectOutputStream stringOutput;
-	    private String message;
+	    private ObjectInputStream objInput;			//player's interface and I/O streams
+	    private ObjectOutputStream objOutput;
+	    private String message;						//information which will be send to the client
 	    private MainBoard mainBoard;
+	    private String clientAction;
+	    /*
+	     * the constructor initialize the streams and start the thread
+	     */
 	    public SocketPlayer(ServerInterface serverInterface, Socket socket) throws IOException {
 	          this.socket = socket;
 	          this.serverInterface = serverInterface;
-	          this.stringOutput = new ObjectOutputStream(this.socket.getOutputStream()); 
-	          this.stringOutput.flush();
+	          this.objOutput = new ObjectOutputStream(this.socket.getOutputStream()); 
+	          this.objOutput.flush();	//needed to avoid deadlock
 	          this.objInput = new ObjectInputStream(new BufferedInputStream(this.socket.getInputStream()));
-	          this.run();
 	    }
-	    private void setMessages(String message,MainBoard mainBoard){
+	    /*
+	     * used from the controller to set what we want to send
+	     */
+	    public void setMessage(String message,MainBoard mainBoard){
 	    	this.message = message;
 	    	this.mainBoard = mainBoard;
 	    }
+	    public void setMessage(String message){
+	    	this.message = message;
+	    }
+	    private Boolean messageState(){
+	    	if(this.message != null)
+	    		return true;
+	    	else
+	    		return false;
+	    }
+	    /*
+	     * infinite loop which listen the client from input and send the available information to it
+	     * it checks if we have something to send to the client and waits for the answer
+	     */
 	    public void run() {
+	        this.serverInterface.joinRoom(this);
 	        try {
+	    		//TODO ask if it is possible to suppress sonarlint bug for infinite loops
 	        	while(true){
-	        		System.out.println("SocketReader up");
-	        		String clientAction = objInput.readUTF();
-	        		System.out.println(clientAction);
-	        		//sendToController(clientAction);
+	        		if(this.messageState()){
+	        			objOutput.writeObject(this.mainBoard);
+	        			objOutput.writeUTF(this.message);
+	        		}
+	        		if(objInput.available() > 0){
+	        			clientAction = objInput.readUTF();
+	        			//TODO handle the clientaction
+	        		}
 	        	}
 	        }catch (Exception e) {
 	            return;
 	        }
-
 	    }
-	    public void sendToClient(String message) throws IOException{
-	    	stringOutput.writeObject(this.personalBoard);
-	    	stringOutput.writeUTF(message);
-	    	stringOutput.flush();
-	    }
-	    public void sendToClient(MainBoard mainBoard,String message) throws IOException{
-	    	stringOutput.writeObject(this.personalBoard);
-	    	stringOutput.writeObject(mainBoard);
-	    	stringOutput.writeUTF(message);
-	    	stringOutput.flush();
-	    }
-	    public String sendToController(){
-	    	//TODO
-	    	String clientAction = new String();
-	    	return clientAction;
-	    }
-	    public void receiveFromController(String message, MainBoard mainBoard){
-	    	setMessages(message,mainBoard);
+	    /*
+	     * this method return the client action to the game controller
+	     */
+	    public String sendMessage(){
+	    	while(this.clientAction == null)
+	    		continue;
+	    	return this.clientAction;
 	    }
 }
