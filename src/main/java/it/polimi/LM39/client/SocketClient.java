@@ -44,7 +44,7 @@ public class SocketClient extends AbstractClient {
     	public void run() {		//output thread
     		System.out.println("started sockethandler");
     		try {
-    			while (true){		
+    			while (true){	
     				scanner = new Scanner(System.in);
     				System.out.println("scanner ready");
     				//Object input = socketIn.readObject();

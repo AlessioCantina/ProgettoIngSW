@@ -1,9 +1,7 @@
 package it.polimi.LM39.controller;
 import it.polimi.LM39.model.characterpermanenteffect.*;
 import it.polimi.LM39.model.instanteffect.*;
-import it.polimi.LM39.model.leaderobject.*;
-import it.polimi.LM39.model.leaderpermanenteffect.*;
-import it.polimi.LM39.model.excommunicationpermanenteffect.*;
+
 import it.polimi.LM39.model.*;
 import it.polimi.LM39.model.Character;
 
@@ -12,13 +10,16 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 
 import java.util.HashMap;
-import java.util.logging.Logger;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import it.polimi.LM39.external_libraries.RuntimeTypeAdapterFactory;
 
+/*
+ * json file parser. uses library from https://github.com/google/gson/blob/master/extras/src/main/java/com/google/gson/typeadapters/RuntimeTypeAdapterFactory.java
+ * and code from https://futurestud.io/tutorials/how-to-deserialize-a-list-of-polymorphic-objects-with-gson
+ */
 public class GsonReader {
 	public void subEffectRegister(RuntimeTypeAdapterFactory adapter, Card cardType)	//generic subeffectregister, it will call the correct method
 	{																				//using reflection on the cardType. the adapter will only have
