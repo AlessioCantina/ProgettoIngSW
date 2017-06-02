@@ -123,7 +123,7 @@ public class GsonReader {
 		adapter.registerSubtype(SetFamilyMember.class);
 		adapter.registerSubtype(CopyLeaderAbility.class);
 		adapter.registerSubtype(VictoryForSupportingTheChurch.class);
-		adapter.registerSubtype(NoMilitaryRequirmentsForTerritory.class);
+		adapter.registerSubtype(NoMilitaryRequirementsForTerritory.class);
 		adapter.registerSubtype(DoubleResourcesFromDevelopment.class);
 		adapter.registerSubtype(ResourcesAndPoints.class);
 		adapter.registerSubtype(CardActionDiscount.class);			
