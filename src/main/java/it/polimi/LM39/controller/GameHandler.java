@@ -61,9 +61,9 @@ public class GameHandler {
     	mainBoard.setDiceValues(diceValues);    
     }
 
-    public boolean getCard(Integer cardNumber,SocketPlayer player, Integer k) throws IOException {
+    public boolean getCard(Integer cardNumber,SocketPlayer player, Integer towerNumber) throws IOException {
     	boolean cardGotten=false;
-    	    		switch(k){
+    	    		switch(towerNumber){
     		    		case 0: Territory territory=MainBoard.territoryMap.get(cardNumber);
     		    			cardGotten=getTerritoryCard(territory,player,cardNumber);
     		    			break;
