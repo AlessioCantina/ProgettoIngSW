@@ -8,7 +8,7 @@ import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.*;
 import it.polimi.LM39.model.Character;
-import it.polimi.LM39.server.SocketPlayer;
+import it.polimi.LM39.server.NetworkPlayer;
 /**
  * 
  */
@@ -61,7 +61,7 @@ public class GameHandler {
     	mainBoard.setDiceValues(diceValues);    
     }
 
-    public boolean getCard(Integer cardNumber,SocketPlayer player, Integer towerNumber) throws IOException {
+    public boolean getCard(Integer cardNumber,NetworkPlayer player, Integer towerNumber) throws IOException {
     	boolean cardGotten=false;
     	    		switch(towerNumber){
     		    		case 0: Territory territory=MainBoard.territoryMap.get(cardNumber);
@@ -76,14 +76,14 @@ public class GameHandler {
     		    		case 3: Venture venture=MainBoard.ventureMap.get(cardNumber);
     		    			cardGotten=getVentureCard(venture,player,cardNumber);
     		    			break;
-    		    		default: player.sendToClient("This tower doesn't exist!");
+    		    		default: player.setMessage("This tower doesn't exist!");
     		    			break;
     	    		}
     	    		return cardGotten;
     }
     
     
-    public boolean getTerritoryCard(Territory territory,SocketPlayer player,Integer cardNumber) throws IOException{
+    public boolean getTerritoryCard(Territory territory,NetworkPlayer player,Integer cardNumber) throws IOException{
     	//instantResources
     	territoryHandler.doInstantEffect(territory.instantBonuses,player);
     	ArrayList<Integer> possessedTerritories = player.personalBoard.getPossessions("Territory");
@@ -117,14 +117,14 @@ public class GameHandler {
     			return true;
     			}
     		else
-        		player.sendToClient("You don't have enough military points");
+        		player.setMessage("You don't have enough military points");
     	}
     	else 
-    		player.sendToClient("You can't have more than 6 territories! ");
+    		player.setMessage("You can't have more than 6 territories! ");
     	return false;
     }
 
-    public boolean getCharacterCard(Character character,SocketPlayer player,Integer cardNumber) throws IOException{
+    public boolean getCharacterCard(Character character,NetworkPlayer player,Integer cardNumber) throws IOException{
     	ArrayList<Integer> possessedCharacters = player.personalBoard.getPossessions("Character");
 		if (possessedCharacters.size()<6){
 	    		try {
@@ -140,11 +140,11 @@ public class GameHandler {
     			return true;
     	}
 		else
-			player.sendToClient("You can't have more than 6 characters!");
+			player.setMessage("You can't have more than 6 characters!");
     	return false;
     }
 
-    public boolean getBuildingCard(Building building,SocketPlayer player,Integer cardNumber) throws IOException{
+    public boolean getBuildingCard(Building building,NetworkPlayer player,Integer cardNumber) throws IOException{
     	ArrayList<Integer> possessedBuildings = player.personalBoard.getPossessions("Building");
 		if (possessedBuildings.size()<6){
 	    		try {
@@ -160,26 +160,26 @@ public class GameHandler {
 	    	
     	}
 		else
-			player.sendToClient("You can't have more than 6 buildings!");
+			player.setMessage("You can't have more than 6 buildings!");
     	return false;
     }
     
-    public boolean getVentureCard(Venture venture,SocketPlayer player,Integer cardNumber) throws IOException{
+    public boolean getVentureCard(Venture venture,NetworkPlayer player,Integer cardNumber) throws IOException{
     	ArrayList<Integer> possessedVentures = player.personalBoard.getPossessions("Venture");
     	Integer choice = new Integer(0);
 		if (possessedVentures.size()<6){
 	    	if(venture.costMilitary!=0 && (venture.costResources.coins!=0 || venture.costResources.woods!=0 || venture.costResources.stones!=0 || venture.costResources.servants!=0)) {
 	    		//ask to the player what payment he wants to do
-	    		player.sendToClient("What payment do you want to do? 1 or 2");
+	    		player.setMessage("What payment do you want to do? 1 or 2");
 	    		//get the player response
-	    		choice = Integer.parseInt(player.sendToController());
+	    		choice = Integer.parseInt(player.sendMessage());
 	    	}
 	    	if(venture.costMilitary==0 || choice == 2){
 	    		try {
 	    			subCardResources(venture.costResources,player);
 	    		} catch (NotEnoughResourcesException e1) {
 	    			e1.printStackTrace();
-	    			player.sendToClient("You don't have enough resources!");
+	    			player.setMessage("You don't have enough resources!");
 	    			return false;
 				}
 	    	}
@@ -189,12 +189,12 @@ public class GameHandler {
 	    			player.points.setMilitary(-venture.costMilitary);
 	    		} catch (NotEnoughPointsException e) {
 	    			e.printStackTrace();
-	    			player.sendToClient("You don't have enough military points");
+	    			player.setMessage("You don't have enough military points");
 	    			return false;
 	    		}
 	    	}
 	    	else{
-	    		player.sendToClient("You don't have enough military points");
+	    		player.setMessage("You don't have enough military points");
     			return false;
     			}
 	    
@@ -205,11 +205,11 @@ public class GameHandler {
 	    	return true;
 	   }
 		else
-			player.sendToClient("You can't have more than 6 ventures!");
+			player.setMessage("You can't have more than 6 ventures!");
     	return false;
     }
     
-    public Integer familyMemberColorToDiceValue(String familyMemberColor,SocketPlayer player) throws IOException{
+    public Integer familyMemberColorToDiceValue(String familyMemberColor,NetworkPlayer player) throws IOException{
     	//The order followed is the one on the Game Board for the dices positions
     	Integer value = new Integer(-1);
     	Integer[] diceValues = mainBoard.getDiceValues();
@@ -222,13 +222,13 @@ public class GameHandler {
 	    		break;
 	    	case "uncolored": value = diceValues[3];
 	    		break;
-	    	default: player.sendToClient("Invalid familyMemberColor");
+	    	default: player.setMessage("Invalid familyMemberColor");
 	    		break;
     	}
     	return value;
     }
     
-    public boolean addFamilyMemberToTheTower(FamilyMember familyMember , Integer cardNumber, SocketPlayer player) throws IOException {
+    public boolean addFamilyMemberToTheTower(FamilyMember familyMember , Integer cardNumber, NetworkPlayer player) throws IOException {
         int i,j;
         boolean coloredFamilyMemberOnTheTower = false;
         boolean uncoloredFamilyMemberOnTheTower = false;
@@ -270,7 +270,7 @@ public class GameHandler {
 	        		return true;
 	        		}
         		else
-        			player.sendToClient("You don't have the necessary resources!");
+        			player.setMessage("You don't have the necessary resources!");
 	        	}
         	if (uncoloredFamilyMemberOnTheTower==false && coloredFamilyMemberOnTheTower==false){
         		//if there is none of my family members
@@ -297,20 +297,20 @@ public class GameHandler {
     	        		return true;
         			}
         			else{
-        				player.sendToClient("You don't have the necessary resources!");
+        				player.setMessage("You don't have the necessary resources!");
         				return false;
         				}
         		}
         	}
         }
         else{
-        	player.sendToClient("This position is occupied or your family mmeber hasn't a value high enough!");	
+        	player.setMessage("This position is occupied or your family mmeber hasn't a value high enough!");	
         	return false;
         }
        return false; 
     }
     
-    public void setTowerBonus(ActionBonus towerBonus,SocketPlayer player){
+    public void setTowerBonus(ActionBonus towerBonus,NetworkPlayer player){
     	try {
 			addPlayerResources(towerBonus.resources,player);
 			addPlayerPoints(towerBonus.points,player);
@@ -321,7 +321,7 @@ public class GameHandler {
     	
     }
     
-    public void addPlayerResources (PlayerResources resources, SocketPlayer player) throws NotEnoughResourcesException{
+    public void addPlayerResources (PlayerResources resources, NetworkPlayer player) throws NotEnoughResourcesException{
     	PlayerResources playerResources = player.resources;
     	playerResources.setCoins(resources.getCoins());
     	playerResources.setWoods(resources.getWoods());
@@ -331,7 +331,7 @@ public class GameHandler {
     	player.resources=playerResources;
     }
     
-    public void subCardResources (CardResources resources, SocketPlayer player) throws NotEnoughResourcesException{
+    public void subCardResources (CardResources resources, NetworkPlayer player) throws NotEnoughResourcesException{
     	PlayerResources playerResources = player.resources;
     	playerResources.setCoins(-resources.coins);
     	playerResources.setWoods(-resources.woods);
@@ -340,7 +340,7 @@ public class GameHandler {
     	player.resources=playerResources;
     }
     
-    public void addCardResources (CardResources resources, SocketPlayer player) throws NotEnoughResourcesException{
+    public void addCardResources (CardResources resources, NetworkPlayer player) throws NotEnoughResourcesException{
     	PlayerResources playerResources = player.resources;
     	playerResources.setCoins(resources.coins);
     	playerResources.setWoods(resources.woods);
@@ -349,7 +349,7 @@ public class GameHandler {
     	player.resources=playerResources;
     }
     
-    public void addPlayerPoints (PlayerPoints points, SocketPlayer player) throws NotEnoughPointsException{
+    public void addPlayerPoints (PlayerPoints points, NetworkPlayer player) throws NotEnoughPointsException{
     	PlayerPoints playerPoints = player.points;
     	playerPoints.setFaith(points.getFaith());
     	playerPoints.setFaith(points.getVictory());
@@ -358,7 +358,7 @@ public class GameHandler {
     	player.points=playerPoints;
     }
     
-    public void subCardPoints (CardPoints points, SocketPlayer player) throws NotEnoughPointsException{
+    public void subCardPoints (CardPoints points, NetworkPlayer player) throws NotEnoughPointsException{
     	PlayerPoints playerPoints = player.points;
     	playerPoints.setFaith(-points.faith);
     	playerPoints.setFaith(-points.victory);
@@ -366,7 +366,7 @@ public class GameHandler {
     	player.points=playerPoints;
     }
     
-    public void addCardPoints (CardPoints points, SocketPlayer player) throws NotEnoughPointsException{
+    public void addCardPoints (CardPoints points, NetworkPlayer player) throws NotEnoughPointsException{
     	PlayerPoints playerPoints = player.points;
     	playerPoints.setFaith(points.faith);
     	playerPoints.setFaith(points.victory);
@@ -374,7 +374,7 @@ public class GameHandler {
     	player.points=playerPoints;
     }
 
-    public void addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, SocketPlayer player) throws IOException {
+    public void addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, NetworkPlayer player) throws IOException {
     	FamilyMember[] familyMembersAtTheMarket = player.personalMainBoard.getFamilyMembersLocation().getFamilyMembersOnTheMarket(); // we use the player Personal MainBaord
         if(familyMembersAtTheMarket[position] == null && position<=marketSize){
         	(familyMembersAtTheMarket[position].color) = (familyMember.color);
@@ -401,16 +401,16 @@ public class GameHandler {
 	    			break;
 	        	case 4: councilHandler.getCouncil(1,player);
 	        		break;
-	        	default: player.sendToClient("Invalid position! the position must be between 1 and 4");
+	        	default: player.setMessage("Invalid position! the position must be between 1 and 4");
 	        		break;
         	}
         }
         else {
-        	player.sendToClient("This place is occupied or not usable if two player game");
+        	player.setMessage("This place is occupied or not usable if two player game");
         }
     }
     
-    public void addFamilyMemberToProductionOrHarvest(FamilyMember familyMember, FamilyMember[] familyMembersAtProductionOrHarvest, String actionType,SocketPlayer player) throws IOException {
+    public void addFamilyMemberToProductionOrHarvest(FamilyMember familyMember, FamilyMember[] familyMembersAtProductionOrHarvest, String actionType,NetworkPlayer player) throws IOException {
     	int i;
     	boolean doAction=false;
     	//to know if the action Harvest or Production can be done
@@ -439,7 +439,7 @@ public class GameHandler {
     				}
     			else {
     				//this happens only in matches of 2 players
-    				player.sendToClient("The production area is full!");
+    				player.setMessage("The production area is full!");
     			}
     		}
     		
@@ -456,7 +456,7 @@ public class GameHandler {
     			}
     			if(j==0)
     				//if there are already two of my family members
-    				player.sendToClient("You can't place another family member");
+    				player.setMessage("You can't place another family member");
     			for(i=0;familyMembersAtProductionOrHarvest[i]!=null && i<harvestAndProductionSize;i++);
     			//move i to the first free slot
     			if(j==-1){
@@ -466,7 +466,7 @@ public class GameHandler {
     		    		familyMembersAtProductionOrHarvest[i].playerColor=familyMember.playerColor;
 		    			doAction=true;}
     				else
-    					player.sendToClient("You can place just one uncolored family member");
+    					player.setMessage("You can place just one uncolored family member");
     				}
     			else {
     				//if there is an uncolored family member
@@ -481,7 +481,7 @@ public class GameHandler {
 	    		if(actionType=="Harvest")
 	    			playerBoardHandler.activateHarvest(player.personalMainBoard.getDiceValues()[familyMemberColorToDiceValue(familyMember.color,player)]-penalty,player); // we use the player Personal MainBaord
 	    		else
-	    			player.sendToClient("Invalid action it must be Production or Harvest");
+	    			player.setMessage("Invalid action it must be Production or Harvest");
     		}
     			
     		}
@@ -564,7 +564,7 @@ public class GameHandler {
     	
     }
    
-    public String[][] cardNameOnTheMainBoard(SocketPlayer player) throws IOException{
+    public String[][] cardNameOnTheMainBoard(NetworkPlayer player) throws IOException{
     	Integer[][] cardsOnTheTowers = mainBoard.getCardsOnTheTowers();
     	String[][] cardNamesOnTheTowers = new String[4][4]; 
     	for(int i=0;i<4;i++){
@@ -578,7 +578,7 @@ public class GameHandler {
 	    			break;
 	        	case 3: cardNamesOnTheTowers[j][i] = MainBoard.ventureMap.get(cardsOnTheTowers[j][i]).cardName;
 	        		break;
-	        	default: player.sendToClient("Invalid position it has to be between 0 and 3");
+	        	default: player.setMessage("Invalid position it has to be between 0 and 3");
 	        		break;
             	}
             	mainBoard.setCardNamesOnTheTowers(cardNamesOnTheTowers);
@@ -597,19 +597,19 @@ public class GameHandler {
     }
     
     
-    public Integer calculateFinalPoints(SocketPlayer player,MainBoard mainBoard) {
+    public Integer calculateFinalPoints(NetworkPlayer player,MainBoard mainBoard) {
         // TODO implement here
     	//remember of excommunications!
         return null; //prevent error
     }
 
     //ask to the player if he wants to add servants to the action
-    public Integer addServants(SocketPlayer player) throws IOException, NotEnoughResourcesException{
-    	player.sendToClient("Do you want to add servants? yes or no");
-    	String response = player.sendToController();
+    public Integer addServants(NetworkPlayer player) throws IOException, NotEnoughResourcesException{
+    	player.setMessage("Do you want to add servants? yes or no");
+    	String response = player.sendMessage();
     	if(response.equals("yes")){
-    		player.sendToClient("How many?");
-    		Integer qty = Integer.parseInt(player.sendToController());
+    		player.setMessage("How many?");
+    		Integer qty = Integer.parseInt(player.sendMessage());
     		player.resources.setServants(-qty);
     		return qty;
     	}

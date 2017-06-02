@@ -19,4 +19,6 @@ public abstract class NetworkPlayer extends Player{
 	 * method that will be implemented by both rmi and socket to communicate with the controller
 	 */
 	public abstract String sendMessage();
+	
+	public abstract void setMessage(String message);
 }

@@ -39,11 +39,19 @@ public class Room {
     	this.game = new Game(this.getConnectedPlayers());
     }
     /*
+     * called by controller to change room period (+1 period every 2 rounds)
+     */
+    public void nextPeriod(){
+    	this.roomPeriod++;
+    }
+    /*
      * this method depends on the period of the game: when the game start it will randomize 
      * the play order, in the next rounds it will put the order following the council palace.
      * When a player have no member on council palace it will follow the relative order
      */
     public void setPlayOrder(){
-    	//TODO
+    	if(roomPeriod == 1)
+    		Collections.shuffle(players);
+    	//TODO interact with controller to know the order from council palace
     }
 }

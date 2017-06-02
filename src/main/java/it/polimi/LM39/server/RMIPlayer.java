@@ -29,5 +29,13 @@ public class RMIPlayer extends NetworkPlayer {
 
 
 
+	@Override
+	public void setMessage(String message) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
 
 }
