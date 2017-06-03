@@ -39,8 +39,8 @@ public class GameHandler {
 
     public ExcommunicationHandler excommunicationHandler = new ExcommunicationHandler();
 
-    public PlayerBoardHandlerInterface playerBoardHandler = new PlayerBoardHandler(this);
-
+    public PlayerBoardHandler playerBoardHandler = new PlayerBoardHandler();
+    
     public CouncilHandler councilHandler = new CouncilHandler();
     
     public GsonReader gsonReader = new GsonReader();
@@ -323,13 +323,14 @@ public class GameHandler {
     	
     }
     
-    public void addPlayerResources (PlayerResources resources, NetworkPlayer player) throws NotEnoughResourcesException{
+    public void addPlayerResources (PlayerResources resources, NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
     	PlayerResources playerResources = player.resources;
     	playerResources.setCoins(resources.getCoins());
     	playerResources.setWoods(resources.getWoods());
     	playerResources.setStones(resources.getStones());
     	playerResources.setServants(resources.getServants());
-    	councilHandler.getCouncil(resources.getCouncil(),player);
+    	ArrayList<Integer> list = new ArrayList<Integer>();
+    	councilHandler.getCouncil(resources.getCouncil(),player,this,list);
     	player.resources=playerResources;
     }
     
@@ -376,7 +377,7 @@ public class GameHandler {
     	player.points=playerPoints;
     }
 
-    public void addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, NetworkPlayer player) throws IOException {
+    public void addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException {
     	FamilyMember[] familyMembersAtTheMarket = player.personalMainBoard.getFamilyMembersLocation().getFamilyMembersOnTheMarket(); // we use the player Personal MainBaord
         if(familyMembersAtTheMarket[position] == null && position<=marketSize){
         	(familyMembersAtTheMarket[position].color) = (familyMember.color);
@@ -401,7 +402,8 @@ public class GameHandler {
 					e.printStackTrace();
 				}
 	    			break;
-	        	case 4: councilHandler.getCouncil(1,player);
+	        	case 4: ArrayList<Integer> list = new ArrayList<Integer>();
+	        			councilHandler.getCouncil(1,player,this,list);
 	        		break;
 	        	default: player.setMessage("Invalid position! the position must be between 1 and 4");
 	        		break;
@@ -488,8 +490,9 @@ public class GameHandler {
     			
     		}
 
-    public void inizializeTheGame() throws FailedToReadFileException, FailedToRegisterEffectException {
-    	//inizialize the value of an action space on the Towers
+    public void initializeTheGame() throws FailedToReadFileException, FailedToRegisterEffectException {
+    	playerBoardHandler.setGameHandler(this);
+    	//initialize the value of an action space on the Towers
     	Integer [] towerValue = {1,3,5,7};
     	Integer[][] towersValue = new Integer[4][4];
     	for(int i=0;i<4;i++)

@@ -1,28 +1,34 @@
 package it.polimi.LM39.controller.decorator;
 
 import it.polimi.LM39.server.NetworkPlayer;
-import it.polimi.LM39.controller.PlayerBoardHandlerInterface;;
+import it.polimi.LM39.controller.PlayerBoardHandler;
 
-public class HarvestBoostDecorator extends PlayerBoardHandlerDecorator{
+public class HarvestBoostDecorator extends PlayerBoardHandler{
 	
-	Integer harvestBonus = 0;
-	NetworkPlayer player;
+	private PlayerBoardHandler decoratedPlayerBoardHandler;
+	private Integer harvestBonus;
+	private NetworkPlayer player;
 	
-	public HarvestBoostDecorator (PlayerBoardHandlerInterface decoratedPlayerBoard, Integer boost, NetworkPlayer player) {
-		super(decoratedPlayerBoard);
+	public HarvestBoostDecorator (PlayerBoardHandler decoratedPlayerBoardHandler, Integer boost, NetworkPlayer player) {
+		this.decoratedPlayerBoardHandler = decoratedPlayerBoardHandler;
 		this.harvestBonus = boost;
 		this.player = player;
 	}
-
+	
+	@Override
 	public void activateHarvest(Integer value,NetworkPlayer player){
+		//check if the player who is activating the harvest is the player who has activated the bonus
 		if(this.player == player)
-			decoratedPlayerBoard.activateHarvest(value + harvestBonus,player);
+			decoratedPlayerBoardHandler.activateHarvest(value + harvestBonus,player);
 		else
-			decoratedPlayerBoard.activateHarvest(value,player);
+			//if the player does not have the bonus do a normal activateHarvest
+			decoratedPlayerBoardHandler.activateHarvest(value,player);
 	}
 
 	@Override
+	//the override must be done because the method activateProduction could me decorated by another decorator
+	//even if HarvestBoostDecorator does not decorate this method
 	public void activateProduction(Integer value,NetworkPlayer player) {
-		decoratedPlayerBoard.activateProduction(value,player);
+		decoratedPlayerBoardHandler.activateProduction(value,player);
 	}
 }

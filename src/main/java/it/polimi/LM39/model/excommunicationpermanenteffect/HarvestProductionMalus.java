@@ -20,6 +20,6 @@ public class HarvestProductionMalus extends ExcommunicationPermanentEffect {
     /**
      * 
      */
-    public String modifierType;
+    public String actionType;
 
 }

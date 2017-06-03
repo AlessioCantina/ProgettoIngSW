@@ -87,7 +87,7 @@ public class Game {
         GameHandler gameHandler = new GameHandler();
         gameHandler.mainBoard = mainBoard;
         //calls the gsonReader to populate the hashmaps
-        gameHandler.inizializeTheGame();
+        gameHandler.initializeTheGame();
         gameHandler.loadCardsOnTheMainBoard();
         String[][] cards = gameHandler.cardNameOnTheMainBoard();
         for(int i=0;i<4;i++){

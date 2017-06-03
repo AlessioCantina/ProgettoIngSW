@@ -12,6 +12,7 @@ import it.polimi.LM39.model.NoEffect;
 import it.polimi.LM39.server.NetworkPlayer;
 import it.polimi.LM39.model.PlayerResources;
 import it.polimi.LM39.model.characterpermanenteffect.*;
+import it.polimi.LM39.model.excommunicationpermanenteffect.*;
 import it.polimi.LM39.model.instanteffect.*;
 import it.polimi.LM39.model.leaderpermanenteffect.*;
 import it.polimi.LM39.model.leaderobject.*;
@@ -432,22 +433,27 @@ public class CardHandler {
 	}
 	
 	public void activateCharacter(CardActionResourcesDiscount permanentEffect, NetworkPlayer player){
+		//make a CardActionDiscount effect and call his method
 		CardActionDiscount effect = new CardActionDiscount();
 		effect.cardType = permanentEffect.cardType;
 		effect.discount = permanentEffect.discount;
 		activateCharacter(effect,player);
 		//need to check when a player get a card to set the discount like done for the GetDiscountedCard effect
-		//TODO 
+		if(permanentEffect.cardType.equals("Character"))
+			gameHandler = new CharacterResourcesDiscountDecorator(gameHandler,permanentEffect.resourcesDiscount,player);
+		else if(permanentEffect.cardType.equals("Venture"))
+			gameHandler = new VentureResourcesDiscountDecorator(gameHandler,permanentEffect.resourcesDiscount,player);
+		else if(permanentEffect.cardType.equals("Building"))
+			gameHandler = new BuildingResourcesDiscountDecorator(gameHandler,permanentEffect.resourcesDiscount,player);
 	}
 	
+	
 	public void activateCharacter(HarvestProductionBoost permanentEffect, NetworkPlayer player){
-		//need to check when a player try to do a Production or Harvest and give him the bonus
+		//need to check when a player with this effect try to do a Production or Harvest and give him the bonus
 		if(permanentEffect.actionType.equals("Harvest"))
 			gameHandler.playerBoardHandler = new HarvestBoostDecorator(gameHandler.playerBoardHandler,permanentEffect.actionValue,player);
 		else
-			gameHandler.playerBoardHandler = new ProductionBoostDecorator(gameHandler.playerBoardHandler,permanentEffect.actionValue,player);
-		//possible also modifying the personalMainBoard
-		//TODO 
+			gameHandler.playerBoardHandler = new ProductionBoostDecorator(gameHandler.playerBoardHandler,permanentEffect.actionValue,player); 
 	}
 	
 	public void activateCharacter(NoBoardBonuses permanentEffect, NetworkPlayer player){
@@ -458,7 +464,46 @@ public class CardHandler {
 		
 	
 		
-		
+	public void activateExcommunication(ExcommunicationPermanentEffect permanentEffect,NetworkPlayer player)	
+	{
+		try{
+			Class[] cArg = new Class[2];
+	        cArg[0] = permanentEffect.getClass();
+	        cArg[1] = player.getClass();
+			Method lMethod = (this.getClass().getMethod("activateExcommunication",cArg));
+			lMethod.invoke(permanentEffect,player);
+		}catch(Exception e){
+			e.printStackTrace();}
+}
+	
+	public void activateExcommunication(CardActionMalus permanentEffect,NetworkPlayer player){
+		//make a CardActionDiscount effect that will act in the opposite way giving the discount parameter as a malus, then call his method
+		CardActionDiscount effect = new CardActionDiscount();
+		effect.cardType = permanentEffect.cardType;
+		effect.discount = - permanentEffect.malus;
+		activateCharacter(effect,player);
+	}
+	
+	public void activateExcommunication(DiceMalus permanentEffect,NetworkPlayer player){
+		Integer[] diceValues = player.personalMainBoard.getDiceValues();
+		for(int i=0;i<3;i++)
+			diceValues[i] -= permanentEffect.malus;
+		player.personalMainBoard.setDiceValues(diceValues);
+	}
+	
+	public void activateExcommunication(HarvestProductionMalus permanentEffect,NetworkPlayer player){
+		if(permanentEffect.actionType.equals("Harvest"))
+			gameHandler.playerBoardHandler = new HarvestBoostDecorator(gameHandler.playerBoardHandler,-permanentEffect.malus,player);
+		else
+			gameHandler.playerBoardHandler = new ProductionBoostDecorator(gameHandler.playerBoardHandler,-permanentEffect.malus,player); 
+	}
+	
+	public void activateExcommunication(MalusForResources permanentEffect,NetworkPlayer player){
+		//TODO
+	}
+	
+	
+	
 	
 	/*
 	

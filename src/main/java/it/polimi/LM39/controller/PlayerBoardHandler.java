@@ -9,14 +9,9 @@ import it.polimi.LM39.model.MainBoard;
 import it.polimi.LM39.model.PersonalBoard;
 
 
-public class PlayerBoardHandler implements PlayerBoardHandlerInterface{
-	private GameHandler gameHandler;
+public class PlayerBoardHandler {
+	private static GameHandler gameHandler;
     
-    public PlayerBoardHandler(GameHandler gameHandler){
-    	this.gameHandler = gameHandler;
-    }
-
-
     public void activateHarvest(Integer actionValue, NetworkPlayer player) {
         ArrayList <Integer> territories = player.personalBoard.getPossessions("Territory");
         CardHandler cardHandler = new CardHandler(gameHandler);
@@ -30,4 +25,7 @@ public class PlayerBoardHandler implements PlayerBoardHandlerInterface{
          for (int i=0;i<buildings.size();i++)
          	cardHandler.doInstantEffect((MainBoard.buildingMap.get(buildings.get(i)).activationEffect),player);
      }
+    public void setGameHandler(GameHandler gameHandler){
+    	PlayerBoardHandler.gameHandler = gameHandler;
     }
+}
