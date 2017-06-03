@@ -80,13 +80,34 @@ public class VentureResourcesDiscountDecorator extends GameHandler{
     	return false;
     }
 	
+	
 	@Override
-	public boolean getCharacterCard(Character character,NetworkPlayer player,Integer cardNumber) throws IOException{
-		return decoratedGameHandler.getCharacterCard(character,player,cardNumber);
+	public void resourcesForVenture(NetworkPlayer player ,Venture venture) throws NotEnoughResourcesException{
+		if(this.player == player){
+			//creating a CardResources object that is the result of the card costs - the bonus  
+			CardResources resources = new CardResources();
+    		if(venture.costResources.coins>=resourcesDiscount.coins)
+    			resources.coins= venture.costResources.coins - resourcesDiscount.coins;
+    		if(venture.costResources.stones>=resourcesDiscount.stones)
+    			resources.stones= venture.costResources.stones - resourcesDiscount.stones;
+    		if(venture.costResources.woods>=resourcesDiscount.woods)
+    			resources.woods= venture.costResources.woods - resourcesDiscount.woods;
+    		if(venture.costResources.servants>=resourcesDiscount.servants)
+    			resources.servants= venture.costResources.servants - resourcesDiscount.servants;
+			subCardResources(resources,player);
+		}
+		//if the bonus is not for the player that is now using this method
+		decoratedGameHandler.resourcesForVenture(player,venture);
+	}
+	 
+	 
+	@Override
+	public void coinsForCharacter(NetworkPlayer player ,Character character) throws NotEnoughResourcesException{
+		decoratedGameHandler.coinsForCharacter(player,character);
 	}
 	
 	@Override
-	public boolean getBuildingCard(Building building,NetworkPlayer player,Integer cardNumber) throws IOException{
-		return decoratedGameHandler.getBuildingCard(building,player,cardNumber);
+	public void resourcesForBuilding(NetworkPlayer player, Building building) throws NotEnoughResourcesException{
+		decoratedGameHandler.resourcesForBuilding(player,building);
 	}
 }

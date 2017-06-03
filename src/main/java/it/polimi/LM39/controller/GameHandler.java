@@ -130,7 +130,7 @@ public class GameHandler {
     	ArrayList<Integer> possessedCharacters = player.personalBoard.getPossessions("Character");
 		if (possessedCharacters.size()<6){
 	    		try {
-					player.resources.setCoins(-character.costCoins);
+	    			coinsForCharacter(player,character);
 				} catch (NotEnoughResourcesException e) {
 					e.printStackTrace();
 					return false;
@@ -145,12 +145,16 @@ public class GameHandler {
 			player.setMessage("You can't have more than 6 characters!");
     	return false;
     }
+    
+    public void coinsForCharacter(NetworkPlayer player ,Character character) throws NotEnoughResourcesException{
+    	player.resources.setCoins(-character.costCoins);
+    }
 
     public boolean getBuildingCard(Building building,NetworkPlayer player,Integer cardNumber) throws IOException{
     	ArrayList<Integer> possessedBuildings = player.personalBoard.getPossessions("Building");
 		if (possessedBuildings.size()<6){
 	    		try {
-					subCardResources(building.costResources,player);
+	    			resourcesForBuilding(player ,building);
 					addCardPoints(building.instantBonuses,player);
 				} catch (NotEnoughResourcesException | NotEnoughPointsException e) {
 					e.printStackTrace();
@@ -166,6 +170,10 @@ public class GameHandler {
     	return false;
     }
     
+    public void resourcesForBuilding(NetworkPlayer player ,Building building) throws NotEnoughResourcesException{
+    	subCardResources(building.costResources,player);
+    }
+    
     public boolean getVentureCard(Venture venture,NetworkPlayer player,Integer cardNumber) throws IOException{
     	ArrayList<Integer> possessedVentures = player.personalBoard.getPossessions("Venture");
     	Integer choice = 0;
@@ -178,7 +186,7 @@ public class GameHandler {
 	    	}
 	    	if(venture.costMilitary==0 || choice == 2){
 	    		try {
-	    			subCardResources(venture.costResources,player);
+	    			resourcesForVenture(player,venture);
 	    		} catch (NotEnoughResourcesException e1) {
 	    			e1.printStackTrace();
 	    			player.setMessage("You don't have enough resources!");
@@ -209,6 +217,10 @@ public class GameHandler {
 		else
 			player.setMessage("You can't have more than 6 ventures!");
     	return false;
+    }
+    
+    public void resourcesForVenture(NetworkPlayer player ,Venture venture) throws NotEnoughResourcesException{
+    	subCardResources(venture.costResources,player);
     }
     
     public Integer familyMemberColorToDiceValue(String familyMemberColor,NetworkPlayer player) throws IOException{

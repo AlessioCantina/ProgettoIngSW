@@ -26,47 +26,33 @@ public class BuildingResourcesDiscountDecorator extends GameHandler{
 	
 	
 	@Override
-	public boolean getBuildingCard(Building building,NetworkPlayer player,Integer cardNumber) throws IOException{
+	public void resourcesForBuilding(NetworkPlayer player ,Building building) throws NotEnoughResourcesException{
 		if(this.player == player){
-		ArrayList<Integer> possessedBuildings = player.personalBoard.getPossessions("Building");
-		if (possessedBuildings.size()<6){
+			//creating a CardResources object that is the result of the card costs - the bonus  
 			CardResources resources = new CardResources();
-	    		if(building.costResources.coins>=resourcesDiscount.coins)
-	    			resources.coins= building.costResources.coins - resourcesDiscount.coins;
-	    		if(building.costResources.stones>=resourcesDiscount.stones)
-	    			resources.stones= building.costResources.stones - resourcesDiscount.stones;
-	    		if(building.costResources.woods>=resourcesDiscount.woods)
-	    			resources.woods= building.costResources.woods - resourcesDiscount.woods;
-	    		if(building.costResources.servants>=resourcesDiscount.servants)
-	    			resources.servants= building.costResources.servants - resourcesDiscount.servants;
-	    			
-				try {
-					subCardResources(resources,player);
-					addCardPoints(building.instantBonuses,player);
-				} catch (NotEnoughResourcesException | NotEnoughPointsException e) {
-					e.printStackTrace();
-					return false;
-				}
-	    		possessedBuildings.add(cardNumber);
-	    		player.personalBoard.setPossessions(possessedBuildings,"Building");
-	    		return true;
-	    }
-		else
-			player.setMessage("You can't have more than 6 buildings!");
-    	return false;
-    }
-		else
-			return decoratedGameHandler.getBuildingCard(building,player,cardNumber);
+    		if(building.costResources.coins>=resourcesDiscount.coins)
+    			resources.coins= building.costResources.coins - resourcesDiscount.coins;
+    		if(building.costResources.stones>=resourcesDiscount.stones)
+    			resources.stones= building.costResources.stones - resourcesDiscount.stones;
+    		if(building.costResources.woods>=resourcesDiscount.woods)
+    			resources.woods= building.costResources.woods - resourcesDiscount.woods;
+    		if(building.costResources.servants>=resourcesDiscount.servants)
+    			resources.servants= building.costResources.servants - resourcesDiscount.servants;
+			subCardResources(resources,player);
+		}
+		//if the bonus is not for the player that is now using this method
+		decoratedGameHandler.resourcesForBuilding(player,building);
+	}
+	 
+	 
+	@Override
+	public void coinsForCharacter(NetworkPlayer player ,Character character) throws NotEnoughResourcesException{
+		decoratedGameHandler.coinsForCharacter(player,character);
 	}
 	
 	@Override
-	public boolean getCharacterCard(Character character,NetworkPlayer player,Integer cardNumber) throws IOException{
-		return decoratedGameHandler.getCharacterCard(character,player,cardNumber);
-	}
-	
-	@Override
-	public boolean getVentureCard(Venture venture,NetworkPlayer player,Integer cardNumber) throws IOException{
-		return decoratedGameHandler.getVentureCard(venture,player,cardNumber);
+	 public void resourcesForVenture(NetworkPlayer player ,Venture venture) throws NotEnoughResourcesException{
+		decoratedGameHandler.resourcesForVenture(player,venture);
 	}
 }
 

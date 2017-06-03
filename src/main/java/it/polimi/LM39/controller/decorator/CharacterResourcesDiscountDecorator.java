@@ -1,7 +1,5 @@
 package it.polimi.LM39.controller.decorator;
 
-import java.io.IOException;
-import java.util.ArrayList;
 
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
@@ -25,40 +23,23 @@ public class CharacterResourcesDiscountDecorator extends GameHandler{
 	
 	
 	@Override
-	public boolean getCharacterCard(Character character,NetworkPlayer player,Integer cardNumber) throws IOException{
+	public void coinsForCharacter(NetworkPlayer player ,Character character) throws NotEnoughResourcesException{
 		if(this.player == player){
-	    	ArrayList<Integer> possessedCharacters = player.personalBoard.getPossessions("Character");
-			if (possessedCharacters.size()<6){
-				if(character.costCoins>=resourcesDiscount.coins){	
-					try {
-						player.resources.setCoins(-character.costCoins + resourcesDiscount.coins);
-					} catch (NotEnoughResourcesException e) {
-						e.printStackTrace();
-						return false;
-					}
-				}
-		    		possessedCharacters.add(cardNumber);
-	    			player.personalBoard.setPossessions(possessedCharacters,"Character");
-	    			characterHandler.doInstantEffect(character.instantBonuses, player);
-	    			characterHandler.activate(character.permanentEffect, player);
-	    			return true;
-	    	}
-			else
-				player.setMessage("You can't have more than 6 characters!");
-	    	return false;
-	    }
-		
-		else
-			return decoratedGameHandler.getCharacterCard(character,player,cardNumber);
+		if(character.costCoins>=resourcesDiscount.coins)
+			player.resources.setCoins(-character.costCoins + resourcesDiscount.coins);
+		//if the card cost is lower than the bonus no cost are applied to the player
+		}
+		//if the bonus is not for the player that is now using this method
+		decoratedGameHandler.coinsForCharacter(player,character);
 	}
 	
 	@Override
-	public boolean getBuildingCard(Building building,NetworkPlayer player,Integer cardNumber) throws IOException{
-		return decoratedGameHandler.getBuildingCard(building,player,cardNumber);
+	public void resourcesForBuilding(NetworkPlayer player, Building building) throws NotEnoughResourcesException{
+		decoratedGameHandler.resourcesForBuilding(player,building);
 	}
 	
 	@Override
-	public boolean getVentureCard(Venture venture,NetworkPlayer player,Integer cardNumber) throws IOException{
-		return decoratedGameHandler.getVentureCard(venture,player,cardNumber);
+	 public void resourcesForVenture(NetworkPlayer player ,Venture venture) throws NotEnoughResourcesException{
+		decoratedGameHandler.resourcesForVenture(player,venture);
 	}
 }
