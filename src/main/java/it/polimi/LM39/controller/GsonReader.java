@@ -1,5 +1,7 @@
 package it.polimi.LM39.controller;
+
 import it.polimi.LM39.model.characterpermanenteffect.*;
+import it.polimi.LM39.model.excommunicationpermanenteffect.*;
 import it.polimi.LM39.model.leaderpermanenteffect.*;
 import it.polimi.LM39.model.instanteffect.*;
 import it.polimi.LM39.model.leaderobject.*;
@@ -108,7 +110,7 @@ public class GsonReader {
 	}
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	/*
-	 * subregister for leader cards
+	 * subregister for leader cards (effect)
 	 */
 	public void subEffectRegister(RuntimeTypeAdapterFactory adapter, Leader leader)
 	{
@@ -129,6 +131,9 @@ public class GsonReader {
 		adapter.registerSubtype(CardActionDiscount.class);			
 	}
 	@SuppressWarnings({ "rawtypes", "unchecked" })
+	/*
+	 * subregister for leader cards (requested objects)
+	 */
 	public void subEffectRegister(RuntimeTypeAdapterFactory adapter)
 	{
 		adapter.registerSubtype(LeaderRequestedObjects.class);
@@ -138,6 +143,27 @@ public class GsonReader {
 		adapter.registerSubtype(RequestedResources.class);
 		adapter.registerSubtype(RequestedSameCard.class);
 		adapter.registerSubtype(RequestedTwoCards.class);
+	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	/*
+	 * subregister for excommunications
+	 */
+	public void subEffectRegister(RuntimeTypeAdapterFactory adapter, Excommunication excommunication)
+	{
+		adapter.registerSubtype(ExcommunicationPermanentEffect.class);
+		adapter.registerSubtype(CardActionMalus.class);
+		adapter.registerSubtype(DiceMalus.class);
+		adapter.registerSubtype(HarvestProductionMalus.class);
+		adapter.registerSubtype(MalusForResources.class);
+		adapter.registerSubtype(MalusForResourcesCost.class);
+		adapter.registerSubtype(MalusVictoryForMilitary.class);
+		adapter.registerSubtype(NoMarket.class);
+		adapter.registerSubtype(NoVictoryForCard.class);
+		adapter.registerSubtype(PointsMalus.class);
+		adapter.registerSubtype(ResourcesMalus.class);
+		adapter.registerSubtype(ServantsMalus.class);
+		adapter.registerSubtype(SkipFirstTurn.class);
+		adapter.registerSubtype(VictoryMalus.class);
 	}
 	public HashMap<Integer,Territory> hashMapCreator(Territory cardType){	
 		 return new HashMap<Integer,Territory>();									//methods to instantiate the hashmap with the correct card type
@@ -199,6 +225,22 @@ public class GsonReader {
 		jsonReader.close();
 		return leaderHashMap;
 	}
+	/*
+	 * since excommunications doesn't extends abstract class card we need to overload the method
+	 */
+	public HashMap<Integer,Excommunication> hashMapCreator(Excommunication excommunication) throws IOException {
+		JsonReader jsonReader = new JsonReader(new FileReader("./src/main/java/it/polimi/LM39/jsonfiles/cards/" + excommunication.getClass().getSimpleName() + ".json"));
+		RuntimeTypeAdapterFactory<Effect> effectAdapter = RuntimeTypeAdapterFactory.of(Effect.class,"type");
+		subEffectRegister(effectAdapter,excommunication);
+		HashMap<Integer,Excommunication> excommunicationHashMap = new HashMap<Integer,Excommunication>();
+		Gson gson = new GsonBuilder().registerTypeAdapterFactory(effectAdapter).create();
+		int i = 1;
+		while(jsonReader.hasNext()){  
+			excommunicationHashMap.put(i,gson.fromJson(jsonReader,excommunication.getClass()));
+			i++;}
+		jsonReader.close();
+		return excommunicationHashMap;
+	}
 	 @SuppressWarnings("unchecked")
 	public void fileToCard() throws IOException{
 		 Card territory = new Territory();  //objects needed to use java reflection which checks parameters types
@@ -206,10 +248,12 @@ public class GsonReader {
 		 Card venture = new Venture();
 		 Card character = new Character();
 		 Leader leader = new Leader();
+		 Excommunication excommunication = new Excommunication();
 		 MainBoard.territoryMap = (HashMap<Integer,Territory>)hashMapCreator(territory);	
 		 MainBoard.buildingMap = (HashMap<Integer,Building>)hashMapCreator(building);
 		 MainBoard.characterMap = (HashMap<Integer,Character>)hashMapCreator(character);
 		 MainBoard.ventureMap = (HashMap<Integer,Venture>)hashMapCreator(venture);	 
 		 MainBoard.leaderMap = hashMapCreator(leader);
+		 MainBoard.excommunicationMap = hashMapCreator(excommunication);
 	 }
 }
