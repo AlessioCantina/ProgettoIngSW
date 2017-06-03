@@ -216,9 +216,9 @@ public class CardHandler {
 		//ask to the player if he wants to add servants to the action
 		Integer qtyServants = gameHandler.addServants(player);
 		//check if the effect is for harvest o production and call the correct method
-		if(instantEffect.actionType.equals("Harvest"))
+		if(("Harvest").equals(instantEffect.actionType))
 			gameHandler.playerBoardHandler.activateHarvest(instantEffect.actionValue + qtyServants, player);
-		else if(instantEffect.actionType.equals("Production"))
+		else if(("Production").equals(instantEffect.actionType))
 			gameHandler.playerBoardHandler.activateProduction(instantEffect.actionValue + qtyServants, player);
 	}
 	
@@ -439,18 +439,18 @@ public class CardHandler {
 		effect.discount = permanentEffect.discount;
 		activateCharacter(effect,player);
 		//need to check when a player get a card to set the discount like done for the GetDiscountedCard effect
-		if(permanentEffect.cardType.equals("Character"))
+		if(("Character").equals(permanentEffect.cardType))
 			gameHandler = new CharacterResourcesDiscountDecorator(gameHandler,permanentEffect.resourcesDiscount,player);
-		else if(permanentEffect.cardType.equals("Venture"))
+		else if(("Venture").equals(permanentEffect.cardType))
 			gameHandler = new VentureResourcesDiscountDecorator(gameHandler,permanentEffect.resourcesDiscount,player);
-		else if(permanentEffect.cardType.equals("Building"))
+		else if(("Building").equals(permanentEffect.cardType))
 			gameHandler = new BuildingResourcesDiscountDecorator(gameHandler,permanentEffect.resourcesDiscount,player);
 	}
 	
 	
 	public void activateCharacter(HarvestProductionBoost permanentEffect, NetworkPlayer player){
 		//need to check when a player with this effect try to do a Production or Harvest and give him the bonus
-		if(permanentEffect.actionType.equals("Harvest"))
+		if(("Harvest").equals(permanentEffect.actionType))
 			gameHandler.playerBoardHandler = new HarvestBoostDecorator(gameHandler.playerBoardHandler,permanentEffect.actionValue,player);
 		else
 			gameHandler.playerBoardHandler = new ProductionBoostDecorator(gameHandler.playerBoardHandler,permanentEffect.actionValue,player); 
@@ -492,7 +492,7 @@ public class CardHandler {
 	}
 	
 	public void activateExcommunication(HarvestProductionMalus permanentEffect,NetworkPlayer player){
-		if(permanentEffect.actionType.equals("Harvest"))
+		if(("Harvest").equals(permanentEffect.actionType))
 			gameHandler.playerBoardHandler = new HarvestBoostDecorator(gameHandler.playerBoardHandler,-permanentEffect.malus,player);
 		else
 			gameHandler.playerBoardHandler = new ProductionBoostDecorator(gameHandler.playerBoardHandler,-permanentEffect.malus,player); 

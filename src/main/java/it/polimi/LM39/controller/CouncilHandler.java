@@ -37,7 +37,7 @@ public class CouncilHandler {
 					player.setMessage("You must choose a Favor between 1 and 5");
 					getCouncil(qty,player,gameHandler,favorsList);
 					}
-					getCouncil(qty--,player,gameHandler,favorsList);
+					getCouncil(qty-1,player,gameHandler,favorsList);
 					}
 			else{
 				//if the player is trying to take a Favor that he has already taken, in case of multiple Favors

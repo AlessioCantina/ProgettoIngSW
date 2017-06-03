@@ -17,9 +17,9 @@ import it.polimi.LM39.server.NetworkPlayer;
 public class GameHandler {
 	
 
-	public Integer marketSize = new Integer(0);
+	public Integer marketSize = 0;
 	
-	public Integer harvestAndProductionSize = new Integer(0);
+	public Integer harvestAndProductionSize = 0;
     
 	private Integer period = 1;
 
@@ -107,7 +107,7 @@ public class GameHandler {
     		case 5: if(militaryPoints >= 18) 
     			canGet=true;
     		break;
-    		default: canGet=true;
+    		default: canGet=false;  
     		break;
     		}
     		if(canGet==true){
@@ -168,7 +168,7 @@ public class GameHandler {
     
     public boolean getVentureCard(Venture venture,NetworkPlayer player,Integer cardNumber) throws IOException{
     	ArrayList<Integer> possessedVentures = player.personalBoard.getPossessions("Venture");
-    	Integer choice = new Integer(0);
+    	Integer choice = 0;
 		if (possessedVentures.size()<6){
 	    	if(venture.costMilitary!=0 && (venture.costResources.coins!=0 || venture.costResources.woods!=0 || venture.costResources.stones!=0 || venture.costResources.servants!=0)) {
 	    		//ask to the player what payment he wants to do
@@ -213,7 +213,7 @@ public class GameHandler {
     
     public Integer familyMemberColorToDiceValue(String familyMemberColor,NetworkPlayer player) throws IOException{
     	//The order followed is the one on the Game Board for the dices positions
-    	Integer value = new Integer(-1);
+    	Integer value = -1;
     	Integer[] diceValues = mainBoard.getDiceValues();
     	switch(familyMemberColor){
 	    	case "black": value = diceValues[0];
@@ -230,7 +230,7 @@ public class GameHandler {
     	return value;
     }
     
-    public boolean addFamilyMemberToTheTower(FamilyMember familyMember , Integer cardNumber, NetworkPlayer player) throws IOException {
+    public boolean addFamilyMemberToTheTower(FamilyMember familyMember , Integer cardNumber, NetworkPlayer player) throws IOException, NotEnoughResourcesException {
         int i,j;
         boolean coloredFamilyMemberOnTheTower = false;
         boolean uncoloredFamilyMemberOnTheTower = false;
@@ -249,7 +249,7 @@ public class GameHandler {
         	for(i=0;i<4;i++){
         		if((familyMembersOnTheTowers[i][k].playerColor).equals(familyMember.playerColor)){
         			//if there is one of my family members on the tower
-        			if ((familyMembersOnTheTowers[i][k].color).equals("uncolored"))
+        			if (("uncolored").equals(familyMembersOnTheTowers[i][k].color))
         				//if this family member is uncolored
         				uncoloredFamilyMemberOnTheTower=true;
         			else
@@ -292,8 +292,7 @@ public class GameHandler {
     	        		try {
 							player.resources.setCoins(-3);
 						} catch (NotEnoughResourcesException e) {
-							e.printStackTrace();
-							return false;
+							throw new NotEnoughResourcesException("You don't have the necessary coins!");
 						}
     	        		setTowerBonus((mainBoard.getTowersBonuses())[p][k],player);
     	        		return true;
@@ -312,13 +311,12 @@ public class GameHandler {
        return false; 
     }
     
-    public void setTowerBonus(ActionBonus towerBonus,NetworkPlayer player){
+    public void setTowerBonus(ActionBonus towerBonus,NetworkPlayer player) throws NotEnoughResourcesException{
     	try {
 			addPlayerResources(towerBonus.resources,player);
 			addPlayerPoints(towerBonus.points,player);
 		} catch (NotEnoughResourcesException | NotEnoughPointsException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new NotEnoughResourcesException("You don't have the necessary resources or points!");
 		}
     	
     }
@@ -416,7 +414,7 @@ public class GameHandler {
     
     public void addFamilyMemberToProductionOrHarvest(FamilyMember familyMember, FamilyMember[] familyMembersAtProductionOrHarvest, String actionType,NetworkPlayer player) throws IOException {
     	int i;
-    	boolean doAction=false;
+    	boolean doAction = false;
     	//to know if the action Harvest or Production can be done
     	Integer penalty=3;
     	//penalty in case of first slot already occupied
@@ -503,7 +501,7 @@ public class GameHandler {
     	try {
 			gsonReader.fileToCard();
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new FailedToReadFileException(e);
 		}
         
     }
@@ -612,7 +610,7 @@ public class GameHandler {
     public Integer addServants(NetworkPlayer player) throws IOException, NotEnoughResourcesException{
     	player.setMessage("Do you want to add servants? yes or no");
     	String response = player.sendMessage();
-    	if(response.equals("yes")){
+    	if(("yes").equals(response)){
     		player.setMessage("How many?");
     		Integer qty = Integer.parseInt(player.sendMessage());
     		player.resources.setServants(-qty);

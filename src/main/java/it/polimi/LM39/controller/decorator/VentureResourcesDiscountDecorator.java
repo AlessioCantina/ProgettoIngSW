@@ -28,7 +28,7 @@ public class VentureResourcesDiscountDecorator extends GameHandler{
 	@Override
 	public boolean getVentureCard(Venture venture,NetworkPlayer player,Integer cardNumber) throws IOException{
     	ArrayList<Integer> possessedVentures = player.personalBoard.getPossessions("Venture");
-    	Integer choice = new Integer(0);
+    	Integer choice = 0;
 		if (possessedVentures.size()<6){
 	    	if(venture.costMilitary!=0 && (venture.costResources.coins!=0 || venture.costResources.woods!=0 || venture.costResources.stones!=0 || venture.costResources.servants!=0)) {
 	    		//ask to the player what payment he wants to do

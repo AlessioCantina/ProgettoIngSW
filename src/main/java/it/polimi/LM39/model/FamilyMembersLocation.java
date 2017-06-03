@@ -45,10 +45,10 @@ public class FamilyMembersLocation {
     }
 
     public void setFamilyMemberOnProductionOrHarvest(FamilyMember familyMember, String actionType) throws InvalidActionTypeException{
-    	if(actionType.equals("Production"))
+    	if("Production".equals(actionType))
     		this.familyMembersAtTheProduction.add(familyMember);
     	else 
-    		if (actionType.equals("Harvest"))
+    		if ("Harvest".equals(actionType))
     			this.familyMembersAtTheHarvest.add(familyMember);
     		else
     			throw new InvalidActionTypeException("The actionType is invalid"); // invalid action
@@ -56,10 +56,10 @@ public class FamilyMembersLocation {
     }
  
     public ArrayList<FamilyMember> getFamilyMembersOnProductionOrHarvest(String actionType) throws InvalidActionTypeException{
-    	if(actionType.equals("Production"))
+    	if("Production".equals(actionType))
     		return this.familyMembersAtTheProduction;
     	else 
-    		if (actionType.equals("Harvest"))
+    		if ("Harvest".equals(actionType))
     			return this.familyMembersAtTheHarvest;
     		else
     			throw new InvalidActionTypeException("The actionType is invalid"); // invalid action
