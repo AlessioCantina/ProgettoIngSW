@@ -1,10 +1,11 @@
 package it.polimi.LM39.model;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class MainBoard {
+public class MainBoard{
 
 	private Integer[][] cardsOnTheTowers = new Integer[4][4];
 	

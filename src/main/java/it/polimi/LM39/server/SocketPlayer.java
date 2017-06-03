@@ -1,4 +1,5 @@
 package it.polimi.LM39.server;
+import it.polimi.LM39.exception.SocketPlayerException;
 import it.polimi.LM39.model.MainBoard;
 
 import java.io.BufferedInputStream;
@@ -64,7 +65,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	        		}
 	        	}
 	        }catch (Exception e) {
-	            return;
+	            throw new RuntimeException(e);
 	        }
 	    }
 	    /*

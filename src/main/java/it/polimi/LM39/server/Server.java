@@ -2,6 +2,9 @@ package it.polimi.LM39.server;
 
 import java.util.*;
 
+import it.polimi.LM39.exception.FailedToInstantiateServerException;
+import it.polimi.LM39.exception.ServerStartException;
+
 /**
  * server class which starts both rmi and socket servers
  */
@@ -30,18 +33,18 @@ public class Server implements ServerInterface{
     /*
      * main which start the servers TODO: rmi
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FailedToInstantiateServerException {
      try {
             Server server = new Server();
             server.StartServer();
         } catch (Exception e) {
-            
+            throw new FailedToInstantiateServerException(e);
         }
     }
     /*
      * starts the thread
      */
-    private void StartServer(){
+    private void StartServer() throws ServerStartException{
     	System.out.println("SocketServer Creato");
     	socketServer.StartServer(SOCKET_PORT);
     }

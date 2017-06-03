@@ -420,7 +420,7 @@ public class CardHandler {
 		switch(permanentEffect.cardType){
 	    	case "Territory": i=0;
 	    		break;
-	    	case "Character": i=1;;
+	    	case "Character": i=1;
 	    		break;
 	    	case "Building": i=2;
 	    		break;

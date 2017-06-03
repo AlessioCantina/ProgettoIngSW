@@ -38,25 +38,23 @@ public class SocketClient extends AbstractClient {
     	socketIn = new ObjectInputStream(socket.getInputStream());   
     	new SocketHandler().start();
     }
-    private class SocketHandler extends Thread{
+    private class SocketHandler extends Thread {
     	
     	@Override
     	public void run() {		//output thread
     		System.out.println("started sockethandler");
-    		try {
-    			while (true){	
-    				scanner = new Scanner(System.in);
-    				System.out.println("scanner ready");
-    				//Object input = socketIn.readObject();
-    				//System.out.println(input.toString());
-    				String string = scanner.next();
-    				System.out.println(string);
+    		while (true){	
+    			scanner = new Scanner(System.in);
+    			System.out.println("scanner ready");
+    			String string = scanner.next();
+    			System.out.println(string);
+    			try {
     				socketOut.writeUTF(string);
     				socketOut.flush();
-    			}
-    		} catch (Exception e) {
-    			e.printStackTrace();
-    		} 	
+    			}catch (IOException e) {
+    				throw new RuntimeException(e);
+    			} 
+    		} 			
     	}
     }
 }

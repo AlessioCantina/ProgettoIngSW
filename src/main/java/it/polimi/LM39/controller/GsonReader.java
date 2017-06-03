@@ -1,6 +1,7 @@
 package it.polimi.LM39.controller;
 
 import it.polimi.LM39.model.characterpermanenteffect.*;
+import it.polimi.LM39.exception.*;
 import it.polimi.LM39.model.excommunicationpermanenteffect.*;
 import it.polimi.LM39.model.leaderpermanenteffect.*;
 import it.polimi.LM39.model.instanteffect.*;
@@ -32,7 +33,7 @@ public class GsonReader {
 	 * 
 	 */
 	@SuppressWarnings("rawtypes")
-	public void subEffectRegister(RuntimeTypeAdapterFactory adapter, Card cardType)	
+	public void subEffectRegister(RuntimeTypeAdapterFactory adapter, Card cardType) throws FailedToRegisterEffectException	
 	{																				
 		try{																		
 			Class[] cArg = new Class[2];
@@ -41,7 +42,7 @@ public class GsonReader {
 			Method lMethod = (this.getClass().getMethod("subEffectRegister",cArg));
 			lMethod.invoke(this,adapter,cardType);
 		}catch(Exception e){
-			throw new RuntimeException(e);}
+			throw new FailedToRegisterEffectException(e);}
 	}
 	/*
 	 * subregister for territory cards
@@ -179,7 +180,7 @@ public class GsonReader {
 	}
 	//wildcard allow us to cast the HashMap to the correct static type, we cannot do that with Card 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public HashMap<Integer,?> hashMapCreator(Card cardType) throws IOException {
+	public HashMap<Integer,?> hashMapCreator(Card cardType) throws IOException, FailedToReadFileException, FailedToRegisterEffectException {
 		//jsonreader which scans the array of cards contained in the json files. Filereader get the path using a getClass on cardType
 		 JsonReader jsonReader = new JsonReader(new FileReader("./src/main/java/it/polimi/LM39/jsonfiles/cards/" + cardType.getClass().getSimpleName() + ".json"));
 		 HashMap<Integer,?> cardHashMap;
@@ -203,7 +204,7 @@ public class GsonReader {
 					jsonReader.close();
 					return cardHashMap;
 				}catch(Exception e){
-					throw new RuntimeException(e);}					
+					throw new FailedToReadFileException(e);}					
 		 }
 
 	 }
@@ -242,7 +243,7 @@ public class GsonReader {
 		return excommunicationHashMap;
 	}
 	 @SuppressWarnings("unchecked")
-	public void fileToCard() throws IOException{
+	public void fileToCard() throws IOException, FailedToReadFileException, FailedToRegisterEffectException{
 		 Card territory = new Territory();  //objects needed to use java reflection which checks parameters types
 		 Card building = new Building();
 		 Card venture = new Venture();

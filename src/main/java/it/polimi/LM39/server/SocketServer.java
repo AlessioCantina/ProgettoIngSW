@@ -1,6 +1,7 @@
 package it.polimi.LM39.server;
 
 import java.io.IOException;
+import it.polimi.LM39.exception.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -18,12 +19,12 @@ public class SocketServer extends AbstractServer{
      * 
      */
     @Override
-    public void StartServer(Integer socketPort){
+    public void StartServer(Integer socketPort) throws ServerStartException{
     	try{
     		serverSocket = new ServerSocket(socketPort);
     		new SocketListener().start();
-    	} catch(IOException e){
-    		System.out.println(e.getMessage());
+    	} catch(Exception e){
+    		throw new ServerStartException(e);
     	}
     }
     /*
