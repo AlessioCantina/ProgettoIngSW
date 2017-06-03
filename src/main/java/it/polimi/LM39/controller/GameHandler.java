@@ -57,7 +57,7 @@ public class GameHandler {
     	Integer[] diceValues = new Integer[3];
     	for(int i=0;i<3;i++){
     	Random rand = new Random();
-    	diceValues[i] = new Integer(rand.nextInt(6) + 1);
+    	diceValues[i] = (rand.nextInt(6) + 1);
     	// There is a + 1 because rand.nextInt(6) generates number from 0 to 5 but we need from 1 to 6
     	}
     	mainBoard.setDiceValues(diceValues);    
@@ -269,7 +269,7 @@ public class GameHandler {
         				coloredFamilyMemberOnTheTower=true;
         		}
         	}
-        	if ((uncoloredFamilyMemberOnTheTower==true && coloredFamilyMemberOnTheTower==false) || (coloredFamilyMemberOnTheTower==true && (familyMember.color).equals("uncolored"))){
+        	if ((uncoloredFamilyMemberOnTheTower==true && coloredFamilyMemberOnTheTower==false) || (coloredFamilyMemberOnTheTower==true && ("uncolored").equals(familyMember.color))){
         	//if there is an uncolored family member on the tower or there is a colored one but the player uses an uncolored family member
         		if(player.resources.getCoins()>=3 && getCard(cardNumber,player,k)){
         			(familyMembersOnTheTowers[p][k].playerColor)=(familyMember.playerColor);
@@ -462,7 +462,7 @@ public class GameHandler {
     			int j=0;
     			for(i=0;i<harvestAndProductionSize;i++){
     				if((familyMembersAtProductionOrHarvest[i].playerColor).equals(familyMember.playerColor)){
-    					if((familyMembersAtProductionOrHarvest[i].color).equals("uncolored"))
+    					if(("uncolored").equals(familyMembersAtProductionOrHarvest[i].color))
     						j++;
     					else
     						j--;
@@ -538,7 +538,7 @@ public class GameHandler {
     		ArrayList<Integer> list = new ArrayList<Integer>();
 	    	for(int i=0;i<4;i++,list.clear()){
 	            for (int r=0+j; r<8+j; r++) {
-	                list.add(new Integer(r));
+	                list.add(r);
 	            }
 	            //ordering randomly the numbers on the list
 	            Collections.shuffle(list);
@@ -564,7 +564,7 @@ public class GameHandler {
 		    	    }
 		    	    //if l is not present 
 	    	    	if(alreadyOnTheBoard==false){
-	    	    		list.add(new Integer(l+j));
+	    	    		list.add(l+j);
 	    	    		p++;
 	    	    	}
     			}	
