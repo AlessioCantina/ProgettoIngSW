@@ -39,7 +39,7 @@ public class GameHandler {
 
     public ExcommunicationHandler excommunicationHandler = new ExcommunicationHandler();
 
-    public PlayerBoardHandler playerBoardHandler = new PlayerBoardHandler(this);
+    public PlayerBoardHandlerInterface playerBoardHandler = new PlayerBoardHandler(this);
 
     public CouncilHandler councilHandler = new CouncilHandler();
     

@@ -9,7 +9,7 @@ import it.polimi.LM39.model.MainBoard;
 import it.polimi.LM39.model.PersonalBoard;
 
 
-public class PlayerBoardHandler {
+public class PlayerBoardHandler implements PlayerBoardHandlerInterface{
 	private GameHandler gameHandler;
     
     public PlayerBoardHandler(GameHandler gameHandler){

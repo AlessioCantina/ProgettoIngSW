@@ -3,6 +3,7 @@ package it.polimi.LM39.controller;
 import java.io.IOException;
 import java.lang.reflect.Method;
 
+import it.polimi.LM39.controller.decorator.*;
 import it.polimi.LM39.exception.*;
 import it.polimi.LM39.model.Effect;
 import it.polimi.LM39.model.FamilyMember;
@@ -213,12 +214,11 @@ public class CardHandler {
 	public void doInstantEffect(HarvestProductionAction instantEffect,NetworkPlayer player) throws IOException, NotEnoughResourcesException{
 		//ask to the player if he wants to add servants to the action
 		Integer qtyServants = gameHandler.addServants(player);
-		PlayerBoardHandler playerBoardHandler = new PlayerBoardHandler(gameHandler);
 		//check if the effect is for harvest o production and call the correct method
 		if(instantEffect.actionType.equals("Harvest"))
-			playerBoardHandler.activateHarvest(instantEffect.actionValue + qtyServants, player);
+			gameHandler.playerBoardHandler.activateHarvest(instantEffect.actionValue + qtyServants, player);
 		else if(instantEffect.actionType.equals("Production"))
-			playerBoardHandler.activateProduction(instantEffect.actionValue + qtyServants, player);
+			gameHandler.playerBoardHandler.activateProduction(instantEffect.actionValue + qtyServants, player);
 	}
 	
 	public void doInstantEffect(HarvestProductionAndPoints instantEffect,NetworkPlayer player) throws NotEnoughPointsException, IOException, NotEnoughResourcesException{
@@ -437,13 +437,17 @@ public class CardHandler {
 		effect.discount = permanentEffect.discount;
 		activateCharacter(effect,player);
 		//need to check when a player get a card to set the discount like done for the GetDiscountedCard effect
-		//TODO (observer needed)
+		//TODO 
 	}
 	
 	public void activateCharacter(HarvestProductionBoost permanentEffect, NetworkPlayer player){
 		//need to check when a player try to do a Production or Harvest and give him the bonus
+		if(permanentEffect.actionType.equals("Harvest"))
+			gameHandler.playerBoardHandler = new HarvestBoostDecorator(gameHandler.playerBoardHandler,permanentEffect.actionValue,player);
+		else
+			gameHandler.playerBoardHandler = new ProductionBoostDecorator(gameHandler.playerBoardHandler,permanentEffect.actionValue,player);
 		//possible also modifying the personalMainBoard
-		//TODO (observer needed)
+		//TODO 
 	}
 	
 	public void activateCharacter(NoBoardBonuses permanentEffect, NetworkPlayer player){
