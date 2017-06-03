@@ -1,10 +1,6 @@
 package it.polimi.LM39.controller.decorator;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 import it.polimi.LM39.controller.GameHandler;
-import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.Building;
 import it.polimi.LM39.model.CardResources;
