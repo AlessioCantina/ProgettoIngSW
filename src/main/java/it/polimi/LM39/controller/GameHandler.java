@@ -2,7 +2,6 @@ package it.polimi.LM39.controller;
 
 import java.io.IOException;
 import java.util.*;
-
 import it.polimi.LM39.exception.CardNotFoundException;
 import it.polimi.LM39.exception.FailedToReadFileException;
 import it.polimi.LM39.exception.FailedToRegisterEffectException;
@@ -275,7 +274,7 @@ public class GameHandler {
         			(familyMembersOnTheTowers[p][k].playerColor)=(familyMember.playerColor);
 	        		(familyMembersOnTheTowers[p][k].color)=(familyMember.color);
 	        		try {
-						player.resources.setCoins(-3);
+						player.resources.setCoins(player.personalMainBoard.occupiedTowerCost);
 					} catch (NotEnoughResourcesException e) {
 						e.printStackTrace();
 						return false;
@@ -302,7 +301,7 @@ public class GameHandler {
         				(familyMembersOnTheTowers[p][k].playerColor)=(familyMember.playerColor);
             			(familyMembersOnTheTowers[p][k].color)=(familyMember.color);
     	        		try {
-							player.resources.setCoins(-3);
+							player.resources.setCoins(player.personalMainBoard.occupiedTowerCost);
 						} catch (NotEnoughResourcesException e) {
 							throw new NotEnoughResourcesException("You don't have the necessary coins!");
 						}
@@ -652,4 +651,10 @@ public class GameHandler {
     		return addServants(player);
     	}
     }
+    
+    public void removeDecoration(Class toRemove, NetworkPlayer player){
+		//if it is not a decorator
+    	if (this.getClass() == toRemove)
+			return;
+	}
 }

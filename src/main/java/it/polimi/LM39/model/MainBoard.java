@@ -18,6 +18,8 @@ public class MainBoard{
     private Integer[][] towersValue = new Integer[4][4];
     
     private ArrayList<Integer> playedLeaderCard = new ArrayList<Integer>();
+    
+    public Integer occupiedTowerCost = -3;
 
     public FamilyMembersLocation familyMembersLocation;
 

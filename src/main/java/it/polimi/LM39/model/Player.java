@@ -18,7 +18,7 @@ public class Player {
 
     public MainBoard personalMainBoard; // this is a modified version of the mainboard, should be updated every time the board gets modified
 
-    private ArrayList<String> playerPlayedLeaderCards = new ArrayList<String>();
+    private ArrayList<Integer> playerPlayedLeaderCards = new ArrayList<Integer>();
     //todo
 
     
@@ -27,7 +27,7 @@ public class Player {
     	// TODO implement here
     }
 
-    public ArrayList<String> getPlayerPlayedLeaderCards() {
+    public ArrayList<Integer> getPlayerPlayedLeaderCards() {
         return this.playerPlayedLeaderCards;
     }
 

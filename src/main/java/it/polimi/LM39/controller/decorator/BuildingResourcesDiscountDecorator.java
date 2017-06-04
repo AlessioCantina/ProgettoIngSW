@@ -75,5 +75,6 @@ public class BuildingResourcesDiscountDecorator extends GameHandler{
 	public Integer addServants(NetworkPlayer player) throws IOException, NotEnoughResourcesException{
 		return decoratedGameHandler.addServants(player);
 	}
+	
 }
 

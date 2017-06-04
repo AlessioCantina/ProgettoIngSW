@@ -8,6 +8,7 @@ import it.polimi.LM39.controller.decorator.*;
 import it.polimi.LM39.exception.*;
 import it.polimi.LM39.model.Effect;
 import it.polimi.LM39.model.FamilyMember;
+import it.polimi.LM39.model.Leader;
 import it.polimi.LM39.model.MainBoard;
 import it.polimi.LM39.model.NoEffect;
 import it.polimi.LM39.server.NetworkPlayer;
@@ -547,6 +548,65 @@ public class CardHandler {
 		Integer victoryMalus = (player.points.getVictory() / permanentEffect.victoryQty)* permanentEffect.victoryMalus;
 		player.points.setVictory(-victoryMalus);
 	}
+	
+	public void activateLeader(LeaderPermanentEffect permanentEffect,NetworkPlayer player)	
+	{
+		try{
+			Class[] cArg = new Class[2];
+	        cArg[0] = permanentEffect.getClass();
+	        cArg[1] = player.getClass();
+			Method lMethod = (this.getClass().getMethod("activateLeader",cArg));
+			lMethod.invoke(permanentEffect,player);
+		}catch(Exception e){
+			e.printStackTrace();}
+}
+	
+	public void activateLeader(AlreadyOccupiedTowerDiscount permanentEffect,NetworkPlayer player){
+		player.personalMainBoard.occupiedTowerCost = 0;
+	}
+	
+	public void activateLeader(CardCoinDiscount permanentEffect,NetworkPlayer player){
+	// TODO remember to add the overrides in the decorators if the decorator  CardCoinDiscountDecorator is used
+	gameHandler = new CardCoinDiscountDecorator(gameHandler,permanentEffect.coinQty,player);
+	}
+	
+	public void activateLeader(CopyLeaderAbility permanentEffect,NetworkPlayer player) throws CardNotFoundException{
+		//TODO control on the MainBoard the playedLeaderCard e subtract them with the player.getPlayerPlayedLeaderCards()
+		//then ask to the player what card he wants to copy and memorize it, it can't be changed
+		boolean flag = true;
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		for (Integer i : player.personalMainBoard.getPlayedLeaderCard())
+			for (Integer j : player.getPlayerPlayedLeaderCards()){
+				if(i == j)
+					flag = false;
+				list.add(i);
+				}
+		player.setMessage("What Leader do you want to copy?");
+		ArrayList<String> nameList = new ArrayList<String>();
+		for(Integer i : list){
+			player.setMessage(MainBoard.leaderMap.get(i).cardName);
+			nameList.add(MainBoard.leaderMap.get(i).cardName);
+			}
+		String response = player.sendMessage();
+		flag = false;
+		Integer cardNumber = 0;
+		for (String name : nameList)
+			if(name.equals(response)){
+				cardNumber = gameHandler.cardNameToInteger(response, player.personalMainBoard.getCardNamesOnTheTowers(), player.personalMainBoard.getCardsOnTheTowers());
+				flag = true;}
+		if(flag==false){
+			player.setMessage("You must choose a Leader Card already played by one of your opponents");
+			activateLeader(permanentEffect,player);
+			return;
+		}
+		Leader leader = MainBoard.leaderMap.get(cardNumber);
+		//TODO fix the reflection to make this work 
+		//activateLeader(leader.effect,player);
+}
+	
+	
+
+	
 	
 	
 	

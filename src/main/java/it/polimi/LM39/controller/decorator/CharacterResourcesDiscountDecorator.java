@@ -2,7 +2,6 @@ package it.polimi.LM39.controller.decorator;
 
 
 import java.io.IOException;
-
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
@@ -67,4 +66,5 @@ public class CharacterResourcesDiscountDecorator extends GameHandler{
 	public Integer addServants(NetworkPlayer player) throws IOException, NotEnoughResourcesException{
 		return decoratedGameHandler.addServants(player);
 	}
+
 }

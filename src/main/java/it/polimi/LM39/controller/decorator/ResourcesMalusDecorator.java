@@ -30,11 +30,11 @@ public class ResourcesMalusDecorator  extends GameHandler{
 	public void addCardResources (CardResources resources, NetworkPlayer player) throws NotEnoughResourcesException{
 		if(this.player == player){
 			PlayerResources playerResources = player.resources;
-			//if the player is receiving more resources than the malus give him resources - malus if not give him nothing
 			if(resources.woods>0 && resources.stones>0){
-				player.setMessage("Do you want to have your malus on woods or stones?");
+				player.setMessage("Do you want to have your Excommunication malus on woods or stones?");
 				String response = player.sendMessage();
 				if(("woods").equals(response)) {
+					//if the player is receiving more resources than the malus give him resources - malus if not give him nothing
 					if(resources.woods>=resourcesMalus.woods)
 						playerResources.setWoods(resources.woods - resourcesMalus.woods);
 					playerResources.setStones(resources.stones);
@@ -47,6 +47,7 @@ public class ResourcesMalusDecorator  extends GameHandler{
 				else{
 					player.setMessage("You must choose between woods and stones");
 					decoratedGameHandler.addCardResources(resources,player);
+					return;
 				}
 			}
 			else{
