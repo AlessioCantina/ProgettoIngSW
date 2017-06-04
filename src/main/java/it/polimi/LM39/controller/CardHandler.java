@@ -1,6 +1,7 @@
 package it.polimi.LM39.controller;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
@@ -32,17 +33,13 @@ public class CardHandler {
 	}
 	
 	
- void doInstantEffect(Effect instantEffect,NetworkPlayer player)	
-		{									
-			try{
-				Class[] cArg = new Class[2];
-		        cArg[0] = instantEffect.getClass();
-		        cArg[1] = player.getClass();
-				Method lMethod = (this.getClass().getMethod("doInstantEffect",cArg));
-				lMethod.invoke(instantEffect,player);
-			}catch(Exception e){
-				e.printStackTrace();}
-			}
+ void doInstantEffect(Effect instantEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
+	 Class[] cArg = new Class[2];
+	 cArg[0] = instantEffect.getClass();
+	 cArg[1] = player.getClass();
+	 Method lMethod = (this.getClass().getMethod("doInstantEffect",cArg));
+	 lMethod.invoke(instantEffect,player);
+ }
 	
  	public void doInstantEffect(CoinForCard instantEffect,NetworkPlayer player) throws NotEnoughResourcesException{
 		//calculate the coin to receive by multiplying the possessed cards of a specific type by the coin quantity given by card
@@ -315,18 +312,12 @@ public class CardHandler {
 	
 	
 	
-	public boolean checkLeaderRequestedObject(LeaderRequestedObjects requestedObject,NetworkPlayer player)	
-		{	
-			boolean flag = false;
-			try{
-				Class[] cArg = new Class[2];
-		        cArg[0] = requestedObject.getClass();
-		        cArg[1] = player.getClass();
-				Method lMethod = (this.getClass().getMethod("checkLeaderRequestedObject",cArg));
-				flag = (boolean)lMethod.invoke(requestedObject,player);
-			}catch(Exception e){
-				e.printStackTrace();}
-		return flag;
+	public boolean checkLeaderRequestedObject(LeaderRequestedObjects requestedObject,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{	
+		Class[] cArg = new Class[2];
+		cArg[0] = requestedObject.getClass();
+		cArg[1] = player.getClass();
+		Method lMethod = (this.getClass().getMethod("checkLeaderRequestedObject",cArg));
+		return (boolean)lMethod.invoke(requestedObject,player);
 	}
 	
 	public boolean checkLeaderRequestedObject(RequestedCard requestedObject,NetworkPlayer player){
@@ -372,7 +363,8 @@ public class CardHandler {
 	}
 	
 	public boolean checkLeaderRequestedObject(RequestedSameCard requestedObject,NetworkPlayer player){
-		boolean flag=false;
+		//flag is false by default
+		boolean flag;
 		RequestedCard requestedCard = new RequestedCard();
 		requestedCard.cardQty = requestedObject.cardQty;
 		//check if the player has enough card of any type
@@ -387,8 +379,8 @@ public class CardHandler {
 	}
 		
 	public boolean checkLeaderRequestedObject(RequestedTwoCards requestedObject,NetworkPlayer player){
-		boolean flag1 = false;
-		boolean flag2 = false;
+		//flag1 and flag2 are false by default
+		boolean flag1,flag2;;
 		RequestedCard requestedCard = new RequestedCard();
 		//check the first condition on the requeted cards
 		requestedCard.cardQty=requestedObject.cardQty;
@@ -404,16 +396,12 @@ public class CardHandler {
 		
 		
 	
-	void activateCharacter(Effect permanentEffect,NetworkPlayer player)	
-	{									
-		try{
-			Class[] cArg = new Class[2];
-	        cArg[0] = permanentEffect.getClass();
-	        cArg[1] = player.getClass();
-			Method lMethod = (this.getClass().getMethod("activateCharacter",cArg));
-			lMethod.invoke(permanentEffect,player);
-		}catch(Exception e){
-			e.printStackTrace();}
+	void activateCharacter(Effect permanentEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{									
+		Class[] cArg = new Class[2];
+	    cArg[0] = permanentEffect.getClass();
+	    cArg[1] = player.getClass();
+		Method lMethod = (this.getClass().getMethod("activateCharacter",cArg));
+		lMethod.invoke(permanentEffect,player);
 		}
 	
 	public void activateCharacter(CardActionDiscount permanentEffect, NetworkPlayer player){
@@ -466,16 +454,12 @@ public class CardHandler {
 		
 	
 		
-	public void activateExcommunication(ExcommunicationPermanentEffect permanentEffect,NetworkPlayer player)	
-	{
-		try{
-			Class[] cArg = new Class[2];
-	        cArg[0] = permanentEffect.getClass();
-	        cArg[1] = player.getClass();
-			Method lMethod = (this.getClass().getMethod("activateExcommunication",cArg));
-			lMethod.invoke(permanentEffect,player);
-		}catch(Exception e){
-			e.printStackTrace();}
+	public void activateExcommunication(ExcommunicationPermanentEffect permanentEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
+		Class[] cArg = new Class[2];
+	    cArg[0] = permanentEffect.getClass();
+	    cArg[1] = player.getClass();
+		Method lMethod = (this.getClass().getMethod("activateExcommunication",cArg));
+		lMethod.invoke(permanentEffect,player);
 }
 	
 	public void activateExcommunication(CardActionMalus permanentEffect,NetworkPlayer player){
@@ -549,16 +533,12 @@ public class CardHandler {
 		player.points.setVictory(-victoryMalus);
 	}
 	
-	public void activateLeader(LeaderPermanentEffect permanentEffect,NetworkPlayer player)	
-	{
-		try{
-			Class[] cArg = new Class[2];
-	        cArg[0] = permanentEffect.getClass();
-	        cArg[1] = player.getClass();
-			Method lMethod = (this.getClass().getMethod("activateLeader",cArg));
-			lMethod.invoke(permanentEffect,player);
-		}catch(Exception e){
-			e.printStackTrace();}
+	public void activateLeader(LeaderPermanentEffect permanentEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
+		Class[] cArg = new Class[2];
+	    cArg[0] = permanentEffect.getClass();
+	    cArg[1] = player.getClass();
+		Method lMethod = (this.getClass().getMethod("activateLeader",cArg));
+		lMethod.invoke(permanentEffect,player);
 }
 	
 	public void activateLeader(AlreadyOccupiedTowerDiscount permanentEffect,NetworkPlayer player){
@@ -575,12 +555,15 @@ public class CardHandler {
 		//then ask to the player what card he wants to copy and memorize it, it can't be changed
 		boolean flag = true;
 		ArrayList<Integer> list = new ArrayList<Integer>();
-		for (Integer i : player.personalMainBoard.getPlayedLeaderCard())
+		for (Integer i : player.personalMainBoard.getPlayedLeaderCard()){
 			for (Integer j : player.getPlayerPlayedLeaderCards()){
 				if(i == j)
 					flag = false;
-				list.add(i);
 				}
+		if(flag==true)
+			list.add(i);
+		flag=true;
+		}
 		player.setMessage("What Leader do you want to copy?");
 		ArrayList<String> nameList = new ArrayList<String>();
 		for(Integer i : list){

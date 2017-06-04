@@ -399,24 +399,15 @@ public class GameHandler {
         	(familyMembersAtTheMarket[position].color) = (familyMember.color);
         	(familyMembersAtTheMarket[position].playerColor) = (familyMember.playerColor);
         	switch(position){
-	        	case 1: try {
+	        	case 1: 
 					player.resources.setCoins(5);
-				} catch (NotEnoughResourcesException e) {
-					e.printStackTrace();
-				}
 	        		break;
-	        	case 2: try {
+	        	case 2: 
 					player.resources.setServants(5);
-				} catch (NotEnoughResourcesException e) {
-					e.printStackTrace();
-				}
-	        		break;
-	        	case 3: try {
+					break;
+	        	case 3: 
 					player.resources.setCoins(2);
 					player.points.setMilitary(3);
-				} catch (NotEnoughResourcesException | NotEnoughPointsException e) {
-					e.printStackTrace();
-				}
 	    			break;
 	        	case 4: ArrayList<Integer> list = new ArrayList<Integer>();
 	        			councilHandler.getCouncil(1,player,this,list);
@@ -434,7 +425,8 @@ public class GameHandler {
     
     public boolean addFamilyMemberToProductionOrHarvest(FamilyMember familyMember, FamilyMember[] familyMembersAtProductionOrHarvest, String actionType,NetworkPlayer player) throws IOException {
     	int i;
-    	boolean doAction = false;
+    	//doAction is false by default
+    	boolean doAction;
     	//to know if the action Harvest or Production can be done
     	Integer penalty=3;
     	//penalty in case of first slot already occupied
@@ -534,7 +526,7 @@ public class GameHandler {
     }
     
     public void loadCardsOnTheMainBoard(){
-    	int j = 0;
+    	int j;
     	Integer[][] cardsOnTheTowers = mainBoard.getCardsOnTheTowers();
     	//checking the period to load the correct cards, we are using integers because
     	//the cards on the hashmaps use an integer as a key
@@ -564,10 +556,9 @@ public class GameHandler {
     	}
     	//if it is the second round of a period, we load the four remaining cards for this period
     	else{
-    		int l=0;
-    		int k=0;
-    		int p=0;
-    		boolean alreadyOnTheBoard = false;
+    		int l,p,k;
+    		//alreadyOnTheBoard is false by default
+    		boolean alreadyOnTheBoard ;
     		ArrayList<Integer> list = new ArrayList<Integer>();
     		for(int i=0;i<4;i++,list.clear()){
     			//checking if a number l generated in the range of possible values 
