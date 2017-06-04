@@ -3,8 +3,8 @@ package it.polimi.LM39.model;
 
 public class ActionBonus {
 
-	public PlayerResources resources;
+	public CardResources resources;
 
-	public PlayerPoints points;
+	public CardPoints points;
 
 }

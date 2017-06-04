@@ -16,7 +16,7 @@ public class MalusForResourcesCost extends ExcommunicationPermanentEffect {
     /**
      * 
      */
-    public CardResources resources;
+    public Integer resourceQty;
 
     /**
      * 

@@ -2,6 +2,7 @@ package it.polimi.LM39.controller;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 import it.polimi.LM39.controller.decorator.*;
 import it.polimi.LM39.exception.*;
@@ -499,9 +500,35 @@ public class CardHandler {
 	}
 	
 	public void activateExcommunication(MalusForResources permanentEffect,NetworkPlayer player){
-		//TODO
+		//the game rule : "Each time you receive wood or stone (from action spaces or from your Cards)..."
+		//we do not set the malus on the Council Favor
+		gameHandler = new MalusForResourcesDecorator(gameHandler,permanentEffect.resources,player);
 	}
 	
+	public void activateExcommunication(MalusForResourcesCost permanentEffect,NetworkPlayer player){
+		//the game rule : "At the end of the game, you lose 1 Victory Point for every wood and stone on your Building Cards’ costs."
+		ArrayList<Integer> buildings = player.personalBoard.getPossessions("Building");
+		Integer victoryMalus = 0;
+		for (Integer i : buildings)
+			victoryMalus=MainBoard.buildingMap.get(i).costResources.woods + MainBoard.buildingMap.get(i).costResources.stones;
+		victoryMalus = (victoryMalus / permanentEffect.resourceQty)* permanentEffect.victoryQty;
+		if (player.points.getVictory() >= victoryMalus)
+			player.points.setVictory(-victoryMalus);
+		else
+			player.points.setVictory(0);
+	}
+	
+	public void activateExcommunication(MalusVictoryForMilitary permanentEffect,NetworkPlayer player){
+		Integer victoryMalus = (player.points.getMilitary() / permanentEffect.militaryQty)* permanentEffect.victoryQty;
+		if (player.points.getVictory() >= victoryMalus)
+			player.points.setVictory(-victoryMalus);
+		else
+			player.points.setVictory(0);
+	}
+	
+	public void activateExcommunication(NoMarket permanentEffect,NetworkPlayer player){
+		gameHandler = new NoMarketDecorator(gameHandler,player);
+	}
 	
 	
 	

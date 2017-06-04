@@ -325,14 +325,16 @@ public class GameHandler {
     
     public void setTowerBonus(ActionBonus towerBonus,NetworkPlayer player) throws NotEnoughResourcesException{
     	try {
-			addPlayerResources(towerBonus.resources,player);
-			addPlayerPoints(towerBonus.points,player);
+    		addCardResources(towerBonus.resources,player);
+    		addCardPoints(towerBonus.points,player);
 		} catch (NotEnoughResourcesException | NotEnoughPointsException e) {
 			throw new NotEnoughResourcesException("You don't have the necessary resources or points!");
 		}
     	
     }
     
+    //probably useless method
+    /*
     public void addPlayerResources (PlayerResources resources, NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
     	PlayerResources playerResources = player.resources;
     	playerResources.setCoins(resources.getCoins());
@@ -343,6 +345,20 @@ public class GameHandler {
     	councilHandler.getCouncil(resources.getCouncil(),player,this,list);
     	player.resources=playerResources;
     }
+    */
+    
+    //probably useless method
+    /*
+    public void addPlayerPoints (PlayerPoints points, NetworkPlayer player) throws NotEnoughPointsException{
+    	PlayerPoints playerPoints = player.points;
+    	playerPoints.setFaith(points.getFaith());
+    	playerPoints.setFaith(points.getVictory());
+    	playerPoints.setFinalVictory(points.getFinalVictory());
+    	playerPoints.setMilitary(points.getMilitary());
+    	player.points=playerPoints;
+    }
+    */
+    
     
     public void subCardResources (CardResources resources, NetworkPlayer player) throws NotEnoughResourcesException{
     	PlayerResources playerResources = player.resources;
@@ -362,15 +378,6 @@ public class GameHandler {
     	player.resources=playerResources;
     }
     
-    public void addPlayerPoints (PlayerPoints points, NetworkPlayer player) throws NotEnoughPointsException{
-    	PlayerPoints playerPoints = player.points;
-    	playerPoints.setFaith(points.getFaith());
-    	playerPoints.setFaith(points.getVictory());
-    	playerPoints.setFinalVictory(points.getFinalVictory());
-    	playerPoints.setMilitary(points.getMilitary());
-    	player.points=playerPoints;
-    }
-    
     public void subCardPoints (CardPoints points, NetworkPlayer player) throws NotEnoughPointsException{
     	PlayerPoints playerPoints = player.points;
     	playerPoints.setFaith(-points.faith);
@@ -387,7 +394,7 @@ public class GameHandler {
     	player.points=playerPoints;
     }
 
-    public void addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException {
+    public boolean addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException {
     	FamilyMember[] familyMembersAtTheMarket = player.personalMainBoard.getFamilyMembersLocation().getFamilyMembersOnTheMarket(); // we use the player Personal MainBaord
         if(familyMembersAtTheMarket[position] == null && position<=marketSize){
         	(familyMembersAtTheMarket[position].color) = (familyMember.color);
@@ -416,15 +423,17 @@ public class GameHandler {
 	        			councilHandler.getCouncil(1,player,this,list);
 	        		break;
 	        	default: player.setMessage("Invalid position! the position must be between 1 and 4");
-	        		break;
+	        			 return false;
         	}
         }
         else {
         	player.setMessage("This place is occupied or not usable if two player game");
+        	return false;
         }
+        return true;
     }
     
-    public void addFamilyMemberToProductionOrHarvest(FamilyMember familyMember, FamilyMember[] familyMembersAtProductionOrHarvest, String actionType,NetworkPlayer player) throws IOException {
+    public boolean addFamilyMemberToProductionOrHarvest(FamilyMember familyMember, FamilyMember[] familyMembersAtProductionOrHarvest, String actionType,NetworkPlayer player) throws IOException {
     	int i;
     	boolean doAction = false;
     	//to know if the action Harvest or Production can be done
@@ -454,6 +463,7 @@ public class GameHandler {
     			else {
     				//this happens only in matches of 2 players
     				player.setMessage("The production area is full!");
+    				return false;
     			}
     		}
     		
@@ -468,9 +478,11 @@ public class GameHandler {
     						j--;
     					}
     			}
-    			if(j==0)
+    			if(j==0){
     				//if there are already two of my family members
     				player.setMessage("You can't place another family member");
+    				return false;
+    			}	
     			for(i=0;familyMembersAtProductionOrHarvest[i]!=null && i<harvestAndProductionSize;i++);
     			//move i to the first free slot
     			if(j==-1){
@@ -479,9 +491,11 @@ public class GameHandler {
     					familyMembersAtProductionOrHarvest[i].color=familyMember.color;
     		    		familyMembersAtProductionOrHarvest[i].playerColor=familyMember.playerColor;
 		    			doAction=true;}
-    				else
+    				else{
     					player.setMessage("You can place just one uncolored family member");
+    					return false;
     				}
+    			}
     			else {
     				//if there is an uncolored family member
     				familyMembersAtProductionOrHarvest[i].color=familyMember.color;
@@ -494,11 +508,13 @@ public class GameHandler {
 	    			playerBoardHandler.activateHarvest(player.personalMainBoard.getDiceValues()[familyMemberColorToDiceValue(familyMember.color,player)]-penalty,player); // we use the player Personal MainBaord
 	    		if(actionType=="Harvest")
 	    			playerBoardHandler.activateHarvest(player.personalMainBoard.getDiceValues()[familyMemberColorToDiceValue(familyMember.color,player)]-penalty,player); // we use the player Personal MainBaord
-	    		else
+	    		else{
 	    			player.setMessage("Invalid action it must be Production or Harvest");
+	    			return false;
+	    		}
     		}
-    			
-    		}
+    		return true;
+    	}
 
     public void initializeTheGame() throws FailedToReadFileException, FailedToRegisterEffectException {
     	playerBoardHandler.setGameHandler(this);
@@ -615,6 +631,7 @@ public class GameHandler {
     public Integer calculateFinalPoints(NetworkPlayer player,MainBoard mainBoard) {
         // TODO implement here
     	//remember of excommunications!
+    	//NoVictoryForCard
         return null; //prevent error
     }
 
