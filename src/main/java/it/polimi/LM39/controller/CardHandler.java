@@ -500,9 +500,7 @@ public class CardHandler {
 	}
 	
 	public void activateExcommunication(MalusForResources permanentEffect,NetworkPlayer player){
-		//the game rule : "Each time you receive wood or stone (from action spaces or from your Cards)..."
-		//we do not set the malus on the Council Favor
-		gameHandler = new MalusForResourcesDecorator(gameHandler,permanentEffect.resources,player);
+		
 	}
 	
 	public void activateExcommunication(MalusForResourcesCost permanentEffect,NetworkPlayer player){
@@ -529,6 +527,21 @@ public class CardHandler {
 	public void activateExcommunication(NoMarket permanentEffect,NetworkPlayer player){
 		gameHandler = new NoMarketDecorator(gameHandler,player);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public void activateExcommunication(ResourcesMalus permanentEffect,NetworkPlayer player){
+		//the game rule : "Each time you receive wood or stone (from action spaces or from your Cards)..."
+		//we do not set the malus on the Council Favor
+		gameHandler = new ResourcesMalusDecorator(gameHandler,permanentEffect.resources,player);
+	}
+	
 	
 	
 	

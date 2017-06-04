@@ -13,13 +13,13 @@ import it.polimi.LM39.model.PlayerResources;
 import it.polimi.LM39.model.Venture;
 import it.polimi.LM39.server.NetworkPlayer;
 
-public class MalusForResourcesDecorator  extends GameHandler{
+public class ResourcesMalusDecorator  extends GameHandler{
 
 	private GameHandler decoratedGameHandler;
 	private CardResources resourcesMalus;
 	private NetworkPlayer player;
 	
-	public MalusForResourcesDecorator (GameHandler decoratedGameHandler, CardResources resourcesMalus, NetworkPlayer player) {
+	public ResourcesMalusDecorator (GameHandler decoratedGameHandler, CardResources resourcesMalus, NetworkPlayer player) {
 		this.decoratedGameHandler = decoratedGameHandler;
 		this.resourcesMalus = resourcesMalus;
 		this.player = player;
