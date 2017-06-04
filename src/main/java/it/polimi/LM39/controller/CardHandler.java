@@ -500,11 +500,14 @@ public class CardHandler {
 	}
 	
 	public void activateExcommunication(MalusForResources permanentEffect,NetworkPlayer player){
-		
+		Integer victoryMalus = ((player.resources.getCoins() + player.resources.getWoods() + player.resources.getStones() + player.resources.getServants()) / permanentEffect.resourceQty)* permanentEffect.victoryQty;
+		if (player.points.getVictory() >= victoryMalus)
+			player.points.setVictory(-victoryMalus);
+		else
+			player.points.setVictory(0);
 	}
 	
 	public void activateExcommunication(MalusForResourcesCost permanentEffect,NetworkPlayer player){
-		//the game rule : "At the end of the game, you lose 1 Victory Point for every wood and stone on your Building Cards’ costs."
 		ArrayList<Integer> buildings = player.personalBoard.getPossessions("Building");
 		Integer victoryMalus = 0;
 		for (Integer i : buildings)
@@ -524,22 +527,25 @@ public class CardHandler {
 			player.points.setVictory(0);
 	}
 	
+	public void activateExcommunication(MilitaryPointsMalus permanentEffect,NetworkPlayer player){
+		gameHandler = new MilitaryPointsMalusDecorator(gameHandler,permanentEffect.militaryQty ,player);
+	}
+	
 	public void activateExcommunication(NoMarket permanentEffect,NetworkPlayer player){
 		gameHandler = new NoMarketDecorator(gameHandler,player);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
 	public void activateExcommunication(ResourcesMalus permanentEffect,NetworkPlayer player){
-		//the game rule : "Each time you receive wood or stone (from action spaces or from your Cards)..."
-		//we do not set the malus on the Council Favor
 		gameHandler = new ResourcesMalusDecorator(gameHandler,permanentEffect.resources,player);
+	}
+	
+	public void activateExcommunication(ServantsMalus permanentEffect,NetworkPlayer player){
+		gameHandler = new ServantsMalusDecorator(gameHandler,permanentEffect.servantsQty,player);
+	}
+	
+	public void activateExcommunication(VictoryMalus permanentEffect,NetworkPlayer player){
+		Integer victoryMalus = (player.points.getVictory() / permanentEffect.victoryQty)* permanentEffect.victoryMalus;
+		player.points.setVictory(-victoryMalus);
 	}
 	
 	

@@ -160,7 +160,7 @@ public class GsonReader {
 		adapter.registerSubtype(MalusVictoryForMilitary.class);
 		adapter.registerSubtype(NoMarket.class);
 		adapter.registerSubtype(NoVictoryForCard.class);
-		adapter.registerSubtype(PointsMalus.class);
+		adapter.registerSubtype(MilitaryPointsMalus.class);
 		adapter.registerSubtype(ResourcesMalus.class);
 		adapter.registerSubtype(ServantsMalus.class);
 		adapter.registerSubtype(SkipFirstTurn.class);

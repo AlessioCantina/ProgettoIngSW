@@ -645,7 +645,11 @@ public class GameHandler {
     		player.resources.setServants(-qty);
     		return qty;
     	}
-    	else
+    	else if (("no").equals(response))
     		return 0;
+    	else{
+    		player.setMessage("The answer must be yes or no");
+    		return addServants(player);
+    	}
     }
 }

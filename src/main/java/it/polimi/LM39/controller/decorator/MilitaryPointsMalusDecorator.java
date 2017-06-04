@@ -1,6 +1,5 @@
 package it.polimi.LM39.controller.decorator;
 
-
 import java.io.IOException;
 
 import it.polimi.LM39.controller.GameHandler;
@@ -11,41 +10,34 @@ import it.polimi.LM39.model.CardPoints;
 import it.polimi.LM39.model.CardResources;
 import it.polimi.LM39.model.Character;
 import it.polimi.LM39.model.FamilyMember;
+import it.polimi.LM39.model.PlayerPoints;
 import it.polimi.LM39.model.Venture;
 import it.polimi.LM39.server.NetworkPlayer;
 
-public class CharacterResourcesDiscountDecorator extends GameHandler{
+public class MilitaryPointsMalusDecorator extends GameHandler{
 
 	private GameHandler decoratedGameHandler;
-	private CardResources resourcesDiscount;
+	private Integer militaryMalus;
 	private NetworkPlayer player;
 	
-	public CharacterResourcesDiscountDecorator (GameHandler decoratedGameHandler, CardResources resourcesDiscount, NetworkPlayer player) {
+	public MilitaryPointsMalusDecorator (GameHandler decoratedGameHandler, Integer militaryMalus, NetworkPlayer player) {
 		this.decoratedGameHandler = decoratedGameHandler;
-		this.resourcesDiscount = resourcesDiscount;
+		this.militaryMalus = militaryMalus;
 		this.player = player;
 	}
 	
-	
 	@Override
-	public void coinsForCharacter(NetworkPlayer player ,Character character) throws NotEnoughResourcesException{
+	public void addCardPoints (CardPoints points, NetworkPlayer player) throws NotEnoughPointsException{
 		if(this.player == player){
-		if(character.costCoins>=resourcesDiscount.coins)
-			player.resources.setCoins(-character.costCoins + resourcesDiscount.coins);
-		//if the card cost is lower than the bonus no cost are applied to the player
-		}
-		//if the bonus is not for the player that is now using this method
-		decoratedGameHandler.coinsForCharacter(player,character);
-	}
-	
-	@Override
-	public void resourcesForBuilding(NetworkPlayer player, Building building) throws NotEnoughResourcesException{
-		decoratedGameHandler.resourcesForBuilding(player,building);
-	}
-	
-	@Override
-	 public void resourcesForVenture(NetworkPlayer player ,Venture venture) throws NotEnoughResourcesException{
-		decoratedGameHandler.resourcesForVenture(player,venture);
+			PlayerPoints playerPoints = player.points;
+	    	playerPoints.setFaith(points.faith);
+	    	playerPoints.setFaith(points.victory);
+	    	if (points.military >= militaryMalus)
+	    		playerPoints.setMilitary(points.military - militaryMalus);
+	    	player.points=playerPoints;
+	    }
+		else
+			decoratedGameHandler.addCardPoints(points, player);
 	}
 	
 	@Override
@@ -54,13 +46,23 @@ public class CharacterResourcesDiscountDecorator extends GameHandler{
 	}
 	
 	@Override
-	public boolean addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException {
-		return decoratedGameHandler.addFamilyMemberToTheMarket(familyMember, position, player);
+	public void coinsForCharacter(NetworkPlayer player ,Character character) throws NotEnoughResourcesException{
+		decoratedGameHandler.coinsForCharacter(player,character);
+	}
+		
+	@Override
+	public void resourcesForBuilding(NetworkPlayer player, Building building) throws NotEnoughResourcesException{
+		decoratedGameHandler.resourcesForBuilding(player,building);
+	}
+		
+	@Override
+	public void resourcesForVenture(NetworkPlayer player ,Venture venture) throws NotEnoughResourcesException{
+		decoratedGameHandler.resourcesForVenture(player,venture);
 	}
 	
 	@Override
-	public void addCardPoints (CardPoints points, NetworkPlayer player) throws NotEnoughPointsException{
-		decoratedGameHandler.addCardPoints(points, player);
+	public boolean addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException {
+		return decoratedGameHandler.addFamilyMemberToTheMarket(familyMember, position, player);
 	}
 	
 	@Override

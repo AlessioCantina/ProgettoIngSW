@@ -6,6 +6,7 @@ import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.Building;
+import it.polimi.LM39.model.CardPoints;
 import it.polimi.LM39.model.CardResources;
 import it.polimi.LM39.model.Character;
 import it.polimi.LM39.model.FamilyMember;
@@ -30,14 +31,32 @@ public class ResourcesMalusDecorator  extends GameHandler{
 		if(this.player == player){
 			PlayerResources playerResources = player.resources;
 			//if the player is receiving more resources than the malus give him resources - malus if not give him nothing
+			if(resources.woods>0 && resources.stones>0){
+				player.setMessage("Do you want to have your malus on woods or stones?");
+				String response = player.sendMessage();
+				if(("woods").equals(response)) {
+					if(resources.woods>=resourcesMalus.woods)
+						playerResources.setWoods(resources.woods - resourcesMalus.woods);
+					playerResources.setStones(resources.stones);
+				}
+				else if(("stones").equals(response)) { 
+						if(resources.stones>=resourcesMalus.stones)
+							playerResources.setStones(resources.stones - resourcesMalus.stones);
+						playerResources.setWoods(resources.woods);
+				}
+				else{
+					player.setMessage("You must choose between woods and stones");
+					decoratedGameHandler.addCardResources(resources,player);
+				}
+			}
+			else{
+				playerResources.setWoods(resources.woods - resourcesMalus.woods);
+				playerResources.setStones(resources.stones - resourcesMalus.stones);
+			}
 			if(resources.coins>=resourcesMalus.coins)
 				playerResources.setCoins(resources.coins - resourcesMalus.coins);
-			if(resources.woods>=resourcesMalus.woods)
-				playerResources.setWoods(resources.woods - resourcesMalus.woods);
-			if(resources.stones>=resourcesMalus.stones)
-				playerResources.setWoods(resources.stones - resourcesMalus.stones);
 			if(resources.servants>=resourcesMalus.servants)
-				playerResources.setWoods(resources.servants - resourcesMalus.servants);
+				playerResources.setServants(resources.servants - resourcesMalus.servants);	
 			player.resources=playerResources;
 		 }
 		 else
@@ -63,5 +82,15 @@ public class ResourcesMalusDecorator  extends GameHandler{
 	@Override
 	public boolean addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException {
 		return decoratedGameHandler.addFamilyMemberToTheMarket(familyMember, position, player);
+	}
+	
+	@Override
+	public void addCardPoints (CardPoints points, NetworkPlayer player) throws NotEnoughPointsException{
+		decoratedGameHandler.addCardPoints(points, player);
+	}
+	
+	@Override
+	public Integer addServants(NetworkPlayer player) throws IOException, NotEnoughResourcesException{
+		return decoratedGameHandler.addServants(player);
 	}
 }

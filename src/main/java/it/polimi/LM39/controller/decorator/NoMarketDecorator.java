@@ -6,6 +6,7 @@ import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.Building;
+import it.polimi.LM39.model.CardPoints;
 import it.polimi.LM39.model.CardResources;
 import it.polimi.LM39.model.Character;
 import it.polimi.LM39.model.FamilyMember;
@@ -51,5 +52,15 @@ public class NoMarketDecorator extends GameHandler{
 	@Override
 	public void coinsForCharacter(NetworkPlayer player ,Character character) throws NotEnoughResourcesException{
 		decoratedGameHandler.coinsForCharacter(player,character);
+	}
+	
+	@Override
+	public void addCardPoints (CardPoints points, NetworkPlayer player) throws NotEnoughPointsException{
+		decoratedGameHandler.addCardPoints(points, player);
+	}
+	
+	@Override
+	public Integer addServants(NetworkPlayer player) throws IOException, NotEnoughResourcesException{
+		return decoratedGameHandler.addServants(player);
 	}
 }
