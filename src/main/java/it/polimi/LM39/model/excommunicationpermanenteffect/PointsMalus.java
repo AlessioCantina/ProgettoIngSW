@@ -1,6 +1,5 @@
 package it.polimi.LM39.model.excommunicationpermanenteffect;
 
-import it.polimi.LM39.model.CardPoints;
 
 /**
  * 
@@ -8,7 +7,7 @@ import it.polimi.LM39.model.CardPoints;
 public class PointsMalus extends ExcommunicationPermanentEffect {
 
 	/*
-	 * Each time you gain Military Points (from action spaces or from your Cards), gain 1 fewer Military Point.
+	 * Each time you gain Military Points (from action spaces or from your Cards), gain *militaryQty* fewer Military Point.
 	 */
     /**
      * Default constructor
@@ -19,6 +18,7 @@ public class PointsMalus extends ExcommunicationPermanentEffect {
     /**
      * 
      */
-    public CardPoints points;
+    
+    public Integer militaryQty;
 
 }

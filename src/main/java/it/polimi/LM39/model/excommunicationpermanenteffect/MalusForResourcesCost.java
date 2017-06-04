@@ -1,6 +1,5 @@
 package it.polimi.LM39.model.excommunicationpermanenteffect;
 
-import it.polimi.LM39.model.CardResources;
 
 /**
  * 
@@ -8,7 +7,7 @@ import it.polimi.LM39.model.CardResources;
 public class MalusForResourcesCost extends ExcommunicationPermanentEffect {
 
     /**
-     * Default constructor
+     * At the end of the game, you lose *victoryQty* Victory Point for *resourceQty* wood and stone on your Building Cards’ costs.
      */
     public MalusForResourcesCost() {
     }

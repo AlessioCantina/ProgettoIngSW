@@ -11,11 +11,7 @@
          "period":1,
          "effect":{  
             "type":"PointsMalus",
-            "points":{  
-               "victory":0,
-               "faith":0,
-               "military":1
-            }
+            "militaryQty":1
          }
       },
       {  
@@ -75,7 +71,7 @@
       {  
          "period":2,
          "effect":{  
-            "type":"NoEffect"
+            "type":"NoMarket"
          }
       },
       {  
@@ -87,7 +83,8 @@
       {  
          "period":2,
          "effect":{  
-            "type":"ServantsMalus"
+            "type":"ServantsMalus",
+            "servantsQty":2
          }
       },
       {  
@@ -133,13 +130,8 @@
          "period":3,
          "effect":{  
             "type":"MalusForResources",
-            "resources":{
-                "woods":1,
-                "stones":1,
-                "servants":1,
-                "coins":1,
-                "council":0
-            }
+            "resourceQty":1,
+            "victoryQty":1
          }
       },
       {  
@@ -153,7 +145,8 @@
          "period":3,
          "effect":{  
             "type":"VictoryMalus",
-            "victoryQty":5
+            "victoryQty":5,
+            "victoryMalus":1
          }
       },
       {  
