@@ -29,9 +29,13 @@ public class CharacterResourcesDiscountDecorator extends GameHandler{
 	@Override
 	public void coinsForCharacter(NetworkPlayer player ,Character character) throws NotEnoughResourcesException{
 		if(this.player == player){
-		if(character.costCoins>=resourcesDiscount.coins)
-			player.resources.setCoins(-character.costCoins + resourcesDiscount.coins);
-		//if the card cost is lower than the bonus no cost are applied to the player
+			Character character2 = new Character();
+			if(character.costCoins>=resourcesDiscount.coins)
+				character2.costCoins -= resourcesDiscount.coins;
+			else
+				character2.costCoins = 0;
+			decoratedGameHandler.coinsForCharacter(player,character2);
+			//if the card cost is lower than the bonus no cost are applied to the player
 		}
 		//if the bonus is not for the player that is now using this method
 		decoratedGameHandler.coinsForCharacter(player,character);

@@ -32,10 +32,14 @@ public class CardCoinDiscountDecorator extends GameHandler{
 			CardResources resources = new CardResources();
     		if(building.costResources.coins>=coinDiscount)
     			resources.coins= building.costResources.coins - coinDiscount;
+    		else
+    			resources.coins = 0;
     		resources.stones= building.costResources.stones;
     		resources.woods= building.costResources.woods;
     		resources.servants= building.costResources.servants;
-			subCardResources(resources,player);
+    		Building building2 = new Building();
+			building.costResources = resources;
+			decoratedGameHandler.resourcesForBuilding(player,building2);
 		}
 		//if the bonus is not for the player that is now using this method
 		decoratedGameHandler.resourcesForBuilding(player,building);
@@ -44,8 +48,12 @@ public class CardCoinDiscountDecorator extends GameHandler{
 	@Override
 	public void coinsForCharacter(NetworkPlayer player ,Character character) throws NotEnoughResourcesException{
 		if(this.player == player){
-		if(character.costCoins>=coinDiscount)
-			player.resources.setCoins(-character.costCoins + coinDiscount);
+			Character character2 = new Character();
+			if(character.costCoins>=coinDiscount)
+				character2.costCoins -= coinDiscount;
+			else
+				character2.costCoins = 0;
+		decoratedGameHandler.coinsForCharacter(player,character2);
 		//if the card cost is lower than the bonus no cost are applied to the player
 		}
 		//if the bonus is not for the player that is now using this method
@@ -59,10 +67,14 @@ public class CardCoinDiscountDecorator extends GameHandler{
 			CardResources resources = new CardResources();
     		if(venture.costResources.coins>=coinDiscount)
     			resources.coins= venture.costResources.coins - coinDiscount;
+    		else
+    			resources.coins=0;
     		resources.stones= venture.costResources.stones;
     		resources.woods= venture.costResources.woods;
     		resources.servants= venture.costResources.servants;
-			subCardResources(resources,player);
+    		Venture venture2 = new Venture();
+			venture2.costResources = resources;
+			decoratedGameHandler.resourcesForVenture(player,venture2);
 		}
 		//if the bonus is not for the player that is now using this method
 		decoratedGameHandler.resourcesForVenture(player,venture);

@@ -31,7 +31,7 @@ public class MilitaryPointsMalusDecorator extends GameHandler{
 		if(this.player == player){
 			PlayerPoints playerPoints = player.points;
 	    	playerPoints.setFaith(points.faith);
-	    	playerPoints.setFaith(points.victory);
+	    	playerPoints.setVictory(points.victory);
 	    	if (points.military >= militaryMalus)
 	    		playerPoints.setMilitary(points.military - militaryMalus);
 	    	player.points=playerPoints;

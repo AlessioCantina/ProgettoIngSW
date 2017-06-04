@@ -33,13 +33,23 @@ public class BuildingResourcesDiscountDecorator extends GameHandler{
 			CardResources resources = new CardResources();
     		if(building.costResources.coins>=resourcesDiscount.coins)
     			resources.coins= building.costResources.coins - resourcesDiscount.coins;
+    		else
+    			resources.coins = 0;
     		if(building.costResources.stones>=resourcesDiscount.stones)
     			resources.stones= building.costResources.stones - resourcesDiscount.stones;
+    		else
+    			resources.stones = 0;
     		if(building.costResources.woods>=resourcesDiscount.woods)
     			resources.woods= building.costResources.woods - resourcesDiscount.woods;
+    		else
+    			resources.woods = 0;
     		if(building.costResources.servants>=resourcesDiscount.servants)
     			resources.servants= building.costResources.servants - resourcesDiscount.servants;
-			subCardResources(resources,player);
+    		else
+    			resources.servants=0;
+			Building building2 = new Building();
+			building.costResources = resources;
+			decoratedGameHandler.resourcesForBuilding(player,building2);
 		}
 		//if the bonus is not for the player that is now using this method
 		decoratedGameHandler.resourcesForBuilding(player,building);

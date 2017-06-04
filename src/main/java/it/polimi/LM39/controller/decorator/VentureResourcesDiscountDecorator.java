@@ -33,13 +33,23 @@ public class VentureResourcesDiscountDecorator extends GameHandler{
 			CardResources resources = new CardResources();
     		if(venture.costResources.coins>=resourcesDiscount.coins)
     			resources.coins= venture.costResources.coins - resourcesDiscount.coins;
+    		else
+    			resources.coins=0;
     		if(venture.costResources.stones>=resourcesDiscount.stones)
     			resources.stones= venture.costResources.stones - resourcesDiscount.stones;
+    		else
+    			resources.stones=0;
     		if(venture.costResources.woods>=resourcesDiscount.woods)
     			resources.woods= venture.costResources.woods - resourcesDiscount.woods;
+    		else
+    			resources.woods=0;
     		if(venture.costResources.servants>=resourcesDiscount.servants)
     			resources.servants= venture.costResources.servants - resourcesDiscount.servants;
-			subCardResources(resources,player);
+    		else
+    			resources.servants=0;
+			Venture venture2 = new Venture();
+			venture2.costResources = resources;
+			decoratedGameHandler.resourcesForVenture(player,venture2);
 		}
 		//if the bonus is not for the player that is now using this method
 		decoratedGameHandler.resourcesForVenture(player,venture);
