@@ -161,7 +161,7 @@
          "effect":{  
             "type":"MalusVictoryForMilitary",
             "victoryQty":1,
-            "militaryQty":1,
+            "militaryQty":1
          }
       },
       {  
@@ -175,14 +175,8 @@
          "period":3,
          "effect":{  
             "type":"MalusForResourcesCost",
-            "resources":{
-                "woods":1,
-                "stones":1,
-                "servants":0,
-                "coins":0,
-                "council":0
-            },
-            "victoryQty":1,
+            "resourcesQty":1,
+            "victoryQty":1
          }
       }
 ]
