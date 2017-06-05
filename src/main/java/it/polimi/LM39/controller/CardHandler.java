@@ -87,7 +87,7 @@ public class CardHandler {
 					throw new InvalidInputException("The exchange must be choosen between 1 and 2");
 	}
 	
-	public void doInstantEffect(GetCard instantEffect,NetworkPlayer player) throws IOException, CardNotFoundException, NotEnoughResourcesException{
+	public void doInstantEffect(GetCard instantEffect,NetworkPlayer player) throws IOException, CardNotFoundException, NotEnoughResourcesException, NotEnoughPointsException{
 		// ask to the player what card he wants
 		player.setMessage("What card do you want?");
 		//get the player response
@@ -130,7 +130,7 @@ public class CardHandler {
 		doInstantEffect(pointsEffect,player);
 	}
 	
-	public void doInstantEffect(GetCardAndResources instantEffect,NetworkPlayer player) throws IOException, NotEnoughResourcesException, CardNotFoundException{
+	public void doInstantEffect(GetCardAndResources instantEffect,NetworkPlayer player) throws IOException, NotEnoughResourcesException, CardNotFoundException, NotEnoughPointsException{
 		//making a GetCard effect and calling his method
 		GetCard effect = new GetCard();
 		effect.cardType=instantEffect.cardType;
@@ -211,7 +211,7 @@ public class CardHandler {
 				}
 	}
 	
-	public void doInstantEffect(HarvestProductionAction instantEffect,NetworkPlayer player) throws IOException, NotEnoughResourcesException{
+	public void doInstantEffect(HarvestProductionAction instantEffect,NetworkPlayer player) throws IOException, NotEnoughResourcesException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		//ask to the player if he wants to add servants to the action
 		Integer qtyServants = gameHandler.addServants(player);
 		//check if the effect is for harvest o production and call the correct method
@@ -221,7 +221,7 @@ public class CardHandler {
 			gameHandler.playerBoardHandler.activateProduction(instantEffect.actionValue + qtyServants, player);
 	}
 	
-	public void doInstantEffect(HarvestProductionAndPoints instantEffect,NetworkPlayer player) throws NotEnoughPointsException, IOException, NotEnoughResourcesException{
+	public void doInstantEffect(HarvestProductionAndPoints instantEffect,NetworkPlayer player) throws NotEnoughPointsException, IOException, NotEnoughResourcesException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		//making an HarvestProductionAction effect and calling his method
 		HarvestProductionAction effect = new HarvestProductionAction();
 		effect.actionType = instantEffect.actionType;
@@ -380,7 +380,7 @@ public class CardHandler {
 		
 	public boolean checkLeaderRequestedObject(RequestedTwoCards requestedObject,NetworkPlayer player){
 		//flag1 and flag2 are false by default
-		boolean flag1,flag2;;
+		boolean flag1,flag2;
 		RequestedCard requestedCard = new RequestedCard();
 		//check the first condition on the requeted cards
 		requestedCard.cardQty=requestedObject.cardQty;

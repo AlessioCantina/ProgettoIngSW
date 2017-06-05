@@ -1,6 +1,7 @@
 package it.polimi.LM39.controller;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import it.polimi.LM39.exception.CardNotFoundException;
 import it.polimi.LM39.exception.FailedToReadFileException;
@@ -131,6 +132,7 @@ public class GameHandler {
 	    		try {
 	    			coinsForCharacter(player,character);
 				} catch (NotEnoughResourcesException e) {
+					player.setMessage("You don't have enough coins!");
 					e.printStackTrace();
 					return false;
 				}
@@ -156,6 +158,7 @@ public class GameHandler {
 	    			resourcesForBuilding(player ,building);
 					addCardPoints(building.instantBonuses,player);
 				} catch (NotEnoughResourcesException | NotEnoughPointsException e) {
+					player.setMessage("You don't have enough resources or points!");
 					e.printStackTrace();
 					return false;
 				}
@@ -187,6 +190,7 @@ public class GameHandler {
 	    		try {
 	    			resourcesForVenture(player,venture);
 	    		} catch (NotEnoughResourcesException e1) {
+	    			player.setMessage("You don't have enough resources!");
 	    			e1.printStackTrace();
 	    			player.setMessage("You don't have enough resources!");
 	    			return false;
@@ -198,12 +202,12 @@ public class GameHandler {
 	    			player.points.setMilitary(-venture.costMilitary);
 	    		} catch (NotEnoughPointsException e) {
 	    			e.printStackTrace();
-	    			player.setMessage("You don't have enough military points");
+	    			player.setMessage("You don't have enough military points!");
 	    			return false;
 	    		}
 	    	}
 	    	else{
-	    		player.setMessage("You don't have enough military points");
+	    		player.setMessage("You don't have enough military points!");
     			return false;
     			}
 	    
@@ -241,7 +245,7 @@ public class GameHandler {
     	return value;
     }
     
-    public boolean addFamilyMemberToTheTower(FamilyMember familyMember , Integer cardNumber, NetworkPlayer player) throws IOException, NotEnoughResourcesException {
+    public boolean addFamilyMemberToTheTower(FamilyMember familyMember , Integer cardNumber, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException {
         int i,j;
         boolean coloredFamilyMemberOnTheTower = false;
         boolean uncoloredFamilyMemberOnTheTower = false;
@@ -250,7 +254,7 @@ public class GameHandler {
         FamilyMember[][] familyMembersOnTheTowers = player.personalMainBoard.getFamilyMembersLocation().getFamilyMembersOnTheTowers(); // we use the player Personal MainBaord
     	
         for(i=0, j=0;!cardsOnTheTowers[i][j].equals(cardNumber) && i<4;i++)
-        	for(j=0;!cardsOnTheTowers[i][j].equals(cardNumber) && j<4;j++);
+        	for(j=0;!cardsOnTheTowers[i][j].equals(cardNumber) && j<4;j++){}
     		//search the coordinates of the card in the board
         int p=i-1;
         int k=j;
@@ -271,15 +275,16 @@ public class GameHandler {
         	if ((uncoloredFamilyMemberOnTheTower==true && coloredFamilyMemberOnTheTower==false) || (coloredFamilyMemberOnTheTower==true && ("uncolored").equals(familyMember.color))){
         	//if there is an uncolored family member on the tower or there is a colored one but the player uses an uncolored family member
         		if(player.resources.getCoins()>=3 && getCard(cardNumber,player,k)){
-        			(familyMembersOnTheTowers[p][k].playerColor)=(familyMember.playerColor);
-	        		(familyMembersOnTheTowers[p][k].color)=(familyMember.color);
 	        		try {
 						player.resources.setCoins(player.personalMainBoard.occupiedTowerCost);
 					} catch (NotEnoughResourcesException e) {
+						player.setMessage("You don't have enough resources!");
 						e.printStackTrace();
 						return false;
 					}
 	        		setTowerBonus((mainBoard.getTowersBonuses())[p][k],player);
+	        		(familyMembersOnTheTowers[p][k].playerColor)=(familyMember.playerColor);
+	        		(familyMembersOnTheTowers[p][k].color)=(familyMember.color);
 	        		return true;
 	        		}
         		else
@@ -287,7 +292,7 @@ public class GameHandler {
 	        	}
         	if (uncoloredFamilyMemberOnTheTower==false && coloredFamilyMemberOnTheTower==false){
         		//if there is none of my family members
-        		for(i=0;i<4 && familyMembersOnTheTowers[i][k]==null;i++);
+        		for(i=0;i<4 && familyMembersOnTheTowers[i][k]==null;i++){}
         		if(i==5 && getCard(cardNumber,player,k)){
         			//if the tower is free
         			(familyMembersOnTheTowers[i][k].playerColor)=(familyMember.playerColor);
@@ -298,14 +303,16 @@ public class GameHandler {
         		else{
         			//if the tower is occupied
         			if(player.resources.getCoins()>=3 && getCard(cardNumber,player,k)){
-        				(familyMembersOnTheTowers[p][k].playerColor)=(familyMember.playerColor);
-            			(familyMembersOnTheTowers[p][k].color)=(familyMember.color);
     	        		try {
 							player.resources.setCoins(player.personalMainBoard.occupiedTowerCost);
 						} catch (NotEnoughResourcesException e) {
-							throw new NotEnoughResourcesException("You don't have the necessary coins!");
+							player.setMessage("You don't have enough resources");
+							e.printStackTrace();
+							return false;
 						}
     	        		setTowerBonus((mainBoard.getTowersBonuses())[p][k],player);
+    	        		(familyMembersOnTheTowers[p][k].playerColor)=(familyMember.playerColor);
+            			(familyMembersOnTheTowers[p][k].color)=(familyMember.color);
     	        		return true;
         			}
         			else{
@@ -322,13 +329,9 @@ public class GameHandler {
        return false; 
     }
     
-    public void setTowerBonus(ActionBonus towerBonus,NetworkPlayer player) throws NotEnoughResourcesException{
-    	try {
+    public void setTowerBonus(ActionBonus towerBonus,NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
     		addCardResources(towerBonus.resources,player);
     		addCardPoints(towerBonus.points,player);
-		} catch (NotEnoughResourcesException | NotEnoughPointsException e) {
-			throw new NotEnoughResourcesException("You don't have the necessary resources or points!");
-		}
     	
     }
     
@@ -423,17 +426,17 @@ public class GameHandler {
         return true;
     }
     
-    public boolean addFamilyMemberToProductionOrHarvest(FamilyMember familyMember, FamilyMember[] familyMembersAtProductionOrHarvest, String actionType,NetworkPlayer player) throws IOException {
+    public boolean addFamilyMemberToProductionOrHarvest(FamilyMember familyMember, FamilyMember[] familyMembersAtProductionOrHarvest, String actionType,NetworkPlayer player) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
     	int i;
     	//doAction is false by default
     	boolean doAction;
     	//to know if the action Harvest or Production can be done
     	Integer penalty=3;
     	//penalty in case of first slot already occupied
-    		for(i=0;!(familyMembersAtProductionOrHarvest[i].playerColor).equals(familyMember.playerColor) && i<harvestAndProductionSize;i++);
+    		for(i=0;!(familyMembersAtProductionOrHarvest[i].playerColor).equals(familyMember.playerColor) && i<harvestAndProductionSize;i++){}
     		if(i==harvestAndProductionSize){
     			//if there isn't any of my family Members
-    			for(i=0;familyMembersAtProductionOrHarvest[i]!=null && i<harvestAndProductionSize;i++);
+    			for(i=0;familyMembersAtProductionOrHarvest[i]!=null && i<harvestAndProductionSize;i++){}
     			//move i to the first free slot
     			if(i<harvestAndProductionSize){
     				//if there is place in the Production Area
@@ -474,7 +477,7 @@ public class GameHandler {
     				player.setMessage("You can't place another family member");
     				return false;
     			}	
-    			for(i=0;familyMembersAtProductionOrHarvest[i]!=null && i<harvestAndProductionSize;i++);
+    			for(i=0;familyMembersAtProductionOrHarvest[i]!=null && i<harvestAndProductionSize;i++){}
     			//move i to the first free slot
     			if(j==-1){
     				//if there is a colored family member
