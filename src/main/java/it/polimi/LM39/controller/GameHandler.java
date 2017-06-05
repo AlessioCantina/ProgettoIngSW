@@ -3,6 +3,8 @@ package it.polimi.LM39.controller;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.logging.*;
+
 import it.polimi.LM39.exception.CardNotFoundException;
 import it.polimi.LM39.exception.FailedToReadFileException;
 import it.polimi.LM39.exception.FailedToRegisterEffectException;
@@ -16,6 +18,7 @@ import it.polimi.LM39.server.NetworkPlayer;
  */
 public class GameHandler {
 	
+	private Logger logger = Logger.getLogger(GameHandler.class.getName());
 
 	public Integer marketSize = 0;
 	
@@ -133,7 +136,7 @@ public class GameHandler {
 	    			coinsForCharacter(player,character);
 				} catch (NotEnoughResourcesException e) {
 					player.setMessage("You don't have enough coins!");
-					e.printStackTrace();
+					logger.log(Level.INFO, "Not enough coins", e);
 					return false;
 				}
 	    		possessedCharacters.add(cardNumber);
@@ -159,7 +162,7 @@ public class GameHandler {
 					addCardPoints(building.instantBonuses,player);
 				} catch (NotEnoughResourcesException | NotEnoughPointsException e) {
 					player.setMessage("You don't have enough resources or points!");
-					e.printStackTrace();
+					logger.log(Level.INFO, "Not enough resources or points", e);
 					return false;
 				}
 	    		possessedBuildings.add(cardNumber);
@@ -189,10 +192,9 @@ public class GameHandler {
 	    	if(venture.costMilitary==0 || choice == 2){
 	    		try {
 	    			resourcesForVenture(player,venture);
-	    		} catch (NotEnoughResourcesException e1) {
+	    		} catch (NotEnoughResourcesException e) {
 	    			player.setMessage("You don't have enough resources!");
-	    			e1.printStackTrace();
-	    			player.setMessage("You don't have enough resources!");
+	    			logger.log(Level.INFO, "Not enough resources", e);
 	    			return false;
 				}
 	    	}
@@ -201,8 +203,8 @@ public class GameHandler {
 	    		try {
 	    			player.points.setMilitary(-venture.costMilitary);
 	    		} catch (NotEnoughPointsException e) {
-	    			e.printStackTrace();
 	    			player.setMessage("You don't have enough military points!");
+	    			logger.log(Level.INFO, "Not enough military points", e);
 	    			return false;
 	    		}
 	    	}
@@ -279,7 +281,7 @@ public class GameHandler {
 						player.resources.setCoins(player.personalMainBoard.occupiedTowerCost);
 					} catch (NotEnoughResourcesException e) {
 						player.setMessage("You don't have enough resources!");
-						e.printStackTrace();
+						logger.log(Level.INFO, "Not enough resources", e);
 						return false;
 					}
 	        		setTowerBonus((mainBoard.getTowersBonuses())[p][k],player);
@@ -307,7 +309,7 @@ public class GameHandler {
 							player.resources.setCoins(player.personalMainBoard.occupiedTowerCost);
 						} catch (NotEnoughResourcesException e) {
 							player.setMessage("You don't have enough resources");
-							e.printStackTrace();
+							logger.log(Level.INFO, "Not enough resources", e);
 							return false;
 						}
     	        		setTowerBonus((mainBoard.getTowersBonuses())[p][k],player);

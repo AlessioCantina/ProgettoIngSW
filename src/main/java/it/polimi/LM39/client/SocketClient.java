@@ -4,10 +4,8 @@ import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
-import java.util.concurrent.*;
-
-import it.polimi.LM39.model.MainBoard;
-import it.polimi.LM39.server.Server;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -35,13 +33,14 @@ public class SocketClient extends AbstractClient {
     	socket.setKeepAlive(true);	
     	socketOut = new ObjectOutputStream(socket.getOutputStream());
     	socketOut.flush();
-    	socketIn = new ObjectInputStream(socket.getInputStream());   
+    	socketIn = new ObjectInputStream(socket.getInputStream());  
     	new SocketHandler().start();
+
     }
     private class SocketHandler extends Thread {
-    	
+    	Logger logger = Logger.getLogger(SocketHandler.class.getName());
     	@Override
-    	public void run() {		//output thread
+    	public void run(){		//output thread
     		System.out.println("started sockethandler");
     		while (true){	
     			scanner = new Scanner(System.in);
@@ -52,7 +51,7 @@ public class SocketClient extends AbstractClient {
     				socketOut.writeUTF(string);
     				socketOut.flush();
     			}catch (IOException e) {
-    				throw new RuntimeException(e);
+    				logger.log(Level.SEVERE, "Error instantiating socketstreams", e);
     			} 
     		} 			
     	}

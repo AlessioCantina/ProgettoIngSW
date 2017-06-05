@@ -1,5 +1,4 @@
 package it.polimi.LM39.server;
-import it.polimi.LM39.exception.SocketPlayerException;
 import it.polimi.LM39.model.MainBoard;
 
 import java.io.BufferedInputStream;
@@ -7,6 +6,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * every player connected to the socket has this object which manipulates connection between server and client
@@ -51,6 +52,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	     * it checks if we have something to send to the client and waits for the answer
 	     */
 	    public void run() {
+	    	Logger logger = Logger.getLogger(SocketPlayer.class.getName());
 	        this.serverInterface.joinRoom(this);
 	        try {
 	    		//TODO ask if it is possible to suppress sonarlint bug for infinite loops
@@ -65,7 +67,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	        		}
 	        	}
 	        }catch (Exception e) {
-	            throw new RuntimeException(e);
+	            logger.log(Level.SEVERE, "Can't instantiate listener for the player", e);
 	        }
 	    }
 	    /*
