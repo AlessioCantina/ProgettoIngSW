@@ -252,7 +252,6 @@ public class GameHandler {
         boolean coloredFamilyMemberOnTheTower = false;
         boolean uncoloredFamilyMemberOnTheTower = false;
         Integer[][] cardsOnTheTowers = mainBoard.getCardsOnTheTowers();
-        Integer[] diceValues = player.personalMainBoard.getDiceValues(); // we use the player Personal MainBaord
         FamilyMember[][] familyMembersOnTheTowers = player.personalMainBoard.getFamilyMembersLocation().getFamilyMembersOnTheTowers(); // we use the player Personal MainBaord
     	
         for(i=0, j=0;!cardsOnTheTowers[i][j].equals(cardNumber) && i<4;i++)
@@ -261,7 +260,7 @@ public class GameHandler {
         int p=i-1;
         int k=j;
         //to store i and j as the coordinates of the position interested, the if check if the player can get the card with a specific family member
-        if(familyMembersOnTheTowers[p][k] == null && ((diceValues[familyMemberColorToDiceValue(familyMember.color,player)]+familyMember.getServants()) >= (mainBoard.getTowersValue())[p][k])){
+        if(familyMembersOnTheTowers[p][k] == null && (familyMemberValue(familyMember,player) >= (mainBoard.getTowersValue())[p][k])){
         	//if the place is free and the family member has an high enough value, ((i+1)*2)-1 is to convert the value i of the matrix to the value of the floor in dice
         	for(i=0;i<4;i++){
         		if((familyMembersOnTheTowers[i][k].playerColor).equals(familyMember.playerColor)){
@@ -284,7 +283,7 @@ public class GameHandler {
 						logger.log(Level.INFO, "Not enough resources", e);
 						return false;
 					}
-	        		setTowerBonus((mainBoard.getTowersBonuses())[p][k],player);
+	        		setActionBonus((mainBoard.getTowersBonuses())[p][k],player);
 	        		(familyMembersOnTheTowers[p][k].playerColor)=(familyMember.playerColor);
 	        		(familyMembersOnTheTowers[p][k].color)=(familyMember.color);
 	        		return true;
@@ -299,7 +298,7 @@ public class GameHandler {
         			//if the tower is free
         			(familyMembersOnTheTowers[i][k].playerColor)=(familyMember.playerColor);
         			(familyMembersOnTheTowers[i][k].color)=(familyMember.color);
-	        		setTowerBonus((mainBoard.getTowersBonuses())[p][k],player);
+        			setActionBonus((mainBoard.getTowersBonuses())[p][k],player);
 	        		return true;
         		}
         		else{
@@ -312,7 +311,7 @@ public class GameHandler {
 							logger.log(Level.INFO, "Not enough resources", e);
 							return false;
 						}
-    	        		setTowerBonus((mainBoard.getTowersBonuses())[p][k],player);
+    	        		setActionBonus((mainBoard.getTowersBonuses())[p][k],player);
     	        		(familyMembersOnTheTowers[p][k].playerColor)=(familyMember.playerColor);
             			(familyMembersOnTheTowers[p][k].color)=(familyMember.color);
     	        		return true;
@@ -331,11 +330,45 @@ public class GameHandler {
        return false; 
     }
     
-    public void setTowerBonus(ActionBonus towerBonus,NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
-    		addCardResources(towerBonus.resources,player);
-    		addCardPoints(towerBonus.points,player);
-    	
+    public boolean addFamilyMemberToTheCouncilPalace(FamilyMember familyMember, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException{
+    	if (familyMemberValue(familyMember,player)>=1){
+	    	ArrayList<FamilyMember> familyMembersAtTheCouncilPalace = mainBoard.familyMembersLocation.getFamilyMembersAtTheCouncilPalace();
+	    	familyMembersAtTheCouncilPalace.add(familyMember);
+	    	setActionBonus(player.personalMainBoard.councilPalaceBonus, player);
+    	}
+    	else {
+    		player.setMessage("Your Family Member must have a value of at least 1");
+    		return false;
+    	}
+    	return true;
     }
+    
+    public void supportTheChurch (NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+    	//period + 2 is the minimum amount of faith points needed to support to the church for every period
+    	if(player.points.getFaith()>=(period+2)){
+    		player.setMessage("Do you want to support the Church? yes or no");
+    		String response = player.sendMessage();
+    		if(("yes").equals(response)){
+    			setActionBonus(player.personalMainBoard.faithBonuses[player.points.getFaith()],player);
+    			player.points.setFaith(0);
+    		}
+    		else if (("no").equals(response)){
+    			CardHandler cardHandler = new CardHandler(this);
+    			cardHandler.activateExcommunication((MainBoard.excommunicationMap.get(player.personalMainBoard.getExcommunicationsOnTheBoard()[period-1])).effect, player);
+    		}
+    		else{
+    			player.setMessage("You must answer yes or no");
+    			supportTheChurch (player);
+    			}
+    	}
+    }
+    
+    public void setActionBonus(ActionBonus actionBonus,NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
+    		if(actionBonus.resources!= null)
+    			addCardResources(actionBonus.resources,player);
+    		if(actionBonus.points!= null)
+    			addCardPoints(actionBonus.points,player);
+		}
     
     //probably useless method
     /*
@@ -397,29 +430,29 @@ public class GameHandler {
     	playerPoints.setMilitary(points.military);
     	player.points=playerPoints;
     }
+    
+    public Integer familyMemberValue (FamilyMember familyMember, NetworkPlayer player) throws IOException{
+    	Integer diceValue = familyMemberColorToDiceValue(familyMember.color,player);
+    	return (diceValue+familyMember.getServants());
+    }
 
     public boolean addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException {
     	FamilyMember[] familyMembersAtTheMarket = player.personalMainBoard.getFamilyMembersLocation().getFamilyMembersOnTheMarket(); // we use the player Personal MainBaord
-        if(familyMembersAtTheMarket[position] == null && position<=marketSize){
+        if(familyMembersAtTheMarket[position] == null && position<=marketSize){ 
+        	if(familyMemberValue(familyMember,player)>=1){
+        	if(position==1 || position==2 || position==3 || position==4)
+        		setActionBonus(player.personalMainBoard.marketBonuses[position-1],player);
+        	else{
+        		player.setMessage("Invalid position! the position must be between 1 and 4");
+	        	return false;
+	        	}
         	(familyMembersAtTheMarket[position].color) = (familyMember.color);
         	(familyMembersAtTheMarket[position].playerColor) = (familyMember.playerColor);
-        	switch(position){
-	        	case 1: 
-					player.resources.setCoins(5);
-	        		break;
-	        	case 2: 
-					player.resources.setServants(5);
-					break;
-	        	case 3: 
-					player.resources.setCoins(2);
-					player.points.setMilitary(3);
-	    			break;
-	        	case 4: ArrayList<Integer> list = new ArrayList<Integer>();
-	        			councilHandler.getCouncil(1,player,this,list);
-	        		break;
-	        	default: player.setMessage("Invalid position! the position must be between 1 and 4");
-	        			 return false;
         	}
+        	else {
+            	player.setMessage("Your Family Member must have a value of at least 1");
+            	return false;
+            }
         }
         else {
         	player.setMessage("This place is occupied or not usable if two player game");
@@ -428,7 +461,7 @@ public class GameHandler {
         return true;
     }
     
-    public boolean addFamilyMemberToProductionOrHarvest(FamilyMember familyMember, FamilyMember[] familyMembersAtProductionOrHarvest, String actionType,NetworkPlayer player) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public boolean addFamilyMemberToProductionOrHarvest(FamilyMember familyMember, FamilyMember[] familyMembersAtProductionOrHarvest, String actionType,NetworkPlayer player) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException {
     	int i;
     	//doAction is false by default
     	boolean doAction;
@@ -500,12 +533,22 @@ public class GameHandler {
     			}	
     		}
     		if (doAction==true){
-    			if (actionType=="Production")
-	    			playerBoardHandler.activateHarvest(player.personalMainBoard.getDiceValues()[familyMemberColorToDiceValue(familyMember.color,player)]-penalty,player); // we use the player Personal MainBaord
-	    		if(actionType=="Harvest")
-	    			playerBoardHandler.activateHarvest(player.personalMainBoard.getDiceValues()[familyMemberColorToDiceValue(familyMember.color,player)]-penalty,player); // we use the player Personal MainBaord
-	    		else{
-	    			player.setMessage("Invalid action it must be Production or Harvest");
+    			if(familyMemberValue(familyMember,player)>=1){
+	    			if (actionType=="Production"){
+	    				setActionBonus(player.personalMainBoard.productionBonus,player);
+		    			playerBoardHandler.activateHarvest(player.personalMainBoard.getDiceValues()[familyMemberColorToDiceValue(familyMember.color,player)]-penalty,player); // we use the player Personal MainBaord
+	    			}
+	    			else if(actionType=="Harvest"){
+	    				setActionBonus(player.personalMainBoard.harvestBonus,player);
+		    			playerBoardHandler.activateHarvest(player.personalMainBoard.getDiceValues()[familyMemberColorToDiceValue(familyMember.color,player)]-penalty,player); // we use the player Personal MainBaord
+	    			}
+		    		else {
+		    			player.setMessage("Invalid action it must be Production or Harvest");
+		    			return false;
+		    		}
+    			}
+    			else {
+	    			player.setMessage("Your Family Member must have a value of at least 1");
 	    			return false;
 	    		}
     		}
