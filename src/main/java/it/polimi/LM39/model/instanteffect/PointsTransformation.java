@@ -1,7 +1,13 @@
 package it.polimi.LM39.model.instanteffect;
 
+import java.io.Serializable;
+
 import it.polimi.LM39.model.CardResources;
 
-public class PointsTransformation extends Points{
+public class PointsTransformation extends Points implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4804621478956920013L;
 	public CardResources requestedForTransformation;
 }

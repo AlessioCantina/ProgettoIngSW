@@ -1,14 +1,20 @@
 package it.polimi.LM39.model.instanteffect;
 
+import java.io.Serializable;
+
 import it.polimi.LM39.model.CardPoints;
 
 /**
  * 
  */
-public class Points extends InstantEffect {
+public class Points extends InstantEffect implements Serializable{
 
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1382799360026464544L;
+	/**
      * 
      */
     public CardPoints points;
