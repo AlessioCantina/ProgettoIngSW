@@ -14,10 +14,10 @@ import java.util.logging.Logger;
  * this is the server side, so we send objects and strings and receive strings from client
  */
 public class SocketPlayer extends NetworkPlayer implements Runnable{
-	    private Socket socket;
-	    private ServerInterface serverInterface;
-	    private ObjectInputStream objInput;			//player's interface and I/O streams
-	    private ObjectOutputStream objOutput;
+	    private transient Socket socket;
+	    private transient ServerInterface serverInterface;
+	    private transient ObjectInputStream objInput;			//player's interface and I/O streams
+	    private transient ObjectOutputStream objOutput;
 	    private String message;						//information which will be send to the client
 	    private MainBoard mainBoard;
 	    private String clientAction;

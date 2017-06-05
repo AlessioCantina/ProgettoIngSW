@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class AlreadyOccupiedTowerDiscount extends LeaderPermanentEffect implements Serializable{
 
     /**
-	 * 
+	 * 	Filippo Brunelleschi
 	 */
 	private static final long serialVersionUID = 3292455600582900762L;
 

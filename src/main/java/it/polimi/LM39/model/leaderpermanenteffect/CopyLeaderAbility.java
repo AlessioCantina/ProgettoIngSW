@@ -10,7 +10,7 @@ import it.polimi.LM39.model.Effect;
 public class CopyLeaderAbility extends LeaderPermanentEffect implements Serializable{
 
     /**
-	 * 
+	 * 	Lorenzo de' Medici
 	 */
 	private static final long serialVersionUID = 1081478849383492648L;
 

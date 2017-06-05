@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class SetColoredDicesValues extends LeaderPermanentEffect implements Serializable{
 
     /**
-	 * 
+	 * 	Lucrezia Borgia & Ludovico il Moro
 	 */
 	private static final long serialVersionUID = -2443162995112661976L;
 

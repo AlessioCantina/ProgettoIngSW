@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class UncoloredMemberBonus extends  LeaderPermanentEffect implements Serializable{
 
     /**
-	 * 
+	 * 	Sigismondo Malatesta
 	 */
 	private static final long serialVersionUID = 6033726761096446136L;
 
