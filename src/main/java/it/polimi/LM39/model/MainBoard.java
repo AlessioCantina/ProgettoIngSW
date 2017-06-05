@@ -16,7 +16,7 @@ public class MainBoard implements Serializable{
 
     private Integer[] diceValues = new Integer[4];
 
-    private Integer[] excommunicationsOnTheBoard = new Integer[3];
+    public Integer[] excommunicationsOnTheBoard = new Integer[3];
     
     private Integer[][] towersValue = new Integer[4][4];
     
@@ -27,6 +27,8 @@ public class MainBoard implements Serializable{
     public FamilyMembersLocation familyMembersLocation;
 
     public Rankings rankings;
+    
+    public Integer[] militaryForTerritory = {3,7,12,18};
 
     private ActionBonus[][] towersBonuses = new ActionBonus[4][4]; //the bonuses are loaded from file
     
@@ -93,36 +95,12 @@ public class MainBoard implements Serializable{
        return this.diceValues;  
     }
 
-    public void setExcommunicationsOnTheBoard(Integer[] excommunicationsOnTheBoard) {
-        this.excommunicationsOnTheBoard=excommunicationsOnTheBoard;
-    }
-
-    public Integer[] getExcommunicationsOnTheBoard() {
-    	return this.excommunicationsOnTheBoard;
-    }
-
     public void setPlayedLeaderCard(ArrayList<Integer> playedLeaderCard) {
         this.playedLeaderCard=playedLeaderCard;
     }
 
     public ArrayList<Integer> getPlayedLeaderCard() {
     	return this.playedLeaderCard;
-    }
-
-    public void setFamilyMembersLocation(FamilyMembersLocation familyMembersLocation) {
-        this.familyMembersLocation=familyMembersLocation;
-    }
-
-    public FamilyMembersLocation getFamilyMembersLocation() {
-    	return this.familyMembersLocation;
-    }
-
-    public void setRankings(Rankings rankings) {
-        this.rankings=rankings;
-    }
-
-    public Rankings getRankings() {
-    	return this.rankings;
     }
 
 }

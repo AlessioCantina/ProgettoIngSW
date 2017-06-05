@@ -4,22 +4,24 @@ import it.polimi.LM39.server.NetworkPlayer;
 
 import java.lang.reflect.InvocationTargetException;
 
-import it.polimi.LM39.controller.PlayerBoardHandler;
+import it.polimi.LM39.controller.PersonalBoardHandler;
+import it.polimi.LM39.exception.NotEnoughPointsException;
+import it.polimi.LM39.exception.NotEnoughResourcesException;
 
-public class HarvestBoostDecorator extends PlayerBoardHandler{
+public class HarvestBoostDecorator extends PersonalBoardHandler{
 	
-	private PlayerBoardHandler decoratedPlayerBoardHandler;
+	private PersonalBoardHandler decoratedPlayerBoardHandler;
 	private Integer harvestBonus;
 	private NetworkPlayer player;
 	
-	public HarvestBoostDecorator (PlayerBoardHandler decoratedPlayerBoardHandler, Integer boost, NetworkPlayer player) {
+	public HarvestBoostDecorator (PersonalBoardHandler decoratedPlayerBoardHandler, Integer boost, NetworkPlayer player) {
 		this.decoratedPlayerBoardHandler = decoratedPlayerBoardHandler;
 		this.harvestBonus = boost;
 		this.player = player;
 	}
 	
 	@Override
-	public void activateHarvest(Integer value,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	public void activateHarvest(Integer value,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException{
 		//check if the player who is activating the harvest is the player who has activated the bonus
 		if(this.player == player)
 			decoratedPlayerBoardHandler.activateHarvest(value + harvestBonus,player);
@@ -31,7 +33,7 @@ public class HarvestBoostDecorator extends PlayerBoardHandler{
 	@Override
 	//the override must be done because the method activateProduction could me decorated by another decorator
 	//even if HarvestBoostDecorator does not decorate this method
-	public void activateProduction(Integer value,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public void activateProduction(Integer value,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException {
 		decoratedPlayerBoardHandler.activateProduction(value,player);
 	}
 }

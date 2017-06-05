@@ -57,6 +57,16 @@ public class FamilyMembersLocation implements Serializable{
     			throw new InvalidActionTypeException("The actionType is invalid"); // invalid action
         
     }
+    public void changeFamilyMemberOnProductionOrHarvest(ArrayList<FamilyMember> familyMemberOnProductionOrHarvest, String actionType) throws InvalidActionTypeException{
+    	if("Production".equals(actionType))
+    		this.familyMembersAtTheProduction = familyMemberOnProductionOrHarvest;
+    	else 
+    		if ("Harvest".equals(actionType))
+    			this.familyMembersAtTheHarvest = familyMemberOnProductionOrHarvest;
+    		else
+    			throw new InvalidActionTypeException("The actionType is invalid"); // invalid action
+        
+    }
  
     public ArrayList<FamilyMember> getFamilyMembersOnProductionOrHarvest(String actionType) throws InvalidActionTypeException{
     	if("Production".equals(actionType))

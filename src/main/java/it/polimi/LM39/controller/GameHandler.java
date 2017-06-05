@@ -42,7 +42,7 @@ public class GameHandler {
 
     public ExcommunicationHandler excommunicationHandler = new ExcommunicationHandler();
 
-    public PlayerBoardHandler playerBoardHandler = new PlayerBoardHandler();
+    public PersonalBoardHandler playerBoardHandler = new PersonalBoardHandler();
     
     public CouncilHandler councilHandler = new CouncilHandler();
     
@@ -93,31 +93,13 @@ public class GameHandler {
     	territoryHandler.doInstantEffect(territory.instantBonuses,player);
     	ArrayList<Integer> possessedTerritories = player.personalBoard.getPossessions("Territory");
     	int militaryPoints = player.points.getMilitary();
-    	boolean canGet=false;
     	if (possessedTerritories.size()<6){
     		//if there is a place for the territory
-    		switch(possessedTerritories.size()){
-    		//checking if the player has enough military points
-    		case 2: if(militaryPoints >= 3) 
-    			canGet=true;
-    		break;
-    		case 3: if(militaryPoints >= 7) 
-    			canGet=true;
-    		break;
-    		case 4: if(militaryPoints >= 12) 
-    			canGet=true;
-    		break;
-    		case 5: if(militaryPoints >= 18) 
-    			canGet=true;
-    		break;
-    		default: canGet=false;  
-    		break;
-    		}
-    		if(canGet==true){
+    		if(possessedTerritories.size()<2 || militaryPoints >= player.personalMainBoard.militaryForTerritory[possessedTerritories.size() -2]) {
     			//add the territory to PersonalBoard
     			possessedTerritories.add(cardNumber);
     			player.personalBoard.setPossessions(possessedTerritories,"Territory");
-    			
+    			//get the instant effect
     			territoryHandler.doInstantEffect(territory.instantBonuses, player);
     			return true;
     			}
@@ -252,7 +234,7 @@ public class GameHandler {
         boolean coloredFamilyMemberOnTheTower = false;
         boolean uncoloredFamilyMemberOnTheTower = false;
         Integer[][] cardsOnTheTowers = mainBoard.getCardsOnTheTowers();
-        FamilyMember[][] familyMembersOnTheTowers = player.personalMainBoard.getFamilyMembersLocation().getFamilyMembersOnTheTowers(); // we use the player Personal MainBaord
+        FamilyMember[][] familyMembersOnTheTowers = player.personalMainBoard.familyMembersLocation.getFamilyMembersOnTheTowers(); // we use the player Personal MainBaord
     	
         for(i=0, j=0;!cardsOnTheTowers[i][j].equals(cardNumber) && i<4;i++)
         	for(j=0;!cardsOnTheTowers[i][j].equals(cardNumber) && j<4;j++){}
@@ -354,7 +336,7 @@ public class GameHandler {
     		}
     		else if (("no").equals(response)){
     			CardHandler cardHandler = new CardHandler(this);
-    			cardHandler.activateExcommunication((MainBoard.excommunicationMap.get(player.personalMainBoard.getExcommunicationsOnTheBoard()[period-1])).effect, player);
+    			cardHandler.activateExcommunication((MainBoard.excommunicationMap.get(player.personalMainBoard.excommunicationsOnTheBoard[period-1])).effect, player);
     		}
     		else{
     			player.setMessage("You must answer yes or no");
@@ -437,8 +419,8 @@ public class GameHandler {
     }
 
     public boolean addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException {
-    	FamilyMember[] familyMembersAtTheMarket = player.personalMainBoard.getFamilyMembersLocation().getFamilyMembersOnTheMarket(); // we use the player Personal MainBaord
-        if(familyMembersAtTheMarket[position] == null && position<=marketSize){ 
+    	FamilyMember[] familyMembersAtTheMarket = player.personalMainBoard.familyMembersLocation.getFamilyMembersOnTheMarket(); // we use the player Personal MainBaord
+        if(familyMembersAtTheMarket[position].color == null && position<=marketSize){ 
         	if(familyMemberValue(familyMember,player)>=1){
         	if(position==1 || position==2 || position==3 || position==4)
         		setActionBonus(player.personalMainBoard.marketBonuses[position-1],player);
@@ -535,12 +517,10 @@ public class GameHandler {
     		if (doAction==true){
     			if(familyMemberValue(familyMember,player)>=1){
 	    			if (actionType=="Production"){
-	    				setActionBonus(player.personalMainBoard.productionBonus,player);
-		    			playerBoardHandler.activateHarvest(player.personalMainBoard.getDiceValues()[familyMemberColorToDiceValue(familyMember.color,player)]-penalty,player); // we use the player Personal MainBaord
+		    			playerBoardHandler.activateHarvest(familyMemberValue(familyMember,player)-penalty,player); // we use the player Personal MainBaord
 	    			}
 	    			else if(actionType=="Harvest"){
-	    				setActionBonus(player.personalMainBoard.harvestBonus,player);
-		    			playerBoardHandler.activateHarvest(player.personalMainBoard.getDiceValues()[familyMemberColorToDiceValue(familyMember.color,player)]-penalty,player); // we use the player Personal MainBaord
+	    				playerBoardHandler.activateHarvest(familyMemberValue(familyMember,player)-penalty,player); // we use the player Personal MainBaord
 	    			}
 		    		else {
 		    			player.setMessage("Invalid action it must be Production or Harvest");
