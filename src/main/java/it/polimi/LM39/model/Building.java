@@ -1,12 +1,16 @@
 package it.polimi.LM39.model;
 
+import java.io.Serializable;
+
 import it.polimi.LM39.model.instanteffect.*;
 
 
 
-public class Building extends Card {
+public class Building extends Card implements Serializable {
 
-    public Integer activationCost;
+	private static final long serialVersionUID = 7421456678099815797L;
+
+	public Integer activationCost;
 
     public CardResources costResources;
 

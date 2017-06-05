@@ -1,12 +1,15 @@
 package it.polimi.LM39.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import it.polimi.LM39.exception.*;
 
 
-public class FamilyMembersLocation {
+public class FamilyMembersLocation implements Serializable{
 
-    private FamilyMember[][] familyMembersOnTheTowers= new FamilyMember[4][4];
+	private static final long serialVersionUID = -7342514104269107127L;
+
+	private FamilyMember[][] familyMembersOnTheTowers= new FamilyMember[4][4];
 
     private FamilyMember[] familyMembersAtTheMarket = new FamilyMember[4];
 

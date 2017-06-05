@@ -1,9 +1,12 @@
 package it.polimi.LM39.model;
 
+import java.io.Serializable;
 
-public class CardResources {
+public class CardResources implements Serializable{
 
-    public Integer woods;
+	private static final long serialVersionUID = -286586941734230661L;
+
+	public Integer woods;
 
     public Integer stones;
 

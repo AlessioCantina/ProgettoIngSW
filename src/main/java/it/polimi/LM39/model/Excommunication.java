@@ -1,16 +1,21 @@
 package it.polimi.LM39.model;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
 
 import it.polimi.LM39.model.excommunicationpermanenteffect.*;
 
 
-public class Excommunication {
+public class Excommunication implements Serializable{
 
-    public Integer period;
+	private static final long serialVersionUID = -8651501433925949712L;
+
+	public Integer period;
 
     public ExcommunicationPermanentEffect effect;
-//probably useless reflection
+
+    
+    //probably useless reflection
 /*
     public ExcommunicationPermanentEffect getEffect()
     	{

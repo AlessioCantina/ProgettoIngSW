@@ -1,10 +1,14 @@
 package it.polimi.LM39.model;
 
+import java.io.Serializable;
+
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 
-public class PlayerResources {
+public class PlayerResources implements Serializable{
 
-    private Integer woods;
+	private static final long serialVersionUID = -4338651550708606365L;
+
+	private Integer woods;
 
     private Integer stones;
 

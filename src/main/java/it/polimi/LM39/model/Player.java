@@ -1,12 +1,15 @@
 package it.polimi.LM39.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Player {
+public class Player implements Serializable{
 
-   public String nickname;
+	private static final long serialVersionUID = 216892385150280280L;
 
-   public String playerColor;
+	public String nickname;
+
+    public String playerColor;
 
     public PersonalBoard personalBoard;
 
@@ -19,7 +22,8 @@ public class Player {
     public MainBoard personalMainBoard; // this is a modified version of the mainboard, should be updated every time the board gets modified
 
     private ArrayList<Integer> playerPlayedLeaderCards = new ArrayList<Integer>();
-    //todo
+    
+    public Integer copiedLeaderCard;
 
     
 

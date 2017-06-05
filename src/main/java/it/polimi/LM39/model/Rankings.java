@@ -1,10 +1,13 @@
 package it.polimi.LM39.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Rankings {
+public class Rankings implements Serializable{
 
-    private ArrayList<FamilyMemberRank> victoryRanking = new ArrayList<FamilyMemberRank>();
+	private static final long serialVersionUID = 3477030534526157937L;
+
+	private ArrayList<FamilyMemberRank> victoryRanking = new ArrayList<FamilyMemberRank>();
 
     private ArrayList<FamilyMemberRank> faithRanking = new ArrayList<FamilyMemberRank>();
 

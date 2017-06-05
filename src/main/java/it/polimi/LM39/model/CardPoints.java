@@ -1,9 +1,12 @@
 package it.polimi.LM39.model;
 
+import java.io.Serializable;
 
-public class CardPoints {
+public class CardPoints implements Serializable{
 
-    public Integer victory;
+	private static final long serialVersionUID = -433202169653017493L;
+
+	public Integer victory;
 
     public Integer faith;
 

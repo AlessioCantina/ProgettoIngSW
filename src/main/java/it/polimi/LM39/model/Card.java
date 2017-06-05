@@ -1,9 +1,12 @@
 package it.polimi.LM39.model;
 
+import java.io.Serializable;
 
-public abstract class Card {
+public abstract class Card implements Serializable{
 
-    public String cardName;
+	private static final long serialVersionUID = -6145819095684362653L;
+
+	public String cardName;
 
     public Integer period;
 

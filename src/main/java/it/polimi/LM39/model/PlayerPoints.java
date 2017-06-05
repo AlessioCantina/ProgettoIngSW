@@ -1,11 +1,15 @@
 package it.polimi.LM39.model;
 
+import java.io.Serializable;
+
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 
-public class PlayerPoints {
+public class PlayerPoints implements Serializable{
 
-    private Integer faith;
+	private static final long serialVersionUID = 238408352644162214L;
+
+	private Integer faith;
 
     private Integer military;
 

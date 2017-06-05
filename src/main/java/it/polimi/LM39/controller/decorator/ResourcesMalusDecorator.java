@@ -51,8 +51,10 @@ public class ResourcesMalusDecorator  extends GameHandler{
 				}
 			}
 			else{
-				playerResources.setWoods(resources.woods - resourcesMalus.woods);
-				playerResources.setStones(resources.stones - resourcesMalus.stones);
+				if(resources.woods>=resourcesMalus.woods)
+					playerResources.setWoods(resources.woods - resourcesMalus.woods);
+				if(resources.stones>=resourcesMalus.stones)
+					playerResources.setStones(resources.stones - resourcesMalus.stones);
 			}
 			if(resources.coins>=resourcesMalus.coins)
 				playerResources.setCoins(resources.coins - resourcesMalus.coins);

@@ -33,7 +33,11 @@ public class CardHandler {
 	}
 	
 	
- void doInstantEffect(Effect instantEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
+	/*
+	 * InstantEffect
+	 */
+	
+ void doInstantEffect(InstantEffect instantEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
 	 Class[] cArg = new Class[2];
 	 cArg[0] = instantEffect.getClass();
 	 cArg[1] = player.getClass();
@@ -311,6 +315,9 @@ public class CardHandler {
 	}
 	
 	
+	/*
+	 * LeaderRequestedObjects
+	 */
 	
 	public boolean checkLeaderRequestedObject(LeaderRequestedObjects requestedObject,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{	
 		Class[] cArg = new Class[2];
@@ -394,9 +401,12 @@ public class CardHandler {
 		return (flag1 && flag2);
 	}
 		
-		
 	
-	void activateCharacter(Effect permanentEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{									
+	/*
+	 * CharacterPermanentEffect
+	 */
+	
+	void activateCharacter(CharacterPermanentEffect permanentEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{									
 		Class[] cArg = new Class[2];
 	    cArg[0] = permanentEffect.getClass();
 	    cArg[1] = player.getClass();
@@ -453,6 +463,9 @@ public class CardHandler {
 	}
 		
 	
+	/*
+	 * ExcommunicationPermanentEffect
+	 */
 		
 	public void activateExcommunication(ExcommunicationPermanentEffect permanentEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
 		Class[] cArg = new Class[2];
@@ -533,11 +546,21 @@ public class CardHandler {
 		player.points.setVictory(-victoryMalus);
 	}
 	
-	public void activateLeader(LeaderPermanentEffect permanentEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
+	
+	/*
+	 * LeaderPermanentEffect
+	 */
+	
+	public void activateLeader(Effect permanentEffect,NetworkPlayer player) throws SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException	{
 		Class[] cArg = new Class[2];
 	    cArg[0] = permanentEffect.getClass();
 	    cArg[1] = player.getClass();
-		Method lMethod = (this.getClass().getMethod("activateLeader",cArg));
+		Method lMethod;
+		try {
+			lMethod = (this.getClass().getMethod("activateLeader",cArg));
+		} catch (NoSuchMethodException e) {
+			lMethod = (this.getClass().getMethod("doInstantEffect",cArg));
+		}
 		lMethod.invoke(permanentEffect,player);
 }
 	
@@ -546,45 +569,49 @@ public class CardHandler {
 	}
 	
 	public void activateLeader(CardCoinDiscount permanentEffect,NetworkPlayer player){
-	// TODO remember to add the overrides in the decorators if the decorator  CardCoinDiscountDecorator is used
 	gameHandler = new CardCoinDiscountDecorator(gameHandler,permanentEffect.coinQty,player);
 	}
 	
-	public void activateLeader(CopyLeaderAbility permanentEffect,NetworkPlayer player) throws CardNotFoundException{
-		//TODO control on the MainBoard the playedLeaderCard e subtract them with the player.getPlayerPlayedLeaderCards()
-		//then ask to the player what card he wants to copy and memorize it, it can't be changed
-		boolean flag = true;
-		ArrayList<Integer> list = new ArrayList<Integer>();
-		for (Integer i : player.personalMainBoard.getPlayedLeaderCard()){
-			for (Integer j : player.getPlayerPlayedLeaderCards()){
-				if(i == j)
-					flag = false;
-				}
-		if(flag==true)
-			list.add(i);
-		flag=true;
-		}
-		player.setMessage("What Leader do you want to copy?");
-		ArrayList<String> nameList = new ArrayList<String>();
-		for(Integer i : list){
-			player.setMessage(MainBoard.leaderMap.get(i).cardName);
-			nameList.add(MainBoard.leaderMap.get(i).cardName);
+	public void activateLeader(CopyLeaderAbility permanentEffect,NetworkPlayer player) throws CardNotFoundException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException{
+		if(player.copiedLeaderCard == null){
+			boolean flag = true;
+			ArrayList<Integer> list = new ArrayList<Integer>();
+			for (Integer i : player.personalMainBoard.getPlayedLeaderCard()){
+				for (Integer j : player.getPlayerPlayedLeaderCards()){
+					if(i == j)
+						flag = false;
+					}
+			if(flag==true)
+				list.add(i);
+			flag=true;
 			}
-		String response = player.sendMessage();
-		flag = false;
-		Integer cardNumber = 0;
-		for (String name : nameList)
-			if(name.equals(response)){
-				cardNumber = gameHandler.cardNameToInteger(response, player.personalMainBoard.getCardNamesOnTheTowers(), player.personalMainBoard.getCardsOnTheTowers());
-				flag = true;}
-		if(flag==false){
-			player.setMessage("You must choose a Leader Card already played by one of your opponents");
-			activateLeader(permanentEffect,player);
-			return;
+			player.setMessage("What Leader do you want to copy?");
+			ArrayList<String> nameList = new ArrayList<String>();
+			for(Integer i : list){
+				player.setMessage(MainBoard.leaderMap.get(i).cardName);
+				nameList.add(MainBoard.leaderMap.get(i).cardName);
+				}
+			String response = player.sendMessage();
+			flag = false;
+			Integer cardNumber = 0;
+			for (String name : nameList)
+				if(name.equals(response)){
+					cardNumber = gameHandler.cardNameToInteger(response, player.personalMainBoard.getCardNamesOnTheTowers(), player.personalMainBoard.getCardsOnTheTowers());
+					flag = true;}
+			if(flag==false){
+				player.setMessage("You must choose a Leader Card already played by one of your opponents");
+				activateLeader(permanentEffect,player);
+				return;
+			}
+			//add the card to the player copiedLeaderCard attribute to prevent that the player copy more than one effect violating the rule of this effect
+			player.copiedLeaderCard = cardNumber;
+			Leader leader = MainBoard.leaderMap.get(cardNumber);
+			activateLeader(leader.effect,player);
 		}
-		Leader leader = MainBoard.leaderMap.get(cardNumber);
-		//TODO fix the reflection to make this work 
-		//activateLeader(leader.effect,player);
+		else{
+			Leader leader = MainBoard.leaderMap.get(player.copiedLeaderCard);
+			activateLeader(leader.effect,player);
+		}
 }
 	
 	

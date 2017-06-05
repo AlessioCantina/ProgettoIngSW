@@ -1,12 +1,16 @@
 package it.polimi.LM39.model;
 
 
+import java.io.Serializable;
+
 import it.polimi.LM39.model.leaderobject.*;
 
 
-public class Leader {
+public class Leader implements Serializable{
 
-    public LeaderRequestedObjects requestedObjects;
+	private static final long serialVersionUID = -1386992865586803229L;
+
+	public LeaderRequestedObjects requestedObjects;
 
     public Effect effect;
 
