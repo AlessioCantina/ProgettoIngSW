@@ -9,13 +9,16 @@ public class GameClient extends UIcontroller {
     /**
      * Default constructor
      */
-    public GameClient() {
+    public GameClient(UserInterface ui, AbstractClient client) {
+    	this.ui = ui;
+    	this.client = client;
     }
 
     /**
      * 
      */
     private UserInterface ui;
+
 
     /**
      * 

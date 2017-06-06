@@ -1,5 +1,6 @@
 package it.polimi.LM39.client;
 
+import it.polimi.LM39.model.MainBoard;
 
 /**
  * 
@@ -16,5 +17,17 @@ public class GUI extends UserInterface {
      * 
      */
     public  void showNetworkMenu(){}
+
+	@Override
+	public void printMainBoard(MainBoard mainBoard) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void printMessage(String message) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

@@ -65,6 +65,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	        			clientAction = objInput.readUTF();
 	        			//TODO handle the clientaction
 	        		}
+	        		objOutput.flush();
 	        	}
 	        }catch (Exception e) {
 	            logger.log(Level.SEVERE, "Can't instantiate listener for the player", e);

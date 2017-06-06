@@ -1,5 +1,6 @@
 package it.polimi.LM39.client;
 
+import it.polimi.LM39.model.MainBoard;
 
 /**
  * 
@@ -22,7 +23,9 @@ public abstract class UserInterface {
     /**
      * 
      */
-    public abstract void showNetworkMenu();
+    public abstract void printMainBoard(MainBoard mainBoard);
+    
+    public abstract void printMessage(String message);
 
     /**
      * 

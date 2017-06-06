@@ -28,7 +28,8 @@ public class SocketClient extends AbstractClient implements Runnable{
      * @throws IOException 
      * @throws UnknownHostException 
      */
-    public SocketClient(String ip, int port, String userName) throws UnknownHostException, IOException {
+    public SocketClient(String ip, int port, String userName, UserInterface UI) throws UnknownHostException, IOException {
+    	super(UI);
     	this.ip = ip;
     	this.port = port;
     	this.userName = userName;
@@ -42,7 +43,7 @@ public class SocketClient extends AbstractClient implements Runnable{
     @Override
     public void run(){
     	Logger logger = Logger.getLogger(SocketClient.class.getName());
-    		System.out.println("started sockethandler");
+    		logger.log(Level.INFO,"started sockethandler");
     		while (true){	
     			scanner = new Scanner(System.in);
     			System.out.println("scanner ready");
