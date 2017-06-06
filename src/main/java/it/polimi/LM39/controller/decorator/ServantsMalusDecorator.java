@@ -48,7 +48,7 @@ public class ServantsMalusDecorator extends GameHandler{
     }
 
 	@Override
-	public void addCardResources (CardResources resources, NetworkPlayer player) throws NotEnoughResourcesException{
+	public void addCardResources (CardResources resources, NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
 		decoratedGameHandler.addCardResources (resources,player);
 	}
 	

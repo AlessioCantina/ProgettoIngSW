@@ -1,6 +1,7 @@
 package it.polimi.LM39.controller.decorator;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.NotEnoughPointsException;
@@ -27,7 +28,7 @@ public class ResourcesMalusDecorator  extends GameHandler{
 	}
 	
 	@Override
-	public void addCardResources (CardResources resources, NetworkPlayer player) throws NotEnoughResourcesException{
+	public void addCardResources (CardResources resources, NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
 		if(this.player == player){
 			PlayerResources playerResources = player.resources;
 			if(resources.woods>0 && resources.stones>0){
@@ -60,6 +61,8 @@ public class ResourcesMalusDecorator  extends GameHandler{
 				playerResources.setCoins(resources.coins - resourcesMalus.coins);
 			if(resources.servants>=resourcesMalus.servants)
 				playerResources.setServants(resources.servants - resourcesMalus.servants);	
+			if(resources.council>=resourcesMalus.council)
+				councilHandler.getCouncil(resources.council,player,decoratedGameHandler,new ArrayList<Integer>());	
 			player.resources=playerResources;
 		 }
 		 else

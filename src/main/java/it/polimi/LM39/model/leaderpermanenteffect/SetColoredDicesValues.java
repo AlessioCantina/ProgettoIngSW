@@ -26,6 +26,7 @@ public class SetColoredDicesValues extends LeaderPermanentEffect implements Seri
     /**
      * 
      */
+    //true for boost, false for set
     public Boolean boostOrSet;
 
 }

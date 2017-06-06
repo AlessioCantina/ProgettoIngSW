@@ -334,14 +334,15 @@ public class GameHandler {
     			setActionBonus(player.personalMainBoard.faithBonuses[player.points.getFaith()],player);
     			player.points.setFaith(0);
     		}
-    		else if (("no").equals(response)){
-    			CardHandler cardHandler = new CardHandler(this);
-    			cardHandler.activateExcommunication((MainBoard.excommunicationMap.get(player.personalMainBoard.excommunicationsOnTheBoard[period-1])).effect, player);
-    		}
-    		else{
+    		else if (!("no").equals(response)){
     			player.setMessage("You must answer yes or no");
     			supportTheChurch (player);
-    			}
+    		}
+    	}
+    	//if the player doesn't have enough faith points to support the Church or he decided not to support the Church
+    	else{
+			CardHandler cardHandler = new CardHandler(this);
+			cardHandler.activateExcommunication((MainBoard.excommunicationMap.get(player.personalMainBoard.excommunicationsOnTheBoard[period-1])).effect, player);
     	}
     }
     
@@ -388,12 +389,13 @@ public class GameHandler {
     	player.resources=playerResources;
     }
     
-    public void addCardResources (CardResources resources, NetworkPlayer player) throws NotEnoughResourcesException{
+    public void addCardResources (CardResources resources, NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
     	PlayerResources playerResources = player.resources;
     	playerResources.setCoins(resources.coins);
     	playerResources.setWoods(resources.woods);
     	playerResources.setStones(resources.stones);
     	playerResources.setServants(resources.servants);
+    	councilHandler.getCouncil(resources.council,player,this,new ArrayList<Integer>());
     	player.resources=playerResources;
     }
     
@@ -671,9 +673,12 @@ public class GameHandler {
     	}
     }
     
+    //probably useless code
+    /*
     public void removeDecoration(Class toRemove, NetworkPlayer player){
 		//if it is not a decorator
     	if (this.getClass() == toRemove)
 			return;
 	}
+	*/
 }

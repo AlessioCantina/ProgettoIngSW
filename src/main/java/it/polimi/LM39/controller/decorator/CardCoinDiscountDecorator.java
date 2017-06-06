@@ -81,7 +81,7 @@ public class CardCoinDiscountDecorator extends GameHandler{
 	}
 	
 	@Override
-	public void addCardResources (CardResources resources, NetworkPlayer player) throws NotEnoughResourcesException{
+	public void addCardResources (CardResources resources, NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
 		decoratedGameHandler.addCardResources (resources,player);
 	}
 	
@@ -100,6 +100,9 @@ public class CardCoinDiscountDecorator extends GameHandler{
 		return decoratedGameHandler.addServants(player);
 	}
 	
+	
+	//probably useless code
+	/*
 	@Override
 	public void removeDecoration(Class toRemove, NetworkPlayer player){
 		if (this.getClass() == toRemove && this.player == player)
@@ -107,6 +110,7 @@ public class CardCoinDiscountDecorator extends GameHandler{
 		else
 			decoratedGameHandler.removeDecoration(toRemove, player);
 	}
+	*/
 	
 	
 }

@@ -73,7 +73,7 @@ public class CardHandler {
 		
 	}
 	
-	public void doInstantEffect(DoubleResourcesTransformation instantEffect,NetworkPlayer player) throws IOException, NotEnoughResourcesException, InvalidInputException{
+	public void doInstantEffect(DoubleResourcesTransformation instantEffect,NetworkPlayer player) throws IOException, NotEnoughResourcesException, InvalidInputException, NotEnoughPointsException{
 		//ask to the player what exchange he wants to do
 				player.setMessage("What exchange do you want to do? 1 or 2");
 				//get the player response
@@ -158,7 +158,7 @@ public class CardHandler {
 		doInstantEffect(resourcesEffect,player);
 	}
 	
-	public void doInstantEffect(GetDiscountedCard instantEffect,NetworkPlayer player) throws IOException, CardNotFoundException, NotEnoughResourcesException{
+	public void doInstantEffect(GetDiscountedCard instantEffect,NetworkPlayer player) throws IOException, CardNotFoundException, NotEnoughResourcesException, NotEnoughPointsException{
 		// ask to the player if he wants to use this effect
 		player.setMessage("Do you want to use this effect? yes or no");
 		String response = player.sendMessage();
@@ -269,7 +269,7 @@ public class CardHandler {
 		gameHandler.addCardPoints(instantEffect.points, player);
 	}
 
-	public void doInstantEffect(Resources instantEffect,NetworkPlayer player) throws NotEnoughResourcesException{
+	public void doInstantEffect(Resources instantEffect,NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
 		gameHandler.addCardResources(instantEffect.resources, player);
 		//double instant bonus if the player has the leader effect DoubleResourcesFromDevelopment 
 		if(this.playerDoubleResourcesFromDevelopment==player){
@@ -301,7 +301,7 @@ public class CardHandler {
 		doInstantEffect(effect,player);
 	}
 	
-	public void doInstantEffect(ResourcesTransformation instantEffect,NetworkPlayer player) throws NotEnoughResourcesException{
+	public void doInstantEffect(ResourcesTransformation instantEffect,NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
 		//checking if the player has enough resources
 		gameHandler.subCardResources(instantEffect.requestedForTransformation, player);
 		//making a Resources effect and calling his method
@@ -467,21 +467,30 @@ public class CardHandler {
 		effect.discount = permanentEffect.discount;
 		activateCharacter(effect,player);
 		//need to check when a player get a card to set the discount like done for the GetDiscountedCard effect
-		if(("Character").equals(permanentEffect.cardType))
+		if(("Character").equals(permanentEffect.cardType) && DecoratorHandler.characterResourcesDiscountDecorator == false){
+			DecoratorHandler.characterResourcesDiscountDecorator=true;
 			gameHandler = new CharacterResourcesDiscountDecorator(gameHandler,permanentEffect.resourcesDiscount,player);
-		else if(("Venture").equals(permanentEffect.cardType))
+		}
+		else if(("Venture").equals(permanentEffect.cardType) && DecoratorHandler.ventureResourcesDiscountDecorator == false){
+			DecoratorHandler.ventureResourcesDiscountDecorator = true;
 			gameHandler = new VentureResourcesDiscountDecorator(gameHandler,permanentEffect.resourcesDiscount,player);
-		else if(("Building").equals(permanentEffect.cardType))
+		}
+		else if(("Building").equals(permanentEffect.cardType) && DecoratorHandler.buildingResourcesDiscountDecorator == false){
+			DecoratorHandler.buildingResourcesDiscountDecorator = true;
 			gameHandler = new BuildingResourcesDiscountDecorator(gameHandler,permanentEffect.resourcesDiscount,player);
+		}
 	}
 	
 	
 	public void activateCharacter(HarvestProductionBoost permanentEffect, NetworkPlayer player){
 		//need to check when a player with this effect try to do a Production or Harvest and give him the bonus
-		if(("Harvest").equals(permanentEffect.actionType))
+		if(("Harvest").equals(permanentEffect.actionType) && DecoratorHandler.harvestBoostDecorator == false){
+			DecoratorHandler.harvestBoostDecorator = true;
 			gameHandler.playerBoardHandler = new HarvestBoostDecorator(gameHandler.playerBoardHandler,permanentEffect.actionValue,player);
-		else
-			gameHandler.playerBoardHandler = new ProductionBoostDecorator(gameHandler.playerBoardHandler,permanentEffect.actionValue,player); 
+		}
+		else if (DecoratorHandler.productionBoostDecorator == false){
+			DecoratorHandler.productionBoostDecorator = true;
+			gameHandler.playerBoardHandler = new ProductionBoostDecorator(gameHandler.playerBoardHandler,permanentEffect.actionValue,player);} 
 	}
 	
 	public void activateCharacter(NoBoardBonuses permanentEffect, NetworkPlayer player){
@@ -519,10 +528,18 @@ public class CardHandler {
 	}
 	
 	public void activateExcommunication(HarvestProductionMalus permanentEffect,NetworkPlayer player){
-		if(("Harvest").equals(permanentEffect.actionType))
+		if(("Harvest").equals(permanentEffect.actionType) && DecoratorHandler.harvestMalus == false){
+			//if not set to false it would block the decoration
+			DecoratorHandler.productionBoostDecorator = false;
+			DecoratorHandler.harvestMalus = true;
 			gameHandler.playerBoardHandler = new HarvestBoostDecorator(gameHandler.playerBoardHandler,-permanentEffect.malus,player);
-		else
-			gameHandler.playerBoardHandler = new ProductionBoostDecorator(gameHandler.playerBoardHandler,-permanentEffect.malus,player); 
+		}
+		else if (DecoratorHandler.productionMalus == false){
+			//if not set to false it would block the decoration
+			DecoratorHandler.productionBoostDecorator = false;
+			DecoratorHandler.productionMalus = true;
+			gameHandler.playerBoardHandler = new ProductionBoostDecorator(gameHandler.playerBoardHandler,-permanentEffect.malus,player);
+		}
 	}
 	
 	public void activateExcommunication(MalusForResources permanentEffect,NetworkPlayer player){
@@ -554,19 +571,31 @@ public class CardHandler {
 	}
 	
 	public void activateExcommunication(MilitaryPointsMalus permanentEffect,NetworkPlayer player){
-		gameHandler = new MilitaryPointsMalusDecorator(gameHandler,permanentEffect.militaryQty ,player);
+		if (DecoratorHandler.militaryPointsMalusDecorator == false){
+			DecoratorHandler.militaryPointsMalusDecorator = true;
+			gameHandler = new MilitaryPointsMalusDecorator(gameHandler,permanentEffect.militaryQty ,player);
+		}
 	}
 	
 	public void activateExcommunication(NoMarket permanentEffect,NetworkPlayer player){
-		gameHandler = new NoMarketDecorator(gameHandler,player);
+		if(DecoratorHandler.noMarketDecorator == false){
+			DecoratorHandler.noMarketDecorator=true;
+			gameHandler = new NoMarketDecorator(gameHandler,player);
+		}
 	}
 	
 	public void activateExcommunication(ResourcesMalus permanentEffect,NetworkPlayer player){
-		gameHandler = new ResourcesMalusDecorator(gameHandler,permanentEffect.resources,player);
+		if(DecoratorHandler.resourcesMalusDecorator == false){
+			DecoratorHandler.resourcesMalusDecorator = true;
+			gameHandler = new ResourcesMalusDecorator(gameHandler,permanentEffect.resources,player);
+		}
 	}
 	
 	public void activateExcommunication(ServantsMalus permanentEffect,NetworkPlayer player){
-		gameHandler = new ServantsMalusDecorator(gameHandler,permanentEffect.servantsQty,player);
+		if(DecoratorHandler.servantsMalusDecorator == false){
+			DecoratorHandler.servantsMalusDecorator = true;
+			gameHandler = new ServantsMalusDecorator(gameHandler,permanentEffect.servantsQty,player);
+		}
 	}
 	
 	public void activateExcommunication(VictoryMalus permanentEffect,NetworkPlayer player){
@@ -597,7 +626,10 @@ public class CardHandler {
 	}
 	
 	public void activateLeader(CardCoinDiscount permanentEffect,NetworkPlayer player){
-	gameHandler = new CardCoinDiscountDecorator(gameHandler,permanentEffect.coinQty,player);
+		if(DecoratorHandler.cardCoinDiscountDecorator == false){
+			DecoratorHandler.cardCoinDiscountDecorator = true;
+			gameHandler = new CardCoinDiscountDecorator(gameHandler,permanentEffect.coinQty,player);
+		}
 	}
 	
 	public void activateLeader(CopyLeaderAbility permanentEffect,NetworkPlayer player) throws CardNotFoundException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException{
@@ -660,13 +692,37 @@ public class CardHandler {
 		player.personalMainBoard.familyMembersLocation.changeFamilyMemberOnProductionOrHarvest(new ArrayList<FamilyMember>(), "Production");
 	}
 	
+	public void activateLeader(SetColoredDicesValues permanentEffect,NetworkPlayer player){
+		Integer[] dices = player.personalMainBoard.getDiceValues();
+		if(permanentEffect.boostOrSet==true){
+			for(int i=0;i<3;i++)
+				dices[i]+=permanentEffect.diceValue;
+		}
+		else {
+			for(int i=0;i<3;i++)
+				dices[i]=permanentEffect.diceValue;
+		}
+		player.personalMainBoard.setDiceValues(dices);
+	}
+	
+	public void activateLeader(UncoloredMemberBonus permanentEffect,NetworkPlayer player){
+		Integer[] dices = player.personalMainBoard.getDiceValues();
+		dices[3]+=permanentEffect.bonus;
+		player.personalMainBoard.setDiceValues(dices);
+	}
+	
+	public void activateLeader(VictoryForSupportingTheChurch permanentEffect,NetworkPlayer player){
+		ActionBonus[] faithBonus = player.personalMainBoard.faithBonuses;
+		for(int i=0;i<16;i++)
+			faithBonus[i].points.victory+=permanentEffect.victoryQty;
+		player.personalMainBoard.faithBonuses = faithBonus;
+	}
 	
 
 	
 	
 	
 	//TODO getInfo methods
-	//TODO deactivateLeader
 	
 	/*
 	
