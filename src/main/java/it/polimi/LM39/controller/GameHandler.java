@@ -519,7 +519,7 @@ public class GameHandler {
     		if (doAction==true){
     			if(familyMemberValue(familyMember,player)>=1){
 	    			if (actionType=="Production"){
-		    			playerBoardHandler.activateHarvest(familyMemberValue(familyMember,player)-penalty,player); // we use the player Personal MainBaord
+		    			playerBoardHandler.activateProduction(familyMemberValue(familyMember,player)-penalty,player); // we use the player Personal MainBaord
 	    			}
 	    			else if(actionType=="Harvest"){
 	    				playerBoardHandler.activateHarvest(familyMemberValue(familyMember,player)-penalty,player); // we use the player Personal MainBaord

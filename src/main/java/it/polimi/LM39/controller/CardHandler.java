@@ -819,8 +819,41 @@ public class CardHandler {
 	}
 	
 	public void getInfo (ResourcesAndPoints effect,NetworkPlayer player){
-		
+		player.setMessage("This Instant Effect gives you");
+		printCardResources(effect.resources,player);
+		printCardPoints(effect.points,player);
 	}
+	
+	public void getInfo (ResourcesAndPointsTransformation effect,NetworkPlayer player){
+		player.setMessage("This Transformation gives you");
+		printCardResources(effect.resources,player);
+		printCardPoints(effect.points,player);
+		player.setMessage("for");
+		printCardPoints(effect.requestedForTransformation,player);
+	}
+	
+	public void getInfo (ResourcesTransformation effect,NetworkPlayer player){
+		player.setMessage("This Transformation gives you");
+		printCardResources(effect.resources,player);
+		player.setMessage("for");
+		printCardResources(effect.requestedForTransformation,player);
+	}
+	
+	public void getInfo (SetFamilyMember effect,NetworkPlayer player){
+		player.setMessage("This effect set a colored family member you chose to this value: " + effect.familyMemberValue);
+	}
+	
+	public void getInfo (VictoryForCard effect,NetworkPlayer player){
+		player.setMessage("This Instant Effect gives you " + effect.victoryQty + " Victory Points for each " + effect.cardType + " card you have");
+	}
+	
+	public void getInfo (VictoryForMilitary effect,NetworkPlayer player){
+		player.setMessage("This Instant Effect gives you " + effect.victoryQty + " Victory Points for each " + effect.militaryQty + " Military Points you have");
+	}
+	
+	
+	
+	
 	
 	
 	
@@ -840,7 +873,7 @@ public class CardHandler {
 	}
 	
 	public void printCardPoints (CardPoints points,NetworkPlayer player){
-		if(points.faith>0);
+		if(points.faith>0)
 			player.setMessage(points.faith + " Faith Points");
 		if(points.military>0)
 			player.setMessage(points.military + " Military Points");
