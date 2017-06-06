@@ -548,7 +548,7 @@ public class GameHandler {
     	mainBoard.setTowersValue(towersValue);
         //read the files
     	try {
-			gsonReader.fileToCard();
+			gsonReader.fileToCard(mainBoard);
 		} catch (IOException e) {
 			throw new FailedToReadFileException(e);
 		}
@@ -672,6 +672,20 @@ public class GameHandler {
     		return addServants(player);
     	}
     }
+    
+    public void discardLeader (NetworkPlayer player, String leader) throws NotEnoughResourcesException, NotEnoughPointsException{
+    	ArrayList<String> playedLeader = player.getPlayerPlayedLeaderCards();
+    	for(String name : player.personalBoard.possessedLeaders)
+    		if((name).equals(leader)){
+    			for(String playedName : playedLeader)
+    				if(playedName.equals(leader))
+    					return;
+    			player.personalBoard.possessedLeaders.remove(leader);
+	    		councilHandler.getCouncil(1, player, this, new ArrayList<Integer>());
+	    	}
+    }
+    
+    
     
     //probably useless code
     /*

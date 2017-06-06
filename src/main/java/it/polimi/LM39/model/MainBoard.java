@@ -20,7 +20,7 @@ public class MainBoard implements Serializable{
     
     private Integer[][] towersValue = new Integer[4][4];
     
-    private ArrayList<Integer> playedLeaderCard = new ArrayList<Integer>();
+    private ArrayList<String> playedLeaderCard = new ArrayList<String>();
     
     public Integer occupiedTowerCost = -3;
 
@@ -50,7 +50,7 @@ public class MainBoard implements Serializable{
 
     public static HashMap<Integer,Character> characterMap = new HashMap<Integer,Character>();
 
-    public static HashMap<Integer,Leader> leaderMap = new HashMap<Integer,Leader>();
+    public static HashMap<String,Leader> leaderMap = new HashMap<String,Leader>();
 
     public static HashMap<Integer,Excommunication> excommunicationMap = new HashMap<Integer,Excommunication>();
 
@@ -95,11 +95,11 @@ public class MainBoard implements Serializable{
        return this.diceValues;  
     }
 
-    public void setPlayedLeaderCard(ArrayList<Integer> playedLeaderCard) {
+    public void setPlayedLeaderCard(ArrayList<String> playedLeaderCard) {
         this.playedLeaderCard=playedLeaderCard;
     }
 
-    public ArrayList<Integer> getPlayedLeaderCard() {
+    public ArrayList<String> getPlayedLeaderCard() {
     	return this.playedLeaderCard;
     }
 

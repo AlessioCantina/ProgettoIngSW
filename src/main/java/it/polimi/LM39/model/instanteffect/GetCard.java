@@ -16,7 +16,7 @@ public class GetCard extends InstantEffect implements Serializable {
 	/**
      * 
      */
-    public Integer cardType;
+    public String cardType;
 
     /**
      * 

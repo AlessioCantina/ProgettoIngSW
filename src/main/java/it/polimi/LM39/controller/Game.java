@@ -62,8 +62,9 @@ public class Game {
      */
     public Room room;
 
-//TODO handle SkipFirstTurn Excommunication
-
+   //TODO handle SkipFirstTurn Excommunication
+   //TODO players choose leader card
+   //TODO players choose Personal Bonus Tile
 
 
 

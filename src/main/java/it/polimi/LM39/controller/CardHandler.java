@@ -21,6 +21,7 @@ import it.polimi.LM39.model.leaderpermanenteffect.*;
 import it.polimi.LM39.model.leaderobject.*;
 import it.polimi.LM39.model.ActionBonus;
 import it.polimi.LM39.model.Building;
+import it.polimi.LM39.model.CardPoints;
 import it.polimi.LM39.model.CardResources;
 import it.polimi.LM39.model.Venture;
 import it.polimi.LM39.model.Character;
@@ -38,7 +39,7 @@ public class CardHandler {
 	 * InstantEffect
 	 */
 	
- void doInstantEffect(InstantEffect instantEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
+ public void doInstantEffect(InstantEffect instantEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
 	 Class[] cArg = new Class[2];
 	 cArg[0] = instantEffect.getClass();
 	 cArg[1] = player.getClass();
@@ -434,7 +435,7 @@ public class CardHandler {
 	 * CharacterPermanentEffect
 	 */
 	
-	void activateCharacter(CharacterPermanentEffect permanentEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{									
+	public void activateCharacter(CharacterPermanentEffect permanentEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{									
 		Class[] cArg = new Class[2];
 	    cArg[0] = permanentEffect.getClass();
 	    cArg[1] = player.getClass();
@@ -467,16 +468,16 @@ public class CardHandler {
 		effect.discount = permanentEffect.discount;
 		activateCharacter(effect,player);
 		//need to check when a player get a card to set the discount like done for the GetDiscountedCard effect
-		if(("Character").equals(permanentEffect.cardType) && DecoratorHandler.characterResourcesDiscountDecorator == false){
-			DecoratorHandler.characterResourcesDiscountDecorator=true;
+		if(("Character").equals(permanentEffect.cardType) && player.decoratorHandler.characterResourcesDiscountDecorator == false){
+			player.decoratorHandler.characterResourcesDiscountDecorator=true;
 			gameHandler = new CharacterResourcesDiscountDecorator(gameHandler,permanentEffect.resourcesDiscount,player);
 		}
-		else if(("Venture").equals(permanentEffect.cardType) && DecoratorHandler.ventureResourcesDiscountDecorator == false){
-			DecoratorHandler.ventureResourcesDiscountDecorator = true;
+		else if(("Venture").equals(permanentEffect.cardType) && player.decoratorHandler.ventureResourcesDiscountDecorator == false){
+			player.decoratorHandler.ventureResourcesDiscountDecorator = true;
 			gameHandler = new VentureResourcesDiscountDecorator(gameHandler,permanentEffect.resourcesDiscount,player);
 		}
-		else if(("Building").equals(permanentEffect.cardType) && DecoratorHandler.buildingResourcesDiscountDecorator == false){
-			DecoratorHandler.buildingResourcesDiscountDecorator = true;
+		else if(("Building").equals(permanentEffect.cardType) && player.decoratorHandler.buildingResourcesDiscountDecorator == false){
+			player.decoratorHandler.buildingResourcesDiscountDecorator = true;
 			gameHandler = new BuildingResourcesDiscountDecorator(gameHandler,permanentEffect.resourcesDiscount,player);
 		}
 	}
@@ -484,12 +485,12 @@ public class CardHandler {
 	
 	public void activateCharacter(HarvestProductionBoost permanentEffect, NetworkPlayer player){
 		//need to check when a player with this effect try to do a Production or Harvest and give him the bonus
-		if(("Harvest").equals(permanentEffect.actionType) && DecoratorHandler.harvestBoostDecorator == false){
-			DecoratorHandler.harvestBoostDecorator = true;
+		if(("Harvest").equals(permanentEffect.actionType) && player.decoratorHandler.harvestBoostDecorator == false){
+			player.decoratorHandler.harvestBoostDecorator = true;
 			gameHandler.playerBoardHandler = new HarvestBoostDecorator(gameHandler.playerBoardHandler,permanentEffect.actionValue,player);
 		}
-		else if (DecoratorHandler.productionBoostDecorator == false){
-			DecoratorHandler.productionBoostDecorator = true;
+		else if (player.decoratorHandler.productionBoostDecorator == false){
+			player.decoratorHandler.productionBoostDecorator = true;
 			gameHandler.playerBoardHandler = new ProductionBoostDecorator(gameHandler.playerBoardHandler,permanentEffect.actionValue,player);} 
 	}
 	
@@ -528,16 +529,16 @@ public class CardHandler {
 	}
 	
 	public void activateExcommunication(HarvestProductionMalus permanentEffect,NetworkPlayer player){
-		if(("Harvest").equals(permanentEffect.actionType) && DecoratorHandler.harvestMalus == false){
+		if(("Harvest").equals(permanentEffect.actionType) && player.decoratorHandler.harvestMalus == false){
 			//if not set to false it would block the decoration
-			DecoratorHandler.productionBoostDecorator = false;
-			DecoratorHandler.harvestMalus = true;
+			player.decoratorHandler.productionBoostDecorator = false;
+			player.decoratorHandler.harvestMalus = true;
 			gameHandler.playerBoardHandler = new HarvestBoostDecorator(gameHandler.playerBoardHandler,-permanentEffect.malus,player);
 		}
-		else if (DecoratorHandler.productionMalus == false){
+		else if (player.decoratorHandler.productionMalus == false){
 			//if not set to false it would block the decoration
-			DecoratorHandler.productionBoostDecorator = false;
-			DecoratorHandler.productionMalus = true;
+			player.decoratorHandler.productionBoostDecorator = false;
+			player.decoratorHandler.productionMalus = true;
 			gameHandler.playerBoardHandler = new ProductionBoostDecorator(gameHandler.playerBoardHandler,-permanentEffect.malus,player);
 		}
 	}
@@ -571,29 +572,29 @@ public class CardHandler {
 	}
 	
 	public void activateExcommunication(MilitaryPointsMalus permanentEffect,NetworkPlayer player){
-		if (DecoratorHandler.militaryPointsMalusDecorator == false){
-			DecoratorHandler.militaryPointsMalusDecorator = true;
+		if (player.decoratorHandler.militaryPointsMalusDecorator == false){
+			player.decoratorHandler.militaryPointsMalusDecorator = true;
 			gameHandler = new MilitaryPointsMalusDecorator(gameHandler,permanentEffect.militaryQty ,player);
 		}
 	}
 	
 	public void activateExcommunication(NoMarket permanentEffect,NetworkPlayer player){
-		if(DecoratorHandler.noMarketDecorator == false){
-			DecoratorHandler.noMarketDecorator=true;
+		if(player.decoratorHandler.noMarketDecorator == false){
+			player.decoratorHandler.noMarketDecorator=true;
 			gameHandler = new NoMarketDecorator(gameHandler,player);
 		}
 	}
 	
 	public void activateExcommunication(ResourcesMalus permanentEffect,NetworkPlayer player){
-		if(DecoratorHandler.resourcesMalusDecorator == false){
-			DecoratorHandler.resourcesMalusDecorator = true;
+		if(player.decoratorHandler.resourcesMalusDecorator == false){
+			player.decoratorHandler.resourcesMalusDecorator = true;
 			gameHandler = new ResourcesMalusDecorator(gameHandler,permanentEffect.resources,player);
 		}
 	}
 	
 	public void activateExcommunication(ServantsMalus permanentEffect,NetworkPlayer player){
-		if(DecoratorHandler.servantsMalusDecorator == false){
-			DecoratorHandler.servantsMalusDecorator = true;
+		if(player.decoratorHandler.servantsMalusDecorator == false){
+			player.decoratorHandler.servantsMalusDecorator = true;
 			gameHandler = new ServantsMalusDecorator(gameHandler,permanentEffect.servantsQty,player);
 		}
 	}
@@ -608,46 +609,53 @@ public class CardHandler {
 	 * LeaderPermanentEffect
 	 */
 	
-	public void activateLeader(Effect permanentEffect,NetworkPlayer player) throws SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException	{
-		Class[] cArg = new Class[2];
+	public void activateLeader(Effect permanentEffect,NetworkPlayer player,String cardName) throws SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException	{
+		Class[] cArg = new Class[3];
 	    cArg[0] = permanentEffect.getClass();
 	    cArg[1] = player.getClass();
+	    cArg[2] = cardName.getClass();
 		Method lMethod;
 		try {
 			lMethod = (this.getClass().getMethod("activateLeader",cArg));
 		} catch (NoSuchMethodException e) {
-			lMethod = (this.getClass().getMethod("doInstantEffect",cArg));
+			Class[] cArg1 = new Class[2];
+			cArg1[0] = cArg[0];
+			cArg1[1] = cArg[1];
+			lMethod = (this.getClass().getMethod("doInstantEffect",cArg1));
 		}
 		lMethod.invoke(permanentEffect,player);
 }
 	
-	public void activateLeader(AlreadyOccupiedTowerDiscount permanentEffect,NetworkPlayer player){
+	public void activateLeader(AlreadyOccupiedTowerDiscount permanentEffect,NetworkPlayer player,String cardName){
+		player.setPlayerPlayedLeaderCards(cardName);
 		player.personalMainBoard.occupiedTowerCost = 0;
 	}
 	
-	public void activateLeader(CardCoinDiscount permanentEffect,NetworkPlayer player){
-		if(DecoratorHandler.cardCoinDiscountDecorator == false){
-			DecoratorHandler.cardCoinDiscountDecorator = true;
+	public void activateLeader(CardCoinDiscount permanentEffect,NetworkPlayer player,String cardName){
+		if(player.decoratorHandler.cardCoinDiscountDecorator == false){
+			player.setPlayerPlayedLeaderCards(cardName);
+			player.decoratorHandler.cardCoinDiscountDecorator = true;
 			gameHandler = new CardCoinDiscountDecorator(gameHandler,permanentEffect.coinQty,player);
 		}
 	}
 	
-	public void activateLeader(CopyLeaderAbility permanentEffect,NetworkPlayer player) throws CardNotFoundException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException{
+	public void activateLeader(CopyLeaderAbility permanentEffect,NetworkPlayer player,String cardName) throws CardNotFoundException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException{
 		if(player.copiedLeaderCard == null){
+			player.setPlayerPlayedLeaderCards(cardName);
 			boolean flag = true;
-			ArrayList<Integer> list = new ArrayList<Integer>();
-			for (Integer i : player.personalMainBoard.getPlayedLeaderCard()){
-				for (Integer j : player.getPlayerPlayedLeaderCards()){
-					if(i == j)
+			ArrayList<String> list = new ArrayList<String>();
+			for (String playedCard : player.personalMainBoard.getPlayedLeaderCard()){
+				for (String playerPlayedCArd : player.getPlayerPlayedLeaderCards()){
+					if(playedCard.equals(playerPlayedCArd))
 						flag = false;
 					}
 			if(flag==true)
-				list.add(i);
+				list.add(playedCard);
 			flag=true;
 			}
 			player.setMessage("What Leader do you want to copy?");
 			ArrayList<String> nameList = new ArrayList<String>();
-			for(Integer i : list){
+			for(String i : list){
 				player.setMessage(MainBoard.leaderMap.get(i).cardName);
 				nameList.add(MainBoard.leaderMap.get(i).cardName);
 				}
@@ -660,30 +668,33 @@ public class CardHandler {
 					flag = true;}
 			if(flag==false){
 				player.setMessage("You must choose a Leader Card already played by one of your opponents");
-				activateLeader(permanentEffect,player);
+				activateLeader(permanentEffect,player,cardName);
 				return;
 			}
 			//add the card to the player copiedLeaderCard attribute to prevent that the player copy more than one effect violating the rule of this effect
 			player.copiedLeaderCard = cardNumber;
 			Leader leader = MainBoard.leaderMap.get(cardNumber);
-			activateLeader(leader.effect,player);
+			activateLeader(leader.effect,player,cardName);
 		}
 		else{
 			Leader leader = MainBoard.leaderMap.get(player.copiedLeaderCard);
-			activateLeader(leader.effect,player);
+			activateLeader(leader.effect,player,cardName);
 		}
 	}
 	
-	public void activateLeader(DoubleResourcesFromDevelopment permanentEffect,NetworkPlayer player) {
+	public void activateLeader(DoubleResourcesFromDevelopment permanentEffect,NetworkPlayer player,String cardName) {
+		player.setPlayerPlayedLeaderCards(cardName);
 		playerDoubleResourcesFromDevelopment = player;
 	}
 	
-	public void activateLeader(NoMilitaryRequirementsForTerritory permanentEffect,NetworkPlayer player) {
+	public void activateLeader(NoMilitaryRequirementsForTerritory permanentEffect,NetworkPlayer player,String cardName) {
+		player.setPlayerPlayedLeaderCards(cardName);
 		for(int i=0;i<4;i++)
 			player.personalMainBoard.militaryForTerritory[i]=0;
 	}
 	
-	public void activateLeader(PlaceFamilyMemberOnOccupiedSpace permanentEffect,NetworkPlayer player) throws InvalidActionTypeException {
+	public void activateLeader(PlaceFamilyMemberOnOccupiedSpace permanentEffect,NetworkPlayer player,String cardName) throws InvalidActionTypeException {
+		player.setPlayerPlayedLeaderCards(cardName);
 		//empty the market
 		for (int i=0;i<4;i++)
 			player.personalMainBoard.familyMembersLocation.setFamilyMemberOnTheMarket(new FamilyMember(),i);
@@ -692,7 +703,8 @@ public class CardHandler {
 		player.personalMainBoard.familyMembersLocation.changeFamilyMemberOnProductionOrHarvest(new ArrayList<FamilyMember>(), "Production");
 	}
 	
-	public void activateLeader(SetColoredDicesValues permanentEffect,NetworkPlayer player){
+	public void activateLeader(SetColoredDicesValues permanentEffect,NetworkPlayer player,String cardName){
+		player.setPlayerPlayedLeaderCards(cardName);
 		Integer[] dices = player.personalMainBoard.getDiceValues();
 		if(permanentEffect.boostOrSet==true){
 			for(int i=0;i<3;i++)
@@ -705,13 +717,15 @@ public class CardHandler {
 		player.personalMainBoard.setDiceValues(dices);
 	}
 	
-	public void activateLeader(UncoloredMemberBonus permanentEffect,NetworkPlayer player){
+	public void activateLeader(UncoloredMemberBonus permanentEffect,NetworkPlayer player,String cardName){
+		player.setPlayerPlayedLeaderCards(cardName);
 		Integer[] dices = player.personalMainBoard.getDiceValues();
 		dices[3]+=permanentEffect.bonus;
 		player.personalMainBoard.setDiceValues(dices);
 	}
 	
-	public void activateLeader(VictoryForSupportingTheChurch permanentEffect,NetworkPlayer player){
+	public void activateLeader(VictoryForSupportingTheChurch permanentEffect,NetworkPlayer player,String cardName){
+		player.setPlayerPlayedLeaderCards(cardName);
 		ActionBonus[] faithBonus = player.personalMainBoard.faithBonuses;
 		for(int i=0;i<16;i++)
 			faithBonus[i].points.victory+=permanentEffect.victoryQty;
@@ -720,7 +734,121 @@ public class CardHandler {
 	
 
 	
+	public void getInfo(Effect effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
+		 Class[] cArg = new Class[2];
+		 cArg[0] = effect.getClass();
+		 cArg[1] = effect.getClass();
+		 Method lMethod = (this.getClass().getMethod("getInfo",cArg));
+		 lMethod.invoke(effect);
+	 }
+	 
+	public void getInfo (CoinForCard effect,NetworkPlayer player){
+		player.setMessage("This Instant Effect gives " + effect.coinQty + "coins" + "for " + effect.cardType + " cards");
+	}
 	
+	public void getInfo (DoublePointsTransformation effect,NetworkPlayer player){
+		player.setMessage("The Transformation 1 gives you ");
+		printCardPoints(effect.points,player);
+		player.setMessage(" for "); 
+		printCardResources(effect.requestedForTransformation,player);
+		
+		player.setMessage("The Transformation 2 gives you ");
+		printCardPoints(effect.points2,player);
+		player.setMessage(" for "); 
+		printCardResources(effect.requestedForTransformation2,player);
+	}
+	
+	public void getInfo (DoubleResourcesTransformation effect,NetworkPlayer player){
+		player.setMessage("The Transformation 1 gives you ");
+		printCardResources(effect.resources,player);
+		player.setMessage(" for "); 
+		printCardResources(effect.requestedForTransformation,player);
+		
+		player.setMessage("The Transformation 2 gives you ");
+		printCardResources(effect.resources2,player);
+		player.setMessage(" for "); 
+		printCardResources(effect.requestedForTransformation2,player);
+	}
+	
+	public void getInfo (GetCard effect,NetworkPlayer player){
+		player.setMessage("This effect gives you a " + effect.cardType + " card of value " + effect.cardValue);
+	}
+	
+	public void getInfo (GetCardAndPoints effect,NetworkPlayer player){
+		player.setMessage("This effect gives you a " + effect.cardType + " card of value " + effect.cardValue);
+		player.setMessage("and ");
+		printCardPoints(effect.points,player);
+	}
+	
+	public void getInfo (GetCardAndResources effect,NetworkPlayer player){
+		player.setMessage("This effect gives you a " + effect.cardType + " card of value " + effect.cardValue);
+		player.setMessage("and ");
+		printCardResources(effect.resources,player);
+	}
+	
+	public void getInfo (GetDiscountedCard effect,NetworkPlayer player){
+		player.setMessage("This effect gives you a " + effect.cardType + " card of value " + effect.cardValue + " with a dsicount of");
+		printCardResources(effect.cardDiscount,player);
+	}
+	
+	public void getInfo (HarvestProductionAction effect,NetworkPlayer player){
+		player.setMessage("This effect gives you a " + effect.actionType + " action of value " + effect.actionValue);
+	}
+	
+	public void getInfo (HarvestProductionAndPoints effect,NetworkPlayer player){
+		player.setMessage("This effect gives you a " + effect.actionType + " action of value " + effect.actionValue);
+		player.setMessage("and ");
+		printCardPoints(effect.points,player);
+	}
+	
+	public void getInfo (Points effect,NetworkPlayer player){
+		player.setMessage("This Instant Effect gives you");
+		printCardPoints(effect.points,player);
+	}
+	
+	public void getInfo (PointsTransformation effect,NetworkPlayer player){
+		player.setMessage("This Transformation gives you ");
+		printCardPoints(effect.points,player);
+		player.setMessage(" for "); 
+		printCardResources(effect.requestedForTransformation,player);
+	}
+	
+	public void getInfo (Resources effect,NetworkPlayer player){
+		player.setMessage("This Instant Effect gives you");
+		printCardResources(effect.resources,player);
+	}
+	
+	public void getInfo (ResourcesAndPoints effect,NetworkPlayer player){
+		
+	}
+	
+	
+	
+	
+	
+	public void printCardResources (CardResources resources,NetworkPlayer player){
+		if(resources.coins>0)
+			player.setMessage(resources.coins + " coins");
+		if(resources.woods>0)
+			player.setMessage(resources.woods + " woods");
+		if(resources.stones>0)
+			player.setMessage(resources.stones + " stones");
+		if(resources.servants>0)
+			player.setMessage(resources.servants + " servants");
+		if(resources.council>0)
+			player.setMessage(resources.council + " Council Favor");
+	}
+	
+	public void printCardPoints (CardPoints points,NetworkPlayer player){
+		if(points.faith>0);
+			player.setMessage(points.faith + " Faith Points");
+		if(points.military>0)
+			player.setMessage(points.military + " Military Points");
+		if(points.victory>0)
+			player.setMessage(points.victory + " Victory Points");
+	}
+	
+	 
 	
 	//TODO getInfo methods
 	

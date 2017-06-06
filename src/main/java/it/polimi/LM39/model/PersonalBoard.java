@@ -7,15 +7,17 @@ public class PersonalBoard implements Serializable{
 
 	private static final long serialVersionUID = -8268917967400496440L;
 
-	ArrayList<Integer> possessedTerritories = new ArrayList<Integer>();
+	public ArrayList<Integer> possessedTerritories = new ArrayList<Integer>();
 
-	ArrayList<Integer> possessedBuildings = new ArrayList<Integer>();
+	public ArrayList<Integer> possessedBuildings = new ArrayList<Integer>();
 
-	ArrayList<Integer> possessedVentures = new ArrayList<Integer>();
+	public ArrayList<Integer> possessedVentures = new ArrayList<Integer>();
 
-	ArrayList<Integer> possessedCharacters = new ArrayList<Integer>();
+	public ArrayList<Integer> possessedCharacters = new ArrayList<Integer>();
     
-    public ActionBonus[] territoryBonuses = new ActionBonus[6]; //the bonuses are loaded from file
+	public ArrayList<String> possessedLeaders = new ArrayList<String>();
+    
+	public ActionBonus[] territoryBonuses = new ActionBonus[6]; //the bonuses are loaded from file
 
     public ActionBonus[] characterBonuses = new ActionBonus[6]; //the bonuses are loaded from file
     

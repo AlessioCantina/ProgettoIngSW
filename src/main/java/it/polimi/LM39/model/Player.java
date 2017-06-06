@@ -21,17 +21,18 @@ public class Player implements Serializable{
 
     public MainBoard personalMainBoard; // this is a modified version of the mainboard, should be updated every time the board gets modified
 
-    private ArrayList<Integer> playerPlayedLeaderCards = new ArrayList<Integer>();
+    private ArrayList<String> playerPlayedLeaderCards = new ArrayList<String>();
     
     public Integer copiedLeaderCard;
 
+    public DecoratorHandler decoratorHandler = new DecoratorHandler();
     
 
     public void setPlayerPlayedLeaderCards(String cardName) {
-    	// TODO implement here
+    	playerPlayedLeaderCards.add(cardName);
     }
 
-    public ArrayList<Integer> getPlayerPlayedLeaderCards() {
+    public ArrayList<String> getPlayerPlayedLeaderCards() {
         return this.playerPlayedLeaderCards;
     }
 
