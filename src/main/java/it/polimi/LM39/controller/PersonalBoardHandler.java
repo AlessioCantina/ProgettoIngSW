@@ -13,7 +13,7 @@ import it.polimi.LM39.model.PersonalBoard;
 
 
 public class PersonalBoardHandler {
-	private static GameHandler gameHandler;
+	private GameHandler gameHandler;
     
     public void activateHarvest(Integer actionValue, NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException {
     	gameHandler.setActionBonus(player.personalMainBoard.harvestBonus,player);
@@ -34,6 +34,6 @@ public class PersonalBoardHandler {
         		 cardHandler.doInstantEffect((MainBoard.buildingMap.get(buildings.get(i)).activationEffect),player);
      }
     public void setGameHandler(GameHandler gameHandler){
-    	PersonalBoardHandler.gameHandler = gameHandler;
+    	this.gameHandler = gameHandler;
     }
 }
