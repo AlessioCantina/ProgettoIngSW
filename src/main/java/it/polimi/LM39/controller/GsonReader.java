@@ -11,7 +11,6 @@ import it.polimi.LM39.model.leaderobject.*;
 import it.polimi.LM39.model.*;
 import it.polimi.LM39.model.Character;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -22,7 +21,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 
-import it.polimi.LM39.model.*;
 import it.polimi.LM39.external_libraries.RuntimeTypeAdapterFactory;
 
 /*
@@ -224,7 +222,7 @@ public class GsonReader {
 		Gson gson = new GsonBuilder().registerTypeAdapterFactory(effectAdapter).registerTypeAdapterFactory(requestedObjectsAdapter).create();
 		jsonReader.beginArray();
 		while(jsonReader.hasNext()){  
-			Leader leaderToInsert = new Leader();
+			Leader leaderToInsert;
 			leaderToInsert = gson.fromJson(jsonReader,leader.getClass());
 			leaderHashMap.put(leaderToInsert.cardName,leaderToInsert);
 		}
@@ -254,7 +252,7 @@ public class GsonReader {
 		Gson gson = new GsonBuilder().create();  
 		jsonReader.beginObject();
 		while(jsonReader.hasNext()){
-				String configToExtract = new String();
+				String configToExtract = "";
 				if(("NAME").equals(jsonReader.peek().toString()))
 					configToExtract = jsonReader.nextName();
 				if(("bonuses").equals(configToExtract))

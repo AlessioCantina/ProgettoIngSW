@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -11,7 +13,7 @@ import java.util.logging.Logger;
 /**
  * 
  */
-public class SocketClient extends AbstractClient {
+public class SocketClient extends AbstractClient implements Runnable{
 	private String ip;
 	private Integer port;
 	private String userName;
@@ -19,6 +21,7 @@ public class SocketClient extends AbstractClient {
 	private Socket socket;
 	private ObjectOutputStream socketOut;
 	private ObjectInputStream socketIn;
+	private ExecutorService executor = Executors.newCachedThreadPool(); 
 
     /**
      * Default constructor
@@ -34,13 +37,11 @@ public class SocketClient extends AbstractClient {
     	socketOut = new ObjectOutputStream(socket.getOutputStream());
     	socketOut.flush();
     	socketIn = new ObjectInputStream(socket.getInputStream());  
-    	new SocketHandler().start();
-
+    	executor.submit(this);
     }
-    private class SocketHandler extends Thread {
-    	Logger logger = Logger.getLogger(SocketHandler.class.getName());
-    	@Override
-    	public void run(){		//output thread
+    @Override
+    public void run(){
+    	Logger logger = Logger.getLogger(SocketClient.class.getName());
     		System.out.println("started sockethandler");
     		while (true){	
     			scanner = new Scanner(System.in);
@@ -54,6 +55,6 @@ public class SocketClient extends AbstractClient {
     				logger.log(Level.SEVERE, "Error instantiating socketstreams", e);
     			} 
     		} 			
-    	}
     }
 }
+
