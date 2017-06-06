@@ -15,7 +15,6 @@ public class Leader implements Serializable{
     public Effect effect;
 
     public String cardName;
-
     //probably useless code
    /*
     public LeaderRequestedObjects getRequestedObject()

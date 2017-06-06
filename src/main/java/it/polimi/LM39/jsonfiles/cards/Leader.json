@@ -64,7 +64,7 @@
             "cardQty2":2
          },
          "effect":{  
-            "type":"ResourcesAndPOints",
+            "type":"ResourcesAndPoints",
             "resources":{  
                "woods":0,
                "stones":0,
@@ -144,7 +144,7 @@
             }
          },
          "effect":{  
-            "type":"CopyLeaderEffect"
+            "type":"CopyLeaderAbility"
          }
       },
       {  
@@ -318,7 +318,9 @@
             "cardType":"Character",
             "cardQty":5
          },
-         "effect":"PlaceFamilyMemberOnOccupiedSpace"
+         "effect":{
+             "type":"PlaceFamilyMemberOnOccupiedSpace"
+         }
       },
       {  
          "cardName":"Francesco Sforza",

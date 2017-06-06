@@ -1,6 +1,7 @@
 package it.polimi.LM39.controller;
 
 import it.polimi.LM39.model.characterpermanenteffect.*;
+
 import it.polimi.LM39.exception.*;
 import it.polimi.LM39.model.excommunicationpermanenteffect.*;
 import it.polimi.LM39.model.leaderpermanenteffect.*;
@@ -10,6 +11,7 @@ import it.polimi.LM39.model.leaderobject.*;
 import it.polimi.LM39.model.*;
 import it.polimi.LM39.model.Character;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -19,6 +21,8 @@ import java.util.HashMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
+
+import it.polimi.LM39.model.*;
 import it.polimi.LM39.external_libraries.RuntimeTypeAdapterFactory;
 
 /*
@@ -128,8 +132,7 @@ public class GsonReader {
 		adapter.registerSubtype(VictoryForSupportingTheChurch.class);
 		adapter.registerSubtype(NoMilitaryRequirementsForTerritory.class);
 		adapter.registerSubtype(DoubleResourcesFromDevelopment.class);
-		adapter.registerSubtype(ResourcesAndPoints.class);
-		adapter.registerSubtype(CardActionDiscount.class);			
+		adapter.registerSubtype(ResourcesAndPoints.class);			
 	}
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	/*
@@ -211,18 +214,20 @@ public class GsonReader {
 	/*
 	 * since leader cards doesn't extends abstract class card we need to overload the method
 	 */
-	public HashMap<Integer,Leader> hashMapCreator(Leader leader) throws IOException {
+	public HashMap<String,Leader> hashMapCreator(Leader leader) throws IOException {
 		JsonReader jsonReader = new JsonReader(new FileReader("./src/main/java/it/polimi/LM39/jsonfiles/cards/" + leader.getClass().getSimpleName() + ".json"));
 		RuntimeTypeAdapterFactory<Effect> effectAdapter = RuntimeTypeAdapterFactory.of(Effect.class,"type");
 		RuntimeTypeAdapterFactory<LeaderRequestedObjects> requestedObjectsAdapter = RuntimeTypeAdapterFactory.of(LeaderRequestedObjects.class,"type");
 		subEffectRegister(effectAdapter,leader);
 		subEffectRegister(requestedObjectsAdapter);
-		HashMap<Integer,Leader> leaderHashMap = new HashMap<Integer,Leader>();
+		HashMap<String,Leader> leaderHashMap = new HashMap<String,Leader>();
 		Gson gson = new GsonBuilder().registerTypeAdapterFactory(effectAdapter).registerTypeAdapterFactory(requestedObjectsAdapter).create();
-		int i = 1;
+		jsonReader.beginArray();
 		while(jsonReader.hasNext()){  
-			leaderHashMap.put(i,gson.fromJson(jsonReader,leader.getClass()));
-			i++;}
+			Leader leaderToInsert = new Leader();
+			leaderToInsert = gson.fromJson(jsonReader,leader.getClass());
+			leaderHashMap.put(leaderToInsert.cardName,leaderToInsert);
+		}
 		jsonReader.close();
 		return leaderHashMap;
 	}
@@ -236,14 +241,40 @@ public class GsonReader {
 		HashMap<Integer,Excommunication> excommunicationHashMap = new HashMap<Integer,Excommunication>();
 		Gson gson = new GsonBuilder().registerTypeAdapterFactory(effectAdapter).create();
 		int i = 1;
+		jsonReader.beginArray(); 
 		while(jsonReader.hasNext()){  
 			excommunicationHashMap.put(i,gson.fromJson(jsonReader,excommunication.getClass()));
 			i++;}
 		jsonReader.close();
 		return excommunicationHashMap;
 	}
+	public void configLoader(MainBoard mainBoard) throws IOException{
+		ActionBonus[][] bonuses = new ActionBonus[4][4]; 
+		JsonReader jsonReader = new JsonReader(new FileReader("./src/main/java/it/polimi/LM39/jsonfiles/config/gameconfiguration.json"));
+		Gson gson = new GsonBuilder().create();  
+		jsonReader.beginObject();
+		while(jsonReader.hasNext()){
+				String configToExtract = new String();
+				if(("NAME").equals(jsonReader.peek().toString()))
+					configToExtract = jsonReader.nextName();
+				if(("bonuses").equals(configToExtract))
+					bonuses = gson.fromJson(jsonReader,bonuses.getClass());
+				else if(("faithBonuses").equals(configToExtract))
+					mainBoard.faithBonuses = gson.fromJson(jsonReader,mainBoard.faithBonuses.getClass());
+				else if(("marketBonuses").equals(configToExtract))
+					mainBoard.marketBonuses = gson.fromJson(jsonReader,mainBoard.marketBonuses.getClass());
+				else if(("councilPalaceBonus").equals(configToExtract))
+					mainBoard.councilPalaceBonus = gson.fromJson(jsonReader,mainBoard.councilPalaceBonus.getClass());
+				else if(("harvestBonus").equals(configToExtract))
+					mainBoard.harvestBonus = gson.fromJson(jsonReader,mainBoard.harvestBonus.getClass());
+				else if(("productionBonus").equals(configToExtract))
+					mainBoard.productionBonus = gson.fromJson(jsonReader,mainBoard.productionBonus.getClass());
+		}
+		mainBoard.setTowersBonuses(bonuses);
+		jsonReader.close();	
+	}
 	 @SuppressWarnings("unchecked")
-	public void fileToCard() throws IOException, FailedToReadFileException, FailedToRegisterEffectException{
+	public void fileToCard(MainBoard mainBoard) throws IOException, FailedToReadFileException, FailedToRegisterEffectException{
 		 Card territory = new Territory();  //objects needed to use java reflection which checks parameters types
 		 Card building = new Building();
 		 Card venture = new Venture();
@@ -256,5 +287,6 @@ public class GsonReader {
 		 MainBoard.ventureMap = (HashMap<Integer,Venture>)hashMapCreator(venture);	 
 		 MainBoard.leaderMap = hashMapCreator(leader);
 		 MainBoard.excommunicationMap = hashMapCreator(excommunication);
+		 this.configLoader(mainBoard);
 	 }
 }
