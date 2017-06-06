@@ -742,6 +742,10 @@ public class CardHandler {
 		 lMethod.invoke(effect);
 	 }
 	 
+	/*
+	 * InstantEffect info
+	 */
+	
 	public void getInfo (CoinForCard effect,NetworkPlayer player){
 		player.setMessage("This Instant Effect gives " + effect.coinQty + "coins" + "for " + effect.cardType + " cards");
 	}
@@ -851,14 +855,158 @@ public class CardHandler {
 		player.setMessage("This Instant Effect gives you " + effect.victoryQty + " Victory Points for each " + effect.militaryQty + " Military Points you have");
 	}
 	
+	/*
+	 * LeaderObject info
+	 */
+	
+	public void getInfo (RequestedCard requested,NetworkPlayer player){
+		player.setMessage("To activate this Leader you need " + requested.cardQty + " " + requested.cardType + " cards");
+	}
+	
+	public void getInfo (RequestedCardPointsResources requested,NetworkPlayer player){
+		player.setMessage("To activate this Leader you need " + requested.cardQty + " " + requested.cardType + " cards and");
+		printCardResources(requested.resources,player);
+		printCardPoints(requested.points,player);
+	}
+	
+	public void getInfo (RequestedPoints requested,NetworkPlayer player){
+		player.setMessage("To activate this Leader you need ");
+		printCardPoints(requested.points,player);
+	}
+	
+	public void getInfo (RequestedResources requested,NetworkPlayer player){
+		player.setMessage("To activate this Leader you need ");
+		printCardResources(requested.resources,player);
+	}
+	
+	public void getInfo (RequestedSameCard requested,NetworkPlayer player){
+		player.setMessage("To activate this Leader you need " + requested.cardQty + " cards of the same type");
+	}
+	
+	public void getInfo (RequestedTwoCards requested,NetworkPlayer player){
+		player.setMessage("To activate this Leader you need " + requested.cardQty + " " + requested.cardType + " cards and " + requested.cardQty2 + " " + requested.cardType2 + " cards");
+	}
+	
+	/*
+	 * CharacterPermanentEffect info
+	 */
+	
+	public void getInfo (CardActionDiscount bonus,NetworkPlayer player){
+		player.setMessage("This permanent effect gives you a discount of " + bonus.discount + " in action value to get a " + bonus.cardType + " card");
+	}
+	
+	public void getInfo (CardActionResourcesDiscount bonus,NetworkPlayer player){
+		player.setMessage("This permanent effect gives you a discount of " + bonus.discount + " in action value and a discount on the resources cost of ");
+		printCardResources(bonus.resourcesDiscount,player);
+		player.setMessage("to get a " + bonus.cardType + " card ");
+	}
+	
+	public void getInfo (HarvestProductionBoost bonus,NetworkPlayer player){
+		player.setMessage("This permanent effect gives you a boost of " + bonus.actionValue + " in action value on a " + bonus.actionType + " action");
+	}
+	
+	public void getInfo (NoBoardBonuses bonus,NetworkPlayer player){
+		player.setMessage("This permanent effect blocks all the bonuses on the Towers action spaces");
+	}
+	
+	/*
+	 * ExcommunicationPermanentEffect info
+	 */
+	
+	public void getInfo (CardActionMalus malus,NetworkPlayer player){
+		player.setMessage("Each time you take a " + malus.cardType + " card (through the action space or as a Card effect), your action receives a " +  -malus.malus + " reduction");
+	}
+	
+	public void getInfo (DiceMalus malus,NetworkPlayer player){
+		player.setMessage("All your colored Family Members receive a " + malus.malus + " reduction");
+	}
+	
+	public void getInfo (HarvestProductionMalus malus,NetworkPlayer player){
+		player.setMessage("Each time you perform a " + malus.actionType + " action (through the action space or as a Card effect), its value is decreased by " +  malus.malus);
+	}
+	
+	public void getInfo (MalusForResources malus,NetworkPlayer player){
+		player.setMessage("At the end of the game, you lose " + malus.victoryQty + " Victory Points for each " + malus.resourceQty + " resources (wood, stone, coin, servant) in your supply on your Personal Board.");
+	}
+	
+	public void getInfo (MalusForResourcesCost malus,NetworkPlayer player){
+		player.setMessage("At the end of the game, you lose " + malus.victoryQty + " Victory Points for each " + malus.resourceQty + " wood and stone on your Building Cards’ costs.");
+	}
+	
+	public void getInfo (MalusVictoryForMilitary malus,NetworkPlayer player){
+		player.setMessage("At the end of the game, you lose " + malus.victoryQty + " Victory Points for each" + malus.militaryQty + " Military Points you have.");
+	}
+	
+	public void getInfo (MilitaryPointsMalus malus,NetworkPlayer player){
+		player.setMessage("Each time you gain Military Points (from action spaces or from your Cards), gain " + malus.militaryQty + " fewer Military Points.");
+	}
+	
+	public void getInfo (NoMarket malus,NetworkPlayer player){
+		player.setMessage("You can’t permanently place your Family Members in the Market action spaces.");
+	}
+	
+	public void getInfo (ResourcesMalus malus,NetworkPlayer player){
+		player.setMessage("Each time you receive woods or stones (from action spaces or from your Cards), you receive fewer wood or stone, each time you receive servants and/or coins (from action spaces or from your Cards) you receive fewer coin and/or servants. In these quantities:");
+		printCardResources(malus.resources,player);
+	}
+	
+	public void getInfo (ServantsMalus malus,NetworkPlayer player){
+		player.setMessage("You have to spend " + malus.servantsQty + " servants to increase your action value by 1");
+	}
+	
+	public void getInfo (SkipFirstTurn malus,NetworkPlayer player){
+		player.setMessage("Each round, you skip your first turn. When all players have taken all their turns, you may still place your last Family Member");
+	}
+	
+	public void getInfo (VictoryMalus malus,NetworkPlayer player){
+		player.setMessage("At the end of the game, before the Final Scoring, you lose " + malus.victoryMalus + " Victory Points for every " + malus.victoryQty + " Victory Points you have");
+	}
+	
+	/*
+	 * LeaderPermanentEffect info
+	 */
+	
+	public void getInfo (AlreadyOccupiedTowerDiscount effect,NetworkPlayer player){
+		player.setMessage("You don’t have to spend 3 coins when you place your Family Members in a Tower that is already occupied");
+	}
+	
+	public void getInfo (CardCoinDiscount effect,NetworkPlayer player){
+		player.setMessage("When you take Development Cards, you get a discount of " + effect.coinQty + " coins (if the card you are taking has coins in its cost.) This is not a discount on the coins you must spend if you take a Development Card from a Tower that’s already occupied");
+	}
+	
+	public void getInfo (CopyLeaderAbility effect,NetworkPlayer player){
+		player.setMessage("Copy the ability of another Leader Card already played by another player. Once you decide the ability to copy, it can’t be changed");
+	}
+	
+	public void getInfo (DoubleResourcesFromDevelopment effect,NetworkPlayer player){
+		player.setMessage("Each time you receive wood, stone, coins, or servants as an immediate effect from Development Cards (not from an action space), you receive the resources twice");
+	}
+	
+	public void getInfo (NoMilitaryRequirementsForTerritory effect,NetworkPlayer player){
+		player.setMessage("You don’t need to satisfy the Military Points requirement when you take Territory Cards");
+	}
+	
+	public void getInfo (PlaceFamilyMemberOnOccupiedSpace effect,NetworkPlayer player){
+		player.setMessage("You can place your Family Members in occupied action spaces");
+	}
+	
+	public void getInfo (SetColoredDicesValues effect,NetworkPlayer player){
+		if (effect.boostOrSet==true)
+			player.setMessage("Your colored Family Members have a bonus of " + effect.diceValue + " on their value. (You can increase their value by spending servants or if you have Character Cards with this effect)");
+		else
+			player.setMessage("Your colored Family Members have a value of " + effect.diceValue + ", regardless of their related dice. (You can increase their value by spending servants or if you have Character Cards with this effect)");
+	}
+	
+	public void getInfo (UncoloredMemberBonus effect,NetworkPlayer player){
+		player.setMessage("Your uncolored Family Member has a bonus of " + effect.bonus + " on its value. (You can increase its value by spending servants or if you have Character Cards with this effect.)");
+	}
+	
+	public void getInfo (VictoryForSupportingTheChurch effect,NetworkPlayer player){
+		player.setMessage("You gain " + effect.victoryQty + " additional Victory Points when you support the Church in a Vatican Report phase.");
+	}
 	
 	
-	
-	
-	
-	
-	
-	
+	//methods needed for the getInfo
 	public void printCardResources (CardResources resources,NetworkPlayer player){
 		if(resources.coins>0)
 			player.setMessage(resources.coins + " coins");
