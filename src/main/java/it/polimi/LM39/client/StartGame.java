@@ -13,7 +13,7 @@ public class StartGame {
 		int port = 0;
 		String userName = "";
 		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-		System.out.println("Welcome to Lorenzo il Magnifico! \n Select the User Interface");
+		System.out.println("Welcome to Lorenzo il Magnifico! \nSelect the User Interface");
 		do{
 		System.out.println("1 - Command Line Interface");
 		System.out.println("2 - Graphic User Interface");
