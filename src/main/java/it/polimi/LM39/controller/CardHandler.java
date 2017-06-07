@@ -97,6 +97,7 @@ public class CardHandler {
 		// ask to the player if he wants to use this effect
 		player.setMessage("Do you want to use this effect? yes or no");
 		String response = player.sendMessage();
+		response = GameHandler.checkResponse(response, player);
 		if(("yes").equals(response)){
 			// ask to the player what card he wants
 			player.setMessage("What card do you want?");
@@ -129,10 +130,6 @@ public class CardHandler {
 						}
 				}
 			}
-		else if(!("no").equals(response)){
-			player.setMessage("You must answer yes or no");
-			doInstantEffect(instantEffect,player);
-		}
 	}
 	
 	public void doInstantEffect(GetCardAndPoints instantEffect,NetworkPlayer player) throws IOException, NotEnoughPointsException, CardNotFoundException, NotEnoughResourcesException{
@@ -163,6 +160,7 @@ public class CardHandler {
 		// ask to the player if he wants to use this effect
 		player.setMessage("Do you want to use this effect? yes or no");
 		String response = player.sendMessage();
+		response = GameHandler.checkResponse(response, player);
 		if(("yes").equals(response)){
 			// ask to the player what card he wants
 			player.setMessage("What card do you want?");
@@ -230,10 +228,6 @@ public class CardHandler {
 						//avoid useless cicles
 						return;
 					}
-		}
-		else if(!("no").equals(response)){
-			player.setMessage("You must answer yes or no");
-			doInstantEffect(instantEffect,player);
 		}
 	}
 	

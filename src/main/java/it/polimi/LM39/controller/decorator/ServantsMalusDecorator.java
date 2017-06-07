@@ -30,6 +30,7 @@ public class ServantsMalusDecorator extends GameHandler{
 		if(this.player == player){
 			player.setMessage("Do you want to add servants? yes or no \n You have an Excommunication so if you add "+ servantsMalus + " your action will increase by 1");
 	    	String response = player.sendMessage();
+	    	response = GameHandler.checkResponse(response, player);
 	    	if(("yes").equals(response)){
 	    		player.setMessage("How many?");
 	    		Integer qty = Integer.parseInt(player.sendMessage());
@@ -38,10 +39,8 @@ public class ServantsMalusDecorator extends GameHandler{
 	    	}
 	    	else if (("no").equals(response))
 	    		return 0;
-	    	else{
-	    		player.setMessage("The answer must be yes or no");
-	    		return decoratedGameHandler.addServants(player);
-	    	}
+	    	//unreachable code
+	    	return null;
 		}
 		else
 			return decoratedGameHandler.addServants(player);

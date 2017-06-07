@@ -27,12 +27,18 @@ public class PersonalBoardHandler {
     public void activateProduction(Integer actionValue, NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException {
     	gameHandler.setActionBonus(player.personalMainBoard.productionBonus,player);
     	ArrayList <Integer> buildings = player.personalBoard.getPossessions("Building");
-         CardHandler cardHandler = new CardHandler(gameHandler);
+        CardHandler cardHandler = new CardHandler(gameHandler);
          for (int i=0;i<buildings.size();i++)
-        	 if(actionValue >= MainBoard.buildingMap.get(buildings.get(i)).activationCost)
-        		 //TODO ask to the player if he wants to perform sendig him the effect getInfo
-        		 cardHandler.doInstantEffect((MainBoard.buildingMap.get(buildings.get(i)).activationEffect),player);
-     }
+        	 if(actionValue >= MainBoard.buildingMap.get(buildings.get(i)).activationCost){
+        		 player.setMessage("Do you want to activate " + MainBoard.buildingMap.get(buildings.get(i)).cardName + " ? yes or no");
+        		 cardHandler.getInfo(MainBoard.buildingMap.get(buildings.get(i)).activationEffect,player);
+        		 String response = player.sendMessage();
+        		 response = GameHandler.checkResponse(response, player);
+        		 if(("yes").equals(response))
+        		 	cardHandler.doInstantEffect((MainBoard.buildingMap.get(buildings.get(i)).activationEffect),player);
+        	 }
+         }
+   
     public void setGameHandler(GameHandler gameHandler){
     	this.gameHandler = gameHandler;
     }

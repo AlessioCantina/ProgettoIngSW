@@ -330,13 +330,10 @@ public class GameHandler {
     	if(player.points.getFaith()>=(period+2)){
     		player.setMessage("Do you want to support the Church? yes or no");
     		String response = player.sendMessage();
+    		response = checkResponse(response, player);
     		if(("yes").equals(response)){
     			setActionBonus(player.personalMainBoard.faithBonuses[player.points.getFaith()],player);
     			player.points.setFaith(0);
-    		}
-    		else if (!("no").equals(response)){
-    			player.setMessage("You must answer yes or no");
-    			supportTheChurch (player);
     		}
     	}
     	//if the player doesn't have enough faith points to support the Church or he decided not to support the Church
@@ -659,18 +656,15 @@ public class GameHandler {
     public Integer addServants(NetworkPlayer player) throws IOException, NotEnoughResourcesException{
     	player.setMessage("Do you want to add servants? yes or no");
     	String response = player.sendMessage();
+    	response = checkResponse(response, player);
     	if(("yes").equals(response)){
     		player.setMessage("How many?");
     		Integer qty = Integer.parseInt(player.sendMessage());
     		player.resources.setServants(-qty);
     		return qty;
     	}
-    	else if (("no").equals(response))
+    	else
     		return 0;
-    	else{
-    		player.setMessage("The answer must be yes or no");
-    		return addServants(player);
-    	}
     }
     
     public void discardLeader (NetworkPlayer player, String leader) throws NotEnoughResourcesException, NotEnoughPointsException{
@@ -685,7 +679,12 @@ public class GameHandler {
 	    	}
     }
     
-    
+    public static String checkResponse (String response,NetworkPlayer player){
+    	while(!("no").equals(response) && !("yes").equals(response)){
+			 player.setMessage("You must answer yes or no");
+			 response = player.sendMessage();}
+		return response;
+    }
     
     //probably useless code
     /*
