@@ -7,11 +7,11 @@ import java.io.InputStreamReader;
 public class StartGame {
 
 	public static void main (String[] args) throws NumberFormatException, IOException{
-		int uiChoice = 0;
-		int connectionChoice = 0;
-		String ip = "";
-		int port = 0;
-		String userName = "";
+		int uiChoice;
+		int connectionChoice;
+		String ip;
+		int port;
+		String userName;
 		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("Welcome to Lorenzo il Magnifico! \nSelect the User Interface");
 		do{
