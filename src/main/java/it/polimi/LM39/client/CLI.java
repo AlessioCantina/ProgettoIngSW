@@ -37,7 +37,9 @@ public class CLI extends UserInterface {
     public CLI() {
     	userInput = new BufferedReader(new InputStreamReader(System.in));
     }
+    public void checkResponse(String response){
 
+    }
     
     /*
      * print the mainboard (only towers)
@@ -45,41 +47,38 @@ public class CLI extends UserInterface {
      */
 	@Override
 	public void printMainBoard(MainBoard mainBoard) {
-	//	TileType tileType = new TileType(TileType.TOWER);
 		String[][] cardsOnTowers = mainBoard.getCardNamesOnTheTowers();
-//		FamilyMembersLocation familyMemberPositions = mainBoard.getFamilyMembersLocation();
-//		FamilyMember[][] familyOnTowers = familyMemberPositions.getFamilyMembersOnTheTowers();
-		FamilyMembersLocation familyMemberPositions = new FamilyMembersLocation();
+		FamilyMembersLocation familyMemberPositions = mainBoard.getFamilyMembersLocation();
 		FamilyMember[][] familyOnTowers = familyMemberPositions.getFamilyMembersOnTheTowers();
 		System.out.println("╔══════════════════════╦═══════════════╦══════════════════════╦═══════════════╦══════════════════════╦═══════════════╦══════════════════════╦═══════════════╗%n");
 		System.out.printf("║%-22s║%-15s║%-22s║%-15s║%-22s║%-15s║%-22s║%-15s║%n"
-		,this.getCardOnTower(cardsOnTowers[0][0]),this.getPlayerColor(familyOnTowers[0][0]),this.getCardOnTower(cardsOnTowers[0][1])
-		,this.getPlayerColor(familyOnTowers[0][1]),this.getCardOnTower(cardsOnTowers[0][2]),this.getPlayerColor(familyOnTowers[0][2])
-		,this.getCardOnTower(cardsOnTowers[0][3]),this.getPlayerColor(familyOnTowers[0][3]));
+		,this.getCardOnTower(cardsOnTowers[0][0]),this.tilePrinter(familyOnTowers[0][0],mainBoard,new int[]{0,0},"tower"),this.getCardOnTower(cardsOnTowers[0][1])
+		,this.tilePrinter(familyOnTowers[0][1],mainBoard,new int[]{0,1},"tower"),this.getCardOnTower(cardsOnTowers[0][2])
+		,this.tilePrinter(familyOnTowers[0][2],mainBoard,new int[]{0,2},"tower"),this.getCardOnTower(cardsOnTowers[0][3]),this.tilePrinter(familyOnTowers[0][3],mainBoard,new int[]{0,3},"tower"));
 		System.out.printf("║                      ║%-15s║                      ║%-15s║                      ║%-15s║                      ║%-15s║%n"
 		,this.getFamilyMemberColor(familyOnTowers[0][0]),this.getFamilyMemberColor(familyOnTowers[0][1])
 		,this.getFamilyMemberColor(familyOnTowers[0][2]),this.getFamilyMemberColor(familyOnTowers[0][3]));
 		System.out.println("╠══════════════════════╬═══════════════╬══════════════════════╬═══════════════╬══════════════════════╬═══════════════╬══════════════════════╬═══════════════╣%n");
 		System.out.printf("║%-22s║%-15s║%-22s║%-15s║%-22s║%-15s║%-22s║%-15s║%n"
-		,this.getCardOnTower(cardsOnTowers[1][0]),this.getPlayerColor(familyOnTowers[1][0]),this.getCardOnTower(cardsOnTowers[1][1])
-		,this.getPlayerColor(familyOnTowers[1][1]),this.getCardOnTower(cardsOnTowers[1][2]),this.getPlayerColor(familyOnTowers[1][2])
-		,this.getCardOnTower(cardsOnTowers[1][3]),this.getPlayerColor(familyOnTowers[1][3]));
+		,this.getCardOnTower(cardsOnTowers[1][0]),this.tilePrinter(familyOnTowers[1][0],mainBoard,new int[]{1,0},"tower"),this.getCardOnTower(cardsOnTowers[1][1])
+		,this.tilePrinter(familyOnTowers[1][1],mainBoard,new int[]{1,1},"tower"),this.getCardOnTower(cardsOnTowers[1][2]),this.tilePrinter(familyOnTowers[1][2],mainBoard,new int[]{1,2},"tower")
+		,this.getCardOnTower(cardsOnTowers[1][3]),this.tilePrinter(familyOnTowers[1][3],mainBoard,new int[]{1,3},"tower"));
 		System.out.printf("║                      ║%-15s║                      ║%-15s║                      ║%-15s║                      ║%-15s║%n"
 		,this.getFamilyMemberColor(familyOnTowers[1][0]),this.getFamilyMemberColor(familyOnTowers[1][1])
 		,this.getFamilyMemberColor(familyOnTowers[1][2]),this.getFamilyMemberColor(familyOnTowers[1][3]));
 		System.out.println("╠══════════════════════╬═══════════════╬══════════════════════╬═══════════════╬══════════════════════╬═══════════════╬══════════════════════╬═══════════════╣%n");
 		System.out.printf("║%-22s║%-15s║%-22s║%-15s║%-22s║%-15s║%-22s║%-15s║%n"
-		,this.getCardOnTower(cardsOnTowers[2][0]),this.getPlayerColor(familyOnTowers[2][0]),this.getCardOnTower(cardsOnTowers[2][1])
-		,this.getPlayerColor(familyOnTowers[2][1]),this.getCardOnTower(cardsOnTowers[2][2]),this.getPlayerColor(familyOnTowers[2][2])
-		,this.getCardOnTower(cardsOnTowers[2][3]),this.getPlayerColor(familyOnTowers[2][3]));
+		,this.getCardOnTower(cardsOnTowers[2][0]),this.tilePrinter(familyOnTowers[2][0],mainBoard,new int[]{2,0},"tower"),this.getCardOnTower(cardsOnTowers[2][1])
+		,this.tilePrinter(familyOnTowers[2][1],mainBoard,new int[]{2,1},"tower"),this.getCardOnTower(cardsOnTowers[2][2]),this.tilePrinter(familyOnTowers[2][2],mainBoard,new int[]{2,2},"tower")
+		,this.getCardOnTower(cardsOnTowers[2][3]),this.tilePrinter(familyOnTowers[2][3],mainBoard,new int[]{2,3},"tower"));
 		System.out.printf("║                      ║%-15s║                      ║%-15s║                      ║%-15s║                      ║%-15s║%n"
 		,this.getFamilyMemberColor(familyOnTowers[2][0]),this.getFamilyMemberColor(familyOnTowers[2][1])
 		,this.getFamilyMemberColor(familyOnTowers[2][2]),this.getFamilyMemberColor(familyOnTowers[2][3]));
 		System.out.println("╠══════════════════════╬═══════════════╬══════════════════════╬═══════════════╬══════════════════════╬═══════════════╬══════════════════════╬═══════════════╣%n");
 		System.out.printf("║%-22s║%-15s║%-22s║%-15s║%-22s║%-15s║%-22s║%-15s║%n"
-		,this.getCardOnTower(cardsOnTowers[3][0]),this.getPlayerColor(familyOnTowers[3][0]),this.getCardOnTower(cardsOnTowers[3][1])
-		,this.getPlayerColor(familyOnTowers[3][1]),this.getCardOnTower(cardsOnTowers[3][2]),this.getPlayerColor(familyOnTowers[3][2])
-		,this.getCardOnTower(cardsOnTowers[3][3]),this.getPlayerColor(familyOnTowers[3][3]));
+		,this.getCardOnTower(cardsOnTowers[3][0]),this.tilePrinter(familyOnTowers[3][0],mainBoard,new int[]{3,0},"tower"),this.getCardOnTower(cardsOnTowers[3][1])
+		,this.tilePrinter(familyOnTowers[3][1],mainBoard,new int[]{3,1},"tower"),this.getCardOnTower(cardsOnTowers[3][2]),this.tilePrinter(familyOnTowers[3][2],mainBoard,new int[]{3,2},"tower")
+		,this.getCardOnTower(cardsOnTowers[3][3]),this.tilePrinter(familyOnTowers[3][3],mainBoard,new int[]{3,3},"tower"));
 		System.out.printf("║                      ║%-15s║                      ║%-15s║                      ║%-15s║                      ║%-15s║%n"
 		,this.getFamilyMemberColor(familyOnTowers[3][0]),this.getFamilyMemberColor(familyOnTowers[3][1])
 		,this.getFamilyMemberColor(familyOnTowers[3][2]),this.getFamilyMemberColor(familyOnTowers[3][3]));
@@ -96,21 +95,24 @@ public class CLI extends UserInterface {
 		int i = 0;
 		System.out.printf("╔═══════════════╦═══════════════╗%n");
 		while(i < marketSize){
-			System.out.printf("║%-15s║%-15s║%n",this.marketTilePrinter(market[i], mainBoard, i, "market"),this.getFamilyMemberColor(market[i]));
+			System.out.printf("║%-15s║%-15s║%n",this.tilePrinter(market[i], mainBoard, new int[]{i,0}, "market"),this.getFamilyMemberColor(market[i]));
 		}
 		System.out.printf("╚═══════════════╩═══════════════╝%n");
 	}
 	/*
 	 * support method for printmarket, print the family member on the market or the bonus if there is no family member
 	 */
-	public String marketTilePrinter(FamilyMember familyMember, MainBoard mainBoard, int index, String tileType){
-		ActionBonus bonus;
+	public String tilePrinter(FamilyMember familyMember, MainBoard mainBoard, int[] index, String tileType){
+		ActionBonus bonus = new ActionBonus();
+		ActionBonus[][] bonusesMatrix;
 		if(familyMember == null){
 			if(("market").equals(tileType))
-				bonus = mainBoard.marketBonuses[index];
-		//	else if(("tower").equals(tileType))
-			//	bonus = mainBoard.getTowersBonuses();
-		/*	 if(bonus.resources.coins != 0)
+				bonus = mainBoard.marketBonuses[index[0]];
+			else if(("tower").equals(tileType)){
+				bonusesMatrix = mainBoard.getTowersBonuses();
+				bonus = bonusesMatrix[index[0]][index[1]];
+			}
+			 if(bonus.resources.coins != 0)
 				 return "coins" + bonus.resources.coins;
 			 else if(bonus.resources.council != 0)
 				 return "council" + bonus.resources.council;
@@ -125,7 +127,7 @@ public class CLI extends UserInterface {
 			 else if(bonus.points.victory != 0)
 				 return "victory" + bonus.points.victory;
 			 else if(bonus.points.military != 0)
-				 return "military" + bonus.points.military; */
+				 return "military" + bonus.points.military; 
 		}
 		else
 			return "player" + familyMember.playerColor;
