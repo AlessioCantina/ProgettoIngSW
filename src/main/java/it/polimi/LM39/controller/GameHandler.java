@@ -383,6 +383,7 @@ public class GameHandler {
     	playerResources.setWoods(-resources.woods);
     	playerResources.setStones(-resources.stones);
     	playerResources.setServants(-resources.servants);
+    	//if any of the set above fails this line of code is never reached
     	player.resources=playerResources;
     }
     
@@ -401,6 +402,7 @@ public class GameHandler {
     	playerPoints.setFaith(-points.faith);
     	playerPoints.setFaith(-points.victory);
     	playerPoints.setMilitary(-points.military);
+    	//if any of the set above fails this line of code is never reached
     	player.points=playerPoints;
     }
     

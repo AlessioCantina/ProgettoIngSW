@@ -1,5 +1,6 @@
 package it.polimi.LM39.controller.decorator;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import it.polimi.LM39.controller.PersonalBoardHandler;
@@ -20,7 +21,7 @@ public class ProductionBoostDecorator extends PersonalBoardHandler{
 	}
 
 	@Override
-	public void activateProduction(Integer value,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException{
+	public void activateProduction(Integer value,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, IOException{
 		//check if the player who is activating the production is the player who has activated the bonus
 		if(this.player == player)
 			decoratedPlayerBoardHandler.activateProduction(value + productionBonus,player);
@@ -33,7 +34,7 @@ public class ProductionBoostDecorator extends PersonalBoardHandler{
 	//the override must be done because the method activateHarvest could me decorated by another decorator
 	//even if ProductionBoostDecorator does not decorate this method
 	public void activateHarvest(Integer value,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException {
-		decoratedPlayerBoardHandler.activateProduction(value,player);
+		decoratedPlayerBoardHandler.activateHarvest(value,player);
 	}
 }
 
