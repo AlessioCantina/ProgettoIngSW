@@ -7,15 +7,15 @@ public class PersonalBoard implements Serializable{
 
 	private static final long serialVersionUID = -8268917967400496440L;
 
-	public ArrayList<Integer> possessedTerritories = new ArrayList<Integer>();
+	private ArrayList<Integer> possessedTerritories = new ArrayList<Integer>();
 
-	public ArrayList<Integer> possessedBuildings = new ArrayList<Integer>();
+	private ArrayList<Integer> possessedBuildings = new ArrayList<Integer>();
 
-	public ArrayList<Integer> possessedVentures = new ArrayList<Integer>();
+	private ArrayList<Integer> possessedVentures = new ArrayList<Integer>();
 
-	public ArrayList<Integer> possessedCharacters = new ArrayList<Integer>();
+	private ArrayList<Integer> possessedCharacters = new ArrayList<Integer>();
     
-	public ArrayList<String> possessedLeaders = new ArrayList<String>();
+	private ArrayList<String> possessedLeaders = new ArrayList<String>();
     
 	public ActionBonus[] territoryBonuses = new ActionBonus[6]; //the bonuses are loaded from file
 
@@ -50,5 +50,18 @@ public class PersonalBoard implements Serializable{
         		break;
         }
     }
+
+	public ArrayList<String> getPossessedLeaders() {
+		return possessedLeaders;
+	}
+
+	public void setLeader(String leader) {
+		this.possessedLeaders.add(leader);
+	}
+	
+	public void setPossessedLeaders(ArrayList<String> possessedLeaders) {
+		this.possessedLeaders = possessedLeaders;
+	}
+	
 
 }

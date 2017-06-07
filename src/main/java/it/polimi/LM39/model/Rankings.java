@@ -7,34 +7,34 @@ public class Rankings implements Serializable{
 
 	private static final long serialVersionUID = 3477030534526157937L;
 
-	private ArrayList<FamilyMemberRank> victoryRanking = new ArrayList<FamilyMemberRank>();
+	private ArrayList<PlayerRank> victoryRanking = new ArrayList<PlayerRank>();
 
-    private ArrayList<FamilyMemberRank> faithRanking = new ArrayList<FamilyMemberRank>();
+    private ArrayList<PlayerRank> faithRanking = new ArrayList<PlayerRank>();
 
-    private ArrayList<FamilyMemberRank> militaryRanking = new ArrayList<FamilyMemberRank>();
+    private ArrayList<PlayerRank> militaryRanking = new ArrayList<PlayerRank>();
     
     
-    public void setVictoryRanking(ArrayList<FamilyMemberRank> victoryRanking) {
+    public void setVictoryRanking(ArrayList<PlayerRank> victoryRanking) {
         this.victoryRanking=victoryRanking;
     }
 
-    public ArrayList<FamilyMemberRank> getVictoryRanking() {
+    public ArrayList<PlayerRank> getVictoryRanking() {
         return this.victoryRanking;
     }
 
-    public void setFaithRanking(ArrayList<FamilyMemberRank> faithRanking) {
+    public void setFaithRanking(ArrayList<PlayerRank> faithRanking) {
     	this.faithRanking=faithRanking;
     }
 
-    public ArrayList<FamilyMemberRank> getFaithRanking() {
+    public ArrayList<PlayerRank> getFaithRanking() {
         return this.faithRanking;
     }
 
-    public void setMilitaryRanking(ArrayList<FamilyMemberRank> militaryRanking) {
+    public void setMilitaryRanking(ArrayList<PlayerRank> militaryRanking) {
     	this.militaryRanking=militaryRanking;
     }
 
-    public ArrayList<FamilyMemberRank> getMilitaryRanking() {
+    public ArrayList<PlayerRank> getMilitaryRanking() {
     	return this.militaryRanking;
     }
 

@@ -114,7 +114,7 @@ public class CardHandler {
 			familyMember.setServants(qtyServants);
 			
 			//converting the card name to cardNumber
-			Integer cardNumber = gameHandler.cardNameToInteger(cardName,player.personalMainBoard.getCardNamesOnTheTowers(),player.personalMainBoard.getCardsOnTheTowers());
+			Integer cardNumber = gameHandler.cardNameToInteger(cardName);
 			boolean flag = gameHandler.addFamilyMemberToTheTower(familyMember,cardNumber,player);
 			
 			if (flag==false)
@@ -169,7 +169,7 @@ public class CardHandler {
 			player.setMessage("What card do you want?");
 			String cardName = player.sendMessage();
 			//converting the card name to cardNumber
-			Integer cardNumber = gameHandler.cardNameToInteger(cardName,player.personalMainBoard.getCardNamesOnTheTowers(),player.personalMainBoard.getCardsOnTheTowers());
+			Integer cardNumber = gameHandler.cardNameToInteger(cardName);
 			Integer[][] CardsOnTheTowers = player.personalMainBoard.getCardsOnTheTowers();
 			//looking for this card on the Towers
 			for(int i=0;i<4;i++)
@@ -665,7 +665,7 @@ public class CardHandler {
 			Integer cardNumber = 0;
 			for (String name : nameList)
 				if(name.equals(response)){
-					cardNumber = gameHandler.cardNameToInteger(response, player.personalMainBoard.getCardNamesOnTheTowers(), player.personalMainBoard.getCardsOnTheTowers());
+					cardNumber = gameHandler.cardNameToInteger(response);
 					flag = true;}
 			if(flag==false){
 				player.setMessage("You must choose a Leader Card already played by one of your opponents");

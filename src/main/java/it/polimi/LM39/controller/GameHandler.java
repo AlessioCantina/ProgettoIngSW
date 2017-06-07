@@ -12,6 +12,7 @@ import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.*;
 import it.polimi.LM39.model.Character;
+import it.polimi.LM39.model.excommunicationpermanenteffect.NoVictoryForCard;
 import it.polimi.LM39.server.NetworkPlayer;
 /**
  * 
@@ -28,7 +29,9 @@ public class GameHandler {
 
     private Integer round;
     
-    public MainBoard mainBoard;
+    public MainBoard mainBoard = new MainBoard();
+     
+    private ArrayList<String> playerActionOrder = new ArrayList<String>();
     /*
      * probably useless attributes
      */
@@ -344,6 +347,8 @@ public class GameHandler {
     	}
     	//if the player doesn't have enough faith points to support the Church or he decided not to support the Church
     	else{
+    		player.setMessage("You don't have enough faith points or you answered no so you get the Excommunication");
+    		player.setExcommunications(MainBoard.excommunicationMap.get(player.personalMainBoard.excommunicationsOnTheBoard[period-1]));
 			CardHandler cardHandler = new CardHandler(this);
 			cardHandler.activateExcommunication((MainBoard.excommunicationMap.get(player.personalMainBoard.excommunicationsOnTheBoard[period-1])).effect, player);
     	}
@@ -542,7 +547,7 @@ public class GameHandler {
     		return true;
     	}
 
-    public void initializeTheGame() throws FailedToReadFileException, FailedToRegisterEffectException {
+    public void initializeTheGame() throws FailedToReadFileException, FailedToRegisterEffectException, IOException {
     	playerBoardHandler.setGameHandler(this);
     	//initialize the value of an action space on the Towers
     	Integer [] towerValue = {1,3,5,7};
@@ -552,15 +557,18 @@ public class GameHandler {
     			towersValue[j][i]=towerValue[j];
     	mainBoard.setTowersValue(towersValue);
         //read the files
-    	try {
-			gsonReader.fileToCard(mainBoard);
-		} catch (IOException e) {
-			throw new FailedToReadFileException(e);
-		}
-        
-    }
+		gsonReader.fileToCard(mainBoard);
+		//load cards
+		loadCardsOnTheMainBoard();
+		//load excommunications
+		loadExcommunications ();
+		//
+		
+		
+		
+	}
     
-    public void loadCardsOnTheMainBoard(){
+    public void loadCardsOnTheMainBoard() throws IOException{
     	int j;
     	Integer[][] cardsOnTheTowers = mainBoard.getCardsOnTheTowers();
     	//checking the period to load the correct cards, we are using integers because
@@ -617,10 +625,21 @@ public class GameHandler {
     		}
     	}
     	this.mainBoard.setCardsOnTheTowers(cardsOnTheTowers);
+    	this.mainBoard.setCardNamesOnTheTowers(cardNameOnTheMainBoard());
     	
     }
+    
+    private void loadExcommunications (){
+    	Integer[] excommunications = new Integer[3];
+    	//generating three random numbers from 1 to 7, 8 to 14 , 15 to 21 ,to choose the excommunications that are ordered by period in their hashmap
+    	for(int i=0,j=1;i<3;i++,j+=7){
+    	Random rand = new Random();
+    	excommunications[i] = (rand.nextInt(7) + j);}
+    	// There is a + 1 because rand.nextInt(7) generates number from 0 to 6 but we need from 1 to 7
+    	mainBoard.excommunicationsOnTheBoard = excommunications;
+    }
    
-    public String[][] cardNameOnTheMainBoard(NetworkPlayer player) throws IOException{
+    public String[][] cardNameOnTheMainBoard() throws IOException{
     	Integer[][] cardsOnTheTowers = mainBoard.getCardsOnTheTowers();
     	String[][] cardNamesOnTheTowers = new String[4][4]; 
     	for(int i=0;i<4;i++){
@@ -634,8 +653,6 @@ public class GameHandler {
 	    			break;
 	        	case 3: cardNamesOnTheTowers[j][i] = MainBoard.ventureMap.get(cardsOnTheTowers[j][i]).cardName;
 	        		break;
-	        	default: player.setMessage("Invalid position it has to be between 0 and 3");
-	        		break;
             	}
             	mainBoard.setCardNamesOnTheTowers(cardNamesOnTheTowers);
             }
@@ -643,21 +660,71 @@ public class GameHandler {
     	return cardNamesOnTheTowers;
     }
 
-    public Integer cardNameToInteger (String card, String[][] cardNamesOnTheTowers, Integer[][] cardOnTheTowers) throws CardNotFoundException{
+    public Integer cardNameToInteger (String card) throws CardNotFoundException{
     	for(int i=0;i<4;i++)
     		for(int j=0;j<4;j++)
-    			if(cardNamesOnTheTowers[i][j].equals(card))
-    				return cardOnTheTowers[i][j];
+    			if(mainBoard.getCardNamesOnTheTowers()[i][j].equals(card))
+    				return mainBoard.getCardsOnTheTowers()[i][j];
     	throw new CardNotFoundException("Card not found!"); //card not found
     			
     }
     
     
-    public Integer calculateFinalPoints(NetworkPlayer player,MainBoard mainBoard) {
-        // TODO implement here
-    	//remember of excommunications!
-    	//NoVictoryForCard
-        return null; //prevent error
+    public ArrayList<PlayerRank> calculateFinalPoints(ArrayList<NetworkPlayer> players) {
+        Integer finalPoints;
+        ArrayList<PlayerRank> list = new ArrayList<PlayerRank>();
+        boolean flag = true;
+        boolean flag2 = true;
+        boolean flag3 = false;
+    	for(NetworkPlayer player : players){
+        	finalPoints = player.points.getVictory();
+        	
+        	//TODO handle the two first rule
+        	//military first and second 
+        	for(NetworkPlayer player2 : players){
+        		if(player.points.getMilitary()<player2.points.getMilitary()){
+        			if(flag==false)
+        				flag2=false;
+        			flag=false;
+        			if(player.points.getMilitary()==player2.points.getMilitary())
+        				flag3=true;
+        		}
+        	}
+        		if(flag==true)
+        			finalPoints += 5;
+        		if(flag3==true)
+        			flag2=false;
+        		if(flag==false && flag2==true)
+        			finalPoints += 2;
+        	
+        	switch (player.personalBoard.getPossessions("Territory").size()){
+	        	case(3): finalPoints += 1;
+	        	case(4): finalPoints += 4;
+	        	case(5): finalPoints += 10;
+	        	case(6): finalPoints += 20;
+        	}
+        	switch (player.personalBoard.getPossessions("Character").size()){
+        		case(1): finalPoints += 1;
+        		case(2): finalPoints += 3;
+        		case(3): finalPoints += 6;
+	        	case(4): finalPoints += 10;
+	        	case(5): finalPoints += 15;
+	        	case(6): finalPoints += 21;
+        	}
+        	flag=true;
+        	for(Excommunication excommunication : player.getExcommunications())
+        		if((excommunication.effect.getClass()).equals(NoVictoryForCard.class))
+        			flag=false;
+        	if(flag==true){
+        		finalPoints += player.points.getFinalVictory();
+        	}
+        	finalPoints += ((player.resources.getCoins()+player.resources.getWoods()+player.resources.getStones()+player.resources.getServants())/5);
+        	PlayerRank playerRank = new PlayerRank();
+        	playerRank.setPlayerPoints(finalPoints);
+        	playerRank.playerNickName=player.nickname;
+        list.add(playerRank);		
+    	}
+    	return list;
     }
 
     //ask to the player if he wants to add servants to the action
@@ -675,14 +742,35 @@ public class GameHandler {
     		return 0;
     }
     
+    public FamilyMember chooseFamilyMember (NetworkPlayer player){
+    	player.setMessage("Which Family Memeber do you want to use? Choose a color between orange,black,white,uncolored");
+		String response = player.sendMessage();
+		if(!("orange").equals(response) && !("black").equals(response) && !("white").equals(response) && !("uncolored").equals(response)){
+			player.setMessage("You must choose a color between between orange,black,white,uncolored");
+			return chooseFamilyMember (player);
+		}
+		else
+			for(String color : player.getPlayedFamilyMembers())
+				if ((color).equals(response)){
+					player.setMessage("You have already played this Family Member");
+					return chooseFamilyMember (player);
+				}
+		FamilyMember familyMember = new FamilyMember();
+		familyMember.color = response;
+		familyMember.playerColor = player.playerColor;
+		return familyMember;
+	}
+    
     public void discardLeader (NetworkPlayer player, String leader) throws NotEnoughResourcesException, NotEnoughPointsException{
     	ArrayList<String> playedLeader = player.getPlayerPlayedLeaderCards();
-    	for(String name : player.personalBoard.possessedLeaders)
+    	for(String name : player.personalBoard.getPossessedLeaders())
     		if((name).equals(leader)){
     			for(String playedName : playedLeader)
     				if(playedName.equals(leader))
     					return;
-    			player.personalBoard.possessedLeaders.remove(leader);
+    			ArrayList<String> leaders = player.personalBoard.getPossessedLeaders();
+    			leaders.remove(leader);
+    			player.personalBoard.setPossessedLeaders(leaders);
 	    		councilHandler.getCouncil(1, player, this, new ArrayList<Integer>());
 	    	}
     }
@@ -693,6 +781,39 @@ public class GameHandler {
 			 response = player.sendMessage();}
 		return response;
     }
+    
+    public void updateRankings (NetworkPlayer player){
+    	//set faith points
+    	for(PlayerRank playerFaithRank : mainBoard.rankings.getFaithRanking())
+    		if((playerFaithRank.playerNickName).equals(player.nickname))
+    			playerFaithRank.setPlayerPoints(player.points.getFaith());
+    	//set military points
+    	for(PlayerRank playerMilitaryRank : mainBoard.rankings.getMilitaryRanking())
+    		if((playerMilitaryRank.playerNickName).equals(player.nickname))
+    			playerMilitaryRank.setPlayerPoints(player.points.getMilitary());
+    	//set victory points
+    	for(PlayerRank playerVictoryRank : mainBoard.rankings.getVictoryRanking())
+    		if((playerVictoryRank.playerNickName).equals(player.nickname))
+    			playerVictoryRank.setPlayerPoints(player.points.getVictory());
+    }
+    
+    public void setPlayerActionOrder (){
+    	ArrayList<String> order = new ArrayList<String>();
+    	for(int i =0; i< mainBoard.familyMembersLocation.getFamilyMembersAtTheCouncilPalace().size();i++)
+    		if(!order.contains(mainBoard.familyMembersLocation.getFamilyMembersAtTheCouncilPalace().get(i).playerColor))
+    			order.add(mainBoard.familyMembersLocation.getFamilyMembersAtTheCouncilPalace().get(i).playerColor);
+    	this.playerActionOrder = order;
+    }
+    
+    public void setPlayersActionOrder (ArrayList<String> playerActionOrder){
+    	//to be used only for the first round of the first period
+    	this.playerActionOrder = playerActionOrder;
+    }
+    
+    public ArrayList<String> getPlayersActionOrder (){
+    	return this.playerActionOrder;
+    }
+    
     
     //probably useless code
     /*

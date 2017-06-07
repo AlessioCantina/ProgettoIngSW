@@ -102,8 +102,5 @@ public class MainBoard implements Serializable{
     public ArrayList<String> getPlayedLeaderCard() {
     	return this.playedLeaderCard;
     }
-    public FamilyMembersLocation getFamilyMembersLocation(){
-    	return this.familyMembersLocation;
-    }
 
 }

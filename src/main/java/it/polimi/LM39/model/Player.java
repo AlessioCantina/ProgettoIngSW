@@ -23,6 +23,8 @@ public class Player implements Serializable{
 
     private ArrayList<String> playerPlayedLeaderCards = new ArrayList<String>();
     
+    private ArrayList<String> playedFamilyMembers = new ArrayList<String>();
+    
     public Integer copiedLeaderCard;
 
     public DecoratorHandler decoratorHandler = new DecoratorHandler();
@@ -36,12 +38,22 @@ public class Player implements Serializable{
         return this.playerPlayedLeaderCards;
     }
 
-    public void setExcommunications(ArrayList<Excommunication> excommunications) {
-        this.excommunications=excommunications;
+    public void setExcommunications(Excommunication excommunication) {
+        this.excommunications.add(excommunication);
     }
 
     public ArrayList<Excommunication> getExcommunications() {
     	return this.excommunications;
     }
+
+	public ArrayList<String> getPlayedFamilyMembers() {
+		return playedFamilyMembers;
+	}
+
+	public void setPlayedFamilyMember(String playedFamilyMembers) {
+		this.playedFamilyMembers.add(playedFamilyMembers);
+	}
+
+	
 
 }
