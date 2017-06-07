@@ -1006,6 +1006,14 @@ public class CardHandler {
 		player.setMessage("You gain " + effect.victoryQty + " additional Victory Points when you support the Church in a Vatican Report phase.");
 	}
 	
+	public void getInfo (NoInstantEffect effect,NetworkPlayer player){
+		player.setMessage("This Card doesn't give any Instant Effect");
+	}
+	
+	public void getInfo (NoCharacterPermanentEffect effect,NetworkPlayer player){
+		player.setMessage("This Card doesn't give any Permanent Effect");
+	}
+	
 	
 	//methods needed for the getInfo
 	public void printCardResources (CardResources resources,NetworkPlayer player){
