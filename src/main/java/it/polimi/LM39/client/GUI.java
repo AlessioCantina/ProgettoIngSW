@@ -25,7 +25,8 @@ public class GUI extends UserInterface {
 	}
 
 	@Override
-	public void printMessage(String message) {
+	public String printMessage(String message) {
+		return message;
 		// TODO Auto-generated method stub
 		
 	}

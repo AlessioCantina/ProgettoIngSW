@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import it.polimi.LM39.model.MainBoard;
-
 public class StartGame {
 
 	public static void main (String[] args) throws NumberFormatException, IOException{
@@ -32,10 +30,9 @@ public class StartGame {
 		port = Integer.parseInt(input.readLine());
 		System.out.println("Choose a username:");
 		userName = input.readLine();
+		input.close();
 		if(uiChoice == 1 && connectionChoice == 1){
 			CLI cli = new CLI();
-			MainBoard mainBoard = new MainBoard();
-			cli.printMainBoard(mainBoard);
 			new SocketClient(ip,port,userName,cli);
 		}
 	}

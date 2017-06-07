@@ -25,7 +25,7 @@ public abstract class UserInterface {
      */
     public abstract void printMainBoard(MainBoard mainBoard);
     
-    public abstract void printMessage(String message);
+    public abstract String printMessage(String message);
 
     /**
      * 

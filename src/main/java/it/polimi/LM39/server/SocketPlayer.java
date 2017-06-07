@@ -21,6 +21,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    private String message;						//information which will be send to the client
 	    private MainBoard mainBoard;
 	    private String clientAction;
+	    private transient boolean requestedMessage = false;
 	    /*
 	     * the constructor initialize the streams and start the thread
 	     */
@@ -37,9 +38,11 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    public void setMessage(String message,MainBoard mainBoard){
 	    	this.message = message;
 	    	this.mainBoard = mainBoard;
+	    	requestedMessage = true;
 	    }
 	    public void setMessage(String message){
 	    	this.message = message;
+	    	requestedMessage = true;
 	    }
 	    private Boolean messageState(){
 	    	if(this.message != null)
@@ -60,10 +63,15 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	        		if(this.messageState()){
 	        			objOutput.writeObject(this.mainBoard);
 	        			objOutput.writeUTF(this.message);
+	        			this.message = null;
 	        		}
-	        		if(objInput.available() > 0){
+	        		if(objInput.available() > 0 && requestedMessage == true){
 	        			clientAction = objInput.readUTF();
-	        			//TODO handle the clientaction
+	        			requestedMessage = false;
+	        		}
+	        		else if(objInput.available() > 0){
+	        					objInput.readUTF();
+	        					objOutput.writeUTF("Rejected Move");
 	        		}
 	        		objOutput.flush();
 	        	}
