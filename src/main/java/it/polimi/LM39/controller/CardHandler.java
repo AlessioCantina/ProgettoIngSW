@@ -11,7 +11,6 @@ import it.polimi.LM39.model.Effect;
 import it.polimi.LM39.model.FamilyMember;
 import it.polimi.LM39.model.Leader;
 import it.polimi.LM39.model.MainBoard;
-import it.polimi.LM39.model.NoEffect;
 import it.polimi.LM39.server.NetworkPlayer;
 import it.polimi.LM39.model.PlayerResources;
 import it.polimi.LM39.model.characterpermanenteffect.*;
@@ -46,8 +45,12 @@ public class CardHandler {
 	 Method lMethod = (this.getClass().getMethod("doInstantEffect",cArg));
 	 lMethod.invoke(instantEffect,player);
  }
-	
- 	public void doInstantEffect(CoinForCard instantEffect,NetworkPlayer player) throws NotEnoughResourcesException{
+ 	
+ 	public void doInstantEffect(NoInstantEffect instantEffect,NetworkPlayer player) throws NotEnoughResourcesException{
+ 		//do nothing
+ 	}
+ 
+	public void doInstantEffect(CoinForCard instantEffect,NetworkPlayer player) throws NotEnoughResourcesException{
 		//calculate the coin to receive by multiplying the possessed cards of a specific type by the coin quantity given by card
 		Integer coinQty=(player.personalBoard.getPossessions(instantEffect.cardType).size())*instantEffect.coinQty;
 			player.resources.setCoins(coinQty);	
@@ -436,6 +439,10 @@ public class CardHandler {
 		Method lMethod = (this.getClass().getMethod("activateCharacter",cArg));
 		lMethod.invoke(permanentEffect,player);
 		}
+	
+	public void activateCharacter(NoCharacterPermanentEffect permanentEffect, NetworkPlayer player){
+		//do nothing
+	}
 	
 	public void activateCharacter(CardActionDiscount permanentEffect, NetworkPlayer player){
 		//reducing the towersValue by the discount the effect gives
