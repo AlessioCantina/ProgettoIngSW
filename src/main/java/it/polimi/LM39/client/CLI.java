@@ -48,7 +48,7 @@ public class CLI extends UserInterface {
 	@Override
 	public void printMainBoard(MainBoard mainBoard) {
 		String[][] cardsOnTowers = mainBoard.getCardNamesOnTheTowers();
-		FamilyMembersLocation familyMemberPositions = mainBoard.getFamilyMembersLocation();
+		FamilyMembersLocation familyMemberPositions = mainBoard.familyMembersLocation;
 		FamilyMember[][] familyOnTowers = familyMemberPositions.getFamilyMembersOnTheTowers();
 		System.out.println("╔══════════════════════╦═══════════════╦══════════════════════╦═══════════════╦══════════════════════╦═══════════════╦══════════════════════╦═══════════════╗%n");
 		System.out.printf("║%-22s║%-15s║%-22s║%-15s║%-22s║%-15s║%-22s║%-15s║%n"
@@ -90,7 +90,7 @@ public class CLI extends UserInterface {
 	 */
 	public void printMarket(MainBoard mainBoard){
 		int marketSize = 4;					//TODO choose a class to put marketSize value (possibly room)
-		FamilyMembersLocation location = mainBoard.getFamilyMembersLocation();
+		FamilyMembersLocation location = mainBoard.familyMembersLocation;
 		FamilyMember[] market = location.getFamilyMembersOnTheMarket();
 		int i = 0;
 		System.out.printf("╔═══════════════╦═══════════════╗%n");
@@ -137,7 +137,7 @@ public class CLI extends UserInterface {
 	 * print the council palace with relative bonuses
 	 */
 	public void printCouncilPalace(MainBoard mainBoard){
-		FamilyMembersLocation location = mainBoard.getFamilyMembersLocation();
+		FamilyMembersLocation location = mainBoard.familyMembersLocation;
 		ArrayList<FamilyMember> councilPalace = location.getFamilyMembersAtTheCouncilPalace();
 		int i = 0;
 		ActionBonus palaceBonus = mainBoard.councilPalaceBonus;
@@ -169,7 +169,7 @@ public class CLI extends UserInterface {
 	 * print harvest and production area
 	 */
 	public void printHarvestAndProduction(MainBoard mainBoard) throws InvalidActionTypeException{
-		FamilyMembersLocation location = mainBoard.getFamilyMembersLocation();
+		FamilyMembersLocation location = mainBoard.familyMembersLocation;
 		ArrayList<FamilyMember> harvestArea = location.getFamilyMembersOnProductionOrHarvest("harvest");
 		ArrayList<FamilyMember> productionArea = location.getFamilyMembersOnProductionOrHarvest("production");
 		int harvestProductionSize = 4;
@@ -197,11 +197,11 @@ public class CLI extends UserInterface {
 	 */
 	public void printPossesedCards(NetworkPlayer player, MainBoard mainBoard){
 		PersonalBoard board = player.personalBoard;
-		ArrayList<Integer> buildings = board.possessedBuildings;
-		ArrayList<Integer> territories = board.possessedTerritories;
-		ArrayList<Integer> ventures = board.possessedVentures;
-		ArrayList<Integer> characters = board.possessedCharacters;
-		ArrayList<String> leaders = board.possessedLeaders;
+		ArrayList<Integer> buildings = board.getPossessions("Building");
+		ArrayList<Integer> territories = board.getPossessions("Territory");
+		ArrayList<Integer> ventures = board.getPossessions("Venture");
+		ArrayList<Integer> characters = board.getPossessions("Character");
+		ArrayList<String> leaders = board.getPossessedLeaders();
 		System.out.println("Possesed buildings:%n");
 		printCardType("Building",buildings);
 		System.out.println("Possesed territories:%n");
