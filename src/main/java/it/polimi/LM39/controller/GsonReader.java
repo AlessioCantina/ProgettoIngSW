@@ -55,7 +55,7 @@ public class GsonReader {
 		adapter.registerSubtype(InstantEffect.class);								
 		adapter.registerSubtype(Resources.class);
 		adapter.registerSubtype(Points.class);
-		adapter.registerSubtype(NoEffect.class);
+		adapter.registerSubtype(NoInstantEffect.class);
 		adapter.registerSubtype(ResourcesAndPoints.class);
 	}
 	/*
@@ -87,7 +87,8 @@ public class GsonReader {
 		adapter.registerSubtype(NoBoardBonuses.class);
 		adapter.registerSubtype(CardActionResourcesDiscount.class);
 		adapter.registerSubtype(Points.class);
-		adapter.registerSubtype(NoEffect.class);
+		adapter.registerSubtype(NoInstantEffect.class);
+		adapter.registerSubtype(NoCharacterPermanentEffect.class);
 		adapter.registerSubtype(Resources.class);
 		adapter.registerSubtype(CardActionDiscount.class);
 		adapter.registerSubtype(GetCardAndPoints.class);
@@ -109,7 +110,7 @@ public class GsonReader {
 		adapter.registerSubtype(ResourcesAndPoints.class);
 		adapter.registerSubtype(HarvestProductionAction.class);
 		adapter.registerSubtype(GetCardAndPoints.class);
-		adapter.registerSubtype(NoEffect.class);
+		adapter.registerSubtype(NoInstantEffect.class);
 	}
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	/*

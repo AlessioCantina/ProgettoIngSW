@@ -3,7 +3,7 @@ package it.polimi.LM39.server;
 import it.polimi.LM39.controller.*;
 import java.util.*;
 
-/**
+/*
  *  class that handle room 
  */
 public class Room {
@@ -36,7 +36,8 @@ public class Room {
      * TODO: method which decide which configuration run 
      */
     public void startRoom(){
-    	this.game = new Game(this.getConnectedPlayers());
+    	this.game = new Game(this.getConnectedPlayers(),players);
+    	
     }
     /*
      * called by controller to change room period (+1 period every 2 rounds)

@@ -27,7 +27,7 @@ import it.polimi.LM39.model.Character;
 
 public class CardHandler {
 	private GameHandler gameHandler;
-	
+	//TODO fix long throws with logger
 	public CardHandler(GameHandler gameHandler){
 		this.gameHandler = gameHandler;
 	}
@@ -96,7 +96,7 @@ public class CardHandler {
 					throw new InvalidInputException("The exchange must be chosen between 1 and 2");
 	}
 	
-	public void doInstantEffect(GetCard instantEffect,NetworkPlayer player) throws IOException, CardNotFoundException, NotEnoughResourcesException, NotEnoughPointsException{
+	public void doInstantEffect(GetCard instantEffect,NetworkPlayer player) throws IOException, CardNotFoundException, NotEnoughResourcesException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		// ask to the player if he wants to use this effect
 		player.setMessage("Do you want to use this effect? yes or no");
 		String response = player.sendMessage();
@@ -135,7 +135,7 @@ public class CardHandler {
 			}
 	}
 	
-	public void doInstantEffect(GetCardAndPoints instantEffect,NetworkPlayer player) throws IOException, NotEnoughPointsException, CardNotFoundException, NotEnoughResourcesException{
+	public void doInstantEffect(GetCardAndPoints instantEffect,NetworkPlayer player) throws IOException, NotEnoughPointsException, CardNotFoundException, NotEnoughResourcesException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		//making a GetCard effect and calling his method
 		GetCard effect = new GetCard();
 		effect.cardType=instantEffect.cardType;
@@ -147,7 +147,7 @@ public class CardHandler {
 		doInstantEffect(pointsEffect,player);
 	}
 	
-	public void doInstantEffect(GetCardAndResources instantEffect,NetworkPlayer player) throws IOException, NotEnoughResourcesException, CardNotFoundException, NotEnoughPointsException{
+	public void doInstantEffect(GetCardAndResources instantEffect,NetworkPlayer player) throws IOException, NotEnoughResourcesException, CardNotFoundException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		//making a GetCard effect and calling his method
 		GetCard effect = new GetCard();
 		effect.cardType=instantEffect.cardType;
@@ -159,7 +159,7 @@ public class CardHandler {
 		doInstantEffect(resourcesEffect,player);
 	}
 	
-	public void doInstantEffect(GetDiscountedCard instantEffect,NetworkPlayer player) throws IOException, CardNotFoundException, NotEnoughResourcesException, NotEnoughPointsException{
+	public void doInstantEffect(GetDiscountedCard instantEffect,NetworkPlayer player) throws IOException, CardNotFoundException, NotEnoughResourcesException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		// ask to the player if he wants to use this effect
 		player.setMessage("Do you want to use this effect? yes or no");
 		String response = player.sendMessage();

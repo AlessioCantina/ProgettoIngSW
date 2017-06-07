@@ -17,20 +17,22 @@ import it.polimi.LM39.server.NetworkPlayer;
  * 
  */
 public class GameHandler {
-	
+	//TODO fix long throws with logger
 	private Logger logger = Logger.getLogger(GameHandler.class.getName());
 
-	public Integer marketSize = 0;
+	public Integer marketSize;
 	
-	public Integer harvestAndProductionSize = 0;
+	public Integer harvestAndProductionSize;
     
-	private Integer period = 1;
+	private Integer period;
 
-    private Integer round = 1;
+    private Integer round;
     
     public MainBoard mainBoard;
-    
-    public BuildingHandler buildingHandler = new BuildingHandler();
+    /*
+     * probably useless attributes
+     */
+ /* public BuildingHandler buildingHandler = new BuildingHandler();		
     
     public TerritoryHandler territoryHandler = new TerritoryHandler();
 
@@ -40,11 +42,11 @@ public class GameHandler {
 
     public LeaderHandler leaderHandler = new LeaderHandler();
 
-    public ExcommunicationHandler excommunicationHandler = new ExcommunicationHandler();
+    public ExcommunicationHandler excommunicationHandler = new ExcommunicationHandler(); */	
 
     public PersonalBoardHandler playerBoardHandler = new PersonalBoardHandler();
     
-    public CouncilHandler councilHandler = new CouncilHandler();
+    public CouncilHandler councilHandler = new CouncilHandler(); 	
     
     public GsonReader gsonReader = new GsonReader();
 
@@ -66,7 +68,7 @@ public class GameHandler {
     	mainBoard.setDiceValues(diceValues);    
     }
 
-    public boolean getCard(Integer cardNumber,NetworkPlayer player, Integer towerNumber) throws IOException {
+    public boolean getCard(Integer cardNumber,NetworkPlayer player, Integer towerNumber) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
     	boolean cardGotten=false;
     	    		switch(towerNumber){
     		    		case 0: Territory territory=MainBoard.territoryMap.get(cardNumber);
@@ -88,9 +90,10 @@ public class GameHandler {
     }
     
     
-    public boolean getTerritoryCard(Territory territory,NetworkPlayer player,Integer cardNumber) throws IOException{
+    public boolean getTerritoryCard(Territory territory,NetworkPlayer player,Integer cardNumber) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
     	//instantResources
-    	territoryHandler.doInstantEffect(territory.instantBonuses,player);
+    	CardHandler cardHandler = new CardHandler(this);
+    	cardHandler.doInstantEffect(territory.instantBonuses,player);
     	ArrayList<Integer> possessedTerritories = player.personalBoard.getPossessions("Territory");
     	int militaryPoints = player.points.getMilitary();
     	if (possessedTerritories.size()<6){
@@ -100,7 +103,7 @@ public class GameHandler {
     			possessedTerritories.add(cardNumber);
     			player.personalBoard.setPossessions(possessedTerritories,"Territory");
     			//get the instant effect
-    			territoryHandler.doInstantEffect(territory.instantBonuses, player);
+    			cardHandler.doInstantEffect(territory.instantBonuses, player);
     			return true;
     			}
     		else
@@ -111,7 +114,8 @@ public class GameHandler {
     	return false;
     }
 
-    public boolean getCharacterCard(Character character,NetworkPlayer player,Integer cardNumber) throws IOException{
+    public boolean getCharacterCard(Character character,NetworkPlayer player,Integer cardNumber) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+    	
     	ArrayList<Integer> possessedCharacters = player.personalBoard.getPossessions("Character");
 		if (possessedCharacters.size()<6){
 	    		try {
@@ -121,10 +125,11 @@ public class GameHandler {
 					logger.log(Level.INFO, "Not enough coins", e);
 					return false;
 				}
+	    		CardHandler cardHandler = new CardHandler(this);
 	    		possessedCharacters.add(cardNumber);
     			player.personalBoard.setPossessions(possessedCharacters,"Character");
-    			characterHandler.doInstantEffect(character.instantBonuses, player);
-    			characterHandler.activate(character.permanentEffect, player);
+    			cardHandler.doInstantEffect(character.instantBonuses, player);
+    			cardHandler.activateCharacter(character.permanentEffect, player);
     			return true;
     	}
 		else
@@ -161,7 +166,7 @@ public class GameHandler {
     	subCardResources(building.costResources,player);
     }
     
-    public boolean getVentureCard(Venture venture,NetworkPlayer player,Integer cardNumber) throws IOException{
+    public boolean getVentureCard(Venture venture,NetworkPlayer player,Integer cardNumber) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
     	ArrayList<Integer> possessedVentures = player.personalBoard.getPossessions("Venture");
     	Integer choice = 0;
 		if (possessedVentures.size()<6){
@@ -198,7 +203,8 @@ public class GameHandler {
 	    	possessedVentures.add(cardNumber);
 	    	player.personalBoard.setPossessions(possessedVentures,"Venture");
 	    	player.points.setFinalVictory(venture.finalVictory);
-	    	ventureHandler.doInstantEffect(venture.instant, player);
+	    	CardHandler cardHandler = new CardHandler(this);
+	    	cardHandler.doInstantEffect(venture.instant, player);
 	    	return true;
 	   }
 		else
@@ -229,7 +235,7 @@ public class GameHandler {
     	return value;
     }
     
-    public boolean addFamilyMemberToTheTower(FamilyMember familyMember , Integer cardNumber, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException {
+    public boolean addFamilyMemberToTheTower(FamilyMember familyMember , Integer cardNumber, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         int i,j;
         boolean coloredFamilyMemberOnTheTower = false;
         boolean uncoloredFamilyMemberOnTheTower = false;
