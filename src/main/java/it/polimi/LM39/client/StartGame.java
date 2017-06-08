@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import it.polimi.LM39.model.MainBoard;
+
 public class StartGame {
 
 	public static void main (String[] args) throws NumberFormatException, IOException{

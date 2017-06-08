@@ -1,6 +1,7 @@
 package it.polimi.LM39.client;
 
 import it.polimi.LM39.model.MainBoard;
+import it.polimi.LM39.server.NetworkPlayer;
 
 /**
  * 
@@ -24,11 +25,12 @@ public class GUI extends UserInterface {
 		
 	}
 
+
+
 	@Override
-	public String printMessage(String message) {
-		return message;
+	public String printMessage(NetworkPlayer player, String message, MainBoard mainBoard) {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
 }

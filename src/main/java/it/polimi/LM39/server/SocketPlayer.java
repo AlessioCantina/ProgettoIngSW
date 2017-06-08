@@ -14,19 +14,24 @@ import java.util.logging.Logger;
  * this is the server side, so we send objects and strings and receive strings from client
  */
 public class SocketPlayer extends NetworkPlayer implements Runnable{
-	    private transient Socket socket;
+	    /**
+	 * 
+	 */
+		private static final long serialVersionUID = 1975895874697189786L;
+		private transient Socket socket;
 	    private transient ServerInterface serverInterface;
 	    private transient ObjectInputStream objInput;			//player's interface and I/O streams
 	    private transient ObjectOutputStream objOutput;
 	    private String message;						//information which will be send to the client
 	    private MainBoard mainBoard;
 	    private String clientAction;
-	    private transient boolean requestedMessage = false;
+	    private transient boolean requestedMessage;
 	    /*
 	     * the constructor initialize the streams and start the thread
 	     */
 	    public SocketPlayer(ServerInterface serverInterface, Socket socket) throws IOException {
 	          this.socket = socket;
+	          this.requestedMessage = false;
 	          this.serverInterface = serverInterface;
 	          this.objOutput = new ObjectOutputStream(this.socket.getOutputStream()); 
 	          this.objOutput.flush();	//needed to avoid deadlock
@@ -74,6 +79,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	        					objOutput.writeUTF("Rejected Move");
 	        		}
 	        		objOutput.flush();
+	        		objOutput.reset();      //to send multiple objects of the same type
 	        	}
 	        }catch (Exception e) {
 	            logger.log(Level.SEVERE, "Can't instantiate listener for the player", e);

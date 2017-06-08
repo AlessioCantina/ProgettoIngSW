@@ -23,11 +23,12 @@ import it.polimi.LM39.server.NetworkPlayer;
  */
 public class CLI extends UserInterface {
 
-	//TODO action menù (action from CLI and action from controller)
 	/*
-	 * input scanner
+	 * input scanner and logger
 	 */
 	BufferedReader userInput;
+	Logger logger;
+	
 	/*
 	 * display player's resources
 	 */
@@ -39,15 +40,19 @@ public class CLI extends UserInterface {
 		System.out.println("Servants:" + player.resources.getServants());
 	}
     /**
-     * Default constructor: initialize the inputstream
+     * Default constructor: initialize the inputstream and the logger
      */
     public CLI() {
     	userInput = new BufferedReader(new InputStreamReader(System.in));
+		Logger logger = Logger.getLogger(CLI.class.getName());
     }
-    public void checkResponse(String response){
-
+    /*
+     * show action menu
+     */
+    public void showMenu(){
+    	System.out.println("It's your turn! Choose an action:");
+    	Action.printAvailableActions();
     }
-    
     /*
      * print the mainboard (only towers)
      * 
@@ -107,7 +112,8 @@ public class CLI extends UserInterface {
 		System.out.printf("╚═══════════════╩═══════════════╝%n");
 	}
 	/*
-	 * support method for printmarket, print the family member on the market or the bonus if there is no family member
+	 * support method for printmarket and printmainboard , print the family member on the market or the
+	 *  bonus if there is no family member
 	 */
 	public String tilePrinter(FamilyMember familyMember, MainBoard mainBoard, int[] index, String tileType){
 		ActionBonus bonus = new ActionBonus();
@@ -175,10 +181,16 @@ public class CLI extends UserInterface {
 	/*
 	 * print harvest and production area
 	 */
-	public void printHarvestAndProduction(MainBoard mainBoard) throws InvalidActionTypeException{
+	public void printHarvestAndProduction(MainBoard mainBoard) {
 		FamilyMembersLocation location = mainBoard.familyMembersLocation;
-		ArrayList<FamilyMember> harvestArea = location.getFamilyMembersOnProductionOrHarvest("harvest");
-		ArrayList<FamilyMember> productionArea = location.getFamilyMembersOnProductionOrHarvest("production");
+		ArrayList<FamilyMember> harvestArea = new ArrayList<FamilyMember>();
+		ArrayList<FamilyMember> productionArea = new ArrayList<FamilyMember>();
+		try{
+			harvestArea = location.getFamilyMembersOnProductionOrHarvest("harvest");
+			productionArea = location.getFamilyMembersOnProductionOrHarvest("production");
+		}catch(InvalidActionTypeException e){
+			logger.log(Level.SEVERE, "Error on action type", e);
+		}
 		int harvestProductionSize = 4;
 		int i = 0;
 		System.out.printf("╔══════════════════════════════════════╗%n");	//TODO ask if also production/harvest space can have bonuses
@@ -294,22 +306,45 @@ public class CLI extends UserInterface {
 	 * 
 	 */
 	@Override
-	public String printMessage(String message) {
-		Logger logger = Logger.getLogger(CLI.class.getName());
+	public String printMessage(NetworkPlayer player, String message, MainBoard mainBoard) {
 		String response = "";
 		System.out.println(message + "%n");
 		try{
 			response = userInput.readLine();
 			String stringController = "";
+			stringController = stringController.replace(" ","");
+			stringController = stringController.toLowerCase();
 			stringController = Action.isIn(response);
-			if(stringController == Action.CONTROLLER.toString()){}
-				//TODO SEND TO CONTROLLER
-				//TODO SWITCH TO HANDLE IN CLI
-				
+			if(stringController == Action.CONTROLLER.toString())
+				player.setMessage(stringController);
+			else
+				selectCLIAction(stringController,player,mainBoard);
 		}catch(IOException e){
 			logger.log(Level.INFO, "Invalid Input", e);
-			this.printMessage(message);
+			this.printMessage(player,message,mainBoard);
 		}
 		return response;
+	}
+	public void selectCLIAction(String action, NetworkPlayer player, MainBoard mainBoard){
+		switch(action){
+			case "printmainboard":
+				this.printMainBoard(mainBoard);
+				break;
+			case "printmarket":
+				this.printMarket(mainBoard);
+				break;
+			case "printcouncil":
+				this.printCouncilPalace(mainBoard);
+				break;
+			case "printharvestandproduction":
+				this.printHarvestAndProduction(mainBoard);
+				break;
+			case "printpossesedcards":
+				this.printPossesedCards(player, mainBoard);
+				break;
+			case "printdicesvalues":
+				this.printDicesValues(mainBoard);
+				break;		
+		}
 	}
 }

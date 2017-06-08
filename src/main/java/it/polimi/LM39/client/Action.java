@@ -16,13 +16,16 @@ public enum Action {
 	 * of the software will take care of his action (CLI or CONTROLLER) 
 	 * 
 	 */
-
+	static void printAvailableActions(){
+		for(Action possibleActions : Action.values())
+			for(String actionName : possibleActions.actions)
+				System.out.println(actionName.toLowerCase());
+	}
 	static String isIn(String clientAction){
 		for(Action possibleActions : Action.values()){
-			String[] actions = possibleActions.actions;
-			for(String actionName : actions)
+			for(String actionName : possibleActions.actions)
 			{
-				if(clientAction.equals(actionName))
+				if(clientAction.compareToIgnoreCase(actionName) == 0)
 					return possibleActions.name();
 			}
 		}
