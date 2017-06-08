@@ -11,14 +11,19 @@ public enum Action {
 	Action(String[] actions){
 		this.actions = actions;
 	}
+	/*
+	 * checks if the client action is in the possible actions (in the enum) and return which part
+	 * of the software will take care of his action (CLI or CONTROLLER) 
+	 * 
+	 */
 
-	String isIn(String test){
-		for(Action act : Action.values()){
-			String[] actString = act.actions;
-			for(String s : actString)
+	static String isIn(String clientAction){
+		for(Action possibleActions : Action.values()){
+			String[] actions = possibleActions.actions;
+			for(String actionName : actions)
 			{
-				if(test.equals(s))
-					return act.name();
+				if(clientAction.equals(actionName))
+					return possibleActions.name();
 			}
 		}
 		return "Action Not Available";

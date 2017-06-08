@@ -23,14 +23,21 @@ import it.polimi.LM39.server.NetworkPlayer;
  */
 public class CLI extends UserInterface {
 
-	//TODO implements faith,military,faith,resources
-	//TODO implements chat with checks on message (control if the message is captured by cli or by controller)
 	//TODO action menù (action from CLI and action from controller)
-	//TODO method checkresponse
 	/*
 	 * input scanner
 	 */
 	BufferedReader userInput;
+	/*
+	 * display player's resources
+	 */
+	public void displayResources(NetworkPlayer player){
+		System.out.println("Available resources:\n");
+		System.out.println("Woods:" + player.resources.getWoods());
+		System.out.println("Stones:" + player.resources.getStones());
+		System.out.println("Coins:" + player.resources.getCoins());
+		System.out.println("Servants:" + player.resources.getServants());
+	}
     /**
      * Default constructor: initialize the inputstream
      */
@@ -293,7 +300,12 @@ public class CLI extends UserInterface {
 		System.out.println(message + "%n");
 		try{
 			response = userInput.readLine();
-			//TODO handle response
+			String stringController = "";
+			stringController = Action.isIn(response);
+			if(stringController == Action.CONTROLLER.toString()){}
+				//TODO SEND TO CONTROLLER
+				//TODO SWITCH TO HANDLE IN CLI
+				
 		}catch(IOException e){
 			logger.log(Level.INFO, "Invalid Input", e);
 			this.printMessage(message);
