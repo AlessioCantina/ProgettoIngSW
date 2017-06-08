@@ -72,6 +72,12 @@ public class Game implements Runnable{
     	for(NetworkPlayer player : players)
     		order.add(player.playerColor);
     	gameHandler.setPlayersActionOrder(order);
+    	for(int i=0;i<order.size();i++)
+			try {
+				gameHandler.setFirstRoundBonuses(playerColorToNetworkPlayer(order.get(i)),i+1);
+			} catch (NotEnoughResourcesException e) {
+				e.printStackTrace();
+			}
     
     }
     
