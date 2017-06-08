@@ -69,23 +69,35 @@ public class Game implements Runnable{
     	//set players action order
     	Collections.shuffle(players);
     	ArrayList<String> order = new ArrayList<String>();
-    	for(NetworkPlayer player : players)
+    	setPlayersColor(players);
+    	for(NetworkPlayer player : players){
     		order.add(player.playerColor);
+    	}
+    		
     	gameHandler.setPlayersActionOrder(order);
-    	for(int i=0;i<order.size();i++)
+    	
+    	for(int i=0;i<order.size();i++){
 			try {
 				gameHandler.setFirstRoundBonuses(playerColorToNetworkPlayer(order.get(i)),i+1);
 			} catch (NotEnoughResourcesException e) {
 				e.printStackTrace();
 			}
+    	}
+    	System.out.println("fine initialize");
+    	
     
+    }
+    private void setPlayersColor(ArrayList<NetworkPlayer> players){
+    	String[] colors = {"green","blue","red","yellow"};
+    	for(int i = 0; i < players.size(); i++){
+    		players.get(i).playerColor = colors[i];
+    	}
     }
     
     public void playerAction(NetworkPlayer player){
     	player.setMessage("What action do you want to perform?");
-    	System.out.println("ok");
     	String response = player.sendMessage();
-    	System.out.println(response);
+    	System.out.println("response " + response);
     	boolean flag = false;
     	if(("getcard").equals(response)){
     		player.setMessage("What card do you want?");
