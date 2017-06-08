@@ -6,14 +6,14 @@ public class CardResources implements Serializable{
 
 	private static final long serialVersionUID = -286586941734230661L;
 
-	public Integer woods;
+	public Integer woods = 0;
 
-    public Integer stones;
+    public Integer stones = 0;
 
-    public Integer servants;
+    public Integer servants = 0;
 
-    public Integer coins;
+    public Integer coins = 0;
 
-    public Integer council;
+    public Integer council = 0;
 
 }

@@ -2,6 +2,8 @@ package it.polimi.LM39.server;
 
 import it.polimi.LM39.controller.*;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /*
  *  class that handle room 
@@ -11,6 +13,7 @@ public class Room {
 	protected static Integer roomCounter = 0;
 	private Game game;
 	private Integer roomPeriod;
+	private ExecutorService executor = Executors.newCachedThreadPool();
 	private ArrayList<NetworkPlayer> players;
     /*
      * initialize the room properties
@@ -26,7 +29,7 @@ public class Room {
     public void addPlayer(NetworkPlayer player){
     	this.players.add(player);
     	game = new Game(this.getConnectedPlayers(),players);
-    	game.startGame();
+    	executor.submit(game);
     }
     /*
      * return the number of players connected to the room

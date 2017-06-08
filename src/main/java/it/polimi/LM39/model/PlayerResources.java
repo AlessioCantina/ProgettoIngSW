@@ -8,15 +8,15 @@ public class PlayerResources implements Serializable{
 
 	private static final long serialVersionUID = -4338651550708606365L;
 
-	private Integer woods;
+	private Integer woods = 0;
 
-    private Integer stones;
+    private Integer stones = 0;
 
-    private Integer coins;
+    private Integer coins = 0;
 
-    private Integer servants;
+    private Integer servants = 0;
     
-    private Integer council;
+    private Integer council = 0;
     
 
 

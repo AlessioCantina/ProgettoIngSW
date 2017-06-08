@@ -9,13 +9,13 @@ public class PlayerPoints implements Serializable{
 
 	private static final long serialVersionUID = 238408352644162214L;
 
-	private Integer faith;
+	private Integer faith = 0;
 
-    private Integer military;
+    private Integer military = 0;
 
-    private Integer victory;
+    private Integer victory = 0;
 
-    private Integer finalVictory;
+    private Integer finalVictory = 0;
 
 
     public Integer getFaith() {

@@ -1,4 +1,5 @@
 package it.polimi.LM39.server;
+import it.polimi.LM39.model.MainBoard;
 import it.polimi.LM39.model.Player;
 /*
  * networkplayer can be extended by rmiplayer or socketplayer similarly to abstractserver and
@@ -21,4 +22,5 @@ public abstract class NetworkPlayer extends Player{
 	public abstract String sendMessage();
 	
 	public abstract void setMessage(String message);
+	public abstract void setMessage(MainBoard mainBoard);
 }

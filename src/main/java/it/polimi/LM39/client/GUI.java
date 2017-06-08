@@ -19,7 +19,6 @@ public class GUI extends UserInterface {
      */
     public  void showNetworkMenu(){}
 
-	@Override
 	public void printMainBoard(MainBoard mainBoard) {
 		// TODO Auto-generated method stub
 		
@@ -27,10 +26,23 @@ public class GUI extends UserInterface {
 
 
 
+
+
 	@Override
-	public String printMessage(NetworkPlayer player, String message, MainBoard mainBoard) {
+	public String getMessage() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void setCurrentMainBoard(MainBoard mainBoard) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void printMessage(NetworkPlayer player, String message) {
+		// TODO Auto-generated method stub
 	}
 
 }

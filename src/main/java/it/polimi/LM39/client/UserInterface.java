@@ -24,9 +24,13 @@ public abstract class UserInterface {
     /**
      * 
      */
-    public abstract void printMainBoard(MainBoard mainBoard);
+    //public abstract void printMainBoard(MainBoard mainBoard);
     
-    public abstract String printMessage(NetworkPlayer player, String message,MainBoard mainBoard);
+    public abstract void printMessage(NetworkPlayer player, String message);
+    
+    public abstract String getMessage();
+    
+    public abstract void setCurrentMainBoard(MainBoard mainBoard);
 
     /**
      * 

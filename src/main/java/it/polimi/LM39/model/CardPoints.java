@@ -6,10 +6,10 @@ public class CardPoints implements Serializable{
 
 	private static final long serialVersionUID = -433202169653017493L;
 
-	public Integer victory;
+	public Integer victory = 0;
 
-    public Integer faith;
+    public Integer faith = 0;
 
-    public Integer military;
+    public Integer military = 0;
 
 }

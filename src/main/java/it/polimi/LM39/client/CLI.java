@@ -26,9 +26,13 @@ public class CLI extends UserInterface {
 	/*
 	 * input scanner and logger
 	 */
+	MainBoard mainBoard;
 	BufferedReader userInput;
 	Logger logger;
 	
+	public void setCurrentMainBoard(MainBoard mainBoard){
+		this.mainBoard = mainBoard;
+	}
 	/*
 	 * display player's resources
 	 */
@@ -43,6 +47,7 @@ public class CLI extends UserInterface {
      * Default constructor: initialize the inputstream and the logger
      */
     public CLI() {
+    	System.out.println("Cli started");
     	userInput = new BufferedReader(new InputStreamReader(System.in));
 		Logger logger = Logger.getLogger(CLI.class.getName());
     }
@@ -57,8 +62,7 @@ public class CLI extends UserInterface {
      * print the mainboard (only towers)
      * 
      */
-	@Override
-	public void printMainBoard(MainBoard mainBoard) {
+	public void printMainBoard() {
 		String[][] cardsOnTowers = mainBoard.getCardNamesOnTheTowers();
 		FamilyMembersLocation familyMemberPositions = mainBoard.familyMembersLocation;
 		FamilyMember[][] familyOnTowers = familyMemberPositions.getFamilyMembersOnTheTowers();
@@ -305,27 +309,30 @@ public class CLI extends UserInterface {
 	 * print the message to the client
 	 * 
 	 */
+	public void receiveMainBoard(MainBoard mainBoard){
+		this.printMainBoard();
+	}
 	@Override
-	public String printMessage(NetworkPlayer player, String message, MainBoard mainBoard) {
+	public void printMessage(NetworkPlayer player, String message) {
+		this.printMainBoard();
 		String response = "";
 		System.out.println(message + "%n");
 		try{
-			response = userInput.readLine();
 			String stringController = "";
-			stringController = stringController.replace(" ","");
-			stringController = stringController.toLowerCase();
+			response = new String(userInput.readLine());
+			response = response.replace(" ","");
+			response = response.toLowerCase();
 			stringController = Action.isIn(response);
-			if(stringController == Action.CONTROLLER.toString())
-				player.setMessage(stringController);
-			else
-				selectCLIAction(stringController,player,mainBoard);
+			if(stringController != Action.CLI.toString())
+				SocketClient.setClientResponse(response);
+		/*	else
+				selectCLIAction(stringController,player); */
 		}catch(IOException e){
 			logger.log(Level.INFO, "Invalid Input", e);
-			this.printMessage(player,message,mainBoard);
+			this.printMessage(player,message);
 		}
-		return response;
 	}
-	public void selectCLIAction(String action, NetworkPlayer player, MainBoard mainBoard){
+/*	public void selectCLIAction(String action, NetworkPlayer player, MainBoard mainBoard){
 		switch(action){
 			case "printmainboard":
 				this.printMainBoard(mainBoard);
@@ -346,5 +353,16 @@ public class CLI extends UserInterface {
 				this.printDicesValues(mainBoard);
 				break;		
 		}
+	} */
+	public String getMessage(){
+		try{
+			if(userInput.ready())
+				return userInput.readLine();
+			else
+				return "String Not Available";
+		}catch(IOException e){
+			logger.log(Level.SEVERE, "IOEXCEPTION", e);
+		}
+		return "";
 	}
 }

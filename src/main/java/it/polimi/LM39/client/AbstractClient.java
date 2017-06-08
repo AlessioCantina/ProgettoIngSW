@@ -5,13 +5,13 @@ package it.polimi.LM39.client;
  */
 public abstract class AbstractClient {
 
-    private UserInterface clientUI;
+    protected UserInterface UI;
     
     public AbstractClient(UserInterface UI){
-    	this.clientUI = UI;
+    	this.UI = UI;
     }
     public UserInterface getUI(){
-    	return this.clientUI;
+    	return this.UI;
     }
 
     /**

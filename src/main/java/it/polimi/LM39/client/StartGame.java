@@ -32,7 +32,6 @@ public class StartGame {
 		port = Integer.parseInt(input.readLine());
 		System.out.println("Choose a username:");
 		userName = input.readLine();
-		input.close();
 		if(uiChoice == 1 && connectionChoice == 1){
 			CLI cli = new CLI();
 			new SocketClient(ip,port,userName,cli);
