@@ -21,7 +21,7 @@ import it.polimi.LM39.server.Room;
 /**
  * 
  */
-public class Game {
+public class Game implements Runnable{
 
     /**
      * Default constructor
@@ -77,9 +77,11 @@ public class Game {
     
     public void playerAction(NetworkPlayer player){
     	player.setMessage("What action do you want to perform?");
+    	System.out.println("ok");
     	String response = player.sendMessage();
+    	System.out.println(response);
     	boolean flag = false;
-    	if(("get card").equals(response)){
+    	if(("getcard").equals(response)){
     		player.setMessage("What card do you want?");
     		response = player.sendMessage();
     		try {
@@ -118,7 +120,7 @@ public class Game {
     		//ad the played family member to the played family fembers list
     		player.setPlayedFamilyMember(familyMember.color);
     	}
-    	else if (("activate production").equals(response)){
+    	else if (("activateproduction").equals(response)){
     		FamilyMember familyMember = handleFamilyMember(player);
     		try {
 				gameHandler.playerBoardHandler.activateProduction(gameHandler.familyMemberValue(familyMember, player), player);
@@ -136,7 +138,7 @@ public class Game {
 				return;
 			}
     	}
-    	else if (("activate harvest").equals(response)){
+    	else if (("activateharvest").equals(response)){
     		FamilyMember familyMember = handleFamilyMember(player);
     		try {
 				gameHandler.playerBoardHandler.activateHarvest(gameHandler.familyMemberValue(familyMember, player), player);
@@ -154,7 +156,7 @@ public class Game {
 				return;
 			}
     	}
-    	else if (("discard leader").equals(response)){
+    	else if (("discardleader").equals(response)){
     		player.setMessage("Which leader card do you want to discard?");
     		response = player.sendMessage();
     		for(String card : player.personalBoard.getPossessedLeaders())
@@ -167,7 +169,7 @@ public class Game {
 						return;
 					}
     	}
-    	else if (("activate leader").equals(response)){
+    	else if (("activateleader").equals(response)){
     		player.setMessage("Which leader do you want to activate?");
     		response = player.sendMessage();
     		flag = false;
@@ -196,7 +198,7 @@ public class Game {
     			}
     	}
     	
-    	else if (("go to the market").equals(response)){
+    	else if (("gotothemarket").equals(response)){
     		FamilyMember familyMember = handleFamilyMember(player);
     		player.setMessage("In which position to you want to go? From 1 to 4");
     		flag = false;
@@ -232,7 +234,7 @@ public class Game {
     		}
     	}
     	
-    	else if (("go to the council palace").equals(response)){
+    	else if (("gotothecouncilpalace").equals(response)){
     		flag = false;
     		FamilyMember familyMember = handleFamilyMember(player);
     		try {
@@ -297,7 +299,7 @@ public class Game {
     //TODO players choose leader card
     //TODO players choose Personal Bonus Tile
     //TODO clone the mainboard in personalmainboard
-    public void startGame() {
+    public void run() {
     	//initialize the game loading parameters and cards
     	try {
 			initialize();
@@ -309,7 +311,6 @@ public class Game {
     	for(int period=0;period<3;period++){
     		for(int round=0;round<2;round++){
     			order = gameHandler.getPlayersActionOrder();
-	    		
     			for(int move=0;move<playerNumber;move++){
 	    			NetworkPlayer player = playerColorToNetworkPlayer(order.get(move));
 	    			player.setMessage(gameHandler.mainBoard);
