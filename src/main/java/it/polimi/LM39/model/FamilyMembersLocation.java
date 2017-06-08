@@ -20,9 +20,13 @@ public class FamilyMembersLocation implements Serializable{
     private ArrayList<FamilyMember> familyMembersAtTheCouncilPalace = new ArrayList<FamilyMember>();
 
 
-    public void setFamilyMembersAtTheCouncilPalace(FamilyMember familyMember) {
+    public void setFamilyMemberAtTheCouncilPalace(FamilyMember familyMember) {
         //set a FamilyMember at the Council Palace
     	this.familyMembersAtTheCouncilPalace.add(familyMember);
+    }
+    
+    public void setFamilyMembersAtTheCouncilPalace(ArrayList<FamilyMember> familyMembers) {
+    	this.familyMembersAtTheCouncilPalace = familyMembers;
     }
     
     public ArrayList<FamilyMember> getFamilyMembersAtTheCouncilPalace() {

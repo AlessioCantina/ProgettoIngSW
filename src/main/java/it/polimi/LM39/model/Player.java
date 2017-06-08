@@ -50,8 +50,12 @@ public class Player implements Serializable{
 		return playedFamilyMembers;
 	}
 
-	public void setPlayedFamilyMember(String playedFamilyMembers) {
-		this.playedFamilyMembers.add(playedFamilyMembers);
+	public void setPlayedFamilyMember(String playedFamilyMember) {
+		this.playedFamilyMembers.add(playedFamilyMember);
+	}
+	
+	public void setPlayedFamilyMembers(ArrayList<String> playedFamilyMembers) {
+		this.playedFamilyMembers = playedFamilyMembers;
 	}
 
 	

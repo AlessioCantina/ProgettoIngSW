@@ -8,6 +8,7 @@ import java.util.Collections;
 import it.polimi.LM39.exception.CardNotFoundException;
 import it.polimi.LM39.exception.FailedToReadFileException;
 import it.polimi.LM39.exception.FailedToRegisterEffectException;
+import it.polimi.LM39.exception.InvalidActionTypeException;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.FamilyMember;
@@ -252,9 +253,7 @@ public class Game {
     	}
     }
 
-   //TODO handle SkipFirstTurn Excommunication
-   //TODO players choose leader card
-   //TODO players choose Personal Bonus Tile
+
     
     private FamilyMember handleFamilyMember(NetworkPlayer player){
     	FamilyMember familyMember = gameHandler.chooseFamilyMember(player);
@@ -293,49 +292,83 @@ public class Game {
     	gameHandler.mainBoard.rankings.setMilitaryRanking(militaryRanking);
     }
     
+    
+    //TODO handle SkipFirstTurn Excommunication
+    //TODO players choose leader card
+    //TODO players choose Personal Bonus Tile
     public void startGame() {
+    	//initialize the game loading parameters and cards
     	try {
 			initialize();
 		} catch (FailedToReadFileException | FailedToRegisterEffectException | IOException e) {
 			e.printStackTrace();
 		}
+    	//the array list where the players actions order is stored
     	ArrayList <String> order;
     	for(int period=0;period<3;period++){
     		for(int round=0;round<2;round++){
     			order = gameHandler.getPlayersActionOrder();
-	    		for(int move=0;move<playerNumber;move++){
+	    		
+    			for(int move=0;move<playerNumber;move++){
 	    			NetworkPlayer player = playerColorToNetworkPlayer(order.get(move));
 	    			playerAction(player);
 	    			gameHandler.updateRankings(player);
 	    		
 	    		}
+	    		
 	    		gameHandler.setPlayerActionOrder();
 	    		gameHandler.setRound(round+1);
+	    		
+	    		//clean all the action spaces for a new round
+	    		try {
+					gameHandler.cleanActionSpaces();
+				} catch (InvalidActionTypeException e1) {
+					e1.printStackTrace();
+				}
+	    		
+	    		//give the played family members back to the players
+	    		giveFamilyMembersBack();
 	    		try {
 					gameHandler.loadCardsOnTheMainBoard();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
     		}
+    		//support the church at the end of a period
     		for(NetworkPlayer player : players)
-				try {
+    			try {
 					gameHandler.supportTheChurch(player);
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException | NotEnoughResourcesException | NotEnoughPointsException e) {
 					e.printStackTrace();
 				}
+    		
     		gameHandler.setPeriod(period+1);
     	}
-    	//TODO send this list to all players and make them print it
-    	ArrayList<PlayerRank> finalScores = gameHandler.calculateFinalPoints(players);
+    	//calculate and send the final points made by every player to every player
+    	sendFinalPoints(gameHandler.calculateFinalPoints(players));
+    	
     }
 
+    private void sendFinalPoints (ArrayList<PlayerRank> finalScores){
+    	for(NetworkPlayer player : players)
+    		for(PlayerRank playerRank : finalScores){
+    			player.setMessage(playerRank.playerNickName + " made " + playerRank.getPlayerPoints());
+    		}
+    	
+    		
+    }
 
     private NetworkPlayer playerColorToNetworkPlayer (String color){
     	for(NetworkPlayer player: players)
     		if(player.playerColor.equals(color))
     			return(player);
     	return null;
+    }
+    
+    private void giveFamilyMembersBack(){
+    	for(NetworkPlayer player : players)
+    		player.setPlayedFamilyMembers(new ArrayList<String>());
     }
 
 

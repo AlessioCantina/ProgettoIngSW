@@ -8,6 +8,7 @@ import java.util.logging.*;
 import it.polimi.LM39.exception.CardNotFoundException;
 import it.polimi.LM39.exception.FailedToReadFileException;
 import it.polimi.LM39.exception.FailedToRegisterEffectException;
+import it.polimi.LM39.exception.InvalidActionTypeException;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.*;
@@ -251,7 +252,7 @@ public class GameHandler {
         int p=i-1;
         int k=j;
         //to store i and j as the coordinates of the position interested, the if check if the player can get the card with a specific family member
-        if(familyMembersOnTheTowers[p][k] == null && (familyMemberValue(familyMember,player) >= (mainBoard.getTowersValue())[p][k])){
+        if(familyMembersOnTheTowers[p][k].color == null && (familyMemberValue(familyMember,player) >= (mainBoard.getTowersValue())[p][k])){
         	//if the place is free and the family member has an high enough value, ((i+1)*2)-1 is to convert the value i of the matrix to the value of the floor in dice
         	for(i=0;i<4;i++){
         		if((familyMembersOnTheTowers[i][k].playerColor).equals(familyMember.playerColor)){
@@ -323,8 +324,7 @@ public class GameHandler {
     
     public boolean addFamilyMemberToTheCouncilPalace(FamilyMember familyMember, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException{
     	if (familyMemberValue(familyMember,player)>=1){
-	    	ArrayList<FamilyMember> familyMembersAtTheCouncilPalace = mainBoard.familyMembersLocation.getFamilyMembersAtTheCouncilPalace();
-	    	familyMembersAtTheCouncilPalace.add(familyMember);
+	    	mainBoard.familyMembersLocation.setFamilyMemberAtTheCouncilPalace(familyMember);
 	    	setActionBonus(player.personalMainBoard.councilPalaceBonus, player);
     	}
     	else {
@@ -674,29 +674,19 @@ public class GameHandler {
         Integer finalPoints;
         ArrayList<PlayerRank> list = new ArrayList<PlayerRank>();
         boolean flag = true;
-        boolean flag2 = true;
-        boolean flag3 = false;
-    	for(NetworkPlayer player : players){
+        //use the method calculateMilitaryStrenght(); to create the arraylist of the first and second position of the military strenght
+        ArrayList<PlayerRank> militaryStrenght = calculateMilitaryStrenght();
+    	
+        for(NetworkPlayer player : players){
         	finalPoints = player.points.getVictory();
         	
-        	//TODO handle the two first rule
-        	//military first and second 
-        	for(NetworkPlayer player2 : players){
-        		if(player.points.getMilitary()<player2.points.getMilitary()){
-        			if(flag==false)
-        				flag2=false;
-        			flag=false;
-        			if(player.points.getMilitary()==player2.points.getMilitary())
-        				flag3=true;
+        	for(PlayerRank playerRank : militaryStrenght)
+        		if(player.nickname.equals(playerRank.playerNickName)){
+        			if(playerRank.getPlayerPoints() == 1)
+        				finalPoints+=5;
+        			else
+        				finalPoints+=2;
         		}
-        	}
-        		if(flag==true)
-        			finalPoints += 5;
-        		if(flag3==true)
-        			flag2=false;
-        		if(flag==false && flag2==true)
-        			finalPoints += 2;
-        	
         	switch (player.personalBoard.getPossessions("Territory").size()){
 	        	case(3): finalPoints += 1;
 	        	case(4): finalPoints += 4;
@@ -724,6 +714,44 @@ public class GameHandler {
         	playerRank.playerNickName=player.nickname;
         list.add(playerRank);		
     	}
+    	return list;
+    }
+    
+    public ArrayList<PlayerRank> calculateMilitaryStrenght (){
+    	int max = 0;
+    	ArrayList<PlayerRank> list = new ArrayList<PlayerRank>();
+    	//finding how many points have the first
+    	for(int i =0; i< mainBoard.rankings.getMilitaryRanking().size();i++)
+    		if(mainBoard.rankings.getMilitaryRanking().get(i).getPlayerPoints()>max)
+    			max=mainBoard.rankings.getMilitaryRanking().get(i).getPlayerPoints();
+    	//looking for first/firsts
+    	for(int i =0; i< mainBoard.rankings.getMilitaryRanking().size();i++)
+    		if(mainBoard.rankings.getMilitaryRanking().get(i).getPlayerPoints()==max){
+    			PlayerRank playerRank = new PlayerRank();
+    			playerRank.playerNickName = mainBoard.rankings.getMilitaryRanking().get(i).playerNickName;
+    			//setting points to 1 for indicating that this player is first
+    			playerRank.setPlayerPoints(1);
+    			list.add(playerRank);
+    		}
+    	//if the are more than one first		
+    	if(list.size()>1)
+    		return list;
+    	//looking for the second/seconds
+    	else{
+    		int max2 = 0;
+    		for(int i =0; i< mainBoard.rankings.getMilitaryRanking().size();i++)
+        		if(mainBoard.rankings.getMilitaryRanking().get(i).getPlayerPoints()<max && mainBoard.rankings.getMilitaryRanking().get(i).getPlayerPoints()>max2)
+        			max2 = mainBoard.rankings.getMilitaryRanking().get(i).getPlayerPoints();
+    		
+        	for(int i =0; i< mainBoard.rankings.getMilitaryRanking().size();i++)
+        		if(mainBoard.rankings.getMilitaryRanking().get(i).getPlayerPoints()==max2){
+        			PlayerRank playerRank = new PlayerRank();
+        			playerRank.playerNickName = mainBoard.rankings.getMilitaryRanking().get(i).playerNickName;
+        			//setting points to 2 for indicating that this player is second
+        			playerRank.setPlayerPoints(2);
+        			list.add(playerRank);
+        		}
+        }
     	return list;
     }
 
@@ -803,6 +831,20 @@ public class GameHandler {
     		if(!order.contains(mainBoard.familyMembersLocation.getFamilyMembersAtTheCouncilPalace().get(i).playerColor))
     			order.add(mainBoard.familyMembersLocation.getFamilyMembersAtTheCouncilPalace().get(i).playerColor);
     	this.playerActionOrder = order;
+    }
+    
+    public void cleanActionSpaces() throws InvalidActionTypeException{
+    	//empty the market
+    	for (int i=0;i<4;i++)
+    		mainBoard.familyMembersLocation.setFamilyMemberOnTheMarket(new FamilyMember(),i);
+    	//empty the production and the harvest area
+    	mainBoard.familyMembersLocation.changeFamilyMemberOnProductionOrHarvest(new ArrayList<FamilyMember>(), "Harvest");
+    	mainBoard.familyMembersLocation.changeFamilyMemberOnProductionOrHarvest(new ArrayList<FamilyMember>(), "Production");
+    	mainBoard.familyMembersLocation.setFamilyMembersAtTheCouncilPalace(new ArrayList<FamilyMember>());
+    	//empty the towers
+    	for(int x=0;x<4;x++)
+    		for(int y=0;y<4;y++)
+    				mainBoard.familyMembersLocation.setFamilyMemberOnTheTower(new FamilyMember(), x, y);
     }
     
     public void setPlayersActionOrder (ArrayList<String> playerActionOrder){
