@@ -7,7 +7,7 @@ import it.polimi.LM39.model.Effect;
 /**
  * 
  */
-public abstract class InstantEffect extends Effect implements Serializable{
+public class InstantEffect extends Effect implements Serializable{
 
 	/**
 	 * 

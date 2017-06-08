@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Council implements Serializable{
 	public Council(){
-		bonus1.woods=1;
+		//bonus1.woods=1;
 		bonus1.stones=1;
 		bonus1.coins=0;
 		bonus1.servants=0;
@@ -33,14 +33,14 @@ public class Council implements Serializable{
 
 	private static final long serialVersionUID = -466980208863809990L;
 
-	public CardResources bonus1;
+	public CardResources bonus1 = new CardResources();
 
-    public CardResources bonus2;
+    public CardResources bonus2 = new CardResources();
 
-    public CardResources bonus3;
+    public CardResources bonus3 = new CardResources();
 
-    public CardPoints bonus4;
+    public CardPoints bonus4 = new CardPoints(); 
 
-    public CardPoints bonus5;
+    public CardPoints bonus5 = new CardPoints(); ;
 
 }

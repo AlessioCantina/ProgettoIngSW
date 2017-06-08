@@ -7,7 +7,7 @@ import it.polimi.LM39.model.Effect;
 /**
  * 
  */
-public abstract class CharacterPermanentEffect extends Effect implements Serializable{
+public class CharacterPermanentEffect extends Effect implements Serializable{
 
     /**
 	 * 

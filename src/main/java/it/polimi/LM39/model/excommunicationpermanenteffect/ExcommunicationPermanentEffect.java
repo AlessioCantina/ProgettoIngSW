@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * 
  */
-public abstract class ExcommunicationPermanentEffect implements Serializable{
+public class ExcommunicationPermanentEffect implements Serializable{
 
     /**
 	 * 

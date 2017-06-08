@@ -7,19 +7,19 @@ public class Player implements Serializable{
 
 	private static final long serialVersionUID = 216892385150280280L;
 
-	public String nickname;
+	public String nickname = "";
 
-    public String playerColor;
+    public String playerColor = "";
 
-    public PersonalBoard personalBoard;
+    public PersonalBoard personalBoard = new PersonalBoard();
 
-    public PlayerPoints points;
+    public PlayerPoints points = new PlayerPoints();
 
-    public PlayerResources resources;
+    public PlayerResources resources = new PlayerResources();
 
     private ArrayList<Integer> excommunications = new ArrayList<Integer>();
 
-    public MainBoard personalMainBoard; // this is a modified version of the mainboard, should be updated every time the board gets modified
+    public MainBoard personalMainBoard = new MainBoard(); // this is a modified version of the mainboard, should be updated every time the board gets modified
 
     private ArrayList<String> playerPlayedLeaderCards = new ArrayList<String>();
     

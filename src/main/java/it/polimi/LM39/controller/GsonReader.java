@@ -131,7 +131,8 @@ public class GsonReader {
 		adapter.registerSubtype(VictoryForSupportingTheChurch.class);
 		adapter.registerSubtype(NoMilitaryRequirementsForTerritory.class);
 		adapter.registerSubtype(DoubleResourcesFromDevelopment.class);
-		adapter.registerSubtype(ResourcesAndPoints.class);			
+		adapter.registerSubtype(ResourcesAndPoints.class);	
+		adapter.registerSubtype(CardCoinDiscount.class);	
 	}
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	/*

@@ -30,6 +30,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	     * the constructor initialize the streams and start the thread
 	     */
 	    public SocketPlayer(ServerInterface serverInterface, Socket socket) throws IOException {
+	    	
 	          this.socket = socket;
 	          this.requestedMessage = false;
 	          this.serverInterface = serverInterface;

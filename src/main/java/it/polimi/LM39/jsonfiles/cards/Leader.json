@@ -119,7 +119,7 @@
       {  
          "cardName":"Sisto IV",
          "requestedObjects":{  
-            "type":"requestedResources",
+            "type":"RequestedResources",
             "resources":{  
                "woods":6,
                "stones":6,
@@ -150,7 +150,7 @@
       {  
          "cardName":"Federico da Montefeltro",
          "requestedObjects":{  
-            "type":"requestedCard",
+            "type":"RequestedCard",
             "cardType":"Territory",
             "cardQty":5
          },
@@ -162,7 +162,7 @@
       {  
          "cardName":"Lucrezia Borgia",
          "requestedObjects":{  
-            "type":"requestedSameCardType",
+            "type":"RequestedSameCard",
             "cardQty":6
          },
          "effect":{  
@@ -187,7 +187,7 @@
       {  
          "cardName":"Sandro Botticelli",
          "requestedObjects":{  
-            "type":"requestedResources",
+            "type":"RequestedResources",
             "resources":{  
                "woods":10,
                "stones":0,
@@ -223,7 +223,7 @@
       {  
          "cardName":"Giovanni dalle Bande Nere",
          "requestedObjects":{  
-            "type":"Points",
+            "type":"RequestedPoints",
             "points":{  
                "victory":0,
                "faith":0,
@@ -244,7 +244,7 @@
       {  
          "cardName":"Michelangelo Buonarroti",
          "requestedObjects":{  
-            "type":"requestedResources",
+            "type":"RequestedResources",
             "resources":{  
                "woods":0,
                "stones":10,
@@ -267,7 +267,7 @@
       {  
          "cardName":"Girolamo Savonarola",
          "requestedObjects":{  
-            "type":"requestedResources",
+            "type":"RequestedResources",
             "resources":{  
                "woods":0,
                "stones":0,
@@ -288,7 +288,7 @@
       {  
          "cardName":"Sigmondo Malatesta",
          "requestedObjects":{  
-            "type":"requestedPoints",
+            "type":"RequestedPoints",
             "points":{  
                "victory":0,
                "faith":3,

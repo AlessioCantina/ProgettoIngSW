@@ -24,9 +24,9 @@ public class MainBoard implements Serializable{
     
     public Integer occupiedTowerCost = -3;
 
-    public FamilyMembersLocation familyMembersLocation;
+    public FamilyMembersLocation familyMembersLocation = new FamilyMembersLocation();
 
-    public Rankings rankings;
+    public Rankings rankings = new Rankings();
     
     public Integer[] militaryForTerritory = {3,7,12,18};
 

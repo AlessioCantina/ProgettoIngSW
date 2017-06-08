@@ -25,6 +25,8 @@ public class Room {
      */
     public void addPlayer(NetworkPlayer player){
     	this.players.add(player);
+    	game = new Game(this.getConnectedPlayers(),players);
+    	game.startGame();
     }
     /*
      * return the number of players connected to the room
