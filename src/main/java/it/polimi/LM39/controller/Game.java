@@ -415,7 +415,7 @@ public class Game implements Runnable{
     	int j=0;
     	boolean flag=false;
     	String response = "";
-    	for(int i=4;i>0;i--)
+    	for(int i=players.size();i>0;i--)
     		for(int playerNumber=0,k=0;playerNumber<players.size();playerNumber++,k+=i){
     			players.get(playerNumber).setMessage("Choose a leader card between:");
     			for(j=i+k;j>0+k;j--){
