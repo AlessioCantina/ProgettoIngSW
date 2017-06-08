@@ -872,12 +872,18 @@ public class GameHandler {
     	//TODO
     }
     public void setFirstRoundBonuses(NetworkPlayer player,Integer position) throws NotEnoughResourcesException{
+    	System.out.println(position);
     	switch (position){
 	    	case(1): player.resources.setCoins(5);
+	    		break;
 	    	case(2): player.resources.setCoins(6);
+	    		break;
 	    	case(3): player.resources.setCoins(7);
+	    		break;
 	    	case(4): player.resources.setCoins(8);
+	    		break;
     	}
+
     }
     
     
