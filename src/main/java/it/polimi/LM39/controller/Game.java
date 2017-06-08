@@ -296,6 +296,7 @@ public class Game {
     //TODO handle SkipFirstTurn Excommunication
     //TODO players choose leader card
     //TODO players choose Personal Bonus Tile
+    //TODO clone the mainboard in personalmainboard
     public void startGame() {
     	//initialize the game loading parameters and cards
     	try {
@@ -333,6 +334,7 @@ public class Game {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+	    		//TODO activatePermanentEffects resetPlayerPersonalMainBoard
     		}
     		//support the church at the end of a period
     		for(NetworkPlayer player : players)

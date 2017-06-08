@@ -17,7 +17,7 @@ public class Player implements Serializable{
 
     public PlayerResources resources;
 
-    private ArrayList<Excommunication> excommunications = new ArrayList<Excommunication>();
+    private ArrayList<Integer> excommunications = new ArrayList<Integer>();
 
     public MainBoard personalMainBoard; // this is a modified version of the mainboard, should be updated every time the board gets modified
 
@@ -38,11 +38,11 @@ public class Player implements Serializable{
         return this.playerPlayedLeaderCards;
     }
 
-    public void setExcommunications(Excommunication excommunication) {
-        this.excommunications.add(excommunication);
+    public void setExcommunications(Integer excommunicationNumber) {
+        this.excommunications.add(excommunicationNumber);
     }
 
-    public ArrayList<Excommunication> getExcommunications() {
+    public ArrayList<Integer> getExcommunications() {
     	return this.excommunications;
     }
 

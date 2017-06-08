@@ -13,6 +13,7 @@ import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.*;
 import it.polimi.LM39.model.Character;
+import it.polimi.LM39.model.characterpermanenteffect.CharacterPermanentEffect;
 import it.polimi.LM39.model.excommunicationpermanenteffect.NoVictoryForCard;
 import it.polimi.LM39.server.NetworkPlayer;
 /**
@@ -348,7 +349,7 @@ public class GameHandler {
     	//if the player doesn't have enough faith points to support the Church or he decided not to support the Church
     	else{
     		player.setMessage("You don't have enough faith points or you answered no so you get the Excommunication");
-    		player.setExcommunications(MainBoard.excommunicationMap.get(player.personalMainBoard.excommunicationsOnTheBoard[period-1]));
+    		player.setExcommunications(player.personalMainBoard.excommunicationsOnTheBoard[period-1]);
 			CardHandler cardHandler = new CardHandler(this);
 			cardHandler.activateExcommunication((MainBoard.excommunicationMap.get(player.personalMainBoard.excommunicationsOnTheBoard[period-1])).effect, player);
     	}
@@ -702,8 +703,8 @@ public class GameHandler {
 	        	case(6): finalPoints += 21;
         	}
         	flag=true;
-        	for(Excommunication excommunication : player.getExcommunications())
-        		if((excommunication.effect.getClass()).equals(NoVictoryForCard.class))
+        	for(Integer excommunicationNumber : player.getExcommunications())
+        		if((MainBoard.excommunicationMap.get(excommunicationNumber).effect.getClass()).equals(NoVictoryForCard.class))
         			flag=false;
         	if(flag==true){
         		finalPoints += player.points.getFinalVictory();
@@ -855,6 +856,23 @@ public class GameHandler {
     public ArrayList<String> getPlayersActionOrder (){
     	return this.playerActionOrder;
     }
+    
+    public void activatePermanentEffects(NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+    	CardHandler cardHandler = new CardHandler (this);
+    	for(Integer cardNumber : player.personalBoard.getPossessions("Character"))
+    		cardHandler.activateCharacter(MainBoard.characterMap.get(cardNumber).permanentEffect, player);
+    	for(String leader : player.personalBoard.getPossessedLeaders())
+    		cardHandler.activateLeader(MainBoard.leaderMap.get(leader).effect, player,leader);
+    	for(Integer excommunicationNumber : player.getExcommunications())
+    		cardHandler.activateExcommunication(MainBoard.excommunicationMap.get(excommunicationNumber).effect, player);
+    }
+    
+    public void resetPlayerPersonalMainBoard (NetworkPlayer player)
+    {
+    	//TODO
+    }
+    
+    
     
     
     //probably useless code
