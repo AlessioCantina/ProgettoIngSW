@@ -312,6 +312,7 @@ public class Game {
 	    		
     			for(int move=0;move<playerNumber;move++){
 	    			NetworkPlayer player = playerColorToNetworkPlayer(order.get(move));
+	    			player.setMessage(gameHandler.mainBoard);
 	    			playerAction(player);
 	    			gameHandler.updateRankings(player);
 	    		
