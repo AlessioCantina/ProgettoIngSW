@@ -50,7 +50,7 @@ public class Game implements Runnable{
      */
     public Integer timeOutMove;
 
-    public void initialize() throws FailedToReadFileException, FailedToRegisterEffectException, IOException{
+    private void initialize() throws FailedToReadFileException, FailedToRegisterEffectException, IOException{
     	if(playerNumber > 2)
     		gameHandler.harvestAndProductionSize = 4;
     	else
@@ -94,7 +94,7 @@ public class Game implements Runnable{
     	}
     }
     
-    public void playerAction(NetworkPlayer player){
+    private void playerAction(NetworkPlayer player){
     	player.setMessage("What action do you want to perform?");
     	String response = player.sendMessage();
     	System.out.println("response " + response);
@@ -316,7 +316,6 @@ public class Game implements Runnable{
     //TODO handle SkipFirstTurn Excommunication
     //TODO players choose leader card
     //TODO players choose Personal Bonus Tile
-    //TODO clone the mainboard in personalmainboard
     public void run() {
     	//initialize the game loading parameters and cards
     	try {
@@ -324,6 +323,8 @@ public class Game implements Runnable{
 		} catch (FailedToReadFileException | FailedToRegisterEffectException | IOException e) {
 			e.printStackTrace();
 		}
+    	//make the players choose a their four leader cards
+    	chooseLeaderCard();
     	//the array list where the players actions order is stored
     	ArrayList <String> order;
     	for(int period=0;period<3;period++){
@@ -354,7 +355,8 @@ public class Game implements Runnable{
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-	    		//TODO activatePermanentEffects resetPlayerPersonalMainBoard
+	    		//update the personalMainBoards of all players
+	    		updatePersonalMainBoards();
     		}
     		//support the church at the end of a period
     		for(NetworkPlayer player : players)
@@ -377,10 +379,21 @@ public class Game implements Runnable{
     		for(PlayerRank playerRank : finalScores){
     			player.setMessage(playerRank.playerNickName + " made " + playerRank.getPlayerPoints());
     		}
-    	
+    }
+    
+    private void updatePersonalMainBoards (){
+    	for(NetworkPlayer player : players){
+    		gameHandler.resetPlayerPersonalMainBoard(player);
+    		try {
+				gameHandler.activatePermanentEffects(player);
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
+				e.printStackTrace();
+			}
+    	}
     		
     }
-
+    
     private NetworkPlayer playerColorToNetworkPlayer (String color){
     	for(NetworkPlayer player: players)
     		if(player.playerColor.equals(color))
@@ -393,20 +406,43 @@ public class Game implements Runnable{
     		player.setPlayedFamilyMembers(new ArrayList<String>());
     }
 
+    private void chooseLeaderCard(){
+    	ArrayList<String> leaders = new ArrayList<String>();
+    	for(int i=1;i<21;i++)
+    		leaders.add(MainBoard.leaderMap.get(i).cardName);
+    	Collections.shuffle(leaders);
 
+    	int j=0;
+    	boolean flag=false;
+    	String response = "";
+    	for(int i=4;i>0;i--)
+    		for(int playerNumber=0,k=0;playerNumber<players.size();playerNumber++,k+=i){
+    			players.get(playerNumber).setMessage("Choose a leader card between:");
+    			for(j=i+k;j>0+k;j--){
+    				players.get(playerNumber).setMessage(leaders.get(j));
+	    			response = players.get(playerNumber).sendMessage();
+	    			for(flag=false,j=i+k;j>0+k;j--){
+	    				if(response.equals(leaders.get(j))){
+	    					leaders.remove(response);
+	    					flag=true;
+	    				}
+	    			if(flag==false){
+	    				players.get(playerNumber).setMessage("You must choose a leader card between:");
+	    				j++;
+	    			}
+	    			}
+	    		}
+    }
+    }
 
-
-
-
-    /**
-     * @return
-     */
+    
+    /*
     public static void main(String[] args) {
-        // TODO implement here
+        
     	
     	
     	//code to test the method loadCardsOnTheMainBoard();
-    	/*
+    	
     	MainBoard mainBoard = new MainBoard();
         GameHandler gameHandler = new GameHandler();
         gameHandler.mainBoard = mainBoard;
@@ -427,7 +463,8 @@ public class Game implements Runnable{
             for (int j=0; j<4; j++){
             	System.out.println(cards[j][i]);
             }
-            } */
+            } 
     } 
+    */
 
 }

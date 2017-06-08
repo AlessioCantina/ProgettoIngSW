@@ -16,6 +16,10 @@ import it.polimi.LM39.model.Character;
 import it.polimi.LM39.model.characterpermanenteffect.CharacterPermanentEffect;
 import it.polimi.LM39.model.excommunicationpermanenteffect.NoVictoryForCard;
 import it.polimi.LM39.server.NetworkPlayer;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
 /**
  * 
  */
@@ -869,7 +873,9 @@ public class GameHandler {
     
     public void resetPlayerPersonalMainBoard (NetworkPlayer player)
     {
-    	//TODO
+    	//clone the MainBoard into the player personal mainboard
+    	Gson gson =new Gson();
+    	player.personalMainBoard = gson.fromJson(gson.toJson(mainBoard),mainBoard.getClass());
     }
     public void setFirstRoundBonuses(NetworkPlayer player,Integer position) throws NotEnoughResourcesException{
     	System.out.println(position);
