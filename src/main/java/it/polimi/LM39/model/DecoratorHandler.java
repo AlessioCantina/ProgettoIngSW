@@ -9,27 +9,27 @@ public class DecoratorHandler implements Serializable{
 	 */
 	private static final long serialVersionUID = 4440735401364407188L;
 	
-	public  Boolean buildingResourcesDiscountDecorator;
+	public  Boolean buildingResourcesDiscountDecorator = false;
 	
-	public  Boolean cardCoinDiscountDecorator;
+	public  Boolean cardCoinDiscountDecorator = false;
 	
-	public  Boolean characterResourcesDiscountDecorator;
+	public  Boolean characterResourcesDiscountDecorator = false;
 	
-	public  Boolean harvestBoostDecorator;
+	public  Boolean harvestBoostDecorator = false;
 	
-	public  Boolean militaryPointsMalusDecorator;
+	public  Boolean militaryPointsMalusDecorator = false;
 	
-	public  Boolean noMarketDecorator;
+	public  Boolean noMarketDecorator = false;
 	
-	public  Boolean productionBoostDecorator;
+	public  Boolean productionBoostDecorator = false;
 	
-	public  Boolean resourcesMalusDecorator;
+	public  Boolean resourcesMalusDecorator = false;
 	
-	public  Boolean servantsMalusDecorator;
+	public  Boolean servantsMalusDecorator = false;
 	
-	public  Boolean ventureResourcesDiscountDecorator;
+	public  Boolean ventureResourcesDiscountDecorator = false;
 	
-	public  Boolean harvestMalus;
+	public  Boolean harvestMalus = false;
 	
-	public  Boolean productionMalus;
+	public  Boolean productionMalus = false;
 }

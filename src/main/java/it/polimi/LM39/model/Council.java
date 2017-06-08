@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Council implements Serializable{
 	public Council(){
-		//bonus1.woods=1;
+		bonus1.woods=1;
 		bonus1.stones=1;
 		bonus1.coins=0;
 		bonus1.servants=0;
