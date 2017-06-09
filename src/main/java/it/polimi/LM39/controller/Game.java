@@ -407,32 +407,36 @@ public class Game implements Runnable{
     }
 
     private void chooseLeaderCard(){
+    	//creating an array list of leaders names randomly ordinated
     	ArrayList<String> leaders = new ArrayList<String>();
     	for(int i=1;i<21;i++)
     		leaders.add(MainBoard.leaderMap.get(i).cardName);
     	Collections.shuffle(leaders);
 
     	int j=0;
-    	boolean flag=false;
     	String response = "";
     	for(int i=players.size();i>0;i--)
-    		for(int playerNumber=0,k=0;playerNumber<players.size();playerNumber++,k+=i){
+    		//send to the players the cards he should choose one every time 
+    		for(int playerNumber=0,k=0;playerNumber<players.size();){
     			players.get(playerNumber).setMessage("Choose a leader card between:");
+    			//send to the player the list of leader card in which he must choose one card
     			for(j=i+k;j>0+k;j--){
     				players.get(playerNumber).setMessage(leaders.get(j));
-	    			response = players.get(playerNumber).sendMessage();
-	    			for(flag=false,j=i+k;j>0+k;j--){
-	    				if(response.equals(leaders.get(j))){
-	    					leaders.remove(response);
-	    					flag=true;
-	    				}
-	    			if(flag==false){
-	    				players.get(playerNumber).setMessage("You must choose a leader card between:");
-	    				j++;
-	    			}
-	    			}
+    			}
+	    		response = players.get(playerNumber).sendMessage();
+	    		// if the player chose a leader card between the ones he could choose
+	    		if(leaders.contains(response)){
+	    			//give to the player the card
+	    			players.get(playerNumber).personalBoard.setLeader(response);
+	    			//remove the card from the array list so that no other players can get this same card
+	 				leaders.remove(response);
+	 				//go to the next player
+	 				playerNumber++;
+	 				//updating k this way ensures that going through the cicles the players send the cards they discarded to the next player like in the game rules
+	 				k+=i;
 	    		}
-    }
+	    		//if the player response is not a leader card in between the ones he could choose keep sending the same list of cards
+	   		}
     }
 
     
