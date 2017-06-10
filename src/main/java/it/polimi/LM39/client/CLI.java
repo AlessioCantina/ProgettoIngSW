@@ -32,6 +32,7 @@ public class CLI extends UserInterface {
 	
 	public void setCurrentMainBoard(MainBoard mainBoard){
 		this.mainBoard = mainBoard;
+		this.printMainBoard();
 	}
 	/*
 	 * display player's resources
@@ -68,33 +69,33 @@ public class CLI extends UserInterface {
 		FamilyMember[][] familyOnTowers = familyMemberPositions.getFamilyMembersOnTheTowers();
 		System.out.println("╔══════════════════════╦═══════════════╦══════════════════════╦═══════════════╦══════════════════════╦═══════════════╦══════════════════════╦═══════════════╗%n");
 		System.out.printf("║%-22s║%-15s║%-22s║%-15s║%-22s║%-15s║%-22s║%-15s║%n"
-		,this.getCardOnTower(cardsOnTowers[0][0]),this.tilePrinter(familyOnTowers[0][0],mainBoard,new int[]{0,0},"tower"),this.getCardOnTower(cardsOnTowers[0][1])
-		,this.tilePrinter(familyOnTowers[0][1],mainBoard,new int[]{0,1},"tower"),this.getCardOnTower(cardsOnTowers[0][2])
-		,this.tilePrinter(familyOnTowers[0][2],mainBoard,new int[]{0,2},"tower"),this.getCardOnTower(cardsOnTowers[0][3]),this.tilePrinter(familyOnTowers[0][3],mainBoard,new int[]{0,3},"tower"));
+		,this.getCardOnTower(cardsOnTowers[0][0]),this.tilePrinter(familyOnTowers[0][0],new int[]{0,0},"tower"),this.getCardOnTower(cardsOnTowers[0][1])
+		,this.tilePrinter(familyOnTowers[0][1],new int[]{0,1},"tower"),this.getCardOnTower(cardsOnTowers[0][2])
+		,this.tilePrinter(familyOnTowers[0][2],new int[]{0,2},"tower"),this.getCardOnTower(cardsOnTowers[0][3]),this.tilePrinter(familyOnTowers[0][3],new int[]{0,3},"tower"));
 		System.out.printf("║                      ║%-15s║                      ║%-15s║                      ║%-15s║                      ║%-15s║%n"
 		,this.getFamilyMemberColor(familyOnTowers[0][0]),this.getFamilyMemberColor(familyOnTowers[0][1])
 		,this.getFamilyMemberColor(familyOnTowers[0][2]),this.getFamilyMemberColor(familyOnTowers[0][3]));
 		System.out.println("╠══════════════════════╬═══════════════╬══════════════════════╬═══════════════╬══════════════════════╬═══════════════╬══════════════════════╬═══════════════╣%n");
 		System.out.printf("║%-22s║%-15s║%-22s║%-15s║%-22s║%-15s║%-22s║%-15s║%n"
-		,this.getCardOnTower(cardsOnTowers[1][0]),this.tilePrinter(familyOnTowers[1][0],mainBoard,new int[]{1,0},"tower"),this.getCardOnTower(cardsOnTowers[1][1])
-		,this.tilePrinter(familyOnTowers[1][1],mainBoard,new int[]{1,1},"tower"),this.getCardOnTower(cardsOnTowers[1][2]),this.tilePrinter(familyOnTowers[1][2],mainBoard,new int[]{1,2},"tower")
-		,this.getCardOnTower(cardsOnTowers[1][3]),this.tilePrinter(familyOnTowers[1][3],mainBoard,new int[]{1,3},"tower"));
+		,this.getCardOnTower(cardsOnTowers[1][0]),this.tilePrinter(familyOnTowers[1][0],new int[]{1,0},"tower"),this.getCardOnTower(cardsOnTowers[1][1])
+		,this.tilePrinter(familyOnTowers[1][1],new int[]{1,1},"tower"),this.getCardOnTower(cardsOnTowers[1][2]),this.tilePrinter(familyOnTowers[1][2],new int[]{1,2},"tower")
+		,this.getCardOnTower(cardsOnTowers[1][3]),this.tilePrinter(familyOnTowers[1][3],new int[]{1,3},"tower"));
 		System.out.printf("║                      ║%-15s║                      ║%-15s║                      ║%-15s║                      ║%-15s║%n"
 		,this.getFamilyMemberColor(familyOnTowers[1][0]),this.getFamilyMemberColor(familyOnTowers[1][1])
 		,this.getFamilyMemberColor(familyOnTowers[1][2]),this.getFamilyMemberColor(familyOnTowers[1][3]));
 		System.out.println("╠══════════════════════╬═══════════════╬══════════════════════╬═══════════════╬══════════════════════╬═══════════════╬══════════════════════╬═══════════════╣%n");
 		System.out.printf("║%-22s║%-15s║%-22s║%-15s║%-22s║%-15s║%-22s║%-15s║%n"
-		,this.getCardOnTower(cardsOnTowers[2][0]),this.tilePrinter(familyOnTowers[2][0],mainBoard,new int[]{2,0},"tower"),this.getCardOnTower(cardsOnTowers[2][1])
-		,this.tilePrinter(familyOnTowers[2][1],mainBoard,new int[]{2,1},"tower"),this.getCardOnTower(cardsOnTowers[2][2]),this.tilePrinter(familyOnTowers[2][2],mainBoard,new int[]{2,2},"tower")
-		,this.getCardOnTower(cardsOnTowers[2][3]),this.tilePrinter(familyOnTowers[2][3],mainBoard,new int[]{2,3},"tower"));
+		,this.getCardOnTower(cardsOnTowers[2][0]),this.tilePrinter(familyOnTowers[2][0],new int[]{2,0},"tower"),this.getCardOnTower(cardsOnTowers[2][1])
+		,this.tilePrinter(familyOnTowers[2][1],new int[]{2,1},"tower"),this.getCardOnTower(cardsOnTowers[2][2]),this.tilePrinter(familyOnTowers[2][2],new int[]{2,2},"tower")
+		,this.getCardOnTower(cardsOnTowers[2][3]),this.tilePrinter(familyOnTowers[2][3],new int[]{2,3},"tower"));
 		System.out.printf("║                      ║%-15s║                      ║%-15s║                      ║%-15s║                      ║%-15s║%n"
 		,this.getFamilyMemberColor(familyOnTowers[2][0]),this.getFamilyMemberColor(familyOnTowers[2][1])
 		,this.getFamilyMemberColor(familyOnTowers[2][2]),this.getFamilyMemberColor(familyOnTowers[2][3]));
 		System.out.println("╠══════════════════════╬═══════════════╬══════════════════════╬═══════════════╬══════════════════════╬═══════════════╬══════════════════════╬═══════════════╣%n");
 		System.out.printf("║%-22s║%-15s║%-22s║%-15s║%-22s║%-15s║%-22s║%-15s║%n"
-		,this.getCardOnTower(cardsOnTowers[3][0]),this.tilePrinter(familyOnTowers[3][0],mainBoard,new int[]{3,0},"tower"),this.getCardOnTower(cardsOnTowers[3][1])
-		,this.tilePrinter(familyOnTowers[3][1],mainBoard,new int[]{3,1},"tower"),this.getCardOnTower(cardsOnTowers[3][2]),this.tilePrinter(familyOnTowers[3][2],mainBoard,new int[]{3,2},"tower")
-		,this.getCardOnTower(cardsOnTowers[3][3]),this.tilePrinter(familyOnTowers[3][3],mainBoard,new int[]{3,3},"tower"));
+		,this.getCardOnTower(cardsOnTowers[3][0]),this.tilePrinter(familyOnTowers[3][0],new int[]{3,0},"tower"),this.getCardOnTower(cardsOnTowers[3][1])
+		,this.tilePrinter(familyOnTowers[3][1],new int[]{3,1},"tower"),this.getCardOnTower(cardsOnTowers[3][2]),this.tilePrinter(familyOnTowers[3][2],new int[]{3,2},"tower")
+		,this.getCardOnTower(cardsOnTowers[3][3]),this.tilePrinter(familyOnTowers[3][3],new int[]{3,3},"tower"));
 		System.out.printf("║                      ║%-15s║                      ║%-15s║                      ║%-15s║                      ║%-15s║%n"
 		,this.getFamilyMemberColor(familyOnTowers[3][0]),this.getFamilyMemberColor(familyOnTowers[3][1])
 		,this.getFamilyMemberColor(familyOnTowers[3][2]),this.getFamilyMemberColor(familyOnTowers[3][3]));
@@ -104,14 +105,14 @@ public class CLI extends UserInterface {
 	/*
 	 * print the market zone, if a space is empty print the space bonuses
 	 */
-	public void printMarket(MainBoard mainBoard){
+	public void printMarket(){
 		int marketSize = 4;					//TODO choose a class to put marketSize value (possibly room)
 		FamilyMembersLocation location = mainBoard.familyMembersLocation;
 		FamilyMember[] market = location.getFamilyMembersOnTheMarket();
 		int i = 0;
 		System.out.printf("╔═══════════════╦═══════════════╗%n");
 		while(i < marketSize){
-			System.out.printf("║%-15s║%-15s║%n",this.tilePrinter(market[i], mainBoard, new int[]{i,0}, "market"),this.getFamilyMemberColor(market[i]));
+			System.out.printf("║%-15s║%-15s║%n",this.tilePrinter(market[i], new int[]{i,0}, "market"),this.getFamilyMemberColor(market[i]));
 		}
 		System.out.printf("╚═══════════════╩═══════════════╝%n");
 	}
@@ -119,7 +120,7 @@ public class CLI extends UserInterface {
 	 * support method for printmarket and printmainboard , print the family member on the market or the
 	 *  bonus if there is no family member
 	 */
-	public String tilePrinter(FamilyMember familyMember, MainBoard mainBoard, int[] index, String tileType){
+	public String tilePrinter(FamilyMember familyMember, int[] index, String tileType){
 		ActionBonus bonus = new ActionBonus();
 		ActionBonus[][] bonusesMatrix;
 		if(familyMember == null){
@@ -153,7 +154,7 @@ public class CLI extends UserInterface {
 	/*
 	 * print the council palace with relative bonuses
 	 */
-	public void printCouncilPalace(MainBoard mainBoard){
+	public void printCouncilPalace(){
 		FamilyMembersLocation location = mainBoard.familyMembersLocation;
 		ArrayList<FamilyMember> councilPalace = location.getFamilyMembersAtTheCouncilPalace();
 		int i = 0;
@@ -185,7 +186,7 @@ public class CLI extends UserInterface {
 	/*
 	 * print harvest and production area
 	 */
-	public void printHarvestAndProduction(MainBoard mainBoard) {
+	public void printHarvestAndProduction() {
 		FamilyMembersLocation location = mainBoard.familyMembersLocation;
 		ArrayList<FamilyMember> harvestArea = new ArrayList<FamilyMember>();
 		ArrayList<FamilyMember> productionArea = new ArrayList<FamilyMember>();
@@ -218,7 +219,7 @@ public class CLI extends UserInterface {
 	/*
 	 * print player's possessed cards, including leader and excommunications
 	 */
-	public void printPossesedCards(NetworkPlayer player, MainBoard mainBoard){
+	public void printPossesedCards(NetworkPlayer player){
 		PersonalBoard board = player.personalBoard;
 		ArrayList<Integer> buildings = board.getPossessions("Building");
 		ArrayList<Integer> territories = board.getPossessions("Territory");
@@ -268,14 +269,14 @@ public class CLI extends UserInterface {
 	/*
 	 * print dices values
 	 */
-	public void printDicesValues(MainBoard mainBoard){
+	public void printDicesValues(){
 		Integer[] diceValues = mainBoard.getDiceValues();
 		System.out.println("Black dice:"+ diceValues[0] + "%nWhite dice:"+ diceValues[1] + "%nOrange dice:"+ diceValues[2]);
 	}
 	/*
 	 * print excommunications on the board
 	 */
-	public void printExcommunication(MainBoard mainBoard){
+	public void printExcommunication(){
 		Integer[] excommunications = mainBoard.excommunicationsOnTheBoard;
 		System.out.println("First period:"+ excommunications[0] + "%nSecond period:"+ excommunications[1] + "%nThird period:"+ excommunications[2]);
 	}
@@ -309,51 +310,55 @@ public class CLI extends UserInterface {
 	 * print the message to the client
 	 * 
 	 */
-	public void receiveMainBoard(MainBoard mainBoard){
+	public void receiveMainBoard(){
 		this.printMainBoard();
 	}
 	@Override
-	public void printMessage(NetworkPlayer player, String message) {
-		this.printMainBoard();
-		String response = "";
-		System.out.println(message + "%n");
-		try{
-			String stringController = "";
-			response = new String(userInput.readLine());
-			response = response.replace(" ","");
-			response = response.toLowerCase();
-			stringController = Action.isIn(response);
-			if(stringController != Action.CLI.toString())
-				SocketClient.setClientResponse(response);
-		/*	else
-				selectCLIAction(stringController,player); */
-		}catch(IOException e){
-			logger.log(Level.INFO, "Invalid Input", e);
-			this.printMessage(player,message);
-		}
+	public void printMessage(String message) {
+		System.out.println(message + "%n");	
 	}
-/*	public void selectCLIAction(String action, NetworkPlayer player, MainBoard mainBoard){
+	public String askClient(NetworkPlayer player){
+		String response = "";
+		//Action.printAvailableActions();
+		String stringController = "";
+		try {
+			response = new String(userInput.readLine());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		response = response.replace(" ","");
+		response = response.toLowerCase();
+		stringController = Action.isIn(response);
+		if(stringController != Action.CLI.toString())
+			return response;
+		else
+			selectCLIAction(response,player); 
+		return "";
+	}
+	public void selectCLIAction(String action, NetworkPlayer player){
 		switch(action){
 			case "printmainboard":
-				this.printMainBoard(mainBoard);
+				this.printMainBoard();				
 				break;
 			case "printmarket":
-				this.printMarket(mainBoard);
+				this.printMarket();
 				break;
 			case "printcouncil":
-				this.printCouncilPalace(mainBoard);
+				this.printCouncilPalace();
 				break;
 			case "printharvestandproduction":
-				this.printHarvestAndProduction(mainBoard);
+				this.printHarvestAndProduction();
 				break;
 			case "printpossesedcards":
-				this.printPossesedCards(player, mainBoard);
+				this.printPossesedCards(player);
 				break;
 			case "printdicesvalues":
-				this.printDicesValues(mainBoard);
+				this.printDicesValues();
 				break;		
 		}
-	} */
+		this.askClient(player);
+	} 
 	public String getMessage(){
 		try{
 			if(userInput.ready())

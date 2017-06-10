@@ -4,7 +4,7 @@
       [  
          {  
             "resources":{  
-               "woods":0,
+               "woods":2,
                "stones":0,
                "servants":0,
                "coins":0,
@@ -18,7 +18,7 @@
          },
          {  
             "resources":{  
-               "woods":0,
+               "woods":1,
                "stones":0,
                "servants":0,
                "coins":0,
@@ -64,7 +64,7 @@
          {  
             "resources":{  
                "woods":0,
-               "stones":0,
+               "stones":2,
                "servants":0,
                "coins":0,
                "council":0
@@ -78,65 +78,7 @@
          {  
             "resources":{  
                "woods":0,
-               "stones":0,
-               "servants":0,
-               "coins":0,
-               "council":0
-            },
-            "points":{  
-               "victory":0,
-               "faith":0,
-               "military":0
-            }
-         },
-         {  
-            "resources":{  
-               "woods":0,
-               "stones":0,
-               "servants":0,
-               "coins":0,
-               "council":0
-            },
-            "points":{  
-               "victory":0,
-               "faith":0,
-               "military":0
-            }
-         },
-         {  
-            "resources":{  
-               "woods":0,
-               "stones":0,
-               "servants":0,
-               "coins":0,
-               "council":0
-            },
-            "points":{  
-               "victory":0,
-               "faith":0,
-               "military":0
-            }
-         }
-      ],
-      [  
-         {  
-            "resources":{  
-               "woods":0,
-               "stones":0,
-               "servants":0,
-               "coins":0,
-               "council":0
-            },
-            "points":{  
-               "victory":0,
-               "faith":0,
-               "military":0
-            }
-         },
-         {  
-            "resources":{  
-               "woods":0,
-               "stones":0,
+               "stones":1,
                "servants":0,
                "coins":0,
                "council":0
@@ -188,6 +130,34 @@
             "points":{  
                "victory":0,
                "faith":0,
+               "military":2
+            }
+         },
+         {  
+            "resources":{  
+               "woods":0,
+               "stones":0,
+               "servants":0,
+               "coins":0,
+               "council":0
+            },
+            "points":{  
+               "victory":0,
+               "faith":0,
+               "military":1
+            }
+         },
+         {  
+            "resources":{  
+               "woods":0,
+               "stones":0,
+               "servants":0,
+               "coins":0,
+               "council":0
+            },
+            "points":{  
+               "victory":0,
+               "faith":0,
                "military":0
             }
          },
@@ -197,6 +167,36 @@
                "stones":0,
                "servants":0,
                "coins":0,
+               "council":0
+            },
+            "points":{  
+               "victory":0,
+               "faith":0,
+               "military":0
+            }
+         }
+      ],
+      [  
+         {  
+            "resources":{  
+               "woods":0,
+               "stones":0,
+               "servants":0,
+               "coins":2,
+               "council":0
+            },
+            "points":{  
+               "victory":0,
+               "faith":0,
+               "military":0
+            }
+         },
+         {  
+            "resources":{  
+               "woods":0,
+               "stones":0,
+               "servants":0,
+               "coins":1,
                "council":0
             },
             "points":{  
@@ -259,7 +259,7 @@
             "council":0
          },
          "points":{  
-            "victory":0,
+            "victory":1,
             "faith":0,
             "military":0
          }
@@ -273,7 +273,7 @@
             "council":0
          },
          "points":{  
-            "victory":0,
+            "victory":2,
             "faith":0,
             "military":0
          }
@@ -287,7 +287,7 @@
             "council":0
          },
          "points":{  
-            "victory":0,
+            "victory":3,
             "faith":0,
             "military":0
          }
@@ -301,7 +301,7 @@
             "council":0
          },
          "points":{  
-            "victory":0,
+            "victory":4,
             "faith":0,
             "military":0
          }
@@ -315,7 +315,7 @@
             "council":0
          },
          "points":{  
-            "victory":0,
+            "victory":5,
             "faith":0,
             "military":0
          }
@@ -329,7 +329,7 @@
             "council":0
          },
          "points":{  
-            "victory":0,
+            "victory":7,
             "faith":0,
             "military":0
          }
@@ -343,7 +343,7 @@
             "council":0
          },
          "points":{  
-            "victory":0,
+            "victory":9,
             "faith":0,
             "military":0
          }
@@ -357,7 +357,7 @@
             "council":0
          },
          "points":{  
-            "victory":0,
+            "victory":11,
             "faith":0,
             "military":0
          }
@@ -371,7 +371,7 @@
             "council":0
          },
          "points":{  
-            "victory":0,
+            "victory":13,
             "faith":0,
             "military":0
          }
@@ -385,7 +385,7 @@
             "council":0
          },
          "points":{  
-            "victory":0,
+            "victory":15,
             "faith":0,
             "military":0
          }
@@ -399,7 +399,7 @@
             "council":0
          },
          "points":{  
-            "victory":0,
+            "victory":17,
             "faith":0,
             "military":0
          }
@@ -413,7 +413,7 @@
             "council":0
          },
          "points":{  
-            "victory":0,
+            "victory":19,
             "faith":0,
             "military":0
          }
@@ -427,7 +427,7 @@
             "council":0
          },
          "points":{  
-            "victory":0,
+            "victory":22,
             "faith":0,
             "military":0
          }
@@ -441,7 +441,7 @@
             "council":0
          },
          "points":{  
-            "victory":0,
+            "victory":25,
             "faith":0,
             "military":0
          }
@@ -455,7 +455,7 @@
             "council":0
          },
          "points":{  
-            "victory":0,
+            "victory":30,
             "faith":0,
             "military":0
          }
@@ -467,6 +467,20 @@
             "woods":0,
             "stones":0,
             "servants":0,
+            "coins":5,
+            "council":0
+         },
+         "points":{  
+            "victory":0,
+            "faith":0,
+            "military":0
+         }
+      },
+      {  
+         "resources":{  
+            "woods":0,
+            "stones":0,
+            "servants":5,
             "coins":0,
             "council":0
          },
@@ -481,13 +495,13 @@
             "woods":0,
             "stones":0,
             "servants":0,
-            "coins":0,
+            "coins":2,
             "council":0
          },
          "points":{  
             "victory":0,
             "faith":0,
-            "military":0
+            "military":3
          }
       },
       {  
@@ -496,21 +510,7 @@
             "stones":0,
             "servants":0,
             "coins":0,
-            "council":0
-         },
-         "points":{  
-            "victory":0,
-            "faith":0,
-            "military":0
-         }
-      },
-      {  
-         "resources":{  
-            "woods":0,
-            "stones":0,
-            "servants":0,
-            "coins":0,
-            "council":0
+            "council":2
          },
          "points":{  
             "victory":0,
@@ -524,8 +524,8 @@
          "woods":0,
          "stones":0,
          "servants":0,
-         "coins":0,
-         "council":0
+         "coins":1,
+         "council":1
       },
       "points":{  
          "victory":0,

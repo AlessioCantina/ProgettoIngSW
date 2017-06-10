@@ -2,9 +2,8 @@ package it.polimi.LM39.client;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,8 +21,7 @@ public class SocketClient extends AbstractClient implements Runnable{
 	private Socket socket;
 	private ObjectOutputStream socketOut;
 	private ObjectInputStream socketIn;
-	private static String clientResponse = "";
-	private ExecutorService executor = Executors.newCachedThreadPool(); 
+
 
     /**
      * Default constructor
@@ -37,43 +35,42 @@ public class SocketClient extends AbstractClient implements Runnable{
     	this.userName = userName;
     	socket = new Socket(ip,port);
     	socket.setKeepAlive(true);	
+    	socket.setSoTimeout(500);
     	socketOut = new ObjectOutputStream(socket.getOutputStream());
     	socketOut.flush();
     	socketIn = new ObjectInputStream(new BufferedInputStream(this.socket.getInputStream()));  
-    	executor.submit(this);
+    	new Thread(this).start();
     }
-    public static void setClientResponse(String response){
-    	clientResponse = new String(response);
-    	System.out.println("clientresponse" + clientResponse);
-    }
+
     @Override
     public void run(){
     	Logger logger = Logger.getLogger(SocketClient.class.getName());
     	Object test;
     	NetworkPlayer player = null;
-    		logger.log(Level.INFO,"started sockethandler");
     		while (true){	
     			try{
-    				System.out.println(socketIn.read());
-    				if(socketIn.read() != 0){
+    				while(socketIn.read() != 0){
     					test = socketIn.readObject();
     					if(test instanceof NetworkPlayer)
     						player = (NetworkPlayer) test;
-    					else if(test instanceof MainBoard)
+    					if(test instanceof MainBoard)
     						UI.setCurrentMainBoard((MainBoard)test);
-    					else if(test instanceof Boolean){
-                			UI.printMessage(player,socketIn.readUTF());
+    					if(test instanceof Boolean)
+                			UI.printMessage(new String(socketIn.readUTF()));   					
+    				}
+    			}catch (IOException | ClassNotFoundException socketException) {
+    				if(socketException instanceof SocketTimeoutException){
+    					try {
+    						socketOut.writeUTF(UI.askClient(player));
+    						socketOut.flush();
+    					}catch (IOException writeException) {
+    						logger.log(Level.SEVERE, "Can't write on socket", writeException);
     					}
     				}
-    				if(!clientResponse.equals(""))
-    				{
-        				socketOut.writeUTF(clientResponse);
-        				socketOut.flush();
-    				}
-    			}catch (Exception e) {
-    				logger.log(Level.SEVERE, "Error instantiating socketstreams", e);
-    			}
-    		} 			
+    				else
+    					logger.log(Level.SEVERE, "Socket exception", socketException);
+    			} 			
+    		}
     }
 }
 

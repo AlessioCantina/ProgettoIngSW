@@ -13,7 +13,6 @@ public class Room {
 	protected static Integer roomCounter = 0;
 	private Game game;
 	private Integer roomPeriod;
-	private ExecutorService executor = Executors.newCachedThreadPool();
 	private ArrayList<NetworkPlayer> players;
     /*
      * initialize the room properties
@@ -28,8 +27,9 @@ public class Room {
      */
     public void addPlayer(NetworkPlayer player){
     	this.players.add(player);
+    	
     	game = new Game(this.getConnectedPlayers(),players);
-    	executor.submit(game);
+    	new Thread(game).start();
     }
     /*
      * return the number of players connected to the room

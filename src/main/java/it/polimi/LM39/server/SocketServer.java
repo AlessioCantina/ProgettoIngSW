@@ -27,7 +27,7 @@ public class SocketServer extends AbstractServer implements Runnable{
     public void StartServer(Integer socketPort) throws ServerStartException{
     	try{
     		serverSocket = new ServerSocket(socketPort);
-    		executor.submit(this);
+    		new Thread(this).start();
     	} catch(Exception e){
     		throw new ServerStartException(e);
     	}
@@ -40,9 +40,9 @@ public class SocketServer extends AbstractServer implements Runnable{
     	Logger logger = Logger.getLogger(SocketServer.class.getName());
 		while(true){
 			try{
-				System.out.println("Socket Listener up");
 				Socket socket = serverSocket.accept();
 				SocketPlayer socketPlayer = new SocketPlayer(getServerController(),socket);
+				System.out.println("Socket Listener up");
 				new Thread(socketPlayer).start();
 			}catch (IOException e) {
                 logger.log(Level.SEVERE, "Can't instantiate SocketListener", e);

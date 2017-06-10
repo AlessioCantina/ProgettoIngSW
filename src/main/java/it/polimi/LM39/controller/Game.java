@@ -317,6 +317,7 @@ public class Game implements Runnable{
     //TODO players choose leader card
     //TODO players choose Personal Bonus Tile
     public void run() {
+    	System.out.println("GAME " + Thread.currentThread());
     	//initialize the game loading parameters and cards
     	try {
 			initialize();

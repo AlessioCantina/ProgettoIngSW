@@ -40,9 +40,18 @@ public class GUI extends UserInterface {
 		
 	}
 
+
+
 	@Override
-	public void printMessage(NetworkPlayer player, String message) {
+	public void printMessage(String message) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String askClient(NetworkPlayer player) {
+		// TODO Auto-generated method stub
+		return "";
 	}
 
 }
