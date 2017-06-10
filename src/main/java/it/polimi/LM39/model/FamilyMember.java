@@ -11,7 +11,7 @@ public class FamilyMember implements Serializable{
 	//the family member color
     public String color;
     
-    private Integer servants;
+    private Integer servants = 0;
     
     public Integer getServants(){
     	return this.servants;

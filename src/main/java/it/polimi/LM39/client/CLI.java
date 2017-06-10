@@ -113,6 +113,7 @@ public class CLI extends UserInterface {
 		System.out.printf("╔═══════════════╦═══════════════╗%n");
 		while(i < marketSize){
 			System.out.printf("║%-15s║%-15s║%n",this.tilePrinter(market[i], new int[]{i,0}, "market"),this.getFamilyMemberColor(market[i]));
+			i++;
 		}
 		System.out.printf("╚═══════════════╩═══════════════╝%n");
 	}
@@ -194,7 +195,7 @@ public class CLI extends UserInterface {
 			harvestArea = location.getFamilyMembersOnProductionOrHarvest("harvest");
 			productionArea = location.getFamilyMembersOnProductionOrHarvest("production");
 		}catch(InvalidActionTypeException e){
-			logger.log(Level.SEVERE, "Error on action type", e);
+			e.printStackTrace();
 		}
 		int harvestProductionSize = 4;
 		int i = 0;
@@ -332,7 +333,7 @@ public class CLI extends UserInterface {
 		stringController = Action.isIn(response);
 		if(stringController != Action.CLI.toString())
 			return response;
-		else
+		else if(stringController == Action.CLI.toString())
 			selectCLIAction(response,player); 
 		return "";
 	}

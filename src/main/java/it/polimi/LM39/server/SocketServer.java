@@ -4,8 +4,6 @@ import java.io.IOException;
 import it.polimi.LM39.exception.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,7 +13,6 @@ import java.util.logging.Logger;
 public class SocketServer extends AbstractServer implements Runnable{
 
 	private ServerSocket serverSocket;
-	private ExecutorService executor = Executors.newCachedThreadPool();
     public SocketServer(ServerInterface serverInterface) {
     	super(serverInterface);
     }

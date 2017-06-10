@@ -667,9 +667,9 @@ public class GameHandler {
 
     public Integer cardNameToInteger (String card) throws CardNotFoundException{
     	for(int i=0;i<4;i++)
-    		for(int j=0;j<4;j++)
-    			if(mainBoard.getCardNamesOnTheTowers()[i][j].equals(card))
-    				return mainBoard.getCardsOnTheTowers()[i][j];
+    		for(int j=0;j<4;j++){
+    			if(mainBoard.getCardNamesOnTheTowers()[i][j].compareToIgnoreCase(card) == 0)
+    				return mainBoard.getCardsOnTheTowers()[i][j];}
     	throw new CardNotFoundException("Card not found!"); //card not found
     			
     }

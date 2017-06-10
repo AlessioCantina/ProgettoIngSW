@@ -8,28 +8,45 @@ import java.util.concurrent.Executors;
 /*
  *  class that handle room 
  */
-public class Room {
+public class Room implements Runnable{
 	public final Integer MIN_CLIENT = 2;
+	public final Integer MAX_CLIENT = 4;
 	protected static Integer roomCounter = 0;
 	private Game game;
-	private Integer roomPeriod;
 	private ArrayList<NetworkPlayer> players;
+	protected long roomCreationTime;
+	protected long roomStartTimeout = 15000;
     /*
      * initialize the room properties
      */
     public Room(){
     	players = new ArrayList<NetworkPlayer>();
-    	roomPeriod = 1;
     	roomCounter++;
+    }
+    
+    public void run(){
+    	while(System.currentTimeMillis() - roomCreationTime <= roomStartTimeout){
+			try {
+				System.out.println("Waiting for timeout");
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+    	}
+    	System.out.println("Game starting with " + this.getConnectedPlayers() +" players");
+    	this.startRoom();
     }
     /*
      * it adds a player to a room
      */
     public void addPlayer(NetworkPlayer player){
     	this.players.add(player);
-    	
-    	game = new Game(this.getConnectedPlayers(),players);
-    	new Thread(game).start();
+		if(this.getConnectedPlayers() == MIN_CLIENT){
+			roomCreationTime = System.currentTimeMillis();
+			new Thread(this).start();
+		}
+		else if(this.getConnectedPlayers() == MAX_CLIENT)
+			this.startRoom();
     }
     /*
      * return the number of players connected to the room
@@ -42,22 +59,10 @@ public class Room {
      */
     public void startRoom(){
     	this.game = new Game(this.getConnectedPlayers(),players);
-    	
+    	synchronized(SocketPlayer.LOCK){
+    		SocketPlayer.LOCK.notifyAll();
+    	}
+    	new Thread(game).start();
     }
-    /*
-     * called by controller to change room period (+1 period every 2 rounds)
-     */
-    public void nextPeriod(){
-    	this.roomPeriod++;
-    }
-    /*
-     * this method depends on the period of the game: when the game start it will randomize 
-     * the play order, in the next rounds it will put the order following the council palace.
-     * When a player have no member on council palace it will follow the relative order
-     */
-    public void setPlayOrder(){
-    	if(roomPeriod == 1)
-    		Collections.shuffle(players);
-    	//TODO interact with controller to know the order from council palace
-    }
+
 }

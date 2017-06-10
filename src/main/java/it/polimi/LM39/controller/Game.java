@@ -324,7 +324,7 @@ public class Game implements Runnable{
 			e.printStackTrace();
 		}
     	//make the players choose a their four leader cards
-    	chooseLeaderCard();
+    	//chooseLeaderCard();
     	//the array list where the players actions order is stored
     	ArrayList <String> order;
     	for(int period=0;period<3;period++){

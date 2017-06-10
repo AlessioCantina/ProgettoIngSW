@@ -21,21 +21,22 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    private transient ServerInterface serverInterface;
 	    private transient ObjectInputStream objInput;			//player's interface and I/O streams
 	    private transient ObjectOutputStream objOutput;
-	    private String message;				//information which will be send to the client
-	    private MainBoard mainBoard;
+	    private static String message;				//information which will be send to the client
+	    private static MainBoard mainBoard;
 	    private String clientAction;
-	    private transient boolean requestedMainboard;
+	    private transient static boolean requestedMainboard;
 	    private transient boolean requestedMessage;
-	    private static transient Object LOCK = new Object();
+	    protected static transient Object LOCK = new Object();
+	    private static transient Object CLIENT_LOCK = new Object();
     	
 	    /*
 	     * the constructor initialize the streams and start the thread
 	     */
 	    public SocketPlayer(ServerInterface serverInterface, Socket socket) throws IOException {
-	    	  this.message = "";
+	    	  message = "";
 	    	  this.clientAction = "";
 	          this.socket = socket;
-	          this.requestedMainboard = false;
+	          requestedMainboard = false;
 	          this.requestedMessage = false;
 	          this.serverInterface = serverInterface;
 	          this.objOutput = new ObjectOutputStream(this.socket.getOutputStream()); 
@@ -46,13 +47,13 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    /*
 	     * used from the controller to set what we want to send
 	     */
-	    public void setMessage(MainBoard mainBoard){
-	    	this.mainBoard = mainBoard;
-	    	requestedMainboard = true;
+	    public void setMessage(MainBoard mainboard){
+	    		mainBoard = mainboard;
+	    		requestedMainboard = true;
 	    }
-	    public void setMessage(String message){
+	    public void setMessage(String messages){
 	    	synchronized(LOCK){
-	    		this.message = new String(message);
+	    		message = new String(messages);
 	    		requestedMessage = true;
 	    		try {
 	    			LOCK.wait();
@@ -66,38 +67,46 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	     * it checks if we have something to send to the client and waits for the answer
 	     */
 	    public void run() {
-
-	    	this.serverInterface.joinRoom(this);
+	    	synchronized(LOCK){
+	    		try {
+	    	    	this.serverInterface.joinRoom(this);
+					LOCK.wait();
+	    			System.out.println("THREAD UNLOCKED" + Thread.currentThread());
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+	    	}
+	    	System.out.println(Thread.activeCount());
 	    	while(true){
-	    		if(this.requestedMessage){
-	    			this.sendMessageToClient();
+	    		if(requestedMessage){
+	    			sendMessageToClient();
 	    		}
-	    		if(this.requestedMainboard){
-	    			this.sendMainBoardToClient();
+	    		if(requestedMainboard){
+	    			sendMainBoardToClient();
 	    		}
-	    		this.receiveFromClient();
+	    		receiveFromClient();
 	    	}
 	    }
-	    private void sendMainBoardToClient(){
+	    private synchronized void sendMainBoardToClient(){
 	    		try{
         			System.out.println("Invio mainboard");
         			objOutput.writeObject(this);
-        			objOutput.writeObject(this.mainBoard);
+        			objOutput.writeObject(mainBoard);
         			objOutput.flush();
         			requestedMainboard = false;
 	    		}catch (Exception e) {
 	    			e.printStackTrace();
-		        }
-	    			
+		        }	    			
 	    	}
 	    private void sendMessageToClient(){
+	    	System.out.println("Invio Messaggio");
 	    	synchronized(LOCK){
 	    		Boolean enableMessage = true;
 	    		try{
 	    			objOutput.writeObject(enableMessage);
-	    			objOutput.writeUTF(this.message);
+	    			objOutput.writeUTF(message);
 	    			objOutput.flush();
-	    			this.requestedMessage = false;
+	    			requestedMessage = false;
 	    		}catch (Exception e){
 	    			e.printStackTrace();
 	    		}
@@ -105,29 +114,35 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    	}
 		}
 	    private void receiveFromClient(){
+	    	synchronized(CLIENT_LOCK){
     		try{
     			if(objInput.available() > 0){
     				clientAction = objInput.readUTF();
     				System.out.println(clientAction);
+    				CLIENT_LOCK.notifyAll();
     			}	    		
 	    	}catch (Exception e) {
 	            e.printStackTrace();
 	        }
+	    	}
 	    }
 	    /*
 	     * this method return the client action to the game controller
 	     */
 	    public String sendMessage(){
-	    	while(clientAction.equals("")){
-	    		try {
-					Thread.sleep(50);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	    	}
+	    	synchronized(CLIENT_LOCK){
+	    		while(clientAction.equals("")){
+	    			try {
+						CLIENT_LOCK.wait();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	    		}
+	    	    	
 	    	String stringToSet = new String(clientAction);
 	    	clientAction = "";
 	    	return stringToSet;
+	    	}	
 	    }
 }

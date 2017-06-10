@@ -35,7 +35,6 @@ public class SocketClient extends AbstractClient implements Runnable{
     	this.userName = userName;
     	socket = new Socket(ip,port);
     	socket.setKeepAlive(true);	
-    	socket.setSoTimeout(500);
     	socketOut = new ObjectOutputStream(socket.getOutputStream());
     	socketOut.flush();
     	socketIn = new ObjectInputStream(new BufferedInputStream(this.socket.getInputStream()));  
@@ -56,7 +55,8 @@ public class SocketClient extends AbstractClient implements Runnable{
     					if(test instanceof MainBoard)
     						UI.setCurrentMainBoard((MainBoard)test);
     					if(test instanceof Boolean)
-                			UI.printMessage(new String(socketIn.readUTF()));   					
+                			UI.printMessage(new String(socketIn.readUTF()));
+    			    	socket.setSoTimeout(500);
     				}
     			}catch (IOException | ClassNotFoundException socketException) {
     				if(socketException instanceof SocketTimeoutException){
