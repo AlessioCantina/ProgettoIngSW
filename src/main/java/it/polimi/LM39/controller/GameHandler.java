@@ -878,7 +878,6 @@ public class GameHandler {
     	player.personalMainBoard = gson.fromJson(gson.toJson(mainBoard),mainBoard.getClass());
     }
     public void setFirstRoundBonuses(NetworkPlayer player,Integer position) throws NotEnoughResourcesException{
-    	System.out.println(position);
     	switch (position){
 	    	case(1): player.resources.setCoins(5);
 	    		break;

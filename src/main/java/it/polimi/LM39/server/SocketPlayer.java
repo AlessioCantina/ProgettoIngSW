@@ -61,8 +61,6 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    		}
 	    	}
 	    }
-    	
-
 	    /*
 	     * infinite loop which listen the client from input and send the available information to it
 	     * it checks if we have something to send to the client and waits for the answer

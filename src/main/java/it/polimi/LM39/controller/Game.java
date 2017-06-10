@@ -83,7 +83,6 @@ public class Game implements Runnable{
 				e.printStackTrace();
 			}
     	}
-    	System.out.println("fine initialize");
     	
     
     }
@@ -325,7 +324,7 @@ public class Game implements Runnable{
 			e.printStackTrace();
 		}
     	//make the players choose a their four leader cards
-    	//chooseLeaderCard();
+    	chooseLeaderCard();
     	//the array list where the players actions order is stored
     	ArrayList <String> order;
     	for(int period=0;period<3;period++){
@@ -410,10 +409,9 @@ public class Game implements Runnable{
     private void chooseLeaderCard(){
     	//creating an array list of leaders names randomly ordinated
     	ArrayList<String> leaders = new ArrayList<String>();
-    	for(int i=1;i<21;i++)
-    		leaders.add(MainBoard.leaderMap.get(i).cardName);
+    	for(int i=0;i<20;i++)
+    		leaders.add(LeadersName.getLeaderRandomName());
     	Collections.shuffle(leaders);
-
     	int j=0;
     	String response = "";
     	for(int i=players.size();i>0;i--)
@@ -422,6 +420,7 @@ public class Game implements Runnable{
     			players.get(playerNumber).setMessage("Choose a leader card between:");
     			//send to the player the list of leader card in which he must choose one card
     			for(j=i+k;j>0+k;j--){
+    				System.out.println(leaders.get(j));
     				players.get(playerNumber).setMessage(leaders.get(j));
     			}
 	    		response = players.get(playerNumber).sendMessage();

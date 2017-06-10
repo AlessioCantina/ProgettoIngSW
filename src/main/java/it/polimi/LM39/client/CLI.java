@@ -131,21 +131,21 @@ public class CLI extends UserInterface {
 				bonus = bonusesMatrix[index[0]][index[1]];
 			}
 			 if(bonus.resources.coins != 0)
-				 return "coins" + bonus.resources.coins;
+				 return "coins:" + bonus.resources.coins;
 			 else if(bonus.resources.council != 0)
-				 return "council" + bonus.resources.council;
+				 return "council:" + bonus.resources.council;
 			 else if(bonus.resources.servants != 0)
-				 return "servants" + bonus.resources.servants;
+				 return "servants:" + bonus.resources.servants;
 			 else if(bonus.resources.woods != 0)
 				 return "woods:" + bonus.resources.woods;
 			 else if(bonus.resources.stones != 0)
 				 return "stones:" + bonus.resources.stones;
 			 else if(bonus.points.faith != 0)
-				 return "faith" + bonus.points.faith;
+				 return "faith:" + bonus.points.faith;
 			 else if(bonus.points.victory != 0)
-				 return "victory" + bonus.points.victory;
+				 return "victory:" + bonus.points.victory;
 			 else if(bonus.points.military != 0)
-				 return "military" + bonus.points.military; 
+				 return "military:" + bonus.points.military; 
 		}
 		else
 			return "player" + familyMember.playerColor;
