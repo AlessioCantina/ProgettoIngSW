@@ -78,11 +78,11 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    	}
 	    	System.out.println(Thread.activeCount());
 	    	while(true){
-	    		if(requestedMessage){
-	    			sendMessageToClient();
-	    		}
 	    		if(requestedMainboard){
 	    			sendMainBoardToClient();
+	    		}
+	    		if(requestedMessage){
+	    			sendMessageToClient();
 	    		}
 	    		receiveFromClient();
 	    	}

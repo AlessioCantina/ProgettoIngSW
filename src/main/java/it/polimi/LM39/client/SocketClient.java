@@ -23,6 +23,8 @@ public class SocketClient extends AbstractClient implements Runnable{
 	private ObjectInputStream socketIn;
 
 
+
+
     /**
      * Default constructor
      * @throws IOException 
@@ -38,7 +40,6 @@ public class SocketClient extends AbstractClient implements Runnable{
     	socketOut = new ObjectOutputStream(socket.getOutputStream());
     	socketOut.flush();
     	socketIn = new ObjectInputStream(new BufferedInputStream(this.socket.getInputStream()));  
-    	new Thread(this).start();
     }
 
     @Override
@@ -54,15 +55,19 @@ public class SocketClient extends AbstractClient implements Runnable{
     						player = (NetworkPlayer) test;
     					if(test instanceof MainBoard)
     						UI.setCurrentMainBoard((MainBoard)test);
-    					if(test instanceof Boolean)
+    					if(test instanceof Boolean){
                 			UI.printMessage(new String(socketIn.readUTF()));
-    			    	socket.setSoTimeout(500);
+                			socket.setSoTimeout(500);
+    					}
     				}
     			}catch (IOException | ClassNotFoundException socketException) {
     				if(socketException instanceof SocketTimeoutException){
     					try {
-    						socketOut.writeUTF(UI.askClient(player));
-    						socketOut.flush();
+    							socketOut.writeUTF(UI.askClient(player));
+    							socketOut.flush();
+    							socket.setSoTimeout(0);
+    							System.out.println("messaggio inviato");
+    						
     					}catch (IOException writeException) {
     						logger.log(Level.SEVERE, "Can't write on socket", writeException);
     					}
