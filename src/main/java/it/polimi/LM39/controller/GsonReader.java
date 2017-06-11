@@ -268,9 +268,9 @@ public class GsonReader {
 				else if(("councilPalaceBonus").equals(configToExtract))
 					mainBoard.councilPalaceBonus = gson.fromJson(jsonReader,mainBoard.councilPalaceBonus.getClass());
 				else if(("harvestBonus").equals(configToExtract))
-					mainBoard.harvestBonus = gson.fromJson(jsonReader,mainBoard.harvestBonus.getClass());
+					mainBoard.harvestBonusTile = gson.fromJson(jsonReader,mainBoard.harvestBonusTile.getClass());
 				else if(("productionBonus").equals(configToExtract))
-					mainBoard.productionBonus = gson.fromJson(jsonReader,mainBoard.productionBonus.getClass());
+					mainBoard.productionBonusTile = gson.fromJson(jsonReader,mainBoard.productionBonusTile.getClass());
 				else if(("gameStartTimeOut").equals(configToExtract))
 					Room.setRoomTimeout(gson.fromJson(jsonReader,long.class));
 				else if(("playerMoveTimeOut").equals(configToExtract))

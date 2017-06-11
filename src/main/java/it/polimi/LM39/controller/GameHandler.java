@@ -53,7 +53,7 @@ public class GameHandler {
 
     public ExcommunicationHandler excommunicationHandler = new ExcommunicationHandler(); */	
 
-    public PersonalBoardHandler playerBoardHandler = new PersonalBoardHandler();
+    public PersonalBoardHandler personalBoardHandler = new PersonalBoardHandler();
     
     public CouncilHandler councilHandler = new CouncilHandler(); 	
     
@@ -537,10 +537,10 @@ public class GameHandler {
     		if (doAction==true){
     			if(familyMemberValue(familyMember,player)>=1){
 	    			if (actionType=="Production"){
-		    			playerBoardHandler.activateProduction(familyMemberValue(familyMember,player)-penalty,player); // we use the player Personal MainBaord
+		    			personalBoardHandler.activateProduction(familyMemberValue(familyMember,player)-penalty,player); // we use the player Personal MainBaord
 	    			}
 	    			else if(actionType=="Harvest"){
-	    				playerBoardHandler.activateHarvest(familyMemberValue(familyMember,player)-penalty,player); // we use the player Personal MainBaord
+	    				personalBoardHandler.activateHarvest(familyMemberValue(familyMember,player)-penalty,player); // we use the player Personal MainBaord
 	    			}
 		    		else {
 		    			player.setMessage("Invalid action it must be Production or Harvest");
@@ -556,7 +556,7 @@ public class GameHandler {
     	}
 
     public void initializeTheGame() throws FailedToReadFileException, FailedToRegisterEffectException, IOException {
-    	playerBoardHandler.setGameHandler(this);
+    	personalBoardHandler.setGameHandler(this);
     	//initialize the value of an action space on the Towers
     	Integer [] towerValue = {1,3,5,7};
     	Integer[][] towersValue = new Integer[4][4];

@@ -139,7 +139,7 @@ public class Game implements Runnable{
     	else if (("activate production").equals(response)){
     		FamilyMember familyMember = handleFamilyMember(player);
     		try {
-				gameHandler.playerBoardHandler.activateProduction(gameHandler.familyMemberValue(familyMember, player), player);
+				gameHandler.personalBoardHandler.activateProduction(gameHandler.familyMemberValue(familyMember, player), player);
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException | IOException | NotEnoughResourcesException
 					| NotEnoughPointsException e) {
@@ -157,7 +157,7 @@ public class Game implements Runnable{
     	else if (("activate harvest").equals(response)){
     		FamilyMember familyMember = handleFamilyMember(player);
     		try {
-				gameHandler.playerBoardHandler.activateHarvest(gameHandler.familyMemberValue(familyMember, player), player);
+				gameHandler.personalBoardHandler.activateHarvest(gameHandler.familyMemberValue(familyMember, player), player);
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException | NotEnoughResourcesException | NotEnoughPointsException
 					| IOException e) {

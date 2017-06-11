@@ -239,9 +239,9 @@ public class CardHandler {
 		Integer qtyServants = gameHandler.addServants(player);
 		//check if the effect is for harvest o production and call the correct method
 		if(("Harvest").equals(instantEffect.actionType))
-			gameHandler.playerBoardHandler.activateHarvest(instantEffect.actionValue + qtyServants, player);
+			gameHandler.personalBoardHandler.activateHarvest(instantEffect.actionValue + qtyServants, player);
 		else if(("Production").equals(instantEffect.actionType))
-			gameHandler.playerBoardHandler.activateProduction(instantEffect.actionValue + qtyServants, player);
+			gameHandler.personalBoardHandler.activateProduction(instantEffect.actionValue + qtyServants, player);
 	}
 	
 	public void doInstantEffect(HarvestProductionAndPoints instantEffect,NetworkPlayer player) throws NotEnoughPointsException, IOException, NotEnoughResourcesException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
@@ -488,11 +488,11 @@ public class CardHandler {
 		//need to check when a player with this effect try to do a Production or Harvest and give him the bonus
 		if(("Harvest").equals(permanentEffect.actionType) && player.decoratorHandler.harvestBoostDecorator == false){
 			player.decoratorHandler.harvestBoostDecorator = true;
-			gameHandler.playerBoardHandler = new HarvestBoostDecorator(gameHandler.playerBoardHandler,permanentEffect.actionValue,player);
+			gameHandler.personalBoardHandler = new HarvestBoostDecorator(gameHandler.personalBoardHandler,permanentEffect.actionValue,player);
 		}
 		else if (player.decoratorHandler.productionBoostDecorator == false){
 			player.decoratorHandler.productionBoostDecorator = true;
-			gameHandler.playerBoardHandler = new ProductionBoostDecorator(gameHandler.playerBoardHandler,permanentEffect.actionValue,player);} 
+			gameHandler.personalBoardHandler = new ProductionBoostDecorator(gameHandler.personalBoardHandler,permanentEffect.actionValue,player);} 
 	}
 	
 	public void activateCharacter(NoBoardBonuses permanentEffect, NetworkPlayer player){
@@ -534,13 +534,13 @@ public class CardHandler {
 			//if not set to false it would block the decoration
 			player.decoratorHandler.productionBoostDecorator = false;
 			player.decoratorHandler.harvestMalus = true;
-			gameHandler.playerBoardHandler = new HarvestBoostDecorator(gameHandler.playerBoardHandler,-permanentEffect.malus,player);
+			gameHandler.personalBoardHandler = new HarvestBoostDecorator(gameHandler.personalBoardHandler,-permanentEffect.malus,player);
 		}
 		else if (player.decoratorHandler.productionMalus == false){
 			//if not set to false it would block the decoration
 			player.decoratorHandler.productionBoostDecorator = false;
 			player.decoratorHandler.productionMalus = true;
-			gameHandler.playerBoardHandler = new ProductionBoostDecorator(gameHandler.playerBoardHandler,-permanentEffect.malus,player);
+			gameHandler.personalBoardHandler = new ProductionBoostDecorator(gameHandler.personalBoardHandler,-permanentEffect.malus,player);
 		}
 	}
 	
