@@ -6,10 +6,10 @@ public class FamilyMember implements Serializable{
 
 	private static final long serialVersionUID = 2498858899679886939L;
 
-	public String playerColor;
+	public String playerColor = "";
 	
 	//the family member color
-    public String color;
+    public String color = "";
     
     private Integer servants = 0;
     

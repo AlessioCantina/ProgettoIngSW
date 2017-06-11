@@ -322,7 +322,7 @@ public class Game implements Runnable{
 			e.printStackTrace();
 		}
     	//make the players choose a their four leader cards
-    	chooseLeaderCard();
+    	//chooseLeaderCard();
     	//the array list where the players actions order is stored
     	ArrayList <String> order;
     	for(int period=0;period<3;period++){
@@ -355,6 +355,7 @@ public class Game implements Runnable{
 				}
 	    		//update the personalMainBoards of all players
 	    		updatePersonalMainBoards();
+	    		gameHandler.rollTheDices();
     		}
     		//support the church at the end of a period
     		for(NetworkPlayer player : players)
