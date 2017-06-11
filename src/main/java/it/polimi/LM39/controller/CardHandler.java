@@ -42,6 +42,7 @@ public class CardHandler {
 	 Class[] cArg = new Class[2];
 	 cArg[0] = instantEffect.getClass();
 	 cArg[1] = player.getClass();
+	 System.out.println(instantEffect.getClass());
 	 Method lMethod = (this.getClass().getMethod("doInstantEffect",cArg));
 	 lMethod.invoke(instantEffect,player);
  }

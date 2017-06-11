@@ -82,7 +82,9 @@ public class Game implements Runnable{
 			} catch (NotEnoughResourcesException e) {
 				e.printStackTrace();
 			}
-    	}
+			
+			updatePersonalMainBoards();
+    }
     	
     
     }
@@ -322,6 +324,7 @@ public class Game implements Runnable{
 			e.printStackTrace();
 		}
     	//make the players choose a their four leader cards
+    	//TODO uncomment the line blow in the final version
     	//chooseLeaderCard();
     	//the array list where the players actions order is stored
     	ArrayList <String> order;
@@ -380,7 +383,7 @@ public class Game implements Runnable{
     		}
     }
     
-    private void updatePersonalMainBoards (){
+    private void updatePersonalMainBoards(){
     	for(NetworkPlayer player : players){
     		gameHandler.resetPlayerPersonalMainBoard(player);
     		try {

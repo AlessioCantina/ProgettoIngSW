@@ -228,7 +228,7 @@ public class GameHandler {
     public Integer familyMemberColorToDiceValue(String familyMemberColor,NetworkPlayer player) throws IOException{
     	//The order followed is the one on the Game Board for the dices positions
     	Integer value = -1;
-    	Integer[] diceValues = mainBoard.getDiceValues();
+    	Integer[] diceValues = player.personalMainBoard.getDiceValues();
     	switch(familyMemberColor){
 	    	case "black": value = diceValues[0];
 	    		break;
@@ -250,15 +250,12 @@ public class GameHandler {
         boolean uncoloredFamilyMemberOnTheTower = false;
         Integer[][] cardsOnTheTowers = mainBoard.getCardsOnTheTowers();
         FamilyMember[][] familyMembersOnTheTowers = player.personalMainBoard.familyMembersLocation.getFamilyMembersOnTheTowers(); // we use the player Personal MainBaord
-    	
+      //search the coordinates of the card in the board
         for(i=0;i<4;i++)
-        	for(j=0; j<4 && !(cardsOnTheTowers[i][j] == cardNumber);j++){
-        		System.out.println(i + " " + j);
-        	}
-    		//search the coordinates of the card in the board
+        	for(j=0; j<4 && !(cardsOnTheTowers[i][j] == cardNumber);j++){}
         int p=i-1;
         int k=j;
-        System.out.println("riga " + p + " colonna " + k);
+        System.out.println((mainBoard.getTowersValue())[p][k]);
         //to store i and j as the coordinates of the position interested, the if check if the player can get the card with a specific family member
         if(familyMembersOnTheTowers[p][k].color.equals("") && (familyMemberValue(familyMember,player) >= (mainBoard.getTowersValue())[p][k])){
         	//if the place is free and the family member has an high enough value, ((i+1)*2)-1 is to convert the value i of the matrix to the value of the floor in dice
@@ -324,7 +321,7 @@ public class GameHandler {
         	}
         }
         else{
-        	player.setMessage("This position is occupied or your family mmeber hasn't a value high enough!");	
+        	player.setMessage("This position is occupied or your family member hasn't a value high enough!");	
         	return false;
         }
        return false; 
@@ -559,8 +556,8 @@ public class GameHandler {
     	Integer [] towerValue = {1,3,5,7};
     	Integer[][] towersValue = new Integer[4][4];
     	for(int i=0;i<4;i++)
-    		for(int j=0;j<4;j++)
-    			towersValue[j][i]=towerValue[j];
+    		for(int j=0,k=3;j<4;j++,k--)
+    			towersValue[j][i]=towerValue[k];
     	mainBoard.setTowersValue(towersValue);
         //read the files
 		gsonReader.fileToCard(mainBoard);
@@ -568,6 +565,11 @@ public class GameHandler {
 		loadCardsOnTheMainBoard();
 		//load excommunications
 		loadExcommunications ();
+		for(int i=0;i<4;i++){
+			mainBoard.familyMembersLocation.setFamilyMemberOnTheMarket(new FamilyMember(), i);
+			for(int j=0;j<4;j++)
+				mainBoard.familyMembersLocation.setFamilyMemberOnTheTower(new FamilyMember(), i, j);
+		}
 		rollTheDices();
     }
     

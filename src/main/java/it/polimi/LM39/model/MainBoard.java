@@ -38,10 +38,6 @@ public class MainBoard implements Serializable{
     
     public ActionBonus councilPalaceBonus = new ActionBonus(); //the bonuses are loaded from file
     
-    public ActionBonus harvestBonusTile = new ActionBonus(); //the bonuses are loaded from file
-    
-    public ActionBonus productionBonusTile = new ActionBonus(); //the bonuses are loaded from file
-    
     public static HashMap<Integer,Territory> territoryMap = new HashMap<Integer,Territory>();
 
     public static HashMap<Integer,Building> buildingMap = new HashMap<Integer,Building>();
