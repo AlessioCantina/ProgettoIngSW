@@ -2,8 +2,6 @@ package it.polimi.LM39.server;
 
 import it.polimi.LM39.controller.*;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /*
  *  class that handle room 
@@ -14,8 +12,9 @@ public class Room implements Runnable{
 	protected static Integer roomCounter = 0;
 	private Game game;
 	private ArrayList<NetworkPlayer> players;
-	protected long roomCreationTime;
-	protected long roomStartTimeout = 40000;
+	private long roomCreationTime;
+	private static long roomStartTimeout;
+	private static long playerMoveTimeout;
     /*
      * initialize the room properties
      */
@@ -23,9 +22,18 @@ public class Room implements Runnable{
     	players = new ArrayList<NetworkPlayer>();
     	roomCounter++;
     }
-    
+    public static void setRoomTimeout(long roomStartTimeOut){
+    	roomStartTimeout = roomStartTimeOut;
+    }
+    public static void setPlayerMoveTimeout(long playerMoveTimeOut){
+    	playerMoveTimeout = playerMoveTimeOut;
+    }
+    /*
+     * thread which measure time elapsed and if there are enough player starts the game
+     * 
+     */
     public void run(){
-    	while(System.currentTimeMillis() - roomCreationTime <= roomStartTimeout && this.getConnectedPlayers() < 4){
+    	while(System.currentTimeMillis() - roomCreationTime <= roomStartTimeout){
 			try {
 				System.out.println("Waiting for timeout");
 				Thread.sleep(500);
@@ -33,8 +41,9 @@ public class Room implements Runnable{
 				Thread.currentThread().interrupt();
 			}
     	}
+    	if(this.getConnectedPlayers() < 4)
+    		this.startRoom();
     	System.out.println("Game starting with " + this.getConnectedPlayers() +" players");
-    	this.startRoom();
     }
     /*
      * it adds a player to a room
@@ -55,7 +64,7 @@ public class Room implements Runnable{
     	return this.players.size();
     }
     /*
-     * TODO: method which decide which configuration run 
+     * start the game thread
      */
     public void startRoom(){
     	this.game = new Game(this.getConnectedPlayers(),players);

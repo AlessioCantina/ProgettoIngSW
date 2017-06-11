@@ -407,7 +407,7 @@ public class Game implements Runnable{
     private void chooseLeaderCard(){
     	//creating an array list of leaders names randomly ordinated
     	ArrayList<String> leaders = new ArrayList<String>();
-    	leaders = LeadersName.getLeaderArrayList();
+    	leaders = MainBoard.leaderName;
     	Collections.shuffle(leaders);
     	int j=0;
     	String response = "";

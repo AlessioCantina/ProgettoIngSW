@@ -5,6 +5,7 @@ import it.polimi.LM39.model.characterpermanenteffect.*;
 import it.polimi.LM39.exception.*;
 import it.polimi.LM39.model.excommunicationpermanenteffect.*;
 import it.polimi.LM39.model.leaderpermanenteffect.*;
+import it.polimi.LM39.server.Room;
 import it.polimi.LM39.model.instanteffect.*;
 import it.polimi.LM39.model.leaderobject.*;
 
@@ -226,6 +227,7 @@ public class GsonReader {
 		while(jsonReader.hasNext()){  
 			Leader leaderToInsert;
 			leaderToInsert = gson.fromJson(jsonReader,leader.getClass());
+			MainBoard.leaderName.add(leaderToInsert.cardName);
 			leaderHashMap.put(leaderToInsert.cardName,leaderToInsert);
 		}
 		jsonReader.close();
@@ -269,6 +271,10 @@ public class GsonReader {
 					mainBoard.harvestBonus = gson.fromJson(jsonReader,mainBoard.harvestBonus.getClass());
 				else if(("productionBonus").equals(configToExtract))
 					mainBoard.productionBonus = gson.fromJson(jsonReader,mainBoard.productionBonus.getClass());
+				else if(("gameStartTimeOut").equals(configToExtract))
+					Room.setRoomTimeout(gson.fromJson(jsonReader,long.class));
+				else if(("playerMoveTimeOut").equals(configToExtract))
+					Room.setPlayerMoveTimeout(gson.fromJson(jsonReader,long.class));
 		}
 		mainBoard.setTowersBonuses(bonuses);
 		jsonReader.close();	

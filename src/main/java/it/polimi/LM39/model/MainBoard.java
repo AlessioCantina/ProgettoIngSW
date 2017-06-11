@@ -51,6 +51,8 @@ public class MainBoard implements Serializable{
     public static HashMap<Integer,Character> characterMap = new HashMap<Integer,Character>();
 
     public static HashMap<String,Leader> leaderMap = new HashMap<String,Leader>();
+    
+    public static ArrayList<String> leaderName = new ArrayList<String>();
 
     public static HashMap<Integer,Excommunication> excommunicationMap = new HashMap<Integer,Excommunication>();
 
