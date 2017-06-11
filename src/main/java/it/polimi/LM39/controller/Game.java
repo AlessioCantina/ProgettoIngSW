@@ -336,7 +336,7 @@ public class Game implements Runnable{
 	    		
 	    		}
 	    		
-	    		gameHandler.setPlayerActionOrder();
+	    		gameHandler.setPlayerActionOrder(playerNumber);
 	    		gameHandler.setRound(round+1);
 	    		
 	    		//clean all the action spaces for a new round
