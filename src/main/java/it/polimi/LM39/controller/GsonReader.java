@@ -12,10 +12,11 @@ import it.polimi.LM39.model.leaderobject.*;
 import it.polimi.LM39.model.*;
 import it.polimi.LM39.model.Character;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Method;
-
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.google.gson.Gson;
@@ -267,10 +268,6 @@ public class GsonReader {
 					mainBoard.marketBonuses = gson.fromJson(jsonReader,mainBoard.marketBonuses.getClass());
 				else if(("councilPalaceBonus").equals(configToExtract))
 					mainBoard.councilPalaceBonus = gson.fromJson(jsonReader,mainBoard.councilPalaceBonus.getClass());
-				else if(("harvestBonus").equals(configToExtract))
-					mainBoard.harvestBonusTile = gson.fromJson(jsonReader,mainBoard.harvestBonusTile.getClass());
-				else if(("productionBonus").equals(configToExtract))
-					mainBoard.productionBonusTile = gson.fromJson(jsonReader,mainBoard.productionBonusTile.getClass());
 				else if(("gameStartTimeOut").equals(configToExtract))
 					Room.setRoomTimeout(gson.fromJson(jsonReader,long.class));
 				else if(("playerMoveTimeOut").equals(configToExtract))
@@ -278,6 +275,17 @@ public class GsonReader {
 		}
 		mainBoard.setTowersBonuses(bonuses);
 		jsonReader.close();	
+	}
+	public void personalTileLoader() throws IOException{
+		JsonReader jsonReader = new JsonReader(new FileReader("./src/main/java/it/polimi/LM39/jsonfiles/config/personalbonustiles.json"));
+		Gson gson = new GsonBuilder().create();
+		ArrayList<PersonalBonusTiles> personalBonusTiles = new ArrayList<PersonalBonusTiles>();
+		jsonReader.beginArray();
+		while(jsonReader.hasNext()){
+			personalBonusTiles.add(gson.fromJson(jsonReader,PersonalBonusTiles.class));
+		}
+		jsonReader.close();
+		
 	}
 	 @SuppressWarnings("unchecked")
 	public void fileToCard(MainBoard mainBoard) throws IOException, FailedToReadFileException, FailedToRegisterEffectException{
@@ -294,5 +302,6 @@ public class GsonReader {
 		 MainBoard.leaderMap = hashMapCreator(leader);
 		 MainBoard.excommunicationMap = hashMapCreator(excommunication);
 		 this.configLoader(mainBoard);
+		 this.personalTileLoader();
 	 }
 }
