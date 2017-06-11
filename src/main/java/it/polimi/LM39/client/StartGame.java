@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-
+/*
+ * game starter for the client, ask for IP,port,User Interface and connection and then instantiate the right client type
+ */
 
 
 public class StartGame {

@@ -30,7 +30,7 @@ public class Room implements Runnable{
 				System.out.println("Waiting for timeout");
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				Thread.currentThread().interrupt();
 			}
     	}
     	System.out.println("Game starting with " + this.getConnectedPlayers() +" players");

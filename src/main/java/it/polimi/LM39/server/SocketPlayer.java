@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -16,6 +18,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	/*
 	 * 
 	 */
+		private transient Logger logger = Logger.getLogger(SocketPlayer.class.getName());
 		private static final long serialVersionUID = 1975895874697189786L;
 		private transient Socket socket;
 	    private transient ServerInterface serverInterface;
@@ -51,14 +54,14 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    		mainBoard = mainboard;
 	    		requestedMainboard = true;
 	    }
-	    public void setMessage(String messages){
+	    public void setMessage(String controllerMessage){
 	    	synchronized(LOCK){
-	    		message = new String(messages);
+	    		message = controllerMessage;
 	    		requestedMessage = true;
 	    		try {
 	    			LOCK.wait();
 	    		} catch (InterruptedException e) {
-	    			e.printStackTrace();
+	    			Thread.currentThread().interrupt();
 	    		}
 	    	}
 	    }
@@ -73,10 +76,9 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 					LOCK.wait();
 	    			System.out.println("THREAD UNLOCKED" + Thread.currentThread());
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					Thread.currentThread().interrupt();
 				}
 	    	}
-	    	System.out.println(Thread.activeCount());
 	    	while(true){
 	    		if(requestedMainboard){
 	    			sendMainBoardToClient();
@@ -95,7 +97,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
         			objOutput.flush();
         			requestedMainboard = false;
 	    		}catch (Exception e) {
-	    			e.printStackTrace();
+	    			logger.log(Level.WARNING, "Can't write objects on stream", e);
 		        }	    			
 	    	}
 	    private void sendMessageToClient(){
@@ -108,7 +110,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    			objOutput.flush();
 	    			requestedMessage = false;
 	    		}catch (Exception e){
-	    			e.printStackTrace();
+	    			logger.log(Level.WARNING, "Can't write strings on stream", e);
 	    		}
 	    		LOCK.notifyAll();
 	    	}
@@ -122,7 +124,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
     				CLIENT_LOCK.notifyAll();
     			}	    		
 	    	}catch (Exception e) {
-	            e.printStackTrace();
+	    		logger.log(Level.WARNING, "Can't read input on stream", e);
 	        }
 	    	}
 	    }
@@ -131,16 +133,15 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	     */
 	    public String sendMessage(){
 	    	synchronized(CLIENT_LOCK){
-	    		while(clientAction.equals("")){
+	    		while(("").equals(clientAction)){
 	    			try {
 						CLIENT_LOCK.wait();
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						Thread.currentThread().interrupt();
 					}
 	    		}
 	    	    	
-	    	String stringToSet = new String(clientAction);
+	    	String stringToSet = clientAction;
 	    	clientAction = "";
 	    	return stringToSet;
 	    	}	

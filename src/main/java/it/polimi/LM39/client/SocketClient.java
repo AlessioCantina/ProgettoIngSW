@@ -11,8 +11,8 @@ import it.polimi.LM39.model.MainBoard;
 import it.polimi.LM39.server.NetworkPlayer;
 
 
-/**
- * 
+/*
+ * socket client: enables the socket in/out for the client
  */
 public class SocketClient extends AbstractClient implements Runnable{
 	private String ip;
@@ -25,10 +25,8 @@ public class SocketClient extends AbstractClient implements Runnable{
 
 
 
-    /**
-     * Default constructor
-     * @throws IOException 
-     * @throws UnknownHostException 
+    /*
+	 * set the socket properties and initialize the stream
      */
     public SocketClient(String ip, int port, String userName, UserInterface UI) throws UnknownHostException, IOException {
     	super(UI);
@@ -42,21 +40,26 @@ public class SocketClient extends AbstractClient implements Runnable{
     	socketIn = new ObjectInputStream(new BufferedInputStream(this.socket.getInputStream()));  
     }
 
+    /*
+     * infinite loop which listen to socket server, when there is no more data on the socket
+     * asks client for an input. 
+     * 
+     */
     @Override
     public void run(){
     	Logger logger = Logger.getLogger(SocketClient.class.getName());
-    	Object test;
+    	Object temp;
     	NetworkPlayer player = null;
     		while (true){	
     			try{
     				while(socketIn.read() != 0){
-    					test = socketIn.readObject();
-    					if(test instanceof NetworkPlayer)
-    						player = (NetworkPlayer) test;
-    					if(test instanceof MainBoard)
-    						UI.setCurrentMainBoard((MainBoard)test);
-    					if(test instanceof Boolean){
-                			UI.printMessage(new String(socketIn.readUTF()));
+    					temp = socketIn.readObject();
+    					if(temp instanceof NetworkPlayer)
+    						player = (NetworkPlayer) temp;
+    					if(temp instanceof MainBoard)
+    						UI.setCurrentMainBoard((MainBoard)temp);
+    					if(temp instanceof Boolean){
+                			UI.printMessage((socketIn.readUTF()));
                 			socket.setSoTimeout(500);
     					}
     				}
@@ -66,7 +69,6 @@ public class SocketClient extends AbstractClient implements Runnable{
     							socketOut.writeUTF(UI.askClient(player));
     							socketOut.flush();
     							socket.setSoTimeout(0);
-    							System.out.println("messaggio inviato");
     						
     					}catch (IOException writeException) {
     						logger.log(Level.SEVERE, "Can't write on socket", writeException);

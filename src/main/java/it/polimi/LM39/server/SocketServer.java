@@ -12,6 +12,7 @@ import java.util.logging.Logger;
  */
 public class SocketServer extends AbstractServer implements Runnable{
 
+	Logger logger = Logger.getLogger(SocketServer.class.getName());
 	private ServerSocket serverSocket;
     public SocketServer(ServerInterface serverInterface) {
     	super(serverInterface);
@@ -26,15 +27,14 @@ public class SocketServer extends AbstractServer implements Runnable{
     		serverSocket = new ServerSocket(socketPort);
     		new Thread(this).start();
     	} catch(Exception e){
-    		throw new ServerStartException(e);
+    		logger.log(Level.SEVERE, "Can't launch socket server", e);
     	}
     }
     /*
      * listen clients for connect requests
      */
     @Override
-	public void run(){
-    	Logger logger = Logger.getLogger(SocketServer.class.getName());
+	public void run(){  	
 		while(true){
 			try{
 				Socket socket = serverSocket.accept();

@@ -24,21 +24,15 @@ public abstract class UserInterface {
     /**
      * 
      */
-    //public abstract void printMainBoard(MainBoard mainBoard);
     
     public abstract void printMessage(String message);
     
-    public abstract String getMessage();
     
     public abstract void setCurrentMainBoard(MainBoard mainBoard);
     
     public abstract String askClient(NetworkPlayer player);
 
-    /**
-     * 
-     */
-    public void showGameWindow() {
-        // TODO implement here
-    }
+
+
 
 }

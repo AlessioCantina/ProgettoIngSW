@@ -29,7 +29,10 @@ public class CLI extends UserInterface {
 	MainBoard mainBoard;
 	BufferedReader userInput;
 	Logger logger;
-	
+	/*
+	 * set the mainboard for the client and print
+	 * 
+	 */
 	public void setCurrentMainBoard(MainBoard mainBoard){
 		this.mainBoard = mainBoard;
 		this.printMainBoard();
@@ -56,7 +59,6 @@ public class CLI extends UserInterface {
      * show action menu
      */
     public void showMenu(){
-    	System.out.println("It's your turn! Choose an action:");
     	Action.printAvailableActions();
     }
     /*
@@ -195,7 +197,7 @@ public class CLI extends UserInterface {
 			harvestArea = location.getFamilyMembersOnProductionOrHarvest("harvest");
 			productionArea = location.getFamilyMembersOnProductionOrHarvest("production");
 		}catch(InvalidActionTypeException e){
-			e.printStackTrace();
+			logger.log(Level.WARNING, "Invalid Action Type", e);
 		}
 		int harvestProductionSize = 4;
 		int i = 0;
@@ -298,7 +300,7 @@ public class CLI extends UserInterface {
 		return "Family:" + familyMember.color;
 	}
 	/*
-	 * support method: return no card if there is no card on the selected space otherwise it returns the specific bonus
+	 * support method: return no card if there is no card on the selected space otherwise it returns the specific card
 	 */
 	public String getCardOnTower(String cardOnTower){
 		if(cardOnTower == null){
@@ -311,22 +313,23 @@ public class CLI extends UserInterface {
 	 * print the message to the client
 	 * 
 	 */
-	public void receiveMainBoard(){
-		this.printMainBoard();
-	}
 	@Override
 	public void printMessage(String message) {
 		System.out.println(message + "%n");	
 	}
+	/*
+	 * enable client's stream and wait for a response
+	 * 
+	 */
 	public String askClient(NetworkPlayer player){
 		String response = "";
 		//Action.printAvailableActions();
-		String stringController = "";
+		String stringController;
 		try {
-			response = new String(userInput.readLine());
+			response = userInput.readLine();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.log(Level.SEVERE, "Can't read input", e);
 		}
 	//	response = response.replace(" ","");
 	//	response = response.toLowerCase();
@@ -337,6 +340,9 @@ public class CLI extends UserInterface {
 			selectCLIAction(response,player); 
 		return "";
 	}
+	/*
+	 * select the correct CLI method based on client's response
+	 */
 	public void selectCLIAction(String action, NetworkPlayer player){
 		switch(action){
 			case "printmainboard":
@@ -356,19 +362,11 @@ public class CLI extends UserInterface {
 				break;
 			case "printdicesvalues":
 				this.printDicesValues();
-				break;		
+				break;	
+			case "showmenu":
+				this.showMenu();
+				break;
 		}
 		this.askClient(player);
 	} 
-	public String getMessage(){
-		try{
-			if(userInput.ready())
-				return userInput.readLine();
-			else
-				return "String Not Available";
-		}catch(IOException e){
-			logger.log(Level.SEVERE, "IOEXCEPTION", e);
-		}
-		return "";
-	}
 }
