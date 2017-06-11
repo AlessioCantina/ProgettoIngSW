@@ -96,9 +96,8 @@ public class Game implements Runnable{
     private void playerAction(NetworkPlayer player){
     	player.setMessage("What action do you want to perform?");
     	String response = player.sendMessage();
-    	System.out.println("response " + response);
     	boolean flag = false;
-    	if(("getcard").equals(response)){
+    	if(("get card").equals(response)){
     		player.setMessage("What card do you want?");
     		response = player.sendMessage();
     		try {
@@ -137,7 +136,7 @@ public class Game implements Runnable{
     		//ad the played family member to the played family fembers list
     		player.setPlayedFamilyMember(familyMember.color);
     	}
-    	else if (("activateproduction").equals(response)){
+    	else if (("activate production").equals(response)){
     		FamilyMember familyMember = handleFamilyMember(player);
     		try {
 				gameHandler.playerBoardHandler.activateProduction(gameHandler.familyMemberValue(familyMember, player), player);
@@ -155,7 +154,7 @@ public class Game implements Runnable{
 				return;
 			}
     	}
-    	else if (("activateharvest").equals(response)){
+    	else if (("activate harvest").equals(response)){
     		FamilyMember familyMember = handleFamilyMember(player);
     		try {
 				gameHandler.playerBoardHandler.activateHarvest(gameHandler.familyMemberValue(familyMember, player), player);
@@ -173,7 +172,7 @@ public class Game implements Runnable{
 				return;
 			}
     	}
-    	else if (("discardleader").equals(response)){
+    	else if (("discard leader").equals(response)){
     		player.setMessage("Which leader card do you want to discard?");
     		response = player.sendMessage();
     		for(String card : player.personalBoard.getPossessedLeaders())
@@ -186,7 +185,7 @@ public class Game implements Runnable{
 						return;
 					}
     	}
-    	else if (("activateleader").equals(response)){
+    	else if (("activate leader").equals(response)){
     		player.setMessage("Which leader do you want to activate?");
     		response = player.sendMessage();
     		flag = false;
@@ -215,7 +214,7 @@ public class Game implements Runnable{
     			}
     	}
     	
-    	else if (("gotothemarket").equals(response)){
+    	else if (("go to the market").equals(response)){
     		FamilyMember familyMember = handleFamilyMember(player);
     		player.setMessage("In which position to you want to go? From 1 to 4");
     		flag = false;
@@ -251,7 +250,7 @@ public class Game implements Runnable{
     		}
     	}
     	
-    	else if (("gotothecouncilpalace").equals(response)){
+    	else if (("go to the council palace").equals(response)){
     		flag = false;
     		FamilyMember familyMember = handleFamilyMember(player);
     		try {
@@ -316,7 +315,6 @@ public class Game implements Runnable{
     //TODO players choose leader card
     //TODO players choose Personal Bonus Tile
     public void run() {
-    	System.out.println("GAME " + Thread.currentThread());
     	//initialize the game loading parameters and cards
     	try {
 			initialize();
@@ -324,7 +322,7 @@ public class Game implements Runnable{
 			e.printStackTrace();
 		}
     	//make the players choose a their four leader cards
-    	//chooseLeaderCard();
+    	chooseLeaderCard();
     	//the array list where the players actions order is stored
     	ArrayList <String> order;
     	for(int period=0;period<3;period++){
@@ -409,21 +407,38 @@ public class Game implements Runnable{
     private void chooseLeaderCard(){
     	//creating an array list of leaders names randomly ordinated
     	ArrayList<String> leaders = new ArrayList<String>();
-    	for(int i=0;i<20;i++)
-    		leaders.add(LeadersName.getLeaderRandomName());
+    	leaders = LeadersName.getLeaderArrayList();
     	Collections.shuffle(leaders);
     	int j=0;
     	String response = "";
-    	for(int i=players.size();i>0;i--)
+    	for(int i=4,n=0;i>0;i--,n++)
     		//send to the players the cards he should choose one every time 
     		for(int playerNumber=0,k=0;playerNumber<players.size();){
-    			players.get(playerNumber).setMessage("Choose a leader card between:");
+    			if(playerNumber+n<players.size()){
+    				System.out.println("playerNumber " + playerNumber + " " + n);
+    				players.get(playerNumber + n).setMessage("Choose a leader card between:");
+    				}
+    			else if (((playerNumber + n)-players.size())<players.size()){
+    				System.out.println("playerNumber " + playerNumber + " " + n + " " + (-players.size()));
+    				players.get((playerNumber + n)-players.size()).setMessage("Choose a leader card between:");}
+    			else
+    				players.get((playerNumber + n)-players.size()-players.size()).setMessage("Choose a leader card between:");
     			//send to the player the list of leader card in which he must choose one card
-    			for(j=i+k;j>0+i;j--){
-    				System.out.println(leaders.get(j));
-    				players.get(playerNumber).setMessage(leaders.get(j));
+    			System.out.println("da " + (i+k) + " a " + k);
+    			for(j=i+k;j>0+k;j--){
+    				if(playerNumber+n<players.size())
+    					players.get(playerNumber + n).setMessage(leaders.get(j));
+    				else if (((playerNumber + n)-players.size())<players.size())
+    					players.get((playerNumber + n)-players.size()).setMessage(leaders.get(j));
+    				else
+        				players.get((playerNumber + n)-players.size()-players.size()).setMessage(leaders.get(j));
     			}
-	    		response = players.get(playerNumber).sendMessage();
+    			if(playerNumber+n<players.size())
+    				response = players.get((playerNumber + n)).sendMessage();
+    			else if (((playerNumber + n)-players.size())<players.size())
+    				response = players.get((playerNumber + n)-players.size()).sendMessage();
+    			else
+    				response = players.get((playerNumber + n)-players.size()-players.size()).sendMessage();
 	    		// if the player chose a leader card between the ones he could choose
 	    		if(leaders.contains(response)){
 	    			//give to the player the card
