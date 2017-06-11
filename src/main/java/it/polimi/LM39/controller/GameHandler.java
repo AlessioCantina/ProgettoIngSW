@@ -833,11 +833,16 @@ public class GameHandler {
     			playerVictoryRank.setPlayerPoints(player.points.getVictory());
     }
     
-    public void setPlayerActionOrder (){
+    public void setPlayerActionOrder (Integer playersQty){
     	ArrayList<String> order = new ArrayList<String>();
+    	//firstly set the order places by the order of the family members at the Council Palace
     	for(int i =0; i< mainBoard.familyMembersLocation.getFamilyMembersAtTheCouncilPalace().size();i++)
     		if(!order.contains(mainBoard.familyMembersLocation.getFamilyMembersAtTheCouncilPalace().get(i).playerColor))
     			order.add(mainBoard.familyMembersLocation.getFamilyMembersAtTheCouncilPalace().get(i).playerColor);
+    	//then for players that haven't set any family member at the Council Palace follow the order of the previous round
+    	for(int i =0;i<playersQty;i++)
+    		if(!order.contains(this.playerActionOrder.get(i)))
+    			order.add(this.playerActionOrder.get(i));
     	this.playerActionOrder = order;
     }
     
