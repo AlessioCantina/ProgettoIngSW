@@ -419,7 +419,7 @@ public class Game implements Runnable{
     		for(int playerNumber=0,k=0;playerNumber<players.size();){
     			players.get(playerNumber).setMessage("Choose a leader card between:");
     			//send to the player the list of leader card in which he must choose one card
-    			for(j=i+k;j>0+k;j--){
+    			for(j=i+k;j>0+i;j--){
     				System.out.println(leaders.get(j));
     				players.get(playerNumber).setMessage(leaders.get(j));
     			}

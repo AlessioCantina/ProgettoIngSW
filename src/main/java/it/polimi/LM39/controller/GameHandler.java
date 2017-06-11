@@ -251,11 +251,14 @@ public class GameHandler {
         Integer[][] cardsOnTheTowers = mainBoard.getCardsOnTheTowers();
         FamilyMember[][] familyMembersOnTheTowers = player.personalMainBoard.familyMembersLocation.getFamilyMembersOnTheTowers(); // we use the player Personal MainBaord
     	
-        for(i=0, j=0;!cardsOnTheTowers[i][j].equals(cardNumber) && i<4;i++)
-        	for(j=0;!cardsOnTheTowers[i][j].equals(cardNumber) && j<4;j++){}
+        for(i=0, j=0;i<4 && !(cardsOnTheTowers[i][j] == cardNumber);i++)
+        	for(j=0; j<4 && !(cardsOnTheTowers[i][j] == cardNumber);j++){
+        		System.out.println(MainBoard.territoryMap.get(cardsOnTheTowers[i][j]).cardName);
+        	}
     		//search the coordinates of the card in the board
         int p=i-1;
         int k=j;
+        System.out.println("riga " + p + " colonna " + k);
         //to store i and j as the coordinates of the position interested, the if check if the player can get the card with a specific family member
         if(familyMembersOnTheTowers[p][k].color == null && (familyMemberValue(familyMember,player) >= (mainBoard.getTowersValue())[p][k])){
         	//if the place is free and the family member has an high enough value, ((i+1)*2)-1 is to convert the value i of the matrix to the value of the floor in dice

@@ -4,15 +4,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import it.polimi.LM39.model.MainBoard;
+
+
 
 public class StartGame {
-
 	public static void main (String[] args) throws NumberFormatException, IOException{
 		int uiChoice;
 		int connectionChoice;
 		String ip;
 		int port;
+		SocketClient socketClient;
 		String userName;
 		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("Welcome to Lorenzo il Magnifico! \nSelect the User Interface");
@@ -34,7 +35,8 @@ public class StartGame {
 		userName = input.readLine();
 		if(uiChoice == 1 && connectionChoice == 1){
 			CLI cli = new CLI();
-			new SocketClient(ip,port,userName,cli);
+			socketClient = new SocketClient(ip,port,userName,cli);	
+			new Thread(socketClient).start();		
 		}
 	}
 }

@@ -15,7 +15,7 @@ public class Room implements Runnable{
 	private Game game;
 	private ArrayList<NetworkPlayer> players;
 	protected long roomCreationTime;
-	protected long roomStartTimeout = 15000;
+	protected long roomStartTimeout = 200;
     /*
      * initialize the room properties
      */

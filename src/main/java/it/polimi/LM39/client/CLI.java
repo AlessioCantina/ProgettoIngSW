@@ -328,8 +328,8 @@ public class CLI extends UserInterface {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		response = response.replace(" ","");
-		response = response.toLowerCase();
+	//	response = response.replace(" ","");
+	//	response = response.toLowerCase();
 		stringController = Action.isIn(response);
 		if(stringController != Action.CLI.toString())
 			return response;
