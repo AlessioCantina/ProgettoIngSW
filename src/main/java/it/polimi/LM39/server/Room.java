@@ -15,7 +15,7 @@ public class Room implements Runnable{
 	private Game game;
 	private ArrayList<NetworkPlayer> players;
 	protected long roomCreationTime;
-	protected long roomStartTimeout = 200;
+	protected long roomStartTimeout = 40000;
     /*
      * initialize the room properties
      */
@@ -25,7 +25,7 @@ public class Room implements Runnable{
     }
     
     public void run(){
-    	while(System.currentTimeMillis() - roomCreationTime <= roomStartTimeout){
+    	while(System.currentTimeMillis() - roomCreationTime <= roomStartTimeout && this.getConnectedPlayers() < 4){
 			try {
 				System.out.println("Waiting for timeout");
 				Thread.sleep(500);
