@@ -56,8 +56,9 @@ public class SocketClient extends AbstractClient implements Runnable{
     					temp = socketIn.readObject();
     					if(temp instanceof NetworkPlayer)
     						player = (NetworkPlayer) temp;
-    					if(temp instanceof MainBoard)
+    					if(temp instanceof MainBoard){
     						UI.setCurrentMainBoard((MainBoard)temp);
+    					}	
     					if(temp instanceof Boolean){
                 			UI.printMessage((socketIn.readUTF()));
                 			socket.setSoTimeout(500);
@@ -69,7 +70,7 @@ public class SocketClient extends AbstractClient implements Runnable{
     							socketOut.writeUTF(UI.askClient(player));
     							socketOut.flush();
     							socket.setSoTimeout(0);
-    						
+    							
     					}catch (IOException writeException) {
     						logger.log(Level.SEVERE, "Can't write on socket", writeException);
     					}

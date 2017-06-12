@@ -29,7 +29,7 @@
          "period":1,
          "activationCost":1,
          "instantBonuses":{  
-            "type":"NoEffect"
+            "type":"NoInstantEffect"
          },
          "activationReward":{  
             "type":"Resources",
@@ -82,7 +82,7 @@
          "period":1,
          "activationCost":5,
          "instantBonuses":{  
-            "type":"NoEffect"
+            "type":"NoInstantEffect"
          },
          "activationReward":{  
             "type":"ResourcesAndPoints",
@@ -155,7 +155,7 @@
          "activationCost":3,
          "period":1,
          "instantBonuses":{  
-            "type":"NoEffect"
+            "type":"NoInstantEffect"
          },
          "activationReward":{  
             "type":"Resources",
@@ -319,7 +319,7 @@
          "activationCost":5,
          "period":2,
          "instantBonuses":{  
-            "type":"NoEffect"
+            "type":"NoInstantEffect"
          },
          "activationReward":{  
             "type":"ResourcesAndPoints",
@@ -454,6 +454,7 @@
       },
       {  
          "cardName":"Sanctuary",
+         "period":3,
          "activationCost":1,
          "instantReward":{  
             "type":"Points",
@@ -610,6 +611,7 @@
       {  
          "cardName":"Marble Pit",
          "activationCost":2,
+         "period":3,
          "instantReward":{  
             "type":"Points",
             "points":{  

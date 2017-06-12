@@ -491,9 +491,11 @@
          "finalVictory":3,
          "instant":{  
             "type":"Points",
-            "victory":0,
-            "faith":3,
-            "points":0
+            "points":{
+                "victory":0,
+                "faith":3,
+                "points":0
+            }
          }
       },
       {  

@@ -315,7 +315,7 @@ public class CLI extends UserInterface{
 	/*
 	 * print player's possessed cards, including leader and excommunications
 	 */
-	public void printPossesedCards(NetworkPlayer player){
+	public void printPossessedCards(NetworkPlayer player){
 		PersonalBoard board = player.personalBoard;
 		ArrayList<Integer> buildings = board.getPossessions("Building");
 		ArrayList<Integer> territories = board.getPossessions("Territory");
@@ -448,32 +448,35 @@ public class CLI extends UserInterface{
 	 */
 	public void selectCLIAction(String action, NetworkPlayer player){
 		switch(action){
-			case "printmainboard":
+			case "print mainboard":
 				this.printMainBoard();				
 				break;
-			case "printmarket":
+			case "print market":
 				this.printMarket();
 				break;
-			case "printcouncil":
+			case "print council":
 				this.printCouncilPalace();
 				break;
-			case "printharvestandproduction":
+			case "print harvest and production":
 				this.printHarvestAndProduction();
 				break;
-			case "printpossesedcards":
-				this.printPossesedCards(player);
+			case "print possesed cards":
+				this.printPossessedCards(player);
 				break;
-			case "printdicesvalues":
+			case "print dices values":
 				this.printDicesValues();
 				break;	
-			case "showmenu":
+			case "show menu":
 				this.showMenu();
 				break;
-			case "printrankings":
+			case "print rankings":
 				this.printRankings();
 				break;
-			case "getinfo":
+			case "get info":
 				this.getCardInfo();
+				break;
+			case "display resources":
+				this.displayResources(player);
 				break;
 		}
 		System.out.println("What's your next action?");

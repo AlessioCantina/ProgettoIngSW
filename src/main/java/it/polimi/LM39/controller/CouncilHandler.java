@@ -10,12 +10,12 @@ import it.polimi.LM39.server.NetworkPlayer;
 public class CouncilHandler {
 	Council council = new Council();
 	public void getCouncil(Integer qty,NetworkPlayer player,GameHandler gameHandler,ArrayList<Integer> favorsList) throws NotEnoughResourcesException, NotEnoughPointsException{
-		//ask to the player what Council Favor he wants
-		player.setMessage("What Council Favor do you want to get? From 1 to 5");
-		bonusInfo(player);
-		//hetting the player response
-		Integer choice = Integer.parseInt(player.sendMessage());
 		if(qty>=1){
+			//ask to the player what Council Favor he wants
+			player.setMessage("What Council Favor do you want to get? From 1 to 5");
+			bonusInfo(player);
+			//getting the player response
+			Integer choice = Integer.parseInt(player.sendMessage());
 			//check if he has already taken this Favor in case of he has multiple Favors to get
 			if(!checkAlreadyTaken(favorsList,choice)){
 				//if not add it to the list of gotten favors

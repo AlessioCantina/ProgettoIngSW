@@ -20,7 +20,7 @@
          "period":1,
          "costCoins":4,
          "instantBonuses":{  
-            "type":"NoEffect"
+            "type":"NoInstantEffect"
          },
          "permanentEffect":{  
             "type":"CardActionResourcesDiscount",
@@ -40,7 +40,7 @@
          "period":1,
          "costCoins":4,
          "instantBonuses":{  
-            "type":"NoEffect"
+            "type":"NoInstantEffect"
          },
          "permanentEffect":{  
             "type":"CardActionResourcesDiscount",
@@ -107,7 +107,7 @@
                "military":0
             },
             "permanentEffect":{  
-               "type":"NoEffect"
+               "type":"NoCharacterPermanentEffect"
             }
          }
       },
@@ -116,7 +116,7 @@
          "period":1,
          "costCoins":3,
          "instantEffect":{  
-            "type":"NoEffect"
+            "type":"NoInstantEffect"
          },
          "permanentEffect":{  
             "type":"HarvestProductionBoost",
@@ -129,7 +129,7 @@
          "period":1,
          "costCoins":3,
          "instantEffect":{  
-            "type":"NoEffect"
+            "type":"NoInstantEffect"
          },
          "permanentEffect":{  
             "type":"HarvestProductionBoost",
@@ -148,7 +148,7 @@
             "military":0
          },
          "permanentEffect":{  
-            "type":"NoEffect"
+            "type":"NoCharacterPermanentEffect"
          }
       },
       {  
@@ -165,7 +165,7 @@
             }
          },
          "permanentEffect":{  
-            "type":"NoEffect"
+            "type":"NoCharacterPermanentEffect"
          }
       },
       {  
@@ -183,7 +183,7 @@
             }
          },
          "permanentEffect":{  
-            "type":"NoEffect"
+            "type":"NoCharacterPermanentEffect"
          }
       },
       {  
@@ -203,7 +203,7 @@
             }
          },
          "permanentEffect":{  
-            "type":"NoEffect"
+            "type":"NoCharacterPermanentEffect"
          }
       },
       {  
@@ -223,7 +223,7 @@
             }
          },
          "permanentEffect":{  
-            "type":"NoEffect"
+            "type":"NoCharacterPermanentEffect"
          }
       },
       {  
@@ -243,7 +243,7 @@
             }
          },
          "permanentEffect":{  
-            "type":"NoEffect"
+            "type":"NoCharacterPermanentEffect"
          }
       },
       {  
@@ -251,7 +251,7 @@
          "period":2,
          "costCoins":4,
          "instantEffect":{  
-            "type":"NoEffect"
+            "type":"NoInstantEffect"
          },
          "permanentEffect":{  
             "type":"HarvestProductionBoost",
@@ -264,7 +264,7 @@
          "period":2,
          "costCoins":4,
          "instantEffect":{  
-            "type":"NoEffect"
+            "type":"NoInstantEffect"
          },
          "permanentEffect":{  
             "type":"HarvestProductionBoost",
@@ -282,7 +282,7 @@
             "victoryQty":2
          },
          "permanentEffect":{  
-            "type":"NoEffect"
+            "type":"NoCharacterPermanentEffect"
          }
       },
       {  
@@ -295,19 +295,20 @@
             "victoryQty":2
          },
          "permanentEffect":{  
-            "type":"NoEffect"
+            "type":"NoCharacterPermanentEffect"
          }
       },
       {  
          "cardName":"Herald",
          "period":3,
          "costCoins":6,
-         "instantEffect":[  
-            "Venture",
-            2
-         ],
+         "instantEffect":{  
+            "type":"VictoryForCard",
+            "cardType":"Venture",
+            "victoryQty":2
+         },
          "permanentEffect":{
-             "type":"NoEffect"
+             "type":"NoCharacterPermanentEffect"
          }
       },
       {  
@@ -319,7 +320,7 @@
             "cardValue":2
          },
          "permanentEffect":{  
-            "type":"NoEffect"
+            "type":"NoCharacterPermanentEffect"
          }
       },
       {  
@@ -339,7 +340,7 @@
             }
          },
          "permanentEffect":{  
-            "type":"NoEffect"
+            "type":"NoCharacterPermanentEffect"
          }
       },
       {  
@@ -357,7 +358,7 @@
             }
          },
          "permanentEffect":{  
-            "type":"NoEffect"
+            "type":"NoCharacterPermanentEffect"
          }
       },
       {  
@@ -370,7 +371,7 @@
             "militaryQty":2
          },
          "permanentEffect":{  
-            "type":"NoEffect"
+            "type":"NoCharacterPermanentEffect"
          }
       },
       {  
@@ -388,7 +389,7 @@
             }
          },
          "permanentEffect":{  
-            "type":"NoEffect"
+            "type":"NoCharacterPermanentEffect"
          }
       }
 ]

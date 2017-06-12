@@ -83,9 +83,9 @@ public class Game implements Runnable{
 				e.printStackTrace();
 			}
 			
-			updatePersonalMainBoards();
+			
     }
-    	
+    	updatePersonalMainBoards();
     
     }
     private void setPlayersColor(ArrayList<NetworkPlayer> players){
@@ -331,14 +331,18 @@ public class Game implements Runnable{
     	for(int period=0;period<3;period++){
     		for(int round=0;round<2;round++){
     			order = gameHandler.getPlayersActionOrder();
-    			for(int move=0;move<playerNumber;move++){
-	    			NetworkPlayer player = playerColorToNetworkPlayer(order.get(move));
-	    			player.setMessage(gameHandler.mainBoard);
-	    			playerAction(player);
-	    			gameHandler.updateRankings(player);
-	    		
-	    		}
-	    		
+    			for(int action=0;action<4;action++){
+    				for(int move=0;move<playerNumber;move++){
+    					NetworkPlayer player = playerColorToNetworkPlayer(order.get(move));
+    					System.out.println("game invia mainboard");
+    					player.setMessage(gameHandler.mainBoard);
+    					playerAction(player);
+    					gameHandler.updateRankings(player);
+    					player.setMessage(gameHandler.mainBoard);
+    				}
+    	    		//update the personalMainBoards of all players
+    	    		updatePersonalMainBoards();
+    			}
 	    		gameHandler.setPlayerActionOrder(playerNumber);
 	    		gameHandler.setRound(round+1);
 	    		
@@ -356,8 +360,6 @@ public class Game implements Runnable{
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-	    		//update the personalMainBoards of all players
-	    		updatePersonalMainBoards();
 	    		gameHandler.rollTheDices();
     		}
     		//support the church at the end of a period

@@ -41,12 +41,11 @@ public class CardHandler {
  public void doInstantEffect(InstantEffect instantEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
 	 Class[] cArg = new Class[2];
 	 cArg[0] = instantEffect.getClass();
-	 cArg[1] = player.getClass();
-	 System.out.println(instantEffect.getClass());
+	 cArg[1] = NetworkPlayer.class;
 	 Method lMethod = (this.getClass().getMethod("doInstantEffect",cArg));
-	 lMethod.invoke(instantEffect,player);
+	 lMethod.invoke(this,instantEffect,player);
  }
- 	
+
  	public void doInstantEffect(NoInstantEffect instantEffect,NetworkPlayer player) throws NotEnoughResourcesException{
  		//do nothing
  	}

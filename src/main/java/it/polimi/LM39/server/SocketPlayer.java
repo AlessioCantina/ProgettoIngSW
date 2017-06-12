@@ -27,7 +27,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    private static String message;				//information which will be send to the client
 	    private static MainBoard mainBoard;
 	    private String clientAction;
-	    private transient static boolean requestedMainboard;
+	    private transient boolean requestedMainboard;
 	    private transient boolean requestedMessage;
 	    protected static transient Object LOCK = new Object();
 	    private static transient Object CLIENT_LOCK = new Object();
@@ -39,7 +39,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    	  message = "";
 	    	  this.clientAction = "";
 	          this.socket = socket;
-	          requestedMainboard = false;
+	          this.requestedMainboard = false;
 	          this.requestedMessage = false;
 	          this.serverInterface = serverInterface;
 	          this.objOutput = new ObjectOutputStream(this.socket.getOutputStream()); 
@@ -95,6 +95,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
         			objOutput.writeObject(this);
         			objOutput.writeObject(mainBoard);
         			objOutput.flush();
+        			objOutput.reset();
         			requestedMainboard = false;
 	    		}catch (Exception e) {
 	    			logger.log(Level.WARNING, "Can't write objects on stream", e);

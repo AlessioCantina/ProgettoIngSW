@@ -53,8 +53,7 @@ public class GsonReader {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void subEffectRegister(RuntimeTypeAdapterFactory adapter, Territory cardType)
-	{
-		adapter.registerSubtype(InstantEffect.class);								
+	{							
 		adapter.registerSubtype(Resources.class);
 		adapter.registerSubtype(Points.class);
 		adapter.registerSubtype(NoInstantEffect.class);
@@ -65,8 +64,7 @@ public class GsonReader {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void subEffectRegister(RuntimeTypeAdapterFactory adapter, Building cardType)
-	{
-		adapter.registerSubtype(InstantEffect.class);							
+	{							
 		adapter.registerSubtype(PointsTransformation.class);
 		adapter.registerSubtype(CoinForCard.class);			
 		adapter.registerSubtype(VictoryForCard.class);
@@ -83,9 +81,7 @@ public class GsonReader {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void subEffectRegister(RuntimeTypeAdapterFactory adapter, Character cardType)
-	{
-		adapter.registerSubtype(InstantEffect.class);								
-		adapter.registerSubtype(CharacterPermanentEffect.class);
+	{								
 		adapter.registerSubtype(NoBoardBonuses.class);
 		adapter.registerSubtype(CardActionResourcesDiscount.class);
 		adapter.registerSubtype(Points.class);
@@ -105,8 +101,7 @@ public class GsonReader {
 	 * subregister for venture cards
 	 */
 	public void subEffectRegister(RuntimeTypeAdapterFactory adapter, Venture cardType)
-	{
-		adapter.registerSubtype(InstantEffect.class);								
+	{							
 		adapter.registerSubtype(Resources.class);
 		adapter.registerSubtype(Points.class);
 		adapter.registerSubtype(ResourcesAndPoints.class);
@@ -120,7 +115,6 @@ public class GsonReader {
 	 */
 	public void subEffectRegister(RuntimeTypeAdapterFactory adapter, Leader leader)
 	{
-		adapter.registerSubtype(InstantEffect.class);
 		adapter.registerSubtype(HarvestProductionAction.class);
 		adapter.registerSubtype(PlaceFamilyMemberOnOccupiedSpace.class);
 		adapter.registerSubtype(AlreadyOccupiedTowerDiscount.class);
@@ -142,7 +136,6 @@ public class GsonReader {
 	 */
 	public void subEffectRegister(RuntimeTypeAdapterFactory adapter)
 	{
-		adapter.registerSubtype(LeaderRequestedObjects.class);
 		adapter.registerSubtype(RequestedCard.class);
 		adapter.registerSubtype(RequestedCardPointsResources.class);
 		adapter.registerSubtype(RequestedPoints.class);
@@ -156,7 +149,6 @@ public class GsonReader {
 	 */
 	public void subEffectRegister(RuntimeTypeAdapterFactory adapter, Excommunication excommunication)
 	{
-		adapter.registerSubtype(ExcommunicationPermanentEffect.class);
 		adapter.registerSubtype(CardActionMalus.class);
 		adapter.registerSubtype(DiceMalus.class);
 		adapter.registerSubtype(HarvestProductionMalus.class);
@@ -188,12 +180,12 @@ public class GsonReader {
 	public HashMap<Integer,?> hashMapCreator(Card cardType) throws IOException, FailedToReadFileException, FailedToRegisterEffectException {
 		//jsonreader which scans the array of cards contained in the json files. Filereader get the path using a getClass on cardType
 		 JsonReader jsonReader = new JsonReader(new FileReader("./src/main/java/it/polimi/LM39/jsonfiles/cards/" + cardType.getClass().getSimpleName() + ".json"));
-		 HashMap<Integer,?> cardHashMap;
+		 HashMap<Integer,?> cardHashMap = null;
 		 //runtimetypeadapterfactory allow us to have multiple subtypes of a class (in our case, Effect)
 		 //it will pick the correct structure from the json field "type"
-		 RuntimeTypeAdapterFactory<Effect> adapter = RuntimeTypeAdapterFactory.of(Effect.class,"type");
-		 subEffectRegister(adapter,cardType);
-		 //attaching adapter to gson
+		 RuntimeTypeAdapterFactory<InstantEffect> adapter = RuntimeTypeAdapterFactory.of(InstantEffect.class,"type");
+		 subEffectRegister(adapter,cardType);		//character permanent
+		 //attaching adapter to gson			
 		 Gson gson = new GsonBuilder().registerTypeAdapterFactory(adapter).create();
 		 {																					
 				try{	//reflection to get the hashmap correct type 
@@ -207,9 +199,11 @@ public class GsonReader {
 						cardHashMap.put(i,gson.fromJson(jsonReader,cardType.getClass()));
 						i++;}
 					jsonReader.close();
-					return cardHashMap;
+					
 				}catch(Exception e){
-					throw new FailedToReadFileException(e);}					
+					e.printStackTrace();
+				}	
+				return cardHashMap;
 		 }
 
 	 }
@@ -298,8 +292,8 @@ public class GsonReader {
 		 MainBoard.buildingMap = (HashMap<Integer,Building>)hashMapCreator(building);
 		 MainBoard.characterMap = (HashMap<Integer,Character>)hashMapCreator(character);
 		 MainBoard.ventureMap = (HashMap<Integer,Venture>)hashMapCreator(venture);	 
-		 MainBoard.leaderMap = hashMapCreator(leader);
-		 MainBoard.excommunicationMap = hashMapCreator(excommunication);
+	//	 MainBoard.leaderMap = hashMapCreator(leader);
+	//	 MainBoard.excommunicationMap = hashMapCreator(excommunication);
 		 this.configLoader(mainBoard);
 		 this.personalTileLoader();
 	 }
