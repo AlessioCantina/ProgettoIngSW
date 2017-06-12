@@ -113,21 +113,19 @@ public class CardHandler {
 			Integer qtyServants = gameHandler.addServants(player);
 			familyMember.setServants(qtyServants);
 			
-			//converting the card name to cardNumber
-			Integer cardNumber = gameHandler.cardNameToInteger(cardName);
-			boolean flag = gameHandler.addFamilyMemberToTheTower(familyMember,cardNumber,player);
+			boolean flag = gameHandler.addFamilyMemberToTheTower(familyMember,cardName,player);
 			
 			if (flag==false)
 				player.resources.setServants(qtyServants);
 			
 			else{
-				Integer[][] CardsOnTheTowers = player.personalMainBoard.getCardsOnTheTowers();
+				String[][] CardNamesOnTheTowers = player.personalMainBoard.getCardNamesOnTheTowers();
 				//looking for this card on the Towers
 				for(int i=0;i<4;i++)
 					for(int j=0;j<4;j++)
-						if(CardsOnTheTowers[i][j]==cardNumber){
+						if((CardNamesOnTheTowers[i][j]).compareToIgnoreCase(cardName) == 0){
 							familyMember=null;
-							player.personalMainBoard.familyMembersLocation.setFamilyMemberOnTheTower(familyMember, i, j);
+							gameHandler.mainBoard.familyMembersLocation.setFamilyMemberOnTheTower(familyMember, i, j);
 							//avoid useless cicles
 							return;
 						}

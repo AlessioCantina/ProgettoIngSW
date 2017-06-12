@@ -111,7 +111,7 @@ public class Game implements Runnable{
 			}
     		FamilyMember familyMember = handleFamilyMember(player);
     		try {
-				flag = gameHandler.addFamilyMemberToTheTower(familyMember, gameHandler.cardNameToInteger(response) , player);
+				flag = gameHandler.addFamilyMemberToTheTower(familyMember, response, player);
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException | IOException | NotEnoughResourcesException | NotEnoughPointsException
 					| CardNotFoundException e) {
@@ -281,7 +281,12 @@ public class Game implements Runnable{
 			familyMember.setServants(gameHandler.addServants(player));
 		} catch (IOException | NotEnoughResourcesException e) {
 			player.setMessage("You don't have enough servants!");
-			return handleFamilyMember(player);
+			player.setMessage("You can use another Family Member or do another action, respond change family member or do another action");
+			String response = player.sendMessage();
+			if(("do another action").equals(response))
+				playerAction(player);
+			else
+				return handleFamilyMember(player);
 		}
 		return familyMember;
     }
@@ -333,6 +338,8 @@ public class Game implements Runnable{
     			order = gameHandler.getPlayersActionOrder();
     			for(int action=0;action<4;action++){
     				for(int move=0;move<playerNumber;move++){
+    					//update the personalMainBoards of all players
+        	    		updatePersonalMainBoards();
     					NetworkPlayer player = playerColorToNetworkPlayer(order.get(move));
     					System.out.println("game invia mainboard");
     					player.setMessage(gameHandler.mainBoard);
@@ -340,8 +347,6 @@ public class Game implements Runnable{
     					gameHandler.updateRankings(player);
     					player.setMessage(gameHandler.mainBoard);
     				}
-    	    		//update the personalMainBoards of all players
-    	    		updatePersonalMainBoards();
     			}
 	    		gameHandler.setPlayerActionOrder(playerNumber);
 	    		gameHandler.setRound(round+1);

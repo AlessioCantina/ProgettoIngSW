@@ -68,10 +68,12 @@ public class GameHandler {
     
     
     public void rollTheDices() {
-    	Integer[] diceValues = new Integer[3];
+    	Integer[] diceValues = new Integer[4];
     	for(int i=0;i<3;i++){
     	Random rand = new Random();
     	diceValues[i] = (rand.nextInt(6) + 1);
+    	//uncoloredFamilyMember
+    	diceValues[3] = 0;
     	// There is a + 1 because rand.nextInt(6) generates number from 0 to 5 but we need from 1 to 6
     	}
     	mainBoard.setDiceValues(diceValues);    
@@ -100,9 +102,6 @@ public class GameHandler {
     
     
     public boolean getTerritoryCard(Territory territory,NetworkPlayer player,Integer cardNumber) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-    	//instantResources
-    	CardHandler cardHandler = new CardHandler(this);
-    	cardHandler.doInstantEffect(territory.instantBonuses,player);
     	ArrayList<Integer> possessedTerritories = player.personalBoard.getPossessions("Territory");
     	int militaryPoints = player.points.getMilitary();
     	if (possessedTerritories.size()<6){
@@ -112,6 +111,7 @@ public class GameHandler {
     			possessedTerritories.add(cardNumber);
     			player.personalBoard.setPossessions(possessedTerritories,"Territory");
     			//get the instant effect
+    			CardHandler cardHandler = new CardHandler(this);
     			cardHandler.doInstantEffect(territory.instantBonuses, player);
     			return true;
     			}
@@ -244,18 +244,28 @@ public class GameHandler {
     	return value;
     }
     
-    public boolean addFamilyMemberToTheTower(FamilyMember familyMember , Integer cardNumber, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public boolean addFamilyMemberToTheTower(FamilyMember familyMember , String cardName, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, CardNotFoundException {
         int i,j = 0;
         boolean coloredFamilyMemberOnTheTower = false;
         boolean uncoloredFamilyMemberOnTheTower = false;
-        Integer[][] cardsOnTheTowers = mainBoard.getCardsOnTheTowers();
+        String[][] CardNamesOnTheTowers = mainBoard.getCardNamesOnTheTowers();
         FamilyMember[][] familyMembersOnTheTowers = player.personalMainBoard.familyMembersLocation.getFamilyMembersOnTheTowers(); // we use the player Personal MainBaord
       //search the coordinates of the card in the board
+        int p = -1;
+        int k = -1;
         for(i=0;i<4;i++)
-        	for(j=0; j<4 && !(cardsOnTheTowers[i][j] == cardNumber);j++){}
-        int p=i-1;
-        int k=j;
-        System.out.println((mainBoard.getTowersValue())[p][k]);
+        	for(j=0; j<4;j++){
+        		if((CardNamesOnTheTowers[i][j]).compareToIgnoreCase(cardName) == 0){
+        			 //store the values
+        			 p=i;
+        		     k=j;
+        		     //exit the cicles
+        		     j=4;
+        		     i=4;
+        		}
+        			
+        	}
+        System.out.println(p + " " + k);
         //to store i and j as the coordinates of the position interested, the if check if the player can get the card with a specific family member
         if(familyMembersOnTheTowers[p][k].color.equals("") && (familyMemberValue(familyMember,player) >= (mainBoard.getTowersValue())[p][k])){
         	//if the place is free and the family member has an high enough value, ((i+1)*2)-1 is to convert the value i of the matrix to the value of the floor in dice
@@ -271,8 +281,12 @@ public class GameHandler {
         		}
         	}
         	if ((uncoloredFamilyMemberOnTheTower==true && coloredFamilyMemberOnTheTower==false) || (coloredFamilyMemberOnTheTower==true && ("uncolored").equals(familyMember.color))){
+        	//TODO delete
+        		System.out.println("here1");
         	//if there is an uncolored family member on the tower or there is a colored one but the player uses an uncolored family member
-        		if(player.resources.getCoins()>=3 && getCard(cardNumber,player,k)){
+        		if(player.resources.getCoins()>=3 && getCard(cardNameToInteger(cardName),player,k)){
+        			//TODO delete
+            		System.out.println("here2");
 	        		try {
 						player.resources.setCoins(player.personalMainBoard.occupiedTowerCost);
 					} catch (NotEnoughResourcesException e) {
@@ -281,26 +295,37 @@ public class GameHandler {
 						return false;
 					}
 	        		setActionBonus((mainBoard.getTowersBonuses())[p][k],player);
-	        		(familyMembersOnTheTowers[p][k].playerColor)=(familyMember.playerColor);
-	        		(familyMembersOnTheTowers[p][k].color)=(familyMember.color);
+	        		(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].playerColor)=(familyMember.playerColor);
+	        		(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].color)=(familyMember.color);
+	        		removeCard(p,k);
 	        		return true;
 	        		}
         		else
         			player.setMessage("You don't have the necessary resources!");
 	        	}
         	if (uncoloredFamilyMemberOnTheTower==false && coloredFamilyMemberOnTheTower==false){
+        		//TODO delete
+        		System.out.println("here3");
         		//if there is none of my family members
         		for(i=0;i<4 && familyMembersOnTheTowers[i][k].playerColor.equals("");i++){}
-        		if(i==5 && getCard(cardNumber,player,k)){
+        		if(i==4 && getCard(cardNameToInteger(cardName),player,k)){
+        			//TODO delete
+            		System.out.println("here4");
         			//if the tower is free
-        			(familyMembersOnTheTowers[i][k].playerColor)=(familyMember.playerColor);
-        			(familyMembersOnTheTowers[i][k].color)=(familyMember.color);
+        			(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].playerColor)=(familyMember.playerColor);
+        			(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].color)=(familyMember.color);
+        			System.out.println(familyMembersOnTheTowers[p][k].playerColor + " " + familyMembersOnTheTowers[p][k].color);
         			setActionBonus((mainBoard.getTowersBonuses())[p][k],player);
+        			removeCard(p,k);
 	        		return true;
         		}
         		else{
+        			//TODO delete
+            		System.out.println("here5");
         			//if the tower is occupied
-        			if(player.resources.getCoins()>=3 && getCard(cardNumber,player,k)){
+        			if(player.resources.getCoins()>=3 && getCard(cardNameToInteger(cardName),player,k)){
+        				//TODO delete
+                		System.out.println("here6");
     	        		try {
 							player.resources.setCoins(player.personalMainBoard.occupiedTowerCost);
 						} catch (NotEnoughResourcesException e) {
@@ -309,8 +334,9 @@ public class GameHandler {
 							return false;
 						}
     	        		setActionBonus((mainBoard.getTowersBonuses())[p][k],player);
-    	        		(familyMembersOnTheTowers[p][k].playerColor)=(familyMember.playerColor);
-            			(familyMembersOnTheTowers[p][k].color)=(familyMember.color);
+    	        		(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].playerColor)=(familyMember.playerColor);
+            			(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].color)=(familyMember.color);
+            			removeCard(p,k);
     	        		return true;
         			}
         			else{
@@ -325,6 +351,12 @@ public class GameHandler {
         	return false;
         }
        return false; 
+    }
+    
+    private void removeCard(Integer p, Integer k){
+		Integer[][] cardNumbers = mainBoard.getCardsOnTheTowers();
+		cardNumbers[p][k] = -1;
+		mainBoard.setCardsOnTheTowers(cardNumbers);
     }
     
     public boolean addFamilyMemberToTheCouncilPalace(FamilyMember familyMember, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException{
@@ -630,7 +662,8 @@ public class GameHandler {
     		}
     	}
     	this.mainBoard.setCardsOnTheTowers(cardsOnTheTowers);
-    	this.mainBoard.setCardNamesOnTheTowers(cardNameOnTheMainBoard());
+    	//populate the matrix of the card names on the towers
+    	loadCardNamesOnTheMainBoard();
     	
     }
     
@@ -644,25 +677,28 @@ public class GameHandler {
     	mainBoard.excommunicationsOnTheBoard = excommunications;
     }
    
-    public String[][] cardNameOnTheMainBoard() throws IOException{
+    public void loadCardNamesOnTheMainBoard() throws IOException{
     	Integer[][] cardsOnTheTowers = mainBoard.getCardsOnTheTowers();
     	String[][] cardNamesOnTheTowers = new String[4][4]; 
     	for(int i=0;i<4;i++){
             for (int j=0; j<4; j++){
-            	switch(i){
-	        	case 0: cardNamesOnTheTowers[j][i] = MainBoard.territoryMap.get(cardsOnTheTowers[j][i]).cardName;
-	        		break;
-	        	case 1: cardNamesOnTheTowers[j][i] = MainBoard.characterMap.get(cardsOnTheTowers[j][i]).cardName;
-	        		break;
-	        	case 2: cardNamesOnTheTowers[j][i] = MainBoard.buildingMap.get(cardsOnTheTowers[j][i]).cardName;
-	    			break;
-	        	case 3: cardNamesOnTheTowers[j][i] = MainBoard.ventureMap.get(cardsOnTheTowers[j][i]).cardName;
-	        		break;
+            	if(cardsOnTheTowers[j][i] == -1)
+            		cardNamesOnTheTowers[j][i] = "";
+            	else{
+            		switch(i){
+		        	case 0: cardNamesOnTheTowers[j][i] = MainBoard.territoryMap.get(cardsOnTheTowers[j][i]).cardName;
+		        		break;
+		        	case 1: cardNamesOnTheTowers[j][i] = MainBoard.characterMap.get(cardsOnTheTowers[j][i]).cardName;
+		        		break;
+		        	case 2: cardNamesOnTheTowers[j][i] = MainBoard.buildingMap.get(cardsOnTheTowers[j][i]).cardName;
+		    			break;
+		        	case 3: cardNamesOnTheTowers[j][i] = MainBoard.ventureMap.get(cardsOnTheTowers[j][i]).cardName;
+		        		break;
+	            	}
             	}
-            	mainBoard.setCardNamesOnTheTowers(cardNamesOnTheTowers);
             }
         }
-    	return cardNamesOnTheTowers;
+    	mainBoard.setCardNamesOnTheTowers(cardNamesOnTheTowers);
     }
 
     public Integer cardNameToInteger (String card) throws CardNotFoundException{
@@ -893,9 +929,7 @@ public class GameHandler {
 	    	case(4): player.resources.setCoins(8);
 	    		break;
     	}
-
     }
-    
     
     
     
