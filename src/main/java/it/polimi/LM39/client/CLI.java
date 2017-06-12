@@ -95,18 +95,19 @@ public class CLI extends UserInterface{
 	 */
 	public void setCurrentMainBoard(MainBoard mainBoard){
 		this.mainBoard = mainBoard;
-		this.printMainBoard();
+		this.printmainboard();
 		this.firstMessage = true;
 	}
 	/*
 	 * display player's resources
 	 */
-	public void displayResources(NetworkPlayer player){
+	public void displayresources(NetworkPlayer player){
 		System.out.println("Available resources:\n");
 		System.out.println("Woods:" + player.resources.getWoods());
 		System.out.println("Stones:" + player.resources.getStones());
 		System.out.println("Coins:" + player.resources.getCoins());
 		System.out.println("Servants:" + player.resources.getServants());
+		return;
 	}
     /**
      * Default constructor: initialize the inputstream and the logger
@@ -119,14 +120,15 @@ public class CLI extends UserInterface{
     /*
      * show action menu
      */
-    public void showMenu(){
+    public void showmenu(){
     	Action.printAvailableActions();
+    	return;
     }
     /*
      * print the mainboard (only towers)
      * 
      */
-	public void printMainBoard() {
+	public void printmainboard() {
 		String[][] cardsOnTowers = mainBoard.getCardNamesOnTheTowers();
 		FamilyMembersLocation familyMemberPositions = mainBoard.familyMembersLocation;
 		FamilyMember[][] familyOnTowers = familyMemberPositions.getFamilyMembersOnTheTowers();
@@ -163,12 +165,12 @@ public class CLI extends UserInterface{
 		,this.getFamilyMemberColor(familyOnTowers[3][0]),this.getFamilyMemberColor(familyOnTowers[3][1])
 		,this.getFamilyMemberColor(familyOnTowers[3][2]),this.getFamilyMemberColor(familyOnTowers[3][3]));
 		System.out.println("╚══════════════════════╩═══════════════╩══════════════════════╩═══════════════╩══════════════════════╩═══════════════╩══════════════════════╩═══════════════╝");
-		
+		return;
 	}
 	/*
 	 * print the market zone, if a space is empty print the space bonuses
 	 */
-	public void printMarket(){
+	public void printmarket(){
 		int marketSize = 4;					//TODO choose a class to put marketSize value (possibly room)
 		FamilyMembersLocation location = mainBoard.familyMembersLocation;
 		FamilyMember[] market = location.getFamilyMembersOnTheMarket();
@@ -183,12 +185,13 @@ public class CLI extends UserInterface{
 			System.out.println("╚══════════════════════════════╝");
 			i++;
 		}
+		return;
 
 	}
 	/*
 	 * print faith track, victory track and military track
 	 */
-	public void printRankings(){
+	public void printrankings(){
 		Rankings rankings = mainBoard.getRankings();
 		ArrayList<PlayerRank> victoryRank = rankings.getVictoryRanking();
 		ArrayList<PlayerRank> militaryRank = rankings.getMilitaryRanking();
@@ -205,6 +208,7 @@ public class CLI extends UserInterface{
 		System.out.println("Faith Rankings:");
 		while(iterator.hasNext())
 			System.out.println(iterator.next().playerNickName + ": " + iterator.next().getPlayerPoints());
+		return;
 	}
 	/*
 	 * support method for printmarket and printmainboard , print the family member on the market or the
@@ -230,7 +234,7 @@ public class CLI extends UserInterface{
 	/*
 	 * print the council palace with relative bonuses
 	 */
-	public void printCouncilPalace(){
+	public void printcouncilpalace(){
 		FamilyMembersLocation location = mainBoard.familyMembersLocation;
 		ArrayList<FamilyMember> councilPalace = location.getFamilyMembersAtTheCouncilPalace();
 		int i = 0;
@@ -248,6 +252,7 @@ public class CLI extends UserInterface{
 			System.out.println("Nobody is at Council Palace");
 		System.out.println(this.getResources(palaceBonus.resources));
 		System.out.println(this.getPoints(palaceBonus.points));
+		return;
 	}
 	/*
 	 * support method which generate a string with the available resources
@@ -282,7 +287,7 @@ public class CLI extends UserInterface{
 	/*
 	 * print harvest and production area
 	 */
-	public void printHarvestAndProduction() {
+	public void printharvestandproduction() {
 		FamilyMembersLocation location = mainBoard.familyMembersLocation;
 		ArrayList<FamilyMember> harvestArea = new ArrayList<FamilyMember>();
 		ArrayList<FamilyMember> productionArea = new ArrayList<FamilyMember>();
@@ -309,13 +314,13 @@ public class CLI extends UserInterface{
 			i++;
 		}
 		System.out.println("╚══════════════════════╝");
-		
+		return;
 	}
 
 	/*
 	 * print player's possessed cards, including leader and excommunications
 	 */
-	public void printPossessedCards(NetworkPlayer player){
+	public void printpossessedcards(NetworkPlayer player){
 		PersonalBoard board = player.personalBoard;
 		ArrayList<Integer> buildings = board.getPossessions("Building");
 		ArrayList<Integer> territories = board.getPossessions("Territory");
@@ -334,6 +339,7 @@ public class CLI extends UserInterface{
 		printCardType(leaders);
 		System.out.println("Possesed excommunications:");
 		//TODO print excommunication in some way
+		return;
 	}
 	/*
 	 * support method for printpossessedcards
@@ -365,20 +371,22 @@ public class CLI extends UserInterface{
 	/*
 	 * print dices values
 	 */
-	public void printDicesValues(){
+	public void printdicesvalues(){
 		Integer[] diceValues = mainBoard.getDiceValues();
 		System.out.printf("Black dice:"+ diceValues[0] + "%n"
 		+"White dice:"+ diceValues[1] + "%n"
 		+"Orange dice:"+ diceValues[2]);
+		return;
 	}
 	/*
 	 * print excommunications on the board
 	 */
-	public void printExcommunication(){
+	public void printexcommunication(){
 		Integer[] excommunications = mainBoard.excommunicationsOnTheBoard;
 		System.out.printf("First period:"+ excommunications[0] + "%n"
 		+"Second period:"+ excommunications[1] + "%n"
 		+"Third period:"+ excommunications[2]);
+		return;
 	}
 	/*
 	 * support method: return free if there is no family member on the space, otherwise it returns the player's color
@@ -420,10 +428,9 @@ public class CLI extends UserInterface{
 	 */
 	public String askClient(NetworkPlayer player){
 		String response = "";
-		if(firstMessage)
-			Action.printAvailableActions();
+	/*	if(firstMessage)
+			Action.printAvailableActions();	*/
 		String stringController;
-		do{
 			try {
 				response = userInput.readLine();
 			}catch (IOException e) {
@@ -432,56 +439,33 @@ public class CLI extends UserInterface{
 			response = response.toLowerCase();
 			stringController = Action.isIn(response);
 			if(stringController == Action.CONTROLLER.toString() && firstMessage){
+				System.out.println("CONTROLLER");
 				firstMessage = false;
+				System.out.println(response);
 				return response;
 			}
-			else if(stringController == Action.CLI.toString())
-				selectCLIAction(response,player); 
-			else if(stringController != Action.CLI.toString() && !firstMessage){
+			if(stringController == Action.CLI.toString()){
+				Method lMethod = null;
+				try {
+					lMethod = (this.getClass().getMethod(response.replace(" ", ""), new Class[] {}));
+					lMethod.invoke(this);
+				} catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
+					try {
+						if(e1 instanceof NoSuchMethodException)
+							lMethod = (this.getClass().getMethod(response.replace(" ", ""), new Class[] {NetworkPlayer.class}));
+						lMethod.invoke(this,player);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				response = this.askClient(player);
+			}
+			if(stringController != Action.CLI.toString() && !firstMessage){
 				return response;
 			}
-		}while(("Action Not Available").equals(stringController));
-		return "";
+		return response;
 	}
-	/*
-	 * select the correct CLI method based on client's response
-	 */
-	public void selectCLIAction(String action, NetworkPlayer player){
-		switch(action){
-			case "print mainboard":
-				this.printMainBoard();				
-				break;
-			case "print market":
-				this.printMarket();
-				break;
-			case "print council":
-				this.printCouncilPalace();
-				break;
-			case "print harvest and production":
-				this.printHarvestAndProduction();
-				break;
-			case "print possesed cards":
-				this.printPossessedCards(player);
-				break;
-			case "print dices values":
-				this.printDicesValues();
-				break;	
-			case "show menu":
-				this.showMenu();
-				break;
-			case "print rankings":
-				this.printRankings();
-				break;
-			case "get info":
-				this.getCardInfo();
-				break;
-			case "display resources":
-				this.displayResources(player);
-				break;
-		}
-		System.out.println("What's your next action?");
-		this.askClient(player);
-	} 
+
 	public void getCardInfo(){
 		String response = "";
 		System.out.println("What card do you want to get info about?");
@@ -498,7 +482,7 @@ public class CLI extends UserInterface{
 		 cArg[0] = effect.getClass();
 		 cArg[1] = effect.getClass();
 		 Method lMethod = (this.getClass().getMethod("getInfo",cArg));
-		 lMethod.invoke(effect);
+		 lMethod.invoke(this,effect);
 	 }
 	 
 	/*

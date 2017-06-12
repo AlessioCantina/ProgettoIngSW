@@ -350,7 +350,7 @@ public class CardHandler {
 		cArg[0] = requestedObject.getClass();
 		cArg[1] = player.getClass();
 		Method lMethod = (this.getClass().getMethod("checkLeaderRequestedObject",cArg));
-		return (boolean)lMethod.invoke(requestedObject,player);
+		return (boolean)lMethod.invoke(this,requestedObject,player);
 	}
 	
 	public boolean checkLeaderRequestedObject(RequestedCard requestedObject,NetworkPlayer player){
@@ -437,7 +437,7 @@ public class CardHandler {
 	    cArg[0] = permanentEffect.getClass();
 	    cArg[1] = player.getClass();
 		Method lMethod = (this.getClass().getMethod("activateCharacter",cArg));
-		lMethod.invoke(permanentEffect,player);
+		lMethod.invoke(this,permanentEffect,player);
 		}
 	
 	public void activateCharacter(NoCharacterPermanentEffect permanentEffect, NetworkPlayer player){
@@ -511,7 +511,7 @@ public class CardHandler {
 	    cArg[0] = permanentEffect.getClass();
 	    cArg[1] = player.getClass();
 		Method lMethod = (this.getClass().getMethod("activateExcommunication",cArg));
-		lMethod.invoke(permanentEffect,player);
+		lMethod.invoke(this,permanentEffect,player);
 }
 	
 	public void activateExcommunication(CardActionMalus permanentEffect,NetworkPlayer player){
@@ -624,7 +624,7 @@ public class CardHandler {
 			cArg1[1] = cArg[1];
 			lMethod = (this.getClass().getMethod("doInstantEffect",cArg1));
 		}
-		lMethod.invoke(permanentEffect,player);
+		lMethod.invoke(this,permanentEffect,player);
 }
 	
 	public void activateLeader(AlreadyOccupiedTowerDiscount permanentEffect,NetworkPlayer player,String cardName){
@@ -740,7 +740,7 @@ public class CardHandler {
 		 cArg[0] = effect.getClass();
 		 cArg[1] = effect.getClass();
 		 Method lMethod = (this.getClass().getMethod("getInfo",cArg));
-		 lMethod.invoke(effect);
+		 lMethod.invoke(this,effect);
 	 }
 	 
 	/*
