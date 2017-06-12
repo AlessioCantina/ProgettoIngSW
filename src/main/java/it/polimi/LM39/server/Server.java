@@ -89,7 +89,7 @@ public class Server implements ServerInterface{
 			else
 			{
 				Room room = this.getRoom(Room.roomCounter - 1);
-				if(room.getConnectedPlayers() == ROOM_CAPACITY)
+				if(room.getConnectedPlayers() == ROOM_CAPACITY || room.getRoomState())
 				{
 					Room newRoom = new Room();
 					this.rooms.add(newRoom);

@@ -15,12 +15,17 @@ public class Room implements Runnable{
 	private long roomCreationTime;
 	private static long roomStartTimeout;
 	private static long playerMoveTimeout;
+	private Boolean roomState;	//TODO check if we need something more than a boolean
     /*
      * initialize the room properties
      */
     public Room(){
     	players = new ArrayList<NetworkPlayer>();
+    	roomState = false;
     	roomCounter++;
+    }
+    public Boolean getRoomState(){
+    	return this.roomState;
     }
     public static void setRoomTimeout(long roomStartTimeOut){
     	roomStartTimeout = roomStartTimeOut;
@@ -33,6 +38,8 @@ public class Room implements Runnable{
      * 
      */
     public void run(){
+    	System.out.println("systemcurrenttime " + System.currentTimeMillis());
+    	System.out.println("roomstarttimeout " + roomStartTimeout);
     	while(System.currentTimeMillis() - roomCreationTime <= roomStartTimeout){
 			try {
 				System.out.println("Waiting for timeout");
@@ -52,6 +59,7 @@ public class Room implements Runnable{
     	this.players.add(player);
 		if(this.getConnectedPlayers() == MIN_CLIENT){
 			roomCreationTime = System.currentTimeMillis();
+			System.out.println("roomcreationtime " + roomCreationTime);
 			new Thread(this).start();
 		}
 		else if(this.getConnectedPlayers() == MAX_CLIENT)
@@ -71,6 +79,7 @@ public class Room implements Runnable{
     	synchronized(SocketPlayer.LOCK){
     		SocketPlayer.LOCK.notifyAll();
     	}
+    	roomState = true;
     	new Thread(game).start();
     }
 

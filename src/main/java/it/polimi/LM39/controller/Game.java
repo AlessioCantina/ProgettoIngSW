@@ -469,7 +469,7 @@ public class Game implements Runnable{
     	MainBoard mainBoard = new MainBoard();
         GameHandler gameHandler = new GameHandler();
         gameHandler.mainBoard = mainBoard;
-        //calls the gsonReader to populate the hashmaps
+        //calls the  to populate the hashmaps
         gameHandler.initializeTheGame();
         gameHandler.loadCardsOnTheMainBoard();
         String[][] cards = gameHandler.cardNameOnTheMainBoard();

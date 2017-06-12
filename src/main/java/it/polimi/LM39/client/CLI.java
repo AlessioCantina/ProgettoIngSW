@@ -88,6 +88,7 @@ public class CLI extends UserInterface{
 	private MainBoard mainBoard;
 	private BufferedReader userInput;
 	private Logger logger;
+	private boolean firstMessage = true;
 	/*
 	 * set the mainboard for the client and print
 	 * 
@@ -95,6 +96,7 @@ public class CLI extends UserInterface{
 	public void setCurrentMainBoard(MainBoard mainBoard){
 		this.mainBoard = mainBoard;
 		this.printMainBoard();
+		this.firstMessage = true;
 	}
 	/*
 	 * display player's resources
@@ -212,7 +214,7 @@ public class CLI extends UserInterface{
 		ActionBonus bonus = new ActionBonus();
 		ActionBonus[][] bonusesMatrix;
 		String bonuses;
-		if(familyMember == null){
+		if(("").equals(familyMember.playerColor)){
 			if(("market").equals(tileType))
 				bonus = mainBoard.marketBonuses[index[0]];
 			else if(("tower").equals(tileType)){
@@ -220,10 +222,10 @@ public class CLI extends UserInterface{
 				bonus = bonusesMatrix[index[0]][index[1]];
 			}
 			bonuses = this.getResources(bonus.resources).concat((this.getPoints(bonus.points)));
-			 return bonuses;
+			return bonuses;
 		}
 		else
-			return "player" + familyMember.playerColor;
+			return "player:" + familyMember.playerColor;
 	}
 	/*
 	 * print the council palace with relative bonuses
@@ -255,7 +257,7 @@ public class CLI extends UserInterface{
 		 if(resources.coins != 0)
 			 resourcesString = resourcesString.concat("coins:" + resources.coins + " "); 
 		 if(resources.council != 0)
-			 resourcesString = resourcesString.concat("council:" + resources.council + " ");
+			 resourcesString = resourcesString.concat("favor:" + resources.council + " ");
 		 if(resources.servants != 0)
 			 resourcesString = resourcesString.concat("servants:" + resources.servants + " ");
 		 if(resources.woods != 0)
@@ -382,7 +384,7 @@ public class CLI extends UserInterface{
 	 * support method: return free if there is no family member on the space, otherwise it returns the player's color
 	 */
 	public String getPlayerColor(FamilyMember familyMember){
-		if(familyMember == null)
+		if(("").equals(familyMember.playerColor))
 			return "free";
 		return "Player:" + familyMember.playerColor;
 	}
@@ -390,7 +392,7 @@ public class CLI extends UserInterface{
 	 * support method: return free if there is no family member on the space, otherwise it returns the family member's color
 	 */
 	public String getFamilyMemberColor(FamilyMember familyMember){
-		if(familyMember == null)
+		if(("").equals(familyMember.color))
 			return "";
 		return "Family:" + familyMember.color;
 	}
@@ -398,7 +400,7 @@ public class CLI extends UserInterface{
 	 * support method: return no card if there is no card on the selected space otherwise it returns the specific card
 	 */
 	public String getCardOnTower(String cardOnTower){
-		if(cardOnTower == null){
+		if(("").equals(cardOnTower)){
 			return "No Card";
 		}
 		else
@@ -418,21 +420,27 @@ public class CLI extends UserInterface{
 	 */
 	public String askClient(NetworkPlayer player){
 		String response = "";
-		//Action.printAvailableActions();
+		if(firstMessage)
+			Action.printAvailableActions();
 		String stringController;
-
-		try {
-			response = userInput.readLine();
-		}catch (IOException e) {
-			logger.log(Level.WARNING,"Unable to read input",e);
-		}
-		//	response = response.replace(" ","");
-		//	response = response.toLowerCase();
-		stringController = Action.isIn(response);
-		if(stringController != Action.CLI.toString())
-			return response;
-		else if(stringController == Action.CLI.toString())
-			selectCLIAction(response,player); 
+		do{
+			try {
+				response = userInput.readLine();
+			}catch (IOException e) {
+				logger.log(Level.WARNING,"Unable to read input",e);
+			}
+			response = response.toLowerCase();
+			stringController = Action.isIn(response);
+			if(stringController == Action.CONTROLLER.toString() && firstMessage){
+				firstMessage = false;
+				return response;
+			}
+			else if(stringController == Action.CLI.toString())
+				selectCLIAction(response,player); 
+			else if(stringController != Action.CLI.toString() && !firstMessage){
+				return response;
+			}
+		}while(("Action Not Available").equals(stringController));
 		return "";
 	}
 	/*
@@ -468,6 +476,7 @@ public class CLI extends UserInterface{
 				this.getCardInfo();
 				break;
 		}
+		System.out.println("What's your next action?");
 		this.askClient(player);
 	} 
 	public void getCardInfo(){

@@ -279,10 +279,9 @@ public class GsonReader {
 	public void personalTileLoader() throws IOException{
 		JsonReader jsonReader = new JsonReader(new FileReader("./src/main/java/it/polimi/LM39/jsonfiles/config/personalbonustiles.json"));
 		Gson gson = new GsonBuilder().create();
-		ArrayList<PersonalBonusTiles> personalBonusTiles = new ArrayList<PersonalBonusTiles>();
 		jsonReader.beginArray();
 		while(jsonReader.hasNext()){
-			personalBonusTiles.add(gson.fromJson(jsonReader,PersonalBonusTiles.class));
+			MainBoard.personalBonusTiles.add(gson.fromJson(jsonReader,PersonalBonusTiles.class));
 		}
 		jsonReader.close();
 		
