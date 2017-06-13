@@ -108,8 +108,7 @@ public class GameHandler {
     		//if there is a place for the territory
     		if(possessedTerritories.size()<2 || militaryPoints >= player.personalMainBoard.militaryForTerritory[possessedTerritories.size() -2]) {
     			//add the territory to PersonalBoard
-    			possessedTerritories.add(cardNumber);
-    			player.personalBoard.setPossessions(possessedTerritories,"Territory");
+    			player.personalBoard.setPossessions(cardNumber,"Territory");
     			//get the instant effect
     			CardHandler cardHandler = new CardHandler(this);
     			cardHandler.doInstantEffect(territory.instantBonuses, player);
@@ -135,8 +134,7 @@ public class GameHandler {
 					return false;
 				}
 	    		CardHandler cardHandler = new CardHandler(this);
-	    		possessedCharacters.add(cardNumber);
-    			player.personalBoard.setPossessions(possessedCharacters,"Character");
+    			player.personalBoard.setPossessions(cardNumber,"Character");
     			cardHandler.doInstantEffect(character.instantBonuses, player);
     			cardHandler.activateCharacter(character.permanentEffect, player);
     			return true;
@@ -161,8 +159,7 @@ public class GameHandler {
 					logger.log(Level.INFO, "Not enough resources or points", e);
 					return false;
 				}
-	    		possessedBuildings.add(cardNumber);
-	    		player.personalBoard.setPossessions(possessedBuildings,"Building");
+	    		player.personalBoard.setPossessions(cardNumber,"Building");
 	    		return true;
 	    	
     	}
@@ -209,8 +206,7 @@ public class GameHandler {
     			return false;
     			}
 	    
-	    	possessedVentures.add(cardNumber);
-	    	player.personalBoard.setPossessions(possessedVentures,"Venture");
+	    	player.personalBoard.setPossessions(cardNumber,"Venture");
 	    	player.points.setFinalVictory(venture.finalVictory);
 	    	CardHandler cardHandler = new CardHandler(this);
 	    	cardHandler.doInstantEffect(venture.instant, player);
@@ -354,9 +350,9 @@ public class GameHandler {
     }
     
     private void removeCard(Integer p, Integer k){
-		Integer[][] cardNumbers = mainBoard.getCardsOnTheTowers();
-		cardNumbers[p][k] = -1;
-		mainBoard.setCardsOnTheTowers(cardNumbers);
+		String[][] cards = mainBoard.getCardNamesOnTheTowers();
+		cards[p][k] = "";
+		mainBoard.setCardNamesOnTheTowers(cards);
     }
     
     public boolean addFamilyMemberToTheCouncilPalace(FamilyMember familyMember, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException{
@@ -476,8 +472,8 @@ public class GameHandler {
         		player.setMessage("Invalid position! the position must be between 1 and 4");
 	        	return false;
 	        	}
-        	(familyMembersAtTheMarket[position].color) = (familyMember.color);
-        	(familyMembersAtTheMarket[position].playerColor) = (familyMember.playerColor);
+        	(mainBoard.familyMembersLocation.getFamilyMembersOnTheMarket()[position].color) = (familyMember.color);
+        	(mainBoard.familyMembersLocation.getFamilyMembersOnTheMarket()[position].playerColor) = (familyMember.playerColor);
         	}
         	else {
             	player.setMessage("Your Family Member must have a value of at least 1");
@@ -491,31 +487,31 @@ public class GameHandler {
         return true;
     }
     
-    public boolean addFamilyMemberToProductionOrHarvest(FamilyMember familyMember, FamilyMember[] familyMembersAtProductionOrHarvest, String actionType,NetworkPlayer player) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException {
+    public boolean addFamilyMemberToProductionOrHarvest(FamilyMember familyMember, ArrayList<FamilyMember> familyMembersAtProductionOrHarvest, String actionType,NetworkPlayer player) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException {
     	int i;
     	//doAction is false by default
     	boolean doAction;
     	//to know if the action Harvest or Production can be done
     	Integer penalty=3;
     	//penalty in case of first slot already occupied
-    		for(i=0;!(familyMembersAtProductionOrHarvest[i].playerColor).equals(familyMember.playerColor) && i<harvestAndProductionSize;i++){}
+    		for(i=0;!(familyMembersAtProductionOrHarvest.get(i).playerColor).equals(familyMember.playerColor) && i<harvestAndProductionSize;i++){}
     		if(i==harvestAndProductionSize){
     			//if there isn't any of my family Members
-    			for(i=0;!familyMembersAtProductionOrHarvest[i].equals("") && i<harvestAndProductionSize;i++){}
+    			for(i=0;!familyMembersAtProductionOrHarvest.get(i).equals("") && i<harvestAndProductionSize;i++){}
     			//move i to the first free slot
     			if(i<harvestAndProductionSize){
     				//if there is place in the Production Area
     				if(i==0){
     					//if there is no one
-    					familyMembersAtProductionOrHarvest[i].color=familyMember.color;
-    		    		familyMembersAtProductionOrHarvest[i].playerColor=familyMember.playerColor;
+    					familyMembersAtProductionOrHarvest.get(i).color=familyMember.color;
+    		    		familyMembersAtProductionOrHarvest.get(i).playerColor=familyMember.playerColor;
     		    		doAction=true;
     		    		penalty=0;
     		    	}
     				else{
     					//if there is someone but not any of my Family Members
-    					familyMembersAtProductionOrHarvest[i].color=familyMember.color;
-    		    		familyMembersAtProductionOrHarvest[i].playerColor=familyMember.playerColor;
+    					familyMembersAtProductionOrHarvest.get(i).color=familyMember.color;
+    		    		familyMembersAtProductionOrHarvest.get(i).playerColor=familyMember.playerColor;
         		    		doAction=true;
     					}
     				}
@@ -530,8 +526,8 @@ public class GameHandler {
     			//if there is already one of my family members
     			int j=0;
     			for(i=0;i<harvestAndProductionSize;i++){
-    				if((familyMembersAtProductionOrHarvest[i].playerColor).equals(familyMember.playerColor)){
-    					if(("uncolored").equals(familyMembersAtProductionOrHarvest[i].color))
+    				if((familyMembersAtProductionOrHarvest.get(i).playerColor).equals(familyMember.playerColor)){
+    					if(("uncolored").equals(familyMembersAtProductionOrHarvest.get(i).color))
     						j++;
     					else
     						j--;
@@ -542,13 +538,13 @@ public class GameHandler {
     				player.setMessage("You can't place another family member");
     				return false;
     			}	
-    			for(i=0;!familyMembersAtProductionOrHarvest[i].playerColor.equals("") && i<harvestAndProductionSize;i++){}
+    			for(i=0;!familyMembersAtProductionOrHarvest.get(i).playerColor.equals("") && i<harvestAndProductionSize;i++){}
     			//move i to the first free slot
     			if(j==-1){
     				//if there is a colored family member
     				if(familyMember.color=="uncolored"){
-    					familyMembersAtProductionOrHarvest[i].color=familyMember.color;
-    		    		familyMembersAtProductionOrHarvest[i].playerColor=familyMember.playerColor;
+    					familyMembersAtProductionOrHarvest.get(i).color=familyMember.color;
+    		    		familyMembersAtProductionOrHarvest.get(i).playerColor=familyMember.playerColor;
 		    			doAction=true;}
     				else{
     					player.setMessage("You can place just one uncolored family member");
@@ -557,8 +553,8 @@ public class GameHandler {
     			}
     			else {
     				//if there is an uncolored family member
-    				familyMembersAtProductionOrHarvest[i].color=familyMember.color;
-		    		familyMembersAtProductionOrHarvest[i].playerColor=familyMember.playerColor;
+    				familyMembersAtProductionOrHarvest.get(i).color=familyMember.color;
+		    		familyMembersAtProductionOrHarvest.get(i).playerColor=familyMember.playerColor;
 	    			doAction=true;
     			}	
     		}

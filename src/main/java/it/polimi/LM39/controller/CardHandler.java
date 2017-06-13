@@ -750,7 +750,7 @@ public class CardHandler {
 	}
 	
 	public void getInfo (CoinForCard effect,NetworkPlayer player){
-		player.setMessage("This Instant Effect gives " + effect.coinQty + "coins" + "for " + effect.cardType + " cards");
+		player.setMessage("This Instant Effect gives " + effect.coinQty + " coins for " + effect.cardType + " cards");
 	}
 	
 	public void getInfo (DoublePointsTransformation effect,NetworkPlayer player){

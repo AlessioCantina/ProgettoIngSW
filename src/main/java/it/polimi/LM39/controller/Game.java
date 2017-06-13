@@ -11,6 +11,7 @@ import it.polimi.LM39.exception.FailedToRegisterEffectException;
 import it.polimi.LM39.exception.InvalidActionTypeException;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
+import it.polimi.LM39.model.ActionBonus;
 import it.polimi.LM39.model.FamilyMember;
 import it.polimi.LM39.model.MainBoard;
 import it.polimi.LM39.model.PersonalBonusTile;
@@ -142,10 +143,10 @@ public class Game implements Runnable{
     	else if (("activate production").equals(response)){
     		FamilyMember familyMember = handleFamilyMember(player);
     		try {
-				gameHandler.personalBoardHandler.activateProduction(gameHandler.familyMemberValue(familyMember, player), player);
+    			gameHandler.addFamilyMemberToProductionOrHarvest(familyMember,gameHandler.mainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Production"),"Production",player);
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | IOException | NotEnoughResourcesException
-					| NotEnoughPointsException e) {
+					| InvocationTargetException | IOException | NotEnoughResourcesException | NotEnoughPointsException
+					| InvalidActionTypeException e) {
 				e.printStackTrace();
 				//give the servants back to the player if the action failed
 				try {
@@ -159,21 +160,22 @@ public class Game implements Runnable{
     	}
     	else if (("activate harvest").equals(response)){
     		FamilyMember familyMember = handleFamilyMember(player);
-    		try {
-				gameHandler.personalBoardHandler.activateHarvest(gameHandler.familyMemberValue(familyMember, player), player);
+			try {
+				gameHandler.addFamilyMemberToProductionOrHarvest(familyMember,gameHandler.mainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Harvest"),"Harvest",player);
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | NotEnoughResourcesException | NotEnoughPointsException
-					| IOException e) {
-				e.printStackTrace();
-				//give the servants back to the player if the action failed
-				try {
-					player.resources.setServants(familyMember.getServants());
-				} catch (NotEnoughResourcesException e1) {
-					e1.printStackTrace();
-				}
-				playerAction(player);
-				return;
+					| InvocationTargetException | IOException | NotEnoughResourcesException | NotEnoughPointsException
+					| InvalidActionTypeException e) {
+					e.printStackTrace();
+					//give the servants back to the player if the action failed
+					try {
+						player.resources.setServants(familyMember.getServants());
+					} catch (NotEnoughResourcesException e1) {
+						e1.printStackTrace();
+					}
+					playerAction(player);
+					return;
 			}
+			
     	}
     	else if (("discard leader").equals(response)){
     		player.setMessage("Which leader card do you want to discard?");
@@ -218,8 +220,15 @@ public class Game implements Runnable{
     	}
     	
     	else if (("go to the market").equals(response)){
+    		CardHandler cardHandler = new CardHandler(gameHandler);
+    		for(int i =0;i<4;i++){
+    			ActionBonus bonus = gameHandler.mainBoard.marketBonuses[i];
+    			player.setMessage("Market position " + (i+1) + " gives you:");
+    			cardHandler.printCardResources(bonus.resources, player);
+    			cardHandler.printCardPoints(bonus.points, player);
+    		}
     		FamilyMember familyMember = handleFamilyMember(player);
-    		player.setMessage("In which position to you want to go? From 1 to 4");
+    		player.setMessage("In which position do you want to go? From 1 to 4");
     		flag = false;
     		response = player.sendMessage();
     		if(!("4").equals(response) && !("3").equals(response) && !("2").equals(response) && !("1").equals(response)){
@@ -288,6 +297,14 @@ public class Game implements Runnable{
     			playerAction(player);
     			return;
 			}
+    	}
+    	else if (("skip action").equals(response)){
+    		//do nothing
+    	}
+    	else{
+    		player.setMessage("Invalid action");
+    		playerAction(player);
+			return;
     	}
     }
     
@@ -448,7 +465,7 @@ public class Game implements Runnable{
 			e.printStackTrace();
 		}
     	//make the players choose a their four leader cards
-    	//TODO uncomment the line blow in the final version
+    	//TODO uncomment the lines blow in the final version
     	//chooseLeaderCard();
     	chooseBonusTile();
     	//the array list where the players actions order is stored
@@ -479,6 +496,7 @@ public class Game implements Runnable{
 	    		//give the played family members back to the players
 	    		giveFamilyMembersBack();
 	    		try {
+	    			System.out.println("changing cards");
 					gameHandler.loadCardsOnTheMainBoard();
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -592,7 +610,7 @@ public class Game implements Runnable{
     		//send the list of choosable Bonus Tiles to every player
     		for(i=0; i < MainBoard.personalBonusTiles.size(); i++){
     			PersonalBonusTile tile = MainBoard.personalBonusTiles.get(i);
-    			player.setMessage("Tile " + i);
+    			player.setMessage("Tile " + (i+1));
     			player.setMessage("Harvest Bonuses:");
     			cardHandler.printCardPoints(tile.harvestBonus.points, player);
     			cardHandler.printCardResources(tile.harvestBonus.resources, player);
@@ -618,19 +636,19 @@ public class Game implements Runnable{
 
     
     /*
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FailedToReadFileException, FailedToRegisterEffectException, IOException {
         
-    	
-    	
     	//code to test the method loadCardsOnTheMainBoard();
     	
     	MainBoard mainBoard = new MainBoard();
         GameHandler gameHandler = new GameHandler();
         gameHandler.mainBoard = mainBoard;
         //calls the  to populate the hashmaps
+        gameHandler.setPeriod(1);
+        gameHandler.setRound(1);
         gameHandler.initializeTheGame();
         gameHandler.loadCardsOnTheMainBoard();
-        String[][] cards = gameHandler.cardNameOnTheMainBoard();
+        String[][] cards = gameHandler.mainBoard.getCardNamesOnTheTowers();
         for(int i=0;i<4;i++){
             for (int j=0; j<4; j++){
             	System.out.println(cards[j][i]);
@@ -639,7 +657,7 @@ public class Game implements Runnable{
         System.out.println();
         gameHandler.setRound(2);
         gameHandler.loadCardsOnTheMainBoard();
-        cards = gameHandler.cardNameOnTheMainBoard();
+        cards = gameHandler.mainBoard.getCardNamesOnTheTowers();
         for(int i=0;i<4;i++){
             for (int j=0; j<4; j++){
             	System.out.println(cards[j][i]);
@@ -647,5 +665,6 @@ public class Game implements Runnable{
             } 
     } 
     */
+    
 
 }

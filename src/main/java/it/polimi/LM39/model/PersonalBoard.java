@@ -36,15 +36,15 @@ public class PersonalBoard implements Serializable{
         return null;
     }
 
-    public void setPossessions(ArrayList<Integer> possession, String cardType) {
+    public void setPossessions(Integer possession, String cardType) {
     	switch(cardType){
-        	case "Territory": this.possessedTerritories=possession;
+        	case "Territory": this.possessedTerritories.add(possession);
         		break;
-        	case "Building": this.possessedBuildings=possession;
+        	case "Building": this.possessedBuildings.add(possession);
         		break;
-        	case "Venture": this.possessedVentures=possession;
+        	case "Venture": this.possessedVentures.add(possession);
         		break;
-        	case "Character": this.possessedCharacters=possession;
+        	case "Character": this.possessedCharacters.add(possession);
         		break;
         	default: System.out.println("Invalid cardType!");
         		break;
