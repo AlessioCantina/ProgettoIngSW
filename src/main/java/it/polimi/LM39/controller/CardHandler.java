@@ -346,7 +346,7 @@ public class CardHandler {
 	public boolean checkLeaderRequestedObject(LeaderRequestedObjects requestedObject,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{	
 		Class[] cArg = new Class[2];
 		cArg[0] = requestedObject.getClass();
-		cArg[1] = player.getClass();
+		cArg[1] = NetworkPlayer.class;
 		Method lMethod = (this.getClass().getMethod("checkLeaderRequestedObject",cArg));
 		return (boolean)lMethod.invoke(this,requestedObject,player);
 	}
@@ -433,7 +433,7 @@ public class CardHandler {
 	public void activateCharacter(CharacterPermanentEffect permanentEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{									
 		Class[] cArg = new Class[2];
 	    cArg[0] = permanentEffect.getClass();
-	    cArg[1] = player.getClass();
+	    cArg[1] = NetworkPlayer.class;
 		Method lMethod = (this.getClass().getMethod("activateCharacter",cArg));
 		lMethod.invoke(this,permanentEffect,player);
 		}
@@ -507,7 +507,7 @@ public class CardHandler {
 	public void activateExcommunication(ExcommunicationPermanentEffect permanentEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
 		Class[] cArg = new Class[2];
 	    cArg[0] = permanentEffect.getClass();
-	    cArg[1] = player.getClass();
+	    cArg[1] = NetworkPlayer.class;
 		Method lMethod = (this.getClass().getMethod("activateExcommunication",cArg));
 		lMethod.invoke(this,permanentEffect,player);
 }
@@ -611,7 +611,7 @@ public class CardHandler {
 	public void activateLeader(Effect permanentEffect,NetworkPlayer player,String cardName) throws SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException	{
 		Class[] cArg = new Class[3];
 	    cArg[0] = permanentEffect.getClass();
-	    cArg[1] = player.getClass();
+	    cArg[1] = NetworkPlayer.class;
 	    cArg[2] = cardName.getClass();
 		Method lMethod;
 		try {
@@ -736,9 +736,9 @@ public class CardHandler {
 	public void getInfo(InstantEffect effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
 		 Class[] cArg = new Class[2];
 		 cArg[0] = effect.getClass();
-		 cArg[1] = effect.getClass();
+		 cArg[1] = NetworkPlayer.class;
 		 Method lMethod = (this.getClass().getMethod("getInfo",cArg));
-		 lMethod.invoke(this,effect);
+		 lMethod.invoke(this,effect,player);
 	 }
 	 
 	/*
@@ -862,9 +862,9 @@ public class CardHandler {
 	public void getInfo(LeaderRequestedObjects effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
 		 Class[] cArg = new Class[2];
 		 cArg[0] = effect.getClass();
-		 cArg[1] = effect.getClass();
+		 cArg[1] = NetworkPlayer.class;
 		 Method lMethod = (this.getClass().getMethod("getInfo",cArg));
-		 lMethod.invoke(this,effect);
+		 lMethod.invoke(this,effect,player);
 	 }
 	/*
 	 * LeaderObject info
@@ -902,9 +902,9 @@ public class CardHandler {
 	public void getInfo(CharacterPermanentEffect effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
 		 Class[] cArg = new Class[2];
 		 cArg[0] = effect.getClass();
-		 cArg[1] = effect.getClass();
+		 cArg[1] = NetworkPlayer.class;
 		 Method lMethod = (this.getClass().getMethod("getInfo",cArg));
-		 lMethod.invoke(this,effect);
+		 lMethod.invoke(this,effect,player);
 	 }
 	
 	/*
@@ -938,9 +938,9 @@ public class CardHandler {
 	public void getInfo(ExcommunicationPermanentEffect effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
 		 Class[] cArg = new Class[2];
 		 cArg[0] = effect.getClass();
-		 cArg[1] = effect.getClass();
+		 cArg[1] = NetworkPlayer.class;
 		 Method lMethod = (this.getClass().getMethod("getInfo",cArg));
-		 lMethod.invoke(this,effect);
+		 lMethod.invoke(this,effect,player);
 	 }
 	/*
 	 * ExcommunicationPermanentEffect info
@@ -998,9 +998,9 @@ public class CardHandler {
 	public void getInfo(LeaderPermanentEffect effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
 		 Class[] cArg = new Class[2];
 		 cArg[0] = effect.getClass();
-		 cArg[1] = effect.getClass();
+		 cArg[1] = NetworkPlayer.class;
 		 Method lMethod = (this.getClass().getMethod("getInfo",cArg));
-		 lMethod.invoke(this,effect);
+		 lMethod.invoke(this,effect,player);
 	 }
 	
 	/*
@@ -1054,10 +1054,10 @@ public class CardHandler {
 	public void getInfo(Effect permanentEffect,NetworkPlayer player) throws SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException	{
 		Class[] cArg = new Class[3];
 	    cArg[0] = permanentEffect.getClass();
-	    cArg[1] = player.getClass();
+	    cArg[1] = NetworkPlayer.class;
 		Method lMethod;
 		lMethod = (this.getClass().getMethod("getInfo",cArg));
-		lMethod.invoke(this,permanentEffect);
+		lMethod.invoke(this,permanentEffect,player);
 	}
 	
 	

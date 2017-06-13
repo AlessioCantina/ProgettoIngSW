@@ -362,6 +362,7 @@ public class Game implements Runnable{
     		switch(cardType){
     		case("Territory"): cardHandler.getInfo(MainBoard.territoryMap.get(cardNumber).instantBonuses,player);
     						player.setMessage("Harvest Cost " + MainBoard.territoryMap.get(cardNumber).activationCost);
+    						player.setMessage("When activated this card gives you:");
     						cardHandler.getInfo(MainBoard.territoryMap.get(cardNumber).activationReward,player);
     						break;
     		case("Character"): player.setMessage("Coins cost " + MainBoard.characterMap.get(cardNumber).costCoins);
@@ -373,13 +374,19 @@ public class Game implements Runnable{
 			   				player.setMessage("This card gives you:");
 			   				cardHandler.printCardPoints(MainBoard.buildingMap.get(cardNumber).instantBonuses,player);
 			   				player.setMessage("Production Cost " + MainBoard.buildingMap.get(cardNumber).activationCost);
+			   				player.setMessage("When activated this card gives you:");
 			   				cardHandler.getInfo(MainBoard.buildingMap.get(cardNumber).activationEffect,player);
 			   				break;
-    		case("Venture"): player.setMessage("To get this card you need " + MainBoard.ventureMap.get(cardNumber).neededMilitary + " military points");
+    		case("Venture"): if(MainBoard.ventureMap.get(cardNumber).neededMilitary>0){
+    						player.setMessage("To get this card you need " + MainBoard.ventureMap.get(cardNumber).neededMilitary + " military points");
+    						}
+    						if(MainBoard.ventureMap.get(cardNumber).costMilitary > 0){
 			    			player.setMessage("This card costs " + MainBoard.ventureMap.get(cardNumber).costMilitary + " militarypoints");
+    						}
 			    			player.setMessage("This card cost in resources:");
 			    			cardHandler.printCardResources(MainBoard.ventureMap.get(cardNumber).costResources,player);
 			    			player.setMessage("This card gives you " + MainBoard.ventureMap.get(cardNumber).finalVictory + " victory points at the end of the game");
+			    			player.setMessage("This card gives you:");
 				   			cardHandler.getInfo(MainBoard.ventureMap.get(cardNumber).instant,player);
 			    			break;
     		}
