@@ -48,7 +48,7 @@ public class MainBoard implements Serializable{
 
     public static HashMap<String,Leader> leaderMap = new HashMap<String,Leader>();
     
-    public static ArrayList<PersonalBonusTiles> personalBonusTiles = new ArrayList<PersonalBonusTiles>();
+    public static ArrayList<PersonalBonusTile> personalBonusTiles = new ArrayList<PersonalBonusTile>();
     
     public static ArrayList<String> leaderName = new ArrayList<String>();
 

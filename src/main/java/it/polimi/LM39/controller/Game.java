@@ -13,6 +13,7 @@ import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.FamilyMember;
 import it.polimi.LM39.model.MainBoard;
+import it.polimi.LM39.model.PersonalBonusTile;
 import it.polimi.LM39.model.Player;
 import it.polimi.LM39.model.PlayerRank;
 import it.polimi.LM39.server.NetworkPlayer;
@@ -439,8 +440,6 @@ public class Game implements Runnable{
     
     
     //TODO handle SkipFirstTurn Excommunication
-    //TODO players choose leader card
-    //TODO players choose Personal Bonus Tile
     public void run() {
     	//initialize the game loading parameters and cards
     	try {
@@ -451,6 +450,7 @@ public class Game implements Runnable{
     	//make the players choose a their four leader cards
     	//TODO uncomment the line blow in the final version
     	//chooseLeaderCard();
+    	chooseBonusTile();
     	//the array list where the players actions order is stored
     	ArrayList <String> order;
     	for(int period=0;period<3;period++){
@@ -581,6 +581,39 @@ public class Game implements Runnable{
 	    		}
 	    		//if the player response is not a leader card in between the ones he could choose keep sending the same list of cards
 	   		}
+    }
+    
+    private void chooseBonusTile(){
+    	int i = 0;
+    	CardHandler cardHandler = new CardHandler(gameHandler);
+    	for(int playerNumber = 0; playerNumber < players.size();){
+    		NetworkPlayer player = players.get(playerNumber);
+    		player.setMessage("Choose a tile between: (You must answer with the tile number)");
+    		//send the list of choosable Bonus Tiles to every player
+    		for(i=0; i < MainBoard.personalBonusTiles.size(); i++){
+    			PersonalBonusTile tile = MainBoard.personalBonusTiles.get(i);
+    			player.setMessage("Tile " + i);
+    			player.setMessage("Harvest Bonuses:");
+    			cardHandler.printCardPoints(tile.harvestBonus.points, player);
+    			cardHandler.printCardResources(tile.harvestBonus.resources, player);
+    			player.setMessage("Production Bonuses:");
+    			cardHandler.printCardPoints(tile.productionBonus.points, player);
+    			cardHandler.printCardResources(tile.productionBonus.resources, player);
+    		}
+    		String response = player.sendMessage();
+    		//if the player responded with a valid Bonus Tile Number
+    		if (Integer.parseInt(response) < MainBoard.personalBonusTiles.size() && Integer.parseInt(response) >= 0){
+    			//give the tile to the player
+    			player.personalBoard.personalBonusTile = MainBoard.personalBonusTiles.get(Integer.parseInt(response));
+    			//remove the tile from the Main Board
+    			MainBoard.personalBonusTiles.remove(MainBoard.personalBonusTiles.get(Integer.parseInt(response)));
+    			//go to the next player
+    			playerNumber++;
+    		}
+    		//if the player responded with an invalid Bonus Tile number keep sending him the list until he will choose a valid one
+    		else
+    			player.setMessage("You must answer with a valid Tile number");
+    	}
     }
 
     

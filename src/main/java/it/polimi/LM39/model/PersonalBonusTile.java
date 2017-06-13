@@ -2,7 +2,7 @@ package it.polimi.LM39.model;
 
 import java.io.Serializable;
 
-public class PersonalBonusTiles implements Serializable{
+public class PersonalBonusTile implements Serializable{
 	/**
 	 * 
 	 */

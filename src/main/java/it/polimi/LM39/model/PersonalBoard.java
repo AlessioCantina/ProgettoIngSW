@@ -21,7 +21,7 @@ public class PersonalBoard implements Serializable{
 
     public ActionBonus[] characterBonuses = new ActionBonus[6]; //the bonuses are loaded from file
     
-    public PersonalBonusTiles personalBonusTile = new PersonalBonusTiles();
+    public PersonalBonusTile personalBonusTile = new PersonalBonusTile();
 
     public ArrayList<Integer> getPossessions(String cardType) {
         switch(cardType){

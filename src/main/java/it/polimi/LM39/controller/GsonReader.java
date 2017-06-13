@@ -277,7 +277,7 @@ public class GsonReader {
 		Gson gson = new GsonBuilder().create();
 		jsonReader.beginArray();
 		while(jsonReader.hasNext()){
-			MainBoard.personalBonusTiles.add(gson.fromJson(jsonReader,PersonalBonusTiles.class));
+			MainBoard.personalBonusTiles.add(gson.fromJson(jsonReader,PersonalBonusTile.class));
 		}
 		jsonReader.close();
 		
