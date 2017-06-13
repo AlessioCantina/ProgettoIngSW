@@ -54,7 +54,8 @@ public class Game implements Runnable{
 
     private void initialize() throws FailedToReadFileException, FailedToRegisterEffectException, IOException{
     	if(playerNumber > 2)
-    		gameHandler.harvestAndProductionSize = 4;
+    		//unreachable value for harvestAndProductionSize
+    		gameHandler.harvestAndProductionSize = 9;
     	else
     		gameHandler.harvestAndProductionSize = 1;
     	if(playerNumber > 3)

@@ -49,7 +49,7 @@ public class CouncilHandler {
 	
 	private boolean checkAlreadyTaken (ArrayList<Integer> list, Integer j){
 		for(Integer i: list)
-			if(list.get(i)==j)
+			if(i==j)
 				return true;
 		return false;
 	}

@@ -464,7 +464,7 @@ public class GameHandler {
 
     public boolean addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException {
     	FamilyMember[] familyMembersAtTheMarket = player.personalMainBoard.familyMembersLocation.getFamilyMembersOnTheMarket(); // we use the player Personal MainBaord
-        if(familyMembersAtTheMarket[position].color.equals("") && position<=marketSize){ 
+        if(familyMembersAtTheMarket[position-1].color.equals("") && (position-1)<=marketSize){ 
         	if(familyMemberValue(familyMember,player)>=1){
         	if(position==1 || position==2 || position==3 || position==4)
         		setActionBonus(player.personalMainBoard.marketBonuses[position-1],player);
@@ -472,8 +472,8 @@ public class GameHandler {
         		player.setMessage("Invalid position! the position must be between 1 and 4");
 	        	return false;
 	        	}
-        	(mainBoard.familyMembersLocation.getFamilyMembersOnTheMarket()[position].color) = (familyMember.color);
-        	(mainBoard.familyMembersLocation.getFamilyMembersOnTheMarket()[position].playerColor) = (familyMember.playerColor);
+        	(mainBoard.familyMembersLocation.getFamilyMembersOnTheMarket()[position-1].color) = (familyMember.color);
+        	(mainBoard.familyMembersLocation.getFamilyMembersOnTheMarket()[position-1].playerColor) = (familyMember.playerColor);
         	}
         	else {
             	player.setMessage("Your Family Member must have a value of at least 1");
@@ -487,37 +487,37 @@ public class GameHandler {
         return true;
     }
     
-    public boolean addFamilyMemberToProductionOrHarvest(FamilyMember familyMember, ArrayList<FamilyMember> familyMembersAtProductionOrHarvest, String actionType,NetworkPlayer player) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException {
+    public boolean addFamilyMemberToProductionOrHarvest(FamilyMember familyMember, ArrayList<FamilyMember> familyMembersAtProductionOrHarvest, String actionType,NetworkPlayer player) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException {
     	int i;
-    	//doAction is false by default
+    	//doAction is false by default, to know if the action Harvest or Production can be done
     	boolean doAction;
-    	//to know if the action Harvest or Production can be done
+    	//penalty in case of first slot already occupied 
     	Integer penalty=3;
-    	//penalty in case of first slot already occupied
     		for(i=0;i<harvestAndProductionSize && i<familyMembersAtProductionOrHarvest.size() && !(familyMembersAtProductionOrHarvest.get(i).playerColor).equals(familyMember.playerColor);i++){}
     		if(i==familyMembersAtProductionOrHarvest.size()){
     			//if there isn't any of my family Members
     			for(i=0;i<harvestAndProductionSize && i<familyMembersAtProductionOrHarvest.size() && !familyMembersAtProductionOrHarvest.get(i).equals("");i++){}
     			//move i to the first free slot
-    			if(i<familyMembersAtProductionOrHarvest.size()){
+    			if(i<harvestAndProductionSize){
     				//if there is place in the Production Area
     				if(i==0){
     					//if there is no one
-    					familyMembersAtProductionOrHarvest.get(i).color=familyMember.color;
-    		    		familyMembersAtProductionOrHarvest.get(i).playerColor=familyMember.playerColor;
-    		    		doAction=true;
     		    		penalty=0;
     		    	}
-    				else{
-    					//if there is someone but not any of my Family Members
-    					familyMembersAtProductionOrHarvest.get(i).color=familyMember.color;
-    		    		familyMembersAtProductionOrHarvest.get(i).playerColor=familyMember.playerColor;
-        		    		doAction=true;
-    					}
+    				//if there is someone but not any of my Family Members or there is no one
+    					FamilyMember member = new FamilyMember();
+    					member.color = familyMember.color;
+    					member.playerColor = familyMember.playerColor;
+    					mainBoard.familyMembersLocation.setFamilyMemberOnProductionOrHarvest(member, actionType);
+    		    		doAction=true;
+    					
     				}
     			else {
     				//this happens only in matches of 2 players
-    				player.setMessage("The production area is full!");
+    				if(("Harvest").compareToIgnoreCase(actionType)==0)
+    					player.setMessage("The Harvest area is full!");
+    				if(("Production").compareToIgnoreCase(actionType)==0)
+    					player.setMessage("The Production area is full!");
     				return false;
     			}
     		}
@@ -543,9 +543,11 @@ public class GameHandler {
     			if(j==-1){
     				//if there is a colored family member
     				if(familyMember.color=="uncolored"){
-    					familyMembersAtProductionOrHarvest.get(i).color=familyMember.color;
-    		    		familyMembersAtProductionOrHarvest.get(i).playerColor=familyMember.playerColor;
-		    			doAction=true;}
+    					FamilyMember member = new FamilyMember();
+    					member.color = familyMember.color;
+    					member.playerColor = familyMember.playerColor;
+    					mainBoard.familyMembersLocation.setFamilyMemberOnProductionOrHarvest(member, actionType);
+    		    		doAction=true;}
     				else{
     					player.setMessage("You can place just one uncolored family member");
     					return false;
@@ -553,9 +555,11 @@ public class GameHandler {
     			}
     			else {
     				//if there is an uncolored family member
-    				familyMembersAtProductionOrHarvest.get(i).color=familyMember.color;
-		    		familyMembersAtProductionOrHarvest.get(i).playerColor=familyMember.playerColor;
-	    			doAction=true;
+    				FamilyMember member = new FamilyMember();
+					member.color = familyMember.color;
+					member.playerColor = familyMember.playerColor;
+					mainBoard.familyMembersLocation.setFamilyMemberOnProductionOrHarvest(member, actionType);
+		    		doAction=true;
     			}	
     		}
     		if (doAction==true){
@@ -806,7 +810,7 @@ public class GameHandler {
     }
     
     public FamilyMember chooseFamilyMember (NetworkPlayer player){
-    	player.setMessage("Which Family Memeber do you want to use? Choose a color between orange,black,white,uncolored");
+    	player.setMessage("Which Family Member do you want to use? Choose a color between orange,black,white,uncolored");
 		String response = player.sendMessage();
 		if(!("orange").equals(response) && !("black").equals(response) && !("white").equals(response) && !("uncolored").equals(response)){
 			player.setMessage("You must choose a color between between orange,black,white,uncolored");
