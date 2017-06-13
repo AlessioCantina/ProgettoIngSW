@@ -23,8 +23,8 @@ public class PersonalBoardHandler {
     	ArrayList <Integer> territories = player.personalBoard.getPossessions("Territory");
         CardHandler cardHandler = new CardHandler(gameHandler);
         for (int i=0;i<territories.size();i++)
-        	if(actionValue >= MainBoard.territoryMap.get(territories.get(i)).activationCost)
-        		cardHandler.doInstantEffect((MainBoard.territoryMap.get(territories.get(i)).activationReward),player);
+        	if(actionValue >= gameHandler.mainBoard.territoryMap.get(territories.get(i)).activationCost)
+        		cardHandler.doInstantEffect((gameHandler.mainBoard.territoryMap.get(territories.get(i)).activationReward),player);
     }
 
     public void activateProduction(Integer actionValue, NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException , IOException, NotEnoughResourcesException, NotEnoughPointsException {
@@ -36,14 +36,14 @@ public class PersonalBoardHandler {
 		CardPoints costPoints = initializePoints();
 		CardPoints bonusPoints = initializePoints();
         for (int i=0;i<buildings.size();i++)
-        	 if(actionValue >= MainBoard.buildingMap.get(buildings.get(i)).activationCost){
-        		 player.setMessage("Do you want to activate " + MainBoard.buildingMap.get(buildings.get(i)).cardName + " ? yes or no");
-        		 cardHandler.getInfo(MainBoard.buildingMap.get(buildings.get(i)).activationEffect,player);
+        	 if(actionValue >= gameHandler.mainBoard.buildingMap.get(buildings.get(i)).activationCost){
+        		 player.setMessage("Do you want to activate " + gameHandler.mainBoard.buildingMap.get(buildings.get(i)).cardName + " ? yes or no");
+        		 cardHandler.getInfo(gameHandler.mainBoard.buildingMap.get(buildings.get(i)).activationEffect,player);
         		 String response = player.sendMessage();
         		 response = GameHandler.checkResponse(response, player);
   
         		 if(("yes").equals(response))
-        			 checkPlayer(player,(MainBoard.buildingMap.get(buildings.get(i)).activationEffect),costResources,costPoints,bonusResources,bonusPoints);
+        			 checkPlayer(player,(gameHandler.mainBoard.buildingMap.get(buildings.get(i)).activationEffect),costResources,costPoints,bonusResources,bonusPoints);
         		 
         	 }
         		 try{

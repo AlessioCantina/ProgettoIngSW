@@ -246,9 +246,9 @@ public class CLI extends UserInterface{
 			return bonuses;
 		}
 		else if(("tower").equals(tileType) || ("market").equals(tileType))
-			return "player: " + familyMember.playerColor;
+			return "player:" + familyMember.playerColor + " ";
 		else
-			return "color: " + familyMember.color;
+			return " color:" + familyMember.color;
 	}
 	/*
 	 * print the council palace with relative bonuses
@@ -371,13 +371,13 @@ public class CLI extends UserInterface{
 		int i = 0;
 		while (cardMap.size() < i){
 			if(("Territory").equals(cardType))
-				System.out.println(MainBoard.territoryMap.get(cardMap.get(i)));
+				System.out.println(mainBoard.territoryMap.get(cardMap.get(i)));
 			else if(("Building").equals(cardType))
-				System.out.println(MainBoard.buildingMap.get(cardMap.get(i)));
+				System.out.println(mainBoard.buildingMap.get(cardMap.get(i)));
 			else if(("Venture").equals(cardType))
-				System.out.println(MainBoard.ventureMap.get(cardMap.get(i)));
+				System.out.println(mainBoard.ventureMap.get(cardMap.get(i)));
 			else if(("Character").equals(cardType))
-				System.out.println(MainBoard.characterMap.get(cardMap.get(i)));
+				System.out.println(mainBoard.characterMap.get(cardMap.get(i)));
 			i++;
 			System.out.printf("%n");
 		}

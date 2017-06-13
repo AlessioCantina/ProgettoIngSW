@@ -61,8 +61,7 @@ public class Game implements Runnable{
     		gameHandler.marketSize = 4;
     	else
     		gameHandler.marketSize = 2;
-    	gameHandler.setPeriod(1);
-    	gameHandler.setRound(1);
+    	
     	gameHandler.initializeTheGame();
     	
     	//load the Rankings
@@ -143,7 +142,7 @@ public class Game implements Runnable{
     	else if (("activate production").equals(response)){
     		FamilyMember familyMember = handleFamilyMember(player);
     		try {
-    			gameHandler.addFamilyMemberToProductionOrHarvest(familyMember,gameHandler.mainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Production"),"Production",player);
+    			flag = gameHandler.addFamilyMemberToProductionOrHarvest(familyMember,gameHandler.mainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Production"),"Production",player);
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException | IOException | NotEnoughResourcesException | NotEnoughPointsException
 					| InvalidActionTypeException e) {
@@ -157,11 +156,14 @@ public class Game implements Runnable{
 				playerAction(player);
 				return;
 			}
+    		if (flag == false){
+    			playerAction(player);
+    			return;}
     	}
     	else if (("activate harvest").equals(response)){
     		FamilyMember familyMember = handleFamilyMember(player);
 			try {
-				gameHandler.addFamilyMemberToProductionOrHarvest(familyMember,gameHandler.mainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Harvest"),"Harvest",player);
+				flag = gameHandler.addFamilyMemberToProductionOrHarvest(familyMember,gameHandler.mainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Harvest"),"Harvest",player);
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException | IOException | NotEnoughResourcesException | NotEnoughPointsException
 					| InvalidActionTypeException e) {
@@ -175,6 +177,9 @@ public class Game implements Runnable{
 					playerAction(player);
 					return;
 			}
+			if (flag == false){
+    			playerAction(player);
+    			return;}
 			
     	}
     	else if (("discard leader").equals(response)){
@@ -198,7 +203,7 @@ public class Game implements Runnable{
     			if((card).equals(response)){
     				CardHandler cardHandler = new CardHandler(gameHandler);
     				try {
-						flag = cardHandler.checkLeaderRequestedObject(MainBoard.leaderMap.get(card).requestedObjects, player);
+						flag = cardHandler.checkLeaderRequestedObject(gameHandler.mainBoard.leaderMap.get(card).requestedObjects, player);
 					} catch (NoSuchMethodException | SecurityException | IllegalAccessException
 							| IllegalArgumentException | InvocationTargetException e) {
 						e.printStackTrace();
@@ -210,7 +215,7 @@ public class Game implements Runnable{
     				}
     				else {
     					try {
-							cardHandler.activateLeader(MainBoard.leaderMap.get(card).effect, player, MainBoard.leaderMap.get(card).cardName);
+							cardHandler.activateLeader(gameHandler.mainBoard.leaderMap.get(card).effect, player, gameHandler.mainBoard.leaderMap.get(card).cardName);
 						} catch (SecurityException | IllegalAccessException | IllegalArgumentException
 								| InvocationTargetException | NoSuchMethodException e) {
 							e.printStackTrace();
@@ -337,27 +342,27 @@ public class Game implements Runnable{
     	}
     	else{
     		for(Integer number : player.personalBoard.getPossessions("Territory"))
-    			if(MainBoard.territoryMap.get(number).cardName.compareToIgnoreCase(cardName) == 0){
+    			if(gameHandler.mainBoard.territoryMap.get(number).cardName.compareToIgnoreCase(cardName) == 0){
     				cardNumber = number;
     				cardType = "Territory";
     			}
     		if(cardNumber==-1){
     			for(Integer number : player.personalBoard.getPossessions("Character"))
-        			if(MainBoard.characterMap.get(number).cardName.compareToIgnoreCase(cardName) == 0){
+        			if(gameHandler.mainBoard.characterMap.get(number).cardName.compareToIgnoreCase(cardName) == 0){
         				cardNumber = number;
         				cardType = "Character";
         			}
     		}
     		if(cardNumber==-1){
     			for(Integer number : player.personalBoard.getPossessions("Building"))
-        			if(MainBoard.buildingMap.get(number).cardName.compareToIgnoreCase(cardName) == 0){
+        			if(gameHandler.mainBoard.buildingMap.get(number).cardName.compareToIgnoreCase(cardName) == 0){
         				cardNumber = number;
         				cardType = "Building";
         			}
     		}
     		if(cardNumber==-1){
     			for(Integer number : player.personalBoard.getPossessions("Venture"))
-        			if(MainBoard.ventureMap.get(number).cardName.compareToIgnoreCase(cardName) == 0){
+        			if(gameHandler.mainBoard.ventureMap.get(number).cardName.compareToIgnoreCase(cardName) == 0){
         				cardNumber = number;
         				cardType = "Venture";
         			}
@@ -365,8 +370,8 @@ public class Game implements Runnable{
     		if(cardNumber==-1){
     			for(String leader : player.personalBoard.getPossessedLeaders())
     				if((leader).compareToIgnoreCase(cardName) == 0){
-    					cardHandler.getInfo(MainBoard.leaderMap.get(leader).requestedObjects,player);
-    					cardHandler.getInfo(MainBoard.leaderMap.get(leader).effect,player);
+    					cardHandler.getInfo(gameHandler.mainBoard.leaderMap.get(leader).requestedObjects,player);
+    					cardHandler.getInfo(gameHandler.mainBoard.leaderMap.get(leader).effect,player);
     					return;
     				}
     		}
@@ -378,34 +383,34 @@ public class Game implements Runnable{
     	}
     	else{
     		switch(cardType){
-    		case("Territory"): cardHandler.getInfo(MainBoard.territoryMap.get(cardNumber).instantBonuses,player);
-    						player.setMessage("Harvest Cost " + MainBoard.territoryMap.get(cardNumber).activationCost);
+    		case("Territory"): cardHandler.getInfo(gameHandler.mainBoard.territoryMap.get(cardNumber).instantBonuses,player);
+    						player.setMessage("Harvest Cost " + gameHandler.mainBoard.territoryMap.get(cardNumber).activationCost);
     						player.setMessage("When activated this card gives you:");
-    						cardHandler.getInfo(MainBoard.territoryMap.get(cardNumber).activationReward,player);
+    						cardHandler.getInfo(gameHandler.mainBoard.territoryMap.get(cardNumber).activationReward,player);
     						break;
-    		case("Character"): player.setMessage("Coins cost " + MainBoard.characterMap.get(cardNumber).costCoins);
-    						cardHandler.getInfo(MainBoard.characterMap.get(cardNumber).instantBonuses,player);
-    						cardHandler.getInfo(MainBoard.characterMap.get(cardNumber).permanentEffect,player);
+    		case("Character"): player.setMessage("Coins cost " + gameHandler.mainBoard.characterMap.get(cardNumber).costCoins);
+    						cardHandler.getInfo(gameHandler.mainBoard.characterMap.get(cardNumber).instantBonuses,player);
+    						cardHandler.getInfo(gameHandler.mainBoard.characterMap.get(cardNumber).permanentEffect,player);
     						break;
     		case("Building"): player.setMessage("This card cost in resources:");
-			   				cardHandler.printCardResources(MainBoard.buildingMap.get(cardNumber).costResources,player);
+			   				cardHandler.printCardResources(gameHandler.mainBoard.buildingMap.get(cardNumber).costResources,player);
 			   				player.setMessage("This card gives you:");
-			   				cardHandler.printCardPoints(MainBoard.buildingMap.get(cardNumber).instantBonuses,player);
-			   				player.setMessage("Production Cost " + MainBoard.buildingMap.get(cardNumber).activationCost);
+			   				cardHandler.printCardPoints(gameHandler.mainBoard.buildingMap.get(cardNumber).instantBonuses,player);
+			   				player.setMessage("Production Cost " + gameHandler.mainBoard.buildingMap.get(cardNumber).activationCost);
 			   				player.setMessage("When activated this card gives you:");
-			   				cardHandler.getInfo(MainBoard.buildingMap.get(cardNumber).activationEffect,player);
+			   				cardHandler.getInfo(gameHandler.mainBoard.buildingMap.get(cardNumber).activationEffect,player);
 			   				break;
-    		case("Venture"): if(MainBoard.ventureMap.get(cardNumber).neededMilitary>0){
-    						player.setMessage("To get this card you need " + MainBoard.ventureMap.get(cardNumber).neededMilitary + " military points");
+    		case("Venture"): if(gameHandler.mainBoard.ventureMap.get(cardNumber).neededMilitary>0){
+    						player.setMessage("To get this card you need " + gameHandler.mainBoard.ventureMap.get(cardNumber).neededMilitary + " military points");
     						}
-    						if(MainBoard.ventureMap.get(cardNumber).costMilitary > 0){
-			    			player.setMessage("This card costs " + MainBoard.ventureMap.get(cardNumber).costMilitary + " militarypoints");
+    						if(gameHandler.mainBoard.ventureMap.get(cardNumber).costMilitary > 0){
+			    			player.setMessage("This card costs " + gameHandler.mainBoard.ventureMap.get(cardNumber).costMilitary + " militarypoints");
     						}
 			    			player.setMessage("This card cost in resources:");
-			    			cardHandler.printCardResources(MainBoard.ventureMap.get(cardNumber).costResources,player);
-			    			player.setMessage("This card gives you " + MainBoard.ventureMap.get(cardNumber).finalVictory + " victory points at the end of the game");
+			    			cardHandler.printCardResources(gameHandler.mainBoard.ventureMap.get(cardNumber).costResources,player);
+			    			player.setMessage("This card gives you " + gameHandler.mainBoard.ventureMap.get(cardNumber).finalVictory + " victory points at the end of the game");
 			    			player.setMessage("This card gives you:");
-				   			cardHandler.getInfo(MainBoard.ventureMap.get(cardNumber).instant,player);
+				   			cardHandler.getInfo(gameHandler.mainBoard.ventureMap.get(cardNumber).instant,player);
 			    			break;
     		}
     	}
@@ -471,8 +476,17 @@ public class Game implements Runnable{
     	//the array list where the players actions order is stored
     	ArrayList <String> order;
     	for(int period=0;period<3;period++){
+    		gameHandler.setPeriod(period+1);
     		for(int round=0;round<2;round++){
     			order = gameHandler.getPlayersActionOrder();
+    			gameHandler.setRound(round+1);
+    			try {
+					gameHandler.loadCardsOnTheMainBoard();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				}
+    			gameHandler.rollTheDices();
+    			
     			for(int action=0;action<4;action++){
     				for(int move=0;move<playerNumber;move++){
     					//update the personalMainBoards of all players
@@ -484,7 +498,6 @@ public class Game implements Runnable{
     				}
     			}
 	    		gameHandler.setPlayerActionOrder(playerNumber);
-	    		gameHandler.setRound(round+1);
 	    		
 	    		//clean all the action spaces for a new round
 	    		try {
@@ -495,13 +508,7 @@ public class Game implements Runnable{
 	    		
 	    		//give the played family members back to the players
 	    		giveFamilyMembersBack();
-	    		try {
-	    			System.out.println("changing cards");
-					gameHandler.loadCardsOnTheMainBoard();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-	    		gameHandler.rollTheDices();
+	    		
     		}
     		//support the church at the end of a period
     		for(NetworkPlayer player : players)
@@ -511,8 +518,7 @@ public class Game implements Runnable{
 						| InvocationTargetException | NotEnoughResourcesException | NotEnoughPointsException e) {
 					e.printStackTrace();
 				}
-    		
-    		gameHandler.setPeriod(period+1);
+    	
     	}
     	//calculate and send the final points made by every player to every player
     	sendFinalPoints(gameHandler.calculateFinalPoints(players));
@@ -554,7 +560,7 @@ public class Game implements Runnable{
     private void chooseLeaderCard(){
     	//creating an array list of leaders names randomly ordinated
     	ArrayList<String> leaders = new ArrayList<String>();
-    	leaders = MainBoard.leaderName;
+    	leaders = gameHandler.mainBoard.leaderName;
     	Collections.shuffle(leaders);
     	int j=0;
     	String response = "";
@@ -608,8 +614,8 @@ public class Game implements Runnable{
     		NetworkPlayer player = players.get(playerNumber);
     		player.setMessage("Choose a tile between: (You must answer with the tile number)");
     		//send the list of choosable Bonus Tiles to every player
-    		for(i=0; i < MainBoard.personalBonusTiles.size(); i++){
-    			PersonalBonusTile tile = MainBoard.personalBonusTiles.get(i);
+    		for(i=0; i < gameHandler.mainBoard.personalBonusTiles.size(); i++){
+    			PersonalBonusTile tile = gameHandler.mainBoard.personalBonusTiles.get(i);
     			player.setMessage("Tile " + (i+1));
     			player.setMessage("Harvest Bonuses:");
     			cardHandler.printCardPoints(tile.harvestBonus.points, player);
@@ -620,11 +626,11 @@ public class Game implements Runnable{
     		}
     		String response = player.sendMessage();
     		//if the player responded with a valid Bonus Tile Number
-    		if (Integer.parseInt(response) < MainBoard.personalBonusTiles.size() && Integer.parseInt(response) >= 0){
+    		if (Integer.parseInt(response) <= gameHandler.mainBoard.personalBonusTiles.size() && Integer.parseInt(response) >= 0){
     			//give the tile to the player
-    			player.personalBoard.personalBonusTile = MainBoard.personalBonusTiles.get(Integer.parseInt(response));
+    			player.personalBoard.personalBonusTile = gameHandler.mainBoard.personalBonusTiles.get(Integer.parseInt(response)-1);
     			//remove the tile from the Main Board
-    			MainBoard.personalBonusTiles.remove(MainBoard.personalBonusTiles.get(Integer.parseInt(response)));
+    			gameHandler.mainBoard.personalBonusTiles.remove(gameHandler.mainBoard.personalBonusTiles.get(Integer.parseInt(response)-1));
     			//go to the next player
     			playerNumber++;
     		}
@@ -665,6 +671,7 @@ public class Game implements Runnable{
             } 
     } 
     */
+    
     
 
 }

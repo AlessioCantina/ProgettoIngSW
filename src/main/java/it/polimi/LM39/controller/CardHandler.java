@@ -178,7 +178,7 @@ public class CardHandler {
 							gameHandler.getCard(cardNumber, player, j);
 						//if the card is Character the discount is only on coins
 						else if(j==2){
-								Character character = MainBoard.characterMap.get(cardNumber);
+								Character character = gameHandler.mainBoard.characterMap.get(cardNumber);
 								Integer costCoins = character.costCoins;
 								if(costCoins >= instantEffect.cardDiscount.coins)
 									player.resources.setCoins(instantEffect.cardDiscount.coins);
@@ -190,12 +190,12 @@ public class CardHandler {
 							CardResources costResources = new CardResources();
 							//if the card is a Building
 							if(j==3){
-								Building building = MainBoard.buildingMap.get(cardNumber);
+								Building building = gameHandler.mainBoard.buildingMap.get(cardNumber);
 								costResources = building.costResources;
 							}
 							//if the card is a Venture
 							else if(j==4){
-								Venture venture = MainBoard.ventureMap.get(cardNumber);
+								Venture venture = gameHandler.mainBoard.ventureMap.get(cardNumber);
 								costResources = venture.costResources;
 						    }
 							CardResources bonusResources = new CardResources();
@@ -554,7 +554,7 @@ public class CardHandler {
 		ArrayList<Integer> buildings = player.personalBoard.getPossessions("Building");
 		Integer victoryMalus = 0;
 		for (Integer i : buildings)
-			victoryMalus=MainBoard.buildingMap.get(i).costResources.woods + MainBoard.buildingMap.get(i).costResources.stones;
+			victoryMalus=gameHandler.mainBoard.buildingMap.get(i).costResources.woods + gameHandler.mainBoard.buildingMap.get(i).costResources.stones;
 		victoryMalus = (victoryMalus / permanentEffect.resourceQty)* permanentEffect.victoryQty;
 		if (player.points.getVictory() >= victoryMalus)
 			player.points.setVictory(-victoryMalus);
@@ -655,8 +655,8 @@ public class CardHandler {
 			player.setMessage("What Leader do you want to copy?");
 			ArrayList<String> nameList = new ArrayList<String>();
 			for(String i : list){
-				player.setMessage(MainBoard.leaderMap.get(i).cardName);
-				nameList.add(MainBoard.leaderMap.get(i).cardName);
+				player.setMessage(gameHandler.mainBoard.leaderMap.get(i).cardName);
+				nameList.add(gameHandler.mainBoard.leaderMap.get(i).cardName);
 				}
 			String response = player.sendMessage();
 			flag = false;
@@ -672,11 +672,11 @@ public class CardHandler {
 			}
 			//add the card to the player copiedLeaderCard attribute to prevent that the player copy more than one effect violating the rule of this effect
 			player.copiedLeaderCard = cardNumber;
-			Leader leader = MainBoard.leaderMap.get(cardNumber);
+			Leader leader = gameHandler.mainBoard.leaderMap.get(cardNumber);
 			activateLeader(leader.effect,player,cardName);
 		}
 		else{
-			Leader leader = MainBoard.leaderMap.get(player.copiedLeaderCard);
+			Leader leader = gameHandler.mainBoard.leaderMap.get(player.copiedLeaderCard);
 			activateLeader(leader.effect,player,cardName);
 		}
 	}

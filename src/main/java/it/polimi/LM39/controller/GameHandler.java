@@ -82,16 +82,16 @@ public class GameHandler {
     public boolean getCard(Integer cardNumber,NetworkPlayer player, Integer towerNumber) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
     	boolean cardGotten=false;
     	    		switch(towerNumber){
-    		    		case 0: Territory territory=MainBoard.territoryMap.get(cardNumber);
+    		    		case 0: Territory territory=mainBoard.territoryMap.get(cardNumber);
     		    			cardGotten=getTerritoryCard(territory,player,cardNumber);
     		    			break;
-    		    		case 1: Character character=MainBoard.characterMap.get(cardNumber);
+    		    		case 1: Character character=mainBoard.characterMap.get(cardNumber);
     		    			cardGotten=getCharacterCard(character,player,cardNumber);
     		    			break;
-    		    		case 2: Building building=MainBoard.buildingMap.get(cardNumber);
+    		    		case 2: Building building=mainBoard.buildingMap.get(cardNumber);
     		    			cardGotten=getBuildingCard(building,player,cardNumber);
     		    			break;
-    		    		case 3: Venture venture=MainBoard.ventureMap.get(cardNumber);
+    		    		case 3: Venture venture=mainBoard.ventureMap.get(cardNumber);
     		    			cardGotten=getVentureCard(venture,player,cardNumber);
     		    			break;
     		    		default: player.setMessage("This tower doesn't exist!");
@@ -370,7 +370,7 @@ public class GameHandler {
     public void supportTheChurch (NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
     	//period + 2 is the minimum amount of faith points needed to support to the church for every period
     	CardHandler cardHandler = new CardHandler(this);
-    	cardHandler.getInfo((MainBoard.excommunicationMap.get(player.personalMainBoard.excommunicationsOnTheBoard[period-1])).effect, player);
+    	cardHandler.getInfo((mainBoard.excommunicationMap.get(player.personalMainBoard.excommunicationsOnTheBoard[period-1])).effect, player);
     	if(player.points.getFaith()>=(period+2)){
     		player.setMessage("Do you want to support the Church? yes or no");
     		String response = player.sendMessage();
@@ -384,7 +384,7 @@ public class GameHandler {
     	else{
     		player.setMessage("You don't have enough faith points or you answered no so you get the Excommunication");
     		player.setExcommunications(player.personalMainBoard.excommunicationsOnTheBoard[period-1]);
-			cardHandler.activateExcommunication((MainBoard.excommunicationMap.get(player.personalMainBoard.excommunicationsOnTheBoard[period-1])).effect, player);
+			cardHandler.activateExcommunication((mainBoard.excommunicationMap.get(player.personalMainBoard.excommunicationsOnTheBoard[period-1])).effect, player);
     	}
     }
     
@@ -494,12 +494,12 @@ public class GameHandler {
     	//to know if the action Harvest or Production can be done
     	Integer penalty=3;
     	//penalty in case of first slot already occupied
-    		for(i=0;!(familyMembersAtProductionOrHarvest.get(i).playerColor).equals(familyMember.playerColor) && i<harvestAndProductionSize;i++){}
-    		if(i==harvestAndProductionSize){
+    		for(i=0;i<harvestAndProductionSize && i<familyMembersAtProductionOrHarvest.size() && !(familyMembersAtProductionOrHarvest.get(i).playerColor).equals(familyMember.playerColor);i++){}
+    		if(i==familyMembersAtProductionOrHarvest.size()){
     			//if there isn't any of my family Members
-    			for(i=0;!familyMembersAtProductionOrHarvest.get(i).equals("") && i<harvestAndProductionSize;i++){}
+    			for(i=0;i<harvestAndProductionSize && i<familyMembersAtProductionOrHarvest.size() && !familyMembersAtProductionOrHarvest.get(i).equals("");i++){}
     			//move i to the first free slot
-    			if(i<harvestAndProductionSize){
+    			if(i<familyMembersAtProductionOrHarvest.size()){
     				//if there is place in the Production Area
     				if(i==0){
     					//if there is no one
@@ -525,7 +525,7 @@ public class GameHandler {
     		else{
     			//if there is already one of my family members
     			int j=0;
-    			for(i=0;i<harvestAndProductionSize;i++){
+    			for(i=0;i<harvestAndProductionSize && i<familyMembersAtProductionOrHarvest.size() ;i++){
     				if((familyMembersAtProductionOrHarvest.get(i).playerColor).equals(familyMember.playerColor)){
     					if(("uncolored").equals(familyMembersAtProductionOrHarvest.get(i).color))
     						j++;
@@ -538,7 +538,7 @@ public class GameHandler {
     				player.setMessage("You can't place another family member");
     				return false;
     			}	
-    			for(i=0;!familyMembersAtProductionOrHarvest.get(i).playerColor.equals("") && i<harvestAndProductionSize;i++){}
+    			for(i=0;i<harvestAndProductionSize && i<familyMembersAtProductionOrHarvest.size() && !familyMembersAtProductionOrHarvest.get(i).playerColor.equals("");i++){}
     			//move i to the first free slot
     			if(j==-1){
     				//if there is a colored family member
@@ -590,8 +590,6 @@ public class GameHandler {
     	mainBoard.setTowersValue(towersValue);
         //read the files
 		gsonReader.fileToCard(mainBoard);
-		//load cards
-		loadCardsOnTheMainBoard();
 		//load excommunications
 		loadExcommunications ();
 		for(int i=0;i<4;i++){
@@ -599,7 +597,6 @@ public class GameHandler {
 			for(int j=0;j<4;j++)
 				mainBoard.familyMembersLocation.setFamilyMemberOnTheTower(new FamilyMember(), i, j);
 		}
-		rollTheDices();
     }
     
     public void loadCardsOnTheMainBoard() throws IOException{
@@ -683,13 +680,13 @@ public class GameHandler {
             		cardNamesOnTheTowers[j][i] = "";
             	else{
             		switch(i){
-		        	case 0: cardNamesOnTheTowers[j][i] = MainBoard.territoryMap.get(cardsOnTheTowers[j][i]).cardName;
+		        	case 0: cardNamesOnTheTowers[j][i] = mainBoard.territoryMap.get(cardsOnTheTowers[j][i]).cardName;
 		        		break;
-		        	case 1: cardNamesOnTheTowers[j][i] = MainBoard.characterMap.get(cardsOnTheTowers[j][i]).cardName;
+		        	case 1: cardNamesOnTheTowers[j][i] = mainBoard.characterMap.get(cardsOnTheTowers[j][i]).cardName;
 		        		break;
-		        	case 2: cardNamesOnTheTowers[j][i] = MainBoard.buildingMap.get(cardsOnTheTowers[j][i]).cardName;
+		        	case 2: cardNamesOnTheTowers[j][i] = mainBoard.buildingMap.get(cardsOnTheTowers[j][i]).cardName;
 		    			break;
-		        	case 3: cardNamesOnTheTowers[j][i] = MainBoard.ventureMap.get(cardsOnTheTowers[j][i]).cardName;
+		        	case 3: cardNamesOnTheTowers[j][i] = mainBoard.ventureMap.get(cardsOnTheTowers[j][i]).cardName;
 		        		break;
 	            	}
             	}
@@ -741,7 +738,7 @@ public class GameHandler {
         	}
         	flag=true;
         	for(Integer excommunicationNumber : player.getExcommunications())
-        		if((MainBoard.excommunicationMap.get(excommunicationNumber).effect.getClass()).equals(NoVictoryForCard.class))
+        		if((mainBoard.excommunicationMap.get(excommunicationNumber).effect.getClass()).equals(NoVictoryForCard.class))
         			flag=false;
         	if(flag==true){
         		finalPoints += player.points.getFinalVictory();
@@ -903,11 +900,11 @@ public class GameHandler {
     public void activatePermanentEffects(NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
     	CardHandler cardHandler = new CardHandler (this);
     	for(Integer cardNumber : player.personalBoard.getPossessions("Character"))
-    		cardHandler.activateCharacter(MainBoard.characterMap.get(cardNumber).permanentEffect, player);
+    		cardHandler.activateCharacter(mainBoard.characterMap.get(cardNumber).permanentEffect, player);
     	for(String leader : player.personalBoard.getPossessedLeaders())
-    		cardHandler.activateLeader(MainBoard.leaderMap.get(leader).effect, player,leader);
+    		cardHandler.activateLeader(mainBoard.leaderMap.get(leader).effect, player,leader);
     	for(Integer excommunicationNumber : player.getExcommunications())
-    		cardHandler.activateExcommunication(MainBoard.excommunicationMap.get(excommunicationNumber).effect, player);
+    		cardHandler.activateExcommunication(mainBoard.excommunicationMap.get(excommunicationNumber).effect, player);
     }
     
     public void resetPlayerPersonalMainBoard (NetworkPlayer player)

@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * 
  */
-public abstract class LeaderRequestedObjects implements Serializable{
+public class LeaderRequestedObjects implements Serializable{
 
     /**
 	 * 

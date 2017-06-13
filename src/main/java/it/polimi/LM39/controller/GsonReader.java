@@ -218,7 +218,7 @@ public class GsonReader {
 	/*
 	 * since leader cards doesn't extends abstract class card we need to overload the method
 	 */
-	public HashMap<String,Leader> hashMapCreator(Leader leader) throws IOException {
+	public HashMap<String,Leader> hashMapCreator(Leader leader,MainBoard mainBoard) throws IOException {
 		JsonReader jsonReader = new JsonReader(new FileReader("./src/main/java/it/polimi/LM39/jsonfiles/cards/" + leader.getClass().getSimpleName() + ".json"));
 		RuntimeTypeAdapterFactory<Effect> effectAdapter = RuntimeTypeAdapterFactory.of(Effect.class,"type");
 		RuntimeTypeAdapterFactory<LeaderRequestedObjects> requestedObjectsAdapter = RuntimeTypeAdapterFactory.of(LeaderRequestedObjects.class,"type");
@@ -230,7 +230,7 @@ public class GsonReader {
 		while(jsonReader.hasNext()){  
 			Leader leaderToInsert;
 			leaderToInsert = gson.fromJson(jsonReader,leader.getClass());
-			MainBoard.leaderName.add(leaderToInsert.cardName);
+			mainBoard.leaderName.add(leaderToInsert.cardName);
 			leaderHashMap.put(leaderToInsert.cardName,leaderToInsert);
 		}
 		jsonReader.close();
@@ -278,12 +278,12 @@ public class GsonReader {
 		mainBoard.setTowersBonuses(bonuses);
 		jsonReader.close();	
 	}
-	public void personalTileLoader() throws IOException{
+	public void personalTileLoader(MainBoard mainBoard) throws IOException{
 		JsonReader jsonReader = new JsonReader(new FileReader("./src/main/java/it/polimi/LM39/jsonfiles/config/personalbonustiles.json"));
 		Gson gson = new GsonBuilder().create();
 		jsonReader.beginArray();
 		while(jsonReader.hasNext()){
-			MainBoard.personalBonusTiles.add(gson.fromJson(jsonReader,PersonalBonusTile.class));
+			mainBoard.personalBonusTiles.add(gson.fromJson(jsonReader,PersonalBonusTile.class));
 		}
 		jsonReader.close();
 		
@@ -296,13 +296,13 @@ public class GsonReader {
 		 Card character = new Character();
 		 Leader leader = new Leader();
 		 Excommunication excommunication = new Excommunication();
-		 MainBoard.territoryMap = (HashMap<Integer,Territory>)hashMapCreator(territory);	
-		 MainBoard.buildingMap = (HashMap<Integer,Building>)hashMapCreator(building);
-		 MainBoard.characterMap = (HashMap<Integer,Character>)hashMapCreator(character);
-		 MainBoard.ventureMap = (HashMap<Integer,Venture>)hashMapCreator(venture);	
-		 MainBoard.leaderMap = hashMapCreator(leader);
-		 MainBoard.excommunicationMap = hashMapCreator(excommunication);
+		 mainBoard.territoryMap = (HashMap<Integer,Territory>)hashMapCreator(territory);	
+		 mainBoard.buildingMap = (HashMap<Integer,Building>)hashMapCreator(building);
+		 mainBoard.characterMap = (HashMap<Integer,Character>)hashMapCreator(character);
+		 mainBoard.ventureMap = (HashMap<Integer,Venture>)hashMapCreator(venture);	
+		 mainBoard.leaderMap = hashMapCreator(leader,mainBoard);
+		 mainBoard.excommunicationMap = hashMapCreator(excommunication);
 		 this.configLoader(mainBoard);
-		 this.personalTileLoader();
+		 this.personalTileLoader(mainBoard);
 	 }
 }

@@ -38,21 +38,21 @@ public class MainBoard implements Serializable{
     
     public ActionBonus councilPalaceBonus = new ActionBonus(); //the bonuses are loaded from file
     
-    public static HashMap<Integer,Territory> territoryMap = new HashMap<Integer,Territory>();
+    public  HashMap<Integer,Territory> territoryMap = new HashMap<Integer,Territory>();
 
-    public static HashMap<Integer,Building> buildingMap = new HashMap<Integer,Building>();
+    public  HashMap<Integer,Building> buildingMap = new HashMap<Integer,Building>();
 
-    public static HashMap<Integer,Venture> ventureMap = new HashMap<Integer,Venture>();
+    public  HashMap<Integer,Venture> ventureMap = new HashMap<Integer,Venture>();
 
-    public static HashMap<Integer,Character> characterMap = new HashMap<Integer,Character>();
+    public  HashMap<Integer,Character> characterMap = new HashMap<Integer,Character>();
 
-    public static HashMap<String,Leader> leaderMap = new HashMap<String,Leader>();
+    public  HashMap<String,Leader> leaderMap = new HashMap<String,Leader>();
     
-    public static ArrayList<PersonalBonusTile> personalBonusTiles = new ArrayList<PersonalBonusTile>();
+    public  ArrayList<PersonalBonusTile> personalBonusTiles = new ArrayList<PersonalBonusTile>();
     
-    public static ArrayList<String> leaderName = new ArrayList<String>();
+    public  ArrayList<String> leaderName = new ArrayList<String>();
 
-    public static HashMap<Integer,Excommunication> excommunicationMap = new HashMap<Integer,Excommunication>();
+    public  HashMap<Integer,Excommunication> excommunicationMap = new HashMap<Integer,Excommunication>();
 
     public Rankings getRankings(){
     	return this.rankings;
