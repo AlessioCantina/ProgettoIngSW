@@ -210,6 +210,7 @@ public class CLI extends UserInterface{
 		ArrayList<PlayerRank> victoryRank = rankings.getVictoryRanking();
 		ArrayList<PlayerRank> militaryRank = rankings.getMilitaryRanking();
 		ArrayList<PlayerRank> faithRank = rankings.getFaithRanking();
+		System.out.println(victoryRank.size());
 		Iterator<PlayerRank> iterator = victoryRank.iterator();
 		System.out.println("Victory Rankings:");
 		while(iterator.hasNext())
@@ -369,17 +370,16 @@ public class CLI extends UserInterface{
 	 */
 	public void printCardType(String cardType, ArrayList<Integer> cardMap){
 		int i = 0;
-		while (cardMap.size() < i){
+		while (i < cardMap.size()){
 			if(("Territory").equals(cardType))
-				System.out.println(mainBoard.territoryMap.get(cardMap.get(i)));
+				System.out.println(mainBoard.territoryMap.get(cardMap.get(i)).cardName);
 			else if(("Building").equals(cardType))
-				System.out.println(mainBoard.buildingMap.get(cardMap.get(i)));
+				System.out.println(mainBoard.buildingMap.get(cardMap.get(i)).cardName);
 			else if(("Venture").equals(cardType))
-				System.out.println(mainBoard.ventureMap.get(cardMap.get(i)));
+				System.out.println(mainBoard.ventureMap.get(cardMap.get(i)).cardName);
 			else if(("Character").equals(cardType))
-				System.out.println(mainBoard.characterMap.get(cardMap.get(i)));
+				System.out.println(mainBoard.characterMap.get(cardMap.get(i)).cardName);
 			i++;
-			System.out.printf("%n");
 		}
 	}
 	/*
@@ -475,9 +475,10 @@ public class CLI extends UserInterface{
 					lMethod.invoke(this);
 				} catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
 					try {
-						if(e1 instanceof NoSuchMethodException)
+						if(e1 instanceof NoSuchMethodException){
 							lMethod = (this.getClass().getMethod(response.replace(" ", ""), new Class[] {NetworkPlayer.class}));
-						lMethod.invoke(this,player);
+							lMethod.invoke(this,player);
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
