@@ -554,11 +554,13 @@
          "finalVictory":7,
          "instant":{  
             "type":"Resources",
-            "woods":3,
-            "stones":3,
-            "servants":0,
-            "coins":3,
-            "council":0
+	    "resources":{
+            	"woods":3,
+            	"stones":3,
+            	"servants":0,
+            	"coins":3,
+            	"council":0
+	    }
          }
       }
 ]
