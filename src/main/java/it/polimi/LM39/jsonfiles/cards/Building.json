@@ -72,7 +72,7 @@
          "activationEffect":{  
             "type":"CoinForCard",
             "cardType":"Venture",
-            "cardValue":1
+            "coinQty":1
          }
       },
       {  
@@ -94,7 +94,7 @@
          "activationEffect":{  
             "type":"CoinForCard",
             "cardType":"Territory",
-            "cardValue":1
+            "coinQty":1
          }
       },
       {  

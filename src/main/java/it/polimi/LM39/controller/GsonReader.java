@@ -184,9 +184,11 @@ public class GsonReader {
 		 //runtimetypeadapterfactory allow us to have multiple subtypes of a class (in our case, Effect)
 		 //it will pick the correct structure from the json field "type"
 		 RuntimeTypeAdapterFactory<InstantEffect> adapter = RuntimeTypeAdapterFactory.of(InstantEffect.class,"type");
-		 subEffectRegister(adapter,cardType);		//character permanent
+		 RuntimeTypeAdapterFactory<CharacterPermanentEffect> charAdapter = RuntimeTypeAdapterFactory.of(CharacterPermanentEffect.class,"type");
+		 subEffectRegister(adapter,cardType);
+		 subEffectRegister(charAdapter,cardType);
 		 //attaching adapter to gson			
-		 Gson gson = new GsonBuilder().registerTypeAdapterFactory(adapter).create();
+		 Gson gson = new GsonBuilder().registerTypeAdapterFactory(adapter).registerTypeAdapterFactory(charAdapter).create();
 		 {																					
 				try{	//reflection to get the hashmap correct type 
 					Class[] cArg = new Class[1];
