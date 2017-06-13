@@ -9,11 +9,11 @@
                "victory":0,
                "faith":4,
                "military":0
-            },
+            }
+         },
             "permanentEffect":{  
                "type":"NoBoardBonuses"
-            }
-         }
+        }
       },
       {  
          "cardName":"Dame",
@@ -67,13 +67,13 @@
                "servants":0,
                "coins":0,
                "council":1
-            },
+            }
+         },
             "permanentEffect":{  
                "type":"CardActionDiscount",
-               "discount":2,
-               "cardType":"Venture"
+               "cardType":"Venture",
+               "discount":2
             }
-         }
       },
       {  
          "cardName":"Warlord",
@@ -85,13 +85,13 @@
                "victory":0,
                "faith":0,
                "military":3
-            },
+            }
+         },
             "permanentEffect":{  
                "type":"CardActionDiscount",
-               "discount":2,
-               "cardType":"Territory"
+               "cardType":"Territory",
+               "discount":2
             }
-         }
       },
       {  
          "cardName":"Abbess",
@@ -105,11 +105,11 @@
                "victory":0,
                "faith":1,
                "military":0
-            },
+            }
+         },
             "permanentEffect":{  
                "type":"NoCharacterPermanentEffect"
             }
-         }
       },
       {  
          "cardName":"Artisan",

@@ -1,106 +1,122 @@
-[
-    {
-        "productionResourcesBonus":{
+[  
+   {  
+      "productionBonus":{  
+         "resources":{  
             "woods":0,
             "stones":0,
             "servants":1,
             "coins":2,
             "council":0
-        },
-        "productionPointsBonus":{
+         },
+         "points":{  
             "victory":0,
             "faith":0,
             "military":0
-        },
-        "harvestResourcesBonus":{
+         }
+      },
+      "harvestBonus":{  
+         "resources":{  
             "woods":1,
             "stones":1,
             "servants":0,
             "coins":0,
             "council":0
-        },
-        "harvestPointsBonus":{
+         },
+         "points":{  
             "victory":0,
             "faith":0,
             "military":1
-        }
-    },
-    {
-        "productionResourcesBonus":{
+         }
+      }
+   },
+   {  
+      "productionBonus":{  
+         "resources":{  
             "woods":0,
             "stones":0,
             "servants":2,
             "coins":1,
             "council":0
-        },
-        "productionPointsBonus":{
+         },
+         "points":{  
             "victory":0,
             "faith":0,
             "military":0
-        },
-        "harvestResourcesBonus":{
+         }
+      },
+      "harvestBonus":{  
+         "resources":{  
             "woods":1,
             "stones":1,
             "servants":0,
             "coins":0,
             "council":0
-        },
-        "harvestPointsBonus":{
+         },
+         "points":{  
             "victory":0,
             "faith":0,
             "military":1
-        }
-    },
-    {
-        "productionResourcesBonus":{
+         }
+      }
+   },
+   {  
+      "productionBonus":{  
+         "resources":{  
             "woods":0,
             "stones":0,
             "servants":1,
             "coins":0,
             "council":0
-        },
-        "productionPointsBonus":{
+         },
+         "points":{  
             "victory":0,
             "faith":0,
             "military":2
-        },
-        "harvestResourcesBonus":{
+         }
+      },
+      "harvestBonus":{  
+         "resources":{  
             "woods":1,
             "stones":1,
             "servants":0,
             "coins":1,
             "council":0
-        },
-        "harvestPointsBonus":{
+         },
+         "points":{  
             "victory":0,
             "faith":0,
             "military":0
-        }
-    },
-    {
-        "productionResourcesBonus":{
+         }
+      }
+   },
+   {  
+      "productionBonus":{  
+         "resources":{  
             "woods":0,
             "stones":0,
             "servants":0,
             "coins":1,
             "council":0
-        },
-        "productionPointsBonus":{
+         },
+         "points":{  
             "victory":0,
             "faith":0,
             "military":0
-        },
-        "harvestResourcesBonus":{
+         }
+      },
+      "harvestBonus":{  
+         "resources":{  
             "woods":1,
             "stones":1,
             "servants":1,
             "coins":0,
             "council":0
-        },
-        "harvestPointsBonus":{
+         },
+         "points":{  
             "victory":0,
             "faith":0,
             "military":0
-        }
-    } 
+         }
+      }
+   }
 ]

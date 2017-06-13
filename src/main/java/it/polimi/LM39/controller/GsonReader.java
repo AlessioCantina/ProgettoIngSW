@@ -17,7 +17,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -82,19 +84,23 @@ public class GsonReader {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void subEffectRegister(RuntimeTypeAdapterFactory adapter, Character cardType)
 	{								
-		adapter.registerSubtype(NoBoardBonuses.class);
-		adapter.registerSubtype(CardActionResourcesDiscount.class);
 		adapter.registerSubtype(Points.class);
 		adapter.registerSubtype(NoInstantEffect.class);
-		adapter.registerSubtype(NoCharacterPermanentEffect.class);
 		adapter.registerSubtype(Resources.class);
-		adapter.registerSubtype(CardActionDiscount.class);
 		adapter.registerSubtype(GetCardAndPoints.class);
-		adapter.registerSubtype(HarvestProductionBoost.class);
 		adapter.registerSubtype(GetCardAndResources.class);
 		adapter.registerSubtype(VictoryForCard.class);
 		adapter.registerSubtype(HarvestProductionAndPoints.class);
 		adapter.registerSubtype(VictoryForMilitary.class);
+	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void subEffectRegisterForChar(RuntimeTypeAdapterFactory adapter)
+	{
+		adapter.registerSubtype(CardActionResourcesDiscount.class);
+		adapter.registerSubtype(NoBoardBonuses.class);
+		adapter.registerSubtype(CardActionDiscount.class);
+		adapter.registerSubtype(NoCharacterPermanentEffect.class);
+		adapter.registerSubtype(HarvestProductionBoost.class);
 	}
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	/*
@@ -186,7 +192,7 @@ public class GsonReader {
 		 RuntimeTypeAdapterFactory<InstantEffect> adapter = RuntimeTypeAdapterFactory.of(InstantEffect.class,"type");
 		 RuntimeTypeAdapterFactory<CharacterPermanentEffect> charAdapter = RuntimeTypeAdapterFactory.of(CharacterPermanentEffect.class,"type");
 		 subEffectRegister(adapter,cardType);
-		 subEffectRegister(charAdapter,cardType);
+		 subEffectRegisterForChar(charAdapter);
 		 //attaching adapter to gson			
 		 Gson gson = new GsonBuilder().registerTypeAdapterFactory(adapter).registerTypeAdapterFactory(charAdapter).create();
 		 {																					
@@ -293,9 +299,9 @@ public class GsonReader {
 		 MainBoard.territoryMap = (HashMap<Integer,Territory>)hashMapCreator(territory);	
 		 MainBoard.buildingMap = (HashMap<Integer,Building>)hashMapCreator(building);
 		 MainBoard.characterMap = (HashMap<Integer,Character>)hashMapCreator(character);
-		 MainBoard.ventureMap = (HashMap<Integer,Venture>)hashMapCreator(venture);	 
-	//	 MainBoard.leaderMap = hashMapCreator(leader);
-	//	 MainBoard.excommunicationMap = hashMapCreator(excommunication);
+		 MainBoard.ventureMap = (HashMap<Integer,Venture>)hashMapCreator(venture);	
+		 MainBoard.leaderMap = hashMapCreator(leader);
+		 MainBoard.excommunicationMap = hashMapCreator(excommunication);
 		 this.configLoader(mainBoard);
 		 this.personalTileLoader();
 	 }

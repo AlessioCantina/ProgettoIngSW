@@ -87,11 +87,11 @@
                "victory":0,
                "faith":8,
                "military":0
-            },
+            }
+        },
             "effect":{  
                "type":"DoubleResourcesFromDevelopment"
             }
-         }
       },
       {  
          "cardName":"Cesare Borgia",

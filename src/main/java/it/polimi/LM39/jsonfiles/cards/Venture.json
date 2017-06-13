@@ -126,7 +126,7 @@
          "finalVictory":4,
          "instant":{  
             "type":"Resources",
-            "Resources":{  
+            "resources":{  
                "woods":0,
                "stones":0,
                "servants":0,
