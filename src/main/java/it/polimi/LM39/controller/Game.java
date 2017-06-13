@@ -271,6 +271,119 @@ public class Game implements Runnable{
 				return;
     		}
     	}
+    	
+    	else if (("get card info").equals(response)){
+    		player.setMessage("What card are you interested in ?");
+    		String cardName = player.sendMessage();
+    		try {
+				searchCard(cardName,player);
+				playerAction(player);
+				return;
+			} catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+					| NoSuchMethodException e) {
+				e.printStackTrace();
+			}
+    		catch (CardNotFoundException e) {
+    			playerAction(player);
+    			return;
+			}
+    	}
+    }
+    
+    private void searchCard(String cardName,NetworkPlayer player) throws SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, CardNotFoundException{
+    	CardHandler cardHandler = new CardHandler(gameHandler);
+    	int p = 0; int k = 0; int j = 0; int i = 0;
+    	Integer cardNumber = -1;
+    	String cardType = "";
+    	for(i=0;i<4;i++)
+    		for(j=0;j<4;j++)
+    			if(gameHandler.mainBoard.getCardNamesOnTheTowers()[i][j].compareToIgnoreCase(cardName) == 0){
+    				p = i;
+    				k = j;
+    				i=4;
+    				j=4;
+    			}
+    	if(j == 5 && i == 5){
+    		//the card was found on the towers
+    		cardNumber = gameHandler.mainBoard.getCardsOnTheTowers()[p][k];
+    		switch(k) {
+    		case 0: cardType = "Territory";
+    		break;
+    		case 1: cardType = "Character";
+    		break;
+    		case 2: cardType = "Building";
+    		break;
+    		case 3: cardType = "Venture";
+    		break;
+    		}	
+    	}
+    	else{
+    		for(Integer number : player.personalBoard.getPossessions("Territory"))
+    			if(MainBoard.territoryMap.get(number).cardName.compareToIgnoreCase(cardName) == 0){
+    				cardNumber = number;
+    				cardType = "Territory";
+    			}
+    		if(cardNumber==-1){
+    			for(Integer number : player.personalBoard.getPossessions("Character"))
+        			if(MainBoard.characterMap.get(number).cardName.compareToIgnoreCase(cardName) == 0){
+        				cardNumber = number;
+        				cardType = "Character";
+        			}
+    		}
+    		if(cardNumber==-1){
+    			for(Integer number : player.personalBoard.getPossessions("Building"))
+        			if(MainBoard.buildingMap.get(number).cardName.compareToIgnoreCase(cardName) == 0){
+        				cardNumber = number;
+        				cardType = "Building";
+        			}
+    		}
+    		if(cardNumber==-1){
+    			for(Integer number : player.personalBoard.getPossessions("Venture"))
+        			if(MainBoard.ventureMap.get(number).cardName.compareToIgnoreCase(cardName) == 0){
+        				cardNumber = number;
+        				cardType = "Venture";
+        			}
+    		}
+    		if(cardNumber==-1){
+    			for(String leader : player.personalBoard.getPossessedLeaders())
+    				if((leader).compareToIgnoreCase(cardName) == 0){
+    					cardHandler.getInfo(MainBoard.leaderMap.get(leader).requestedObjects,player);
+    					cardHandler.getInfo(MainBoard.leaderMap.get(leader).effect,player);
+    					return;
+    				}
+    		}
+    	}
+    		
+    	if(cardNumber == -1){
+    		player.setMessage("This card is not on the Towers or in your Personal Board");
+    		throw new CardNotFoundException("Card not found!");
+    	}
+    	else{
+    		switch(cardType){
+    		case("Territory"): cardHandler.getInfo(MainBoard.territoryMap.get(cardNumber).instantBonuses,player);
+    						player.setMessage("Harvest Cost " + MainBoard.territoryMap.get(cardNumber).activationCost);
+    						cardHandler.getInfo(MainBoard.territoryMap.get(cardNumber).activationReward,player);
+    						break;
+    		case("Character"): player.setMessage("Coins cost " + MainBoard.characterMap.get(cardNumber).costCoins);
+    						cardHandler.getInfo(MainBoard.characterMap.get(cardNumber).instantBonuses,player);
+    						cardHandler.getInfo(MainBoard.characterMap.get(cardNumber).permanentEffect,player);
+    						break;
+    		case("Building"): player.setMessage("This card cost in resources:");
+			   				cardHandler.printCardResources(MainBoard.buildingMap.get(cardNumber).costResources,player);
+			   				player.setMessage("This card gives you:");
+			   				cardHandler.printCardPoints(MainBoard.buildingMap.get(cardNumber).instantBonuses,player);
+			   				player.setMessage("Production Cost " + MainBoard.buildingMap.get(cardNumber).activationCost);
+			   				cardHandler.getInfo(MainBoard.buildingMap.get(cardNumber).activationEffect,player);
+			   				break;
+    		case("Venture"): player.setMessage("To get this card you need " + MainBoard.ventureMap.get(cardNumber).neededMilitary + " military points");
+			    			player.setMessage("This card costs " + MainBoard.ventureMap.get(cardNumber).costMilitary + " militarypoints");
+			    			player.setMessage("This card cost in resources:");
+			    			cardHandler.printCardResources(MainBoard.ventureMap.get(cardNumber).costResources,player);
+			    			player.setMessage("This card gives you " + MainBoard.ventureMap.get(cardNumber).finalVictory + " victory points at the end of the game");
+				   			cardHandler.getInfo(MainBoard.ventureMap.get(cardNumber).instant,player);
+			    			break;
+    		}
+    	}
     }
 
 
@@ -341,11 +454,9 @@ public class Game implements Runnable{
     					//update the personalMainBoards of all players
         	    		updatePersonalMainBoards();
     					NetworkPlayer player = playerColorToNetworkPlayer(order.get(move));
-    					System.out.println("game invia mainboard");
     					player.setMessage(gameHandler.mainBoard);
     					playerAction(player);
     					gameHandler.updateRankings(player);
-    					player.setMessage(gameHandler.mainBoard);
     				}
     			}
 	    		gameHandler.setPlayerActionOrder(playerNumber);

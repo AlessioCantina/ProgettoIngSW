@@ -373,6 +373,8 @@ public class GameHandler {
     
     public void supportTheChurch (NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
     	//period + 2 is the minimum amount of faith points needed to support to the church for every period
+    	CardHandler cardHandler = new CardHandler(this);
+    	cardHandler.getInfo((MainBoard.excommunicationMap.get(player.personalMainBoard.excommunicationsOnTheBoard[period-1])).effect, player);
     	if(player.points.getFaith()>=(period+2)){
     		player.setMessage("Do you want to support the Church? yes or no");
     		String response = player.sendMessage();
@@ -386,7 +388,6 @@ public class GameHandler {
     	else{
     		player.setMessage("You don't have enough faith points or you answered no so you get the Excommunication");
     		player.setExcommunications(player.personalMainBoard.excommunicationsOnTheBoard[period-1]);
-			CardHandler cardHandler = new CardHandler(this);
 			cardHandler.activateExcommunication((MainBoard.excommunicationMap.get(player.personalMainBoard.excommunicationsOnTheBoard[period-1])).effect, player);
     	}
     }
@@ -865,6 +866,7 @@ public class GameHandler {
     		if((playerVictoryRank.playerNickName).equals(player.nickname))
     			playerVictoryRank.setPlayerPoints(player.points.getVictory());
     }
+    
     
     public void setPlayerActionOrder (Integer playersQty){
     	ArrayList<String> order = new ArrayList<String>();

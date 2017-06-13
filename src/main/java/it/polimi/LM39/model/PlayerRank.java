@@ -6,7 +6,7 @@ public class PlayerRank implements Serializable{
 
 	private static final long serialVersionUID = -802117554699921290L;
 	
-	private Integer points;
+	private Integer points = 0;
 	
 	public String playerNickName;
 
@@ -16,7 +16,7 @@ public class PlayerRank implements Serializable{
     }
 
     public void setPlayerPoints(Integer points) {
-        this.points=points;
+        this.points+=points;
     }
 
 }

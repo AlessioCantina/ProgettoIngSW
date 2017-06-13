@@ -733,7 +733,7 @@ public class CardHandler {
 	
 
 	
-	public void getInfo(Effect effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
+	public void getInfo(InstantEffect effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
 		 Class[] cArg = new Class[2];
 		 cArg[0] = effect.getClass();
 		 cArg[1] = effect.getClass();
@@ -744,6 +744,10 @@ public class CardHandler {
 	/*
 	 * InstantEffect info
 	 */
+	
+	public void getInfo (NoInstantEffect effect,NetworkPlayer player){
+		player.setMessage("This Card doesn't give any Instant Effect");
+	}
 	
 	public void getInfo (CoinForCard effect,NetworkPlayer player){
 		player.setMessage("This Instant Effect gives " + effect.coinQty + "coins" + "for " + effect.cardType + " cards");
@@ -854,6 +858,14 @@ public class CardHandler {
 		player.setMessage("This Instant Effect gives you " + effect.victoryQty + " Victory Points for each " + effect.militaryQty + " Military Points you have");
 	}
 	
+	
+	public void getInfo(LeaderRequestedObjects effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
+		 Class[] cArg = new Class[2];
+		 cArg[0] = effect.getClass();
+		 cArg[1] = effect.getClass();
+		 Method lMethod = (this.getClass().getMethod("getInfo",cArg));
+		 lMethod.invoke(this,effect);
+	 }
 	/*
 	 * LeaderObject info
 	 */
@@ -886,9 +898,23 @@ public class CardHandler {
 		player.setMessage("To activate this Leader you need " + requested.cardQty + " " + requested.cardType + " cards and " + requested.cardQty2 + " " + requested.cardType2 + " cards");
 	}
 	
+	
+	public void getInfo(CharacterPermanentEffect effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
+		 Class[] cArg = new Class[2];
+		 cArg[0] = effect.getClass();
+		 cArg[1] = effect.getClass();
+		 Method lMethod = (this.getClass().getMethod("getInfo",cArg));
+		 lMethod.invoke(this,effect);
+	 }
+	
 	/*
 	 * CharacterPermanentEffect info
 	 */
+	
+	public void getInfo (NoCharacterPermanentEffect effect,NetworkPlayer player){
+		player.setMessage("This Card doesn't give any Permanent Effect");
+	}
+	
 	
 	public void getInfo (CardActionDiscount bonus,NetworkPlayer player){
 		player.setMessage("This permanent effect gives you a discount of " + bonus.discount + " in action value to get a " + bonus.cardType + " card");
@@ -908,6 +934,14 @@ public class CardHandler {
 		player.setMessage("This permanent effect blocks all the bonuses on the Towers action spaces");
 	}
 	
+	
+	public void getInfo(ExcommunicationPermanentEffect effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
+		 Class[] cArg = new Class[2];
+		 cArg[0] = effect.getClass();
+		 cArg[1] = effect.getClass();
+		 Method lMethod = (this.getClass().getMethod("getInfo",cArg));
+		 lMethod.invoke(this,effect);
+	 }
 	/*
 	 * ExcommunicationPermanentEffect info
 	 */
@@ -961,6 +995,14 @@ public class CardHandler {
 		player.setMessage("At the end of the game, before the Final Scoring, you lose " + malus.victoryMalus + " Victory Points for every " + malus.victoryQty + " Victory Points you have");
 	}
 	
+	public void getInfo(LeaderPermanentEffect effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
+		 Class[] cArg = new Class[2];
+		 cArg[0] = effect.getClass();
+		 cArg[1] = effect.getClass();
+		 Method lMethod = (this.getClass().getMethod("getInfo",cArg));
+		 lMethod.invoke(this,effect);
+	 }
+	
 	/*
 	 * LeaderPermanentEffect info
 	 */
@@ -1004,12 +1046,18 @@ public class CardHandler {
 		player.setMessage("You gain " + effect.victoryQty + " additional Victory Points when you support the Church in a Vatican Report phase.");
 	}
 	
-	public void getInfo (NoInstantEffect effect,NetworkPlayer player){
-		player.setMessage("This Card doesn't give any Instant Effect");
-	}
 	
-	public void getInfo (NoCharacterPermanentEffect effect,NetworkPlayer player){
-		player.setMessage("This Card doesn't give any Permanent Effect");
+	/*
+	 * Leader Cards 
+	 */
+	
+	public void getInfo(Effect permanentEffect,NetworkPlayer player) throws SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException	{
+		Class[] cArg = new Class[3];
+	    cArg[0] = permanentEffect.getClass();
+	    cArg[1] = player.getClass();
+		Method lMethod;
+		lMethod = (this.getClass().getMethod("getInfo",cArg));
+		lMethod.invoke(this,permanentEffect);
 	}
 	
 	
