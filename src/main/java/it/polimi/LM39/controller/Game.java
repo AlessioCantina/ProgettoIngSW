@@ -305,6 +305,22 @@ public class Game implements Runnable{
     			return;
 			}
     	}
+    	
+    	else if (("display excommunications").equals(response)){
+    		CardHandler cardHandler = new CardHandler(gameHandler);
+			for(int i=0;i<3;i++){
+				player.setMessage("Excommunication " + (i+1));
+				try {
+					cardHandler.getInfo(gameHandler.mainBoard.excommunicationMap.get(gameHandler.mainBoard.excommunicationsOnTheBoard[i]).effect,player);
+				} catch (NoSuchMethodException | SecurityException | IllegalAccessException
+						| IllegalArgumentException | InvocationTargetException e) {
+					e.printStackTrace();
+				}
+			}
+			playerAction(player);
+			return;
+		}
+    	
     	else if (("skip action").equals(response)){
     		//do nothing
     	}
@@ -495,6 +511,7 @@ public class Game implements Runnable{
         	    		updatePersonalMainBoards();
     					NetworkPlayer player = playerColorToNetworkPlayer(order.get(move));
     					player.setMessage(gameHandler.mainBoard);
+    					System.out.println("!!!!!!!!!!!!!!!!!!");
     					playerAction(player);
     					gameHandler.updateRankings(player);
     				}
@@ -513,13 +530,14 @@ public class Game implements Runnable{
 	    		
     		}
     		//support the church at the end of a period
-    		for(NetworkPlayer player : players)
+    		for(NetworkPlayer player : players){
     			try {
 					gameHandler.supportTheChurch(player);
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException | NotEnoughResourcesException | NotEnoughPointsException e) {
 					e.printStackTrace();
 				}
+    		}
     	
     	}
     	//calculate and send the final points made by every player to every player

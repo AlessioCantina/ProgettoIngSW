@@ -938,8 +938,10 @@ public class CardHandler {
 	public void getInfo(ExcommunicationPermanentEffect effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
 		 Class[] cArg = new Class[2];
 		 cArg[0] = effect.getClass();
+		 System.out.println(effect.getClass());
 		 cArg[1] = NetworkPlayer.class;
 		 Method lMethod = (this.getClass().getMethod("getInfo",cArg));
+		 System.out.println(lMethod.getName());
 		 lMethod.invoke(this,effect,player);
 	 }
 	/*
@@ -967,7 +969,7 @@ public class CardHandler {
 	}
 	
 	public void getInfo (MalusVictoryForMilitary malus,NetworkPlayer player){
-		player.setMessage("At the end of the game, you lose " + malus.victoryQty + " Victory Points for each" + malus.militaryQty + " Military Points you have.");
+		player.setMessage("At the end of the game, you lose " + malus.victoryQty + " Victory Points for each " + malus.militaryQty + " Military Points you have.");
 	}
 	
 	public void getInfo (MilitaryPointsMalus malus,NetworkPlayer player){
@@ -979,7 +981,12 @@ public class CardHandler {
 	}
 	
 	public void getInfo (ResourcesMalus malus,NetworkPlayer player){
-		player.setMessage("Each time you receive woods or stones (from action spaces or from your Cards), you receive fewer wood or stone, each time you receive servants and/or coins (from action spaces or from your Cards) you receive fewer coin and/or servants. In these quantities:");
+		if(malus.resources.woods>0)
+			player.setMessage("Each time you receive woods or stones (from action spaces or from your Cards), you receive fewer wood or stone. In these quantities:");
+		else if(malus.resources.coins>0)
+			player.setMessage("Each time you receive coins (from action spaces or from your Cards) you receive fewer coins. In these quantities:");
+		else
+			player.setMessage("Each time you receive servants (from action spaces or from your Cards) you receive fewer servants. In these quantities:");
 		printCardResources(malus.resources,player);
 	}
 	
