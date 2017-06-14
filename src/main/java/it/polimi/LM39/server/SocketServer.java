@@ -35,16 +35,15 @@ public class SocketServer extends AbstractServer implements Runnable{
      */
     @Override
 	public void run(){  	
-		while(true){
-			try{
-				Socket socket = serverSocket.accept();
-				SocketPlayer socketPlayer = new SocketPlayer(getServerController(),socket);
-				System.out.println("Socket Listener up");
-				new Thread(socketPlayer).start();
-			}catch (IOException e) {
-                logger.log(Level.SEVERE, "Can't instantiate SocketListener", e);
+		try{
+			Socket socket = serverSocket.accept();
+			SocketPlayer socketPlayer = new SocketPlayer(getServerController(),socket);
+			System.out.println("Socket Listener up");
+			new Thread(socketPlayer).start();
+			this.run();
+		}catch (IOException e) {
+               logger.log(Level.SEVERE, "Can't instantiate SocketListener", e);
 		}
 	}
-    }
 }
 

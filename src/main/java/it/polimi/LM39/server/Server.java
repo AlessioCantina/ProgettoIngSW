@@ -99,6 +99,7 @@ public class Server implements ServerInterface{
 					room.addPlayer(networkPlayer);
 				}
 			}
+			ROOM_LOCK.notifyAll();
 		}
 	}
 	/*

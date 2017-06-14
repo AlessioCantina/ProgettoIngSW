@@ -12,14 +12,13 @@ import it.polimi.LM39.model.leaderobject.*;
 import it.polimi.LM39.model.*;
 import it.polimi.LM39.model.Character;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -32,6 +31,7 @@ import it.polimi.LM39.external_libraries.RuntimeTypeAdapterFactory;
  * and code from https://futurestud.io/tutorials/how-to-deserialize-a-list-of-polymorphic-objects-with-gson
  */
 public class GsonReader {
+	static Logger logger = Logger.getLogger(GsonReader.class.getName());
 	/*
 	 * generic subeffectregister, it will call the correct method
 	 * using reflection on the cardType. the adapter will only have
@@ -39,7 +39,7 @@ public class GsonReader {
 	 * 
 	 */
 	@SuppressWarnings("rawtypes")
-	public void subEffectRegister(RuntimeTypeAdapterFactory adapter, Card cardType) throws FailedToRegisterEffectException	
+	public void subEffectRegister(RuntimeTypeAdapterFactory adapter, Card cardType)
 	{																				
 		try{																		
 			Class[] cArg = new Class[2];
@@ -47,8 +47,9 @@ public class GsonReader {
 	        cArg[1] = cardType.getClass();
 			Method lMethod = (this.getClass().getMethod("subEffectRegister",cArg));
 			lMethod.invoke(this,adapter,cardType);
-		}catch(Exception e){
-			throw new FailedToRegisterEffectException(e);}
+		}catch(NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e){
+			logger.log(Level.WARNING, "Failed to call reflected method", e);
+		}
 	}
 	/*
 	 * subregister for territory cards
@@ -194,27 +195,25 @@ public class GsonReader {
 		 subEffectRegister(adapter,cardType);
 		 subEffectRegisterForChar(charAdapter);
 		 //attaching adapter to gson			
-		 Gson gson = new GsonBuilder().registerTypeAdapterFactory(adapter).registerTypeAdapterFactory(charAdapter).create();
-		 {																					
-				try{	//reflection to get the hashmap correct type 
-					Class[] cArg = new Class[1];
-			        cArg[0] = cardType.getClass();
-					Method lMethod = (this.getClass().getMethod("hashMapCreator",cArg));
-					cardHashMap = (HashMap<Integer,?>)lMethod.invoke(this,cardType);	//reflection necessary to remove the wildcard value
-					jsonReader.beginArray();  											//and instantiate the correct type for card
-					int i = 1;
-					while(jsonReader.hasNext()){  //read the card array and put objects into an hashmap
-						cardHashMap.put(i,gson.fromJson(jsonReader,cardType.getClass()));
-						i++;}
-					jsonReader.close();
-					
-				}catch(Exception e){
-					e.printStackTrace();
-				}	
-				return cardHashMap;
-		 }
+		 Gson gson = new GsonBuilder().registerTypeAdapterFactory(adapter).registerTypeAdapterFactory(charAdapter).create();																					
+		 try{	//reflection to get the hashmap correct type 
+				Class[] cArg = new Class[1];
+			    cArg[0] = cardType.getClass();
+			    Method lMethod = (this.getClass().getMethod("hashMapCreator",cArg));
+				cardHashMap = (HashMap<Integer,?>)lMethod.invoke(this,cardType);	//reflection necessary to remove the wildcard value and instantiate the correct type for card
+				jsonReader.beginArray();  											
+				int i = 1;
+				while(jsonReader.hasNext()){  //read the card array and put objects into an hashmap
+					cardHashMap.put(i,gson.fromJson(jsonReader,cardType.getClass()));
+					i++;
+				}
+		 }catch(NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e){
+			logger.log(Level.WARNING,"Failed to invoke method with reflection" , e);
+		 }	
+		 jsonReader.close();
+		 return cardHashMap;
+	}
 
-	 }
 	/*
 	 * since leader cards doesn't extends abstract class card we need to overload the method
 	 */
@@ -241,7 +240,7 @@ public class GsonReader {
 	 */
 	public HashMap<Integer,Excommunication> hashMapCreator(Excommunication excommunication) throws IOException {
 		JsonReader jsonReader = new JsonReader(new FileReader("./src/main/java/it/polimi/LM39/jsonfiles/cards/" + excommunication.getClass().getSimpleName() + ".json"));
-		RuntimeTypeAdapterFactory<Effect> effectAdapter = RuntimeTypeAdapterFactory.of(Effect.class,"type");
+		RuntimeTypeAdapterFactory<ExcommunicationPermanentEffect> effectAdapter = RuntimeTypeAdapterFactory.of(ExcommunicationPermanentEffect.class,"type");
 		subEffectRegister(effectAdapter,excommunication);
 		HashMap<Integer,Excommunication> excommunicationHashMap = new HashMap<Integer,Excommunication>();
 		Gson gson = new GsonBuilder().registerTypeAdapterFactory(effectAdapter).create();
@@ -254,27 +253,32 @@ public class GsonReader {
 		return excommunicationHashMap;
 	}
 	public static void configLoader(Room room){
-		JsonReader jsonReader;
+		JsonReader jsonReader = null;
 		try {
 			jsonReader = new JsonReader(new FileReader("./src/main/java/it/polimi/LM39/jsonfiles/config/gameconfiguration.json"));
-
-		Gson gson = new GsonBuilder().create();  
-		jsonReader.beginObject();
-		while(jsonReader.hasNext()){
-			String timeOutToExtract = "";
-			if(("NAME").equals(jsonReader.peek().toString()))
-				timeOutToExtract = jsonReader.nextName();
-			if(("gameStartTimeOut").equals(timeOutToExtract)){
-				room.setRoomTimeout(gson.fromJson(jsonReader,long.class));
+			Gson gson = new GsonBuilder().create();  
+			jsonReader.beginObject();
+			while(jsonReader.hasNext()){
+				String timeOutToExtract = "";
+				if(("NAME").equals(jsonReader.peek().toString()))
+					timeOutToExtract = jsonReader.nextName();
+				if(("gameStartTimeOut").equals(timeOutToExtract)){
+					room.setRoomTimeout(gson.fromJson(jsonReader,long.class));
+				}
+				else if(("playerMoveTimeOut").equals(timeOutToExtract))
+					room.setPlayerMoveTimeout(gson.fromJson(jsonReader,long.class));
+				else
+					gson.fromJson(jsonReader, Object.class);
 			}
-			else if(("playerMoveTimeOut").equals(timeOutToExtract))
-				room.setPlayerMoveTimeout(gson.fromJson(jsonReader,long.class));
-			else
-				gson.fromJson(jsonReader, Object.class);
-		}
 		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			logger.log(Level.WARNING,"Failed to read file" , e);
+		} finally {
+			try {
+				jsonReader.close();
+			} catch (IOException e) {
+				logger.log(Level.WARNING,"Failed to access file" , e);
+			}
+		}	
 	}
 	public void configLoader(MainBoard mainBoard) throws IOException{
 		ActionBonus[][] bonuses = new ActionBonus[4][4]; 

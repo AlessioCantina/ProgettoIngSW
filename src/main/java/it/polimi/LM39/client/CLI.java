@@ -132,7 +132,6 @@ public class CLI extends UserInterface{
 		Integer [][] cardsNumberOnTowers = mainBoard.getCardsOnTheTowers();
 		FamilyMembersLocation familyMemberPositions = mainBoard.familyMembersLocation;
 		FamilyMember[][] familyOnTowers = familyMemberPositions.getFamilyMembersOnTheTowers();
-		try{
 		System.out.println("╔══════════════════════╦═══════════════╦══════════════════════╦═══════════════╦══════════════════════╦═══════════════╦══════════════════════╦═══════════════╗");
 		System.out.printf("║%-22s║%-15s║%-22s║%-15s║%-22s║%-15s║%-22s║%-15s║%n"
 		,this.getCardOnTower(cardsOnTowers[0][0],cardsNumberOnTowers[0][0])," "+this.tilePrinter(familyOnTowers[0][0],new int[]{0,0},"tower").substring(0, this.tilePrinter(familyOnTowers[0][0],new int[]{0,0},"tower").indexOf(' '))
@@ -179,9 +178,6 @@ public class CLI extends UserInterface{
 		,this.tilePrinter(familyOnTowers[3][3], new int[]{3,3},"familymember").substring(this.tilePrinter(familyOnTowers[3][3], new int[]{3,3},"familymember").indexOf(' ')));
 		System.out.println("╚══════════════════════╩═══════════════╩══════════════════════╩═══════════════╩══════════════════════╩═══════════════╩══════════════════════╩═══════════════╝");
 		System.out.printf("%n");
-		}catch(Exception e){
-			e.printStackTrace();
-		}
 	}
 	/*
 	 * print the market zone, if a space is empty print the space bonuses

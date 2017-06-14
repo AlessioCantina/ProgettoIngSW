@@ -21,9 +21,11 @@ public class SocketClient extends AbstractClient implements Runnable{
 	private Socket socket;
 	private ObjectOutputStream socketOut;
 	private ObjectInputStream socketIn;
+	private long clientTimeout = 10000;
 
-
-
+	public void setClientTimeout(long timeout){
+		this.clientTimeout = timeout;
+	}
 
     /*
 	 * set the socket properties and initialize the stream
@@ -48,36 +50,44 @@ public class SocketClient extends AbstractClient implements Runnable{
     @Override
     public void run(){
     	Logger logger = Logger.getLogger(SocketClient.class.getName());
-    	Object temp;
+    	Object objectGrabber;
     	NetworkPlayer player = null;
-    		while (true){	
+    		while (!socket.isClosed()){	
     			try{
     				while(socketIn.read() != 0){
-    					temp = socketIn.readObject();
-    					if(temp instanceof NetworkPlayer)
-    						player = (NetworkPlayer) temp;
-    					if(temp instanceof MainBoard){
-    						UI.setCurrentMainBoard((MainBoard)temp);
+    					objectGrabber = socketIn.readObject();
+    					if(objectGrabber instanceof NetworkPlayer)
+    						player = (NetworkPlayer) objectGrabber;
+    					if(objectGrabber instanceof MainBoard){
+    						UI.setCurrentMainBoard((MainBoard)objectGrabber);
     					}	
-    					if(temp instanceof Boolean){
+    					if(objectGrabber instanceof Boolean){
                 			UI.printMessage((socketIn.readUTF()));
                 			socket.setSoTimeout(500);
     					}
     				}
-    			}catch (IOException | ClassNotFoundException socketException) {
-    				if(socketException instanceof SocketTimeoutException){
-    					try {
-    							socketOut.writeUTF(UI.askClient(player));
+    			}catch (SocketTimeoutException socketException) {
+    				try {
+    						long moveStartTime = System.currentTimeMillis();
+    						socketOut.writeUTF(UI.askClient(player));
+    						if(System.currentTimeMillis() - moveStartTime < clientTimeout){
     							socketOut.flush();
     							socket.setSoTimeout(0);
-    							
-    					}catch (IOException writeException) {
+    						}
+    						else{
+    							UI.printMessage("Client timedout. Please reconnect to play again");
+    							socketOut.writeUTF("Client timedout");
+    							socketOut.flush();
+    							socket.close();
+    						}
+    				}catch (IOException writeException) {
     						logger.log(Level.SEVERE, "Can't write on socket", writeException);
-    					}
     				}
-    				else
-    					logger.log(Level.SEVERE, "Socket exception", socketException);
-    			} 			
+    			} catch (ClassNotFoundException e) {
+    				logger.log(Level.SEVERE, "Object class not found", e);
+				} catch (IOException e) {
+					logger.log(Level.SEVERE, "Can't write on socket", e);
+				} 			
     		}
     }
 }
