@@ -62,8 +62,9 @@ public class SocketClient extends AbstractClient implements Runnable{
     						UI.setCurrentMainBoard((MainBoard)objectGrabber);
     					}	
     					if(objectGrabber instanceof Boolean){
-                			UI.printMessage((socketIn.readUTF()));
-                			socket.setSoTimeout(500);
+    						UI.printMessage((socketIn.readUTF()));
+    						if((Boolean)objectGrabber)
+    							socket.setSoTimeout(500);
     					}
     				}
     			}catch (SocketTimeoutException socketException) {
@@ -89,6 +90,6 @@ public class SocketClient extends AbstractClient implements Runnable{
 					logger.log(Level.SEVERE, "Can't write on socket", e);
 				} 			
     		}
-    }
+    	}
 }
 

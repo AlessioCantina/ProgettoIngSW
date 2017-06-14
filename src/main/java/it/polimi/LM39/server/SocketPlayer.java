@@ -15,9 +15,7 @@ import java.util.logging.Logger;
  * this is the server side, so we send objects and strings and receive strings from client
  */
 public class SocketPlayer extends NetworkPlayer implements Runnable{
-	/*
-	 * 
-	 */
+
 		private transient Logger logger = Logger.getLogger(SocketPlayer.class.getName());
 		private static final long serialVersionUID = 1975895874697189786L;
 		private transient Socket socket;
@@ -31,7 +29,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    private transient boolean requestedMessage;
 	    protected static transient Object LOCK = new Object();
 	    private static transient Object CLIENT_LOCK = new Object();
-    	
+    	private Boolean requestedResponse;
 	    /*
 	     * the constructor initialize the streams and start the thread
 	     */
@@ -45,7 +43,6 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	          this.objOutput = new ObjectOutputStream(this.socket.getOutputStream()); 
 	          this.objOutput.flush();	//needed to avoid deadlock
 	          this.objInput = new ObjectInputStream(new BufferedInputStream(this.socket.getInputStream()));
-	          
 	    }
 	    /*
 	     * used from the controller to set what we want to send
@@ -54,9 +51,17 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    		mainBoard = mainboard;
 	    		requestedMainboard = true;
 	    }
+	    public void setMessageNoResponse(String controllerMessage){
+	    	requestedResponse = false;
+	    	playerSetMessage(controllerMessage);
+	    }
 	    public void setMessage(String controllerMessage){
+	    	requestedResponse = true;
+	    	playerSetMessage(controllerMessage);
+	    }
+	    private void playerSetMessage(String playerMessage){
 	    	synchronized(LOCK){
-	    		message = controllerMessage;
+	    		message = playerMessage;
 	    		requestedMessage = true;
 	    		try {
 	    			LOCK.wait();
@@ -79,15 +84,19 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 					Thread.currentThread().interrupt();
 				}
 	    	}
-	    	while(true){
-	    		if(requestedMainboard){
-	    			sendMainBoardToClient();
-	    		}
-	    		if(requestedMessage){
-	    			sendMessageToClient();
-	    		}
-	    		receiveFromClient();
-	    	}
+	    	try {
+				while(requestedMainboard || requestedMessage || objInput.read() != 0){
+					if(requestedMainboard){
+						sendMainBoardToClient();
+					}
+					if(requestedMessage){
+						sendMessageToClient();
+					}
+					receiveFromClient();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 	    }
 	    private synchronized void sendMainBoardToClient(){
 	    		try{
@@ -104,9 +113,8 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    private void sendMessageToClient(){
 	    	System.out.println("Invio Messaggio");
 	    	synchronized(LOCK){
-	    		Boolean enableMessage = true;
 	    		try{
-	    			objOutput.writeObject(enableMessage);
+	    			objOutput.writeObject(requestedResponse);
 	    			objOutput.writeUTF(message);
 	    			objOutput.flush();
 	    			requestedMessage = false;
@@ -118,15 +126,15 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 		}
 	    private void receiveFromClient(){
 	    	synchronized(CLIENT_LOCK){
-    		try{
-    			if(objInput.available() > 0){
-    				clientAction = objInput.readUTF();
-    				System.out.println(clientAction);
-    				CLIENT_LOCK.notifyAll();
-    			}	    		
-	    	}catch (Exception e) {
+	    		try{
+	    			if(objInput.available() > 0){
+	    				clientAction = objInput.readUTF();
+	    				System.out.println(clientAction);
+	    				CLIENT_LOCK.notifyAll();
+	    			}	    		
+	    		}catch (Exception e) {
 	    		logger.log(Level.WARNING, "Can't read input on stream", e);
-	        }
+	    		}
 	    	}
 	    }
 	    /*
@@ -141,7 +149,6 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 						Thread.currentThread().interrupt();
 					}
 	    		}
-	    	    	
 	    	String stringToSet = clientAction;
 	    	clientAction = "";
 	    	return stringToSet;
