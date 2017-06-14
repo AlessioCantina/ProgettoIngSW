@@ -21,7 +21,7 @@ public class SocketClient extends AbstractClient implements Runnable{
 	private Socket socket;
 	private ObjectOutputStream socketOut;
 	private ObjectInputStream socketIn;
-	private long clientTimeout = 10000;
+	private long clientTimeout = 1000000;
 
 	public void setClientTimeout(long timeout){
 		this.clientTimeout = timeout;
@@ -62,9 +62,9 @@ public class SocketClient extends AbstractClient implements Runnable{
     						UI.setCurrentMainBoard((MainBoard)objectGrabber);
     					}	
     					if(objectGrabber instanceof Boolean){
-    						UI.printMessage((socketIn.readUTF()));
     						if((Boolean)objectGrabber)
     							socket.setSoTimeout(500);
+    						UI.printMessage((socketIn.readUTF()));
     					}
     				}
     			}catch (SocketTimeoutException socketException) {

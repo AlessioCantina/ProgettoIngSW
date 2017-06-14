@@ -29,7 +29,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    private transient boolean requestedMessage;
 	    protected static transient Object LOCK = new Object();
 	    private static transient Object CLIENT_LOCK = new Object();
-    	private Boolean requestedResponse;
+    	private Boolean requestedResponse = false;
 	    /*
 	     * the constructor initialize the streams and start the thread
 	     */
@@ -48,15 +48,10 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	     * used from the controller to set what we want to send
 	     */
 	    public void setMessage(MainBoard mainboard){
-	    		mainBoard = mainboard;
-	    		requestedMainboard = true;
-	    }
-	    public void setMessageNoResponse(String controllerMessage){
-	    	requestedResponse = false;
-	    	playerSetMessage(controllerMessage);
+	    	mainBoard = mainboard;
+	    	requestedMainboard = true;
 	    }
 	    public void setMessage(String controllerMessage){
-	    	requestedResponse = true;
 	    	playerSetMessage(controllerMessage);
 	    }
 	    private void playerSetMessage(String playerMessage){
@@ -84,14 +79,20 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 					Thread.currentThread().interrupt();
 				}
 	    	}
-			while(true){
+			while(!socket.isClosed()){
 					if(requestedMainboard){
 						sendMainBoardToClient();
 					}
 					if(requestedMessage){
 						sendMessageToClient();
 					}
-					receiveFromClient();
+					if(requestedResponse)
+						receiveFromClient();
+					try {
+						Thread.sleep(50);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}	
 				}
 	    }
 	    private synchronized void sendMainBoardToClient(){
@@ -110,10 +111,10 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    	System.out.println("Invio Messaggio");
 	    	synchronized(LOCK){
 	    		try{
-	    			objOutput.writeObject(requestedResponse);
+	    			requestedMessage = false;
+	    			objOutput.writeObject(requestedMessage);
 	    			objOutput.writeUTF(message);
 	    			objOutput.flush();
-	    			requestedMessage = false;
 	    		}catch (Exception e){
 	    			logger.log(Level.WARNING, "Can't write strings on stream", e);
 	    		}
@@ -140,8 +141,11 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    	synchronized(CLIENT_LOCK){
 	    		while(("").equals(clientAction)){
 	    			try {
+	    				requestedResponse = true;
+	    				objOutput.writeObject(requestedResponse);
+	    				objOutput.flush();
 						CLIENT_LOCK.wait();
-					} catch (InterruptedException e) {
+					} catch (InterruptedException | IOException e) {
 						Thread.currentThread().interrupt();
 					}
 	    		}
