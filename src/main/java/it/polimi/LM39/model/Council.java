@@ -41,6 +41,6 @@ public class Council implements Serializable{
 
     public CardPoints bonus4 = new CardPoints(); 
 
-    public CardPoints bonus5 = new CardPoints(); ;
+    public CardPoints bonus5 = new CardPoints();
 
 }

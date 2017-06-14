@@ -100,7 +100,8 @@ public class Game implements Runnable{
     private void playerAction(NetworkPlayer player){
     	player.setMessage("What action do you want to perform?");
     	String response = player.sendMessage();
-    	boolean flag = false;
+    	//flag is false by default
+    	boolean flag;
     	if(("get card").equals(response)){
     		player.setMessage("What card do you want?");
     		response = player.sendMessage();
@@ -316,7 +317,7 @@ public class Game implements Runnable{
     
     private void searchCard(String cardName,NetworkPlayer player) throws SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, CardNotFoundException{
     	CardHandler cardHandler = new CardHandler(gameHandler);
-    	int p = 0; int k = 0; int j = 0; int i = 0;
+    	int p = 0; int k = 0; int j = 0; int i;
     	Integer cardNumber = -1;
     	String cardType = "";
     	for(i=0;i<4;i++)
@@ -560,11 +561,11 @@ public class Game implements Runnable{
 
     private void chooseLeaderCard(){
     	//creating an array list of leaders names randomly ordinated
-    	ArrayList<String> leaders = new ArrayList<String>();
+    	ArrayList<String> leaders;
     	leaders = gameHandler.mainBoard.leaderName;
     	Collections.shuffle(leaders);
-    	int j=0;
-    	String response = "";
+    	int j;
+    	String response;
     	for(int i=4,n=0;i>0;i--,n++)
     		//send to the players the cards he should choose one every time 
     		for(int playerNumber=0,k=0;playerNumber<players.size();){
@@ -609,7 +610,7 @@ public class Game implements Runnable{
     }
     
     private void chooseBonusTile(){
-    	int i = 0;
+    	int i;
     	CardHandler cardHandler = new CardHandler(gameHandler);
     	for(int playerNumber = 0; playerNumber < players.size();){
     		NetworkPlayer player = players.get(playerNumber);

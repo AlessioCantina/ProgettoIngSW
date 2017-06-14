@@ -237,7 +237,7 @@ public class GameHandler {
     }
     
     public boolean addFamilyMemberToTheTower(FamilyMember familyMember , String cardName, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, CardNotFoundException {
-        int i,j = 0;
+        int i,j;
         boolean coloredFamilyMemberOnTheTower = false;
         boolean uncoloredFamilyMemberOnTheTower = false;
         String[][] CardNamesOnTheTowers = mainBoard.getCardNamesOnTheTowers();
@@ -259,7 +259,7 @@ public class GameHandler {
         	}
         System.out.println(p + " " + k);
         //to store i and j as the coordinates of the position interested, the if check if the player can get the card with a specific family member
-        if(familyMembersOnTheTowers[p][k].color.equals("") && (familyMemberValue(familyMember,player) >= (mainBoard.getTowersValue())[p][k])){
+        if(("").equals(familyMembersOnTheTowers[p][k].color) && (familyMemberValue(familyMember,player) >= (mainBoard.getTowersValue())[p][k])){
         	//if the place is free and the family member has an high enough value, ((i+1)*2)-1 is to convert the value i of the matrix to the value of the floor in dice
         	for(i=0;i<4;i++){
         		if((familyMembersOnTheTowers[i][k].playerColor).equals(familyMember.playerColor)){
@@ -299,7 +299,7 @@ public class GameHandler {
         		//TODO delete
         		System.out.println("here3");
         		//if there is none of my family members
-        		for(i=0;i<4 && familyMembersOnTheTowers[i][k].playerColor.equals("");i++){}
+        		for(i=0;i<4 && ("").equals(familyMembersOnTheTowers[i][k].playerColor);i++){}
         		if(i==4 && getCard(cardNameToInteger(cardName),player,k)){
         			//TODO delete
             		System.out.println("here4");
@@ -460,7 +460,7 @@ public class GameHandler {
 
     public boolean addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException {
     	FamilyMember[] familyMembersAtTheMarket = player.personalMainBoard.familyMembersLocation.getFamilyMembersOnTheMarket(); // we use the player Personal MainBaord
-        if(familyMembersAtTheMarket[position-1].color.equals("") && (position-1)<=mainBoard.marketSize){ 
+        if(("").equals(familyMembersAtTheMarket[position-1].color) && (position-1)<=mainBoard.marketSize){ 
         	if(familyMemberValue(familyMember,player)>=1){
         	if(position==1 || position==2 || position==3 || position==4)
         		setActionBonus(player.personalMainBoard.marketBonuses[position-1],player);
@@ -492,7 +492,7 @@ public class GameHandler {
     		for(i=0;i<mainBoard.harvestAndProductionSize && i<familyMembersAtProductionOrHarvest.size() && !(familyMembersAtProductionOrHarvest.get(i).playerColor).equals(familyMember.playerColor);i++){}
     		if(i==familyMembersAtProductionOrHarvest.size()){
     			//if there isn't any of my family Members
-    			for(i=0;i<mainBoard.harvestAndProductionSize && i<familyMembersAtProductionOrHarvest.size() && !familyMembersAtProductionOrHarvest.get(i).equals("");i++){}
+    			for(i=0;i<mainBoard.harvestAndProductionSize && i<familyMembersAtProductionOrHarvest.size() && !("").equals(familyMembersAtProductionOrHarvest.get(i).playerColor);i++){}
     			//move i to the first free slot
     			if(i<mainBoard.harvestAndProductionSize){
     				//if there is place in the Production Area
@@ -534,7 +534,7 @@ public class GameHandler {
     				player.setMessage("You can't place another family member");
     				return false;
     			}	
-    			for(i=0;i<mainBoard.harvestAndProductionSize && i<familyMembersAtProductionOrHarvest.size() && !familyMembersAtProductionOrHarvest.get(i).playerColor.equals("");i++){}
+    			for(i=0;i<mainBoard.harvestAndProductionSize && i<familyMembersAtProductionOrHarvest.size() && !("").equals(familyMembersAtProductionOrHarvest.get(i).playerColor);i++){}
     			//move i to the first free slot
     			if(j==-1){
     				//if there is a colored family member
@@ -708,7 +708,7 @@ public class GameHandler {
     public ArrayList<PlayerRank> calculateFinalPoints(ArrayList<NetworkPlayer> players) {
         Integer finalPoints;
         ArrayList<PlayerRank> list = new ArrayList<PlayerRank>();
-        boolean flag = true;
+        boolean flag;
         //use the method calculateMilitaryStrenght(); to create the arraylist of the first and second position of the military strenght
         ArrayList<PlayerRank> militaryStrenght = calculateMilitaryStrenght();
     	
@@ -724,17 +724,27 @@ public class GameHandler {
         		}
         	switch (player.personalBoard.getPossessions("Territory").size()){
 	        	case(3): finalPoints += 1;
+	        		break;
 	        	case(4): finalPoints += 4;
+	        		break;
 	        	case(5): finalPoints += 10;
+	        		break;
 	        	case(6): finalPoints += 20;
+	        		break;
         	}
         	switch (player.personalBoard.getPossessions("Character").size()){
         		case(1): finalPoints += 1;
+        			break;
         		case(2): finalPoints += 3;
+        			break;
         		case(3): finalPoints += 6;
+        			break;
 	        	case(4): finalPoints += 10;
+	        		break;
 	        	case(5): finalPoints += 15;
+	        		break;
 	        	case(6): finalPoints += 21;
+	        		break;
         	}
         	flag=true;
         	for(Integer excommunicationNumber : player.getExcommunications())
