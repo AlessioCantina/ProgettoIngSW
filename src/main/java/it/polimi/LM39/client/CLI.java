@@ -191,7 +191,7 @@ public class CLI extends UserInterface{
 		FamilyMembersLocation location = mainBoard.familyMembersLocation;
 		FamilyMember[] market = location.getFamilyMembersOnTheMarket();
 		int i = 0;
-		while(i < marketSize){
+		while(i < 2){		//TODO ADAPT TO MARKETSIZE
 			System.out.println("╔══════════════════════════════╗");
 			if(("").equals(this.getFamilyMemberColor(market[i])))
 				System.out.printf("║%-30s║%n",this.tilePrinter(market[i], new int[]{i,0}, "market"));
@@ -463,11 +463,13 @@ public class CLI extends UserInterface{
 			response = response.toLowerCase();
 			stringController = Action.isIn(response);
 			if(stringController == Action.CONTROLLER.toString() && firstMessage){
-				System.out.println("CONTROLLER");
 				firstMessage = false;
-				System.out.println(response);
 				return response;
 			}
+			else if(stringController == Action.CONTROLLER_SPECIAL.toString() && firstMessage)
+				return response;
+			else if(mainBoard.leaderName.contains(response) && firstMessage)
+				return response;
 			else if(stringController == Action.CLI.toString()){
 				Method lMethod = null;
 				try {

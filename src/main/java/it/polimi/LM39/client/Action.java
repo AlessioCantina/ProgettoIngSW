@@ -5,9 +5,10 @@ package it.polimi.LM39.client;
  */
 public enum Action {
 	CONTROLLER (new String[]{"GET CARD","ACTIVATE PRODUCTION","ACTIVATE HARVEST","DISCARD LEADER","ACTIVATE LEADER","GO TO THE MARKET",
-	"GO TO THE COUNCIL PALACE","SKIP ACTION","GET CARD INFO","1","2","3","4"}),
+	"GO TO THE COUNCIL PALACE","SKIP ACTION","GET CARD INFO",}),
 	CLI (new String[]{"DISPLAY MAINBOARD","DISPLAY MARKET","DISPLAY COUNCIL","DISPLAY HARVEST AND PRODUCTION","DISPLAY POSSESSED CARDS","DISPLAY MENU",
-	"DISPLAY DICES VALUES","DISPLAY RANKINGS","DISPLAY RESOURCES"});
+	"DISPLAY DICES VALUES","DISPLAY RANKINGS","DISPLAY RESOURCES"}),
+	CONTROLLER_SPECIAL (new String[]{"1","2","3","4"});
 
 	private String[] actions;
 	
@@ -20,8 +21,9 @@ public enum Action {
 	 */
 	static void printAvailableActions(){
 		for(Action possibleActions : Action.values())
-			for(String actionName : possibleActions.actions)
-				System.out.println(actionName.toLowerCase());
+			if(possibleActions != CONTROLLER_SPECIAL)
+				for(String actionName : possibleActions.actions)
+					System.out.println(actionName.toLowerCase());
 	}
 	/*
 	 * checks if the client action is in the possible actions (in the enum) and return which part

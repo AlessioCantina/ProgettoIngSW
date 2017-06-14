@@ -253,6 +253,29 @@ public class GsonReader {
 		jsonReader.close();
 		return excommunicationHashMap;
 	}
+	public static void configLoader(Room room){
+		JsonReader jsonReader;
+		try {
+			jsonReader = new JsonReader(new FileReader("./src/main/java/it/polimi/LM39/jsonfiles/config/gameconfiguration.json"));
+
+		Gson gson = new GsonBuilder().create();  
+		jsonReader.beginObject();
+		while(jsonReader.hasNext()){
+			String timeOutToExtract = "";
+			if(("NAME").equals(jsonReader.peek().toString()))
+				timeOutToExtract = jsonReader.nextName();
+			if(("gameStartTimeOut").equals(timeOutToExtract)){
+				room.setRoomTimeout(gson.fromJson(jsonReader,long.class));
+			}
+			else if(("playerMoveTimeOut").equals(timeOutToExtract))
+				room.setPlayerMoveTimeout(gson.fromJson(jsonReader,long.class));
+			else
+				gson.fromJson(jsonReader, Object.class);
+		}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	public void configLoader(MainBoard mainBoard) throws IOException{
 		ActionBonus[][] bonuses = new ActionBonus[4][4]; 
 		JsonReader jsonReader = new JsonReader(new FileReader("./src/main/java/it/polimi/LM39/jsonfiles/config/gameconfiguration.json"));
@@ -270,10 +293,8 @@ public class GsonReader {
 					mainBoard.marketBonuses = gson.fromJson(jsonReader,mainBoard.marketBonuses.getClass());
 				else if(("councilPalaceBonus").equals(configToExtract))
 					mainBoard.councilPalaceBonus = gson.fromJson(jsonReader,mainBoard.councilPalaceBonus.getClass());
-				else if(("gameStartTimeOut").equals(configToExtract))
-					Room.setRoomTimeout(gson.fromJson(jsonReader,long.class));
-				else if(("playerMoveTimeOut").equals(configToExtract))
-					Room.setPlayerMoveTimeout(gson.fromJson(jsonReader,long.class));
+				else 
+					gson.fromJson(jsonReader, long.class);
 		}
 		mainBoard.setTowersBonuses(bonuses);
 		jsonReader.close();	
@@ -302,7 +323,7 @@ public class GsonReader {
 		 mainBoard.ventureMap = (HashMap<Integer,Venture>)hashMapCreator(venture);	
 		 mainBoard.leaderMap = hashMapCreator(leader,mainBoard);
 		 mainBoard.excommunicationMap = hashMapCreator(excommunication);
-		 this.configLoader(mainBoard);
 		 this.personalTileLoader(mainBoard);
+		 this.configLoader(mainBoard);
 	 }
 }

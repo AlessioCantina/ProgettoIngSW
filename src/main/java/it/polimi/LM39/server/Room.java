@@ -1,6 +1,7 @@
 package it.polimi.LM39.server;
 
 import it.polimi.LM39.controller.*;
+
 import java.util.*;
 
 /*
@@ -23,14 +24,15 @@ public class Room implements Runnable{
     	players = new ArrayList<NetworkPlayer>();
     	roomState = false;
     	roomCounter++;
+    	GsonReader.configLoader(this);
     }
     public Boolean getRoomState(){
     	return this.roomState;
     }
-    public static void setRoomTimeout(long roomStartTimeOut){
+    public void setRoomTimeout(long roomStartTimeOut){
     	roomStartTimeout = roomStartTimeOut;
     }
-    public static void setPlayerMoveTimeout(long playerMoveTimeOut){
+    public void setPlayerMoveTimeout(long playerMoveTimeOut){
     	playerMoveTimeout = playerMoveTimeOut;
     }
     /*
