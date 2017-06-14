@@ -210,19 +210,19 @@ public class CLI extends UserInterface{
 		System.out.println("Victory Rankings:");
 		while(iterator.hasNext()){
 			currentRank = iterator.next();
-			System.out.println(currentRank.playerNickName + ": " + currentRank.getPlayerPoints());
+			System.out.println(currentRank.playerColor + ": " + currentRank.getPlayerPoints());
 		}
 		iterator = militaryRank.iterator();
 		System.out.println("Military Rankings:");
 		while(iterator.hasNext()){
 			currentRank = iterator.next();
-			System.out.println(currentRank.playerNickName + ": " + currentRank.getPlayerPoints());
+			System.out.println(currentRank.playerColor + ": " + currentRank.getPlayerPoints());
 		}
 		iterator = faithRank.iterator();
 		System.out.println("Faith Rankings:");
 		while(iterator.hasNext()){
 			currentRank = iterator.next();
-			System.out.println(currentRank.playerNickName + ": " + currentRank.getPlayerPoints());
+			System.out.println(currentRank.playerColor + ": " + currentRank.getPlayerPoints());
 		}
 		System.out.printf("%n");
 	}

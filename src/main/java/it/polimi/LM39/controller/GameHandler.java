@@ -719,7 +719,7 @@ public class GameHandler {
         	finalPoints = player.points.getVictory();
         	
         	for(PlayerRank playerRank : militaryStrenght)
-        		if(player.nickname.equals(playerRank.playerNickName)){
+        		if(player.playerColor.equals(playerRank.playerColor)){
         			if(playerRank.getPlayerPoints() == 1)
         				finalPoints+=5;
         			else
@@ -759,7 +759,7 @@ public class GameHandler {
         	finalPoints += ((player.resources.getCoins()+player.resources.getWoods()+player.resources.getStones()+player.resources.getServants())/5);
         	PlayerRank playerRank = new PlayerRank();
         	playerRank.setPlayerPoints(finalPoints);
-        	playerRank.playerNickName=player.nickname;
+        	playerRank.playerColor=player.playerColor;
         list.add(playerRank);		
     	}
     	return list;
@@ -776,7 +776,7 @@ public class GameHandler {
     	for(int i =0; i< mainBoard.rankings.getMilitaryRanking().size();i++)
     		if(mainBoard.rankings.getMilitaryRanking().get(i).getPlayerPoints()==max){
     			PlayerRank playerRank = new PlayerRank();
-    			playerRank.playerNickName = mainBoard.rankings.getMilitaryRanking().get(i).playerNickName;
+    			playerRank.playerColor = mainBoard.rankings.getMilitaryRanking().get(i).playerColor;
     			//setting points to 1 for indicating that this player is first
     			playerRank.setPlayerPoints(1);
     			list.add(playerRank);
@@ -794,7 +794,7 @@ public class GameHandler {
         	for(int i =0; i< mainBoard.rankings.getMilitaryRanking().size();i++)
         		if(mainBoard.rankings.getMilitaryRanking().get(i).getPlayerPoints()==max2){
         			PlayerRank playerRank = new PlayerRank();
-        			playerRank.playerNickName = mainBoard.rankings.getMilitaryRanking().get(i).playerNickName;
+        			playerRank.playerColor = mainBoard.rankings.getMilitaryRanking().get(i).playerColor;
         			//setting points to 2 for indicating that this player is second
         			playerRank.setPlayerPoints(2);
         			list.add(playerRank);
@@ -861,15 +861,15 @@ public class GameHandler {
     public void updateRankings (NetworkPlayer player){
     	//set faith points
     	for(PlayerRank playerFaithRank : mainBoard.rankings.getFaithRanking())
-    		if((playerFaithRank.playerNickName).equals(player.nickname))
+    		if((playerFaithRank.playerColor).equals(player.playerColor))
     			playerFaithRank.setPlayerPoints(player.points.getFaith());
     	//set military points
     	for(PlayerRank playerMilitaryRank : mainBoard.rankings.getMilitaryRanking())
-    		if((playerMilitaryRank.playerNickName).equals(player.nickname))
+    		if((playerMilitaryRank.playerColor).equals(player.playerColor))
     			playerMilitaryRank.setPlayerPoints(player.points.getMilitary());
     	//set victory points
     	for(PlayerRank playerVictoryRank : mainBoard.rankings.getVictoryRanking())
-    		if((playerVictoryRank.playerNickName).equals(player.nickname))
+    		if((playerVictoryRank.playerColor).equals(player.playerColor))
     			playerVictoryRank.setPlayerPoints(player.points.getVictory());
     }
     

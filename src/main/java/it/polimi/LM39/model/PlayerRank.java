@@ -8,7 +8,7 @@ public class PlayerRank implements Serializable{
 	
 	private Integer points = 0;
 	
-	public String playerNickName;
+	public String playerColor;
 
     
     public Integer getPlayerPoints() {

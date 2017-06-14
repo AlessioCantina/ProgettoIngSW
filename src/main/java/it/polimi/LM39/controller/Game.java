@@ -458,17 +458,17 @@ public class Game implements Runnable{
     	ArrayList<PlayerRank> militaryRanking = new ArrayList<PlayerRank>();
     	for (NetworkPlayer player : players){
     		PlayerRank playerRankFaith = new PlayerRank();
-    		playerRankFaith.playerNickName = player.nickname;
+    		playerRankFaith.playerColor = player.playerColor;
     		playerRankFaith.setPlayerPoints(0);
     		faithRanking.add(playerRankFaith);
     		
     		PlayerRank playerRankVictory = new PlayerRank();
-    		playerRankVictory.playerNickName = player.nickname;
+    		playerRankVictory.playerColor = player.playerColor;
     		playerRankVictory.setPlayerPoints(0);
     		victoryRanking.add(playerRankVictory);
     		
     		PlayerRank playerRankMilitary = new PlayerRank();
-    		playerRankMilitary.playerNickName = player.nickname;
+    		playerRankMilitary.playerColor = player.playerColor;
     		playerRankMilitary.setPlayerPoints(0);
     		militaryRanking.add(playerRankMilitary);
     	}
@@ -548,7 +548,7 @@ public class Game implements Runnable{
     private void sendFinalPoints (ArrayList<PlayerRank> finalScores){
     	for(NetworkPlayer player : players)
     		for(PlayerRank playerRank : finalScores){
-    			player.setMessage(playerRank.playerNickName + " made " + playerRank.getPlayerPoints());
+    			player.setMessage(playerRank.playerColor + " made " + playerRank.getPlayerPoints());
     		}
     }
     
