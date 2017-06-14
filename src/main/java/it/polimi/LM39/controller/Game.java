@@ -238,7 +238,7 @@ public class Game implements Runnable{
     			cardHandler.printCardPoints(bonus.points, player);
     		}
     		FamilyMember familyMember = handleFamilyMember(player);
-    		player.setMessage("In which position do you want to go? From 1 to 4");
+    		player.setMessage("In which position do you want to go? From 1 to " + gameHandler.mainBoard.marketSize);
     		flag = false;
     		response = player.sendMessage();
     		if(!("4").equals(response) && !("3").equals(response) && !("2").equals(response) && !("1").equals(response)){
