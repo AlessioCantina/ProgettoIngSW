@@ -84,8 +84,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 					Thread.currentThread().interrupt();
 				}
 	    	}
-	    	try {
-				while(requestedMainboard || requestedMessage || objInput.read() != 0){
+			while(true){
 					if(requestedMainboard){
 						sendMainBoardToClient();
 					}
@@ -94,9 +93,6 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 					}
 					receiveFromClient();
 				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 	    }
 	    private synchronized void sendMainBoardToClient(){
 	    		try{
