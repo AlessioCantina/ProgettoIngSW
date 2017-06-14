@@ -26,10 +26,6 @@ import com.google.gson.stream.JsonReader;
 public class GameHandler {
 	//TODO fix long throws with logger
 	private Logger logger = Logger.getLogger(GameHandler.class.getName());
-
-	public Integer marketSize;
-	
-	public Integer harvestAndProductionSize;
     
 	private Integer period;
 
@@ -464,7 +460,7 @@ public class GameHandler {
 
     public boolean addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException {
     	FamilyMember[] familyMembersAtTheMarket = player.personalMainBoard.familyMembersLocation.getFamilyMembersOnTheMarket(); // we use the player Personal MainBaord
-        if(familyMembersAtTheMarket[position-1].color.equals("") && (position-1)<=marketSize){ 
+        if(familyMembersAtTheMarket[position-1].color.equals("") && (position-1)<=mainBoard.marketSize){ 
         	if(familyMemberValue(familyMember,player)>=1){
         	if(position==1 || position==2 || position==3 || position==4)
         		setActionBonus(player.personalMainBoard.marketBonuses[position-1],player);
@@ -493,12 +489,12 @@ public class GameHandler {
     	boolean doAction;
     	//penalty in case of first slot already occupied 
     	Integer penalty=3;
-    		for(i=0;i<harvestAndProductionSize && i<familyMembersAtProductionOrHarvest.size() && !(familyMembersAtProductionOrHarvest.get(i).playerColor).equals(familyMember.playerColor);i++){}
+    		for(i=0;i<mainBoard.harvestAndProductionSize && i<familyMembersAtProductionOrHarvest.size() && !(familyMembersAtProductionOrHarvest.get(i).playerColor).equals(familyMember.playerColor);i++){}
     		if(i==familyMembersAtProductionOrHarvest.size()){
     			//if there isn't any of my family Members
-    			for(i=0;i<harvestAndProductionSize && i<familyMembersAtProductionOrHarvest.size() && !familyMembersAtProductionOrHarvest.get(i).equals("");i++){}
+    			for(i=0;i<mainBoard.harvestAndProductionSize && i<familyMembersAtProductionOrHarvest.size() && !familyMembersAtProductionOrHarvest.get(i).equals("");i++){}
     			//move i to the first free slot
-    			if(i<harvestAndProductionSize){
+    			if(i<mainBoard.harvestAndProductionSize){
     				//if there is place in the Production Area
     				if(i==0){
     					//if there is no one
@@ -525,7 +521,7 @@ public class GameHandler {
     		else{
     			//if there is already one of my family members
     			int j=0;
-    			for(i=0;i<harvestAndProductionSize && i<familyMembersAtProductionOrHarvest.size() ;i++){
+    			for(i=0;i<mainBoard.harvestAndProductionSize && i<familyMembersAtProductionOrHarvest.size() ;i++){
     				if((familyMembersAtProductionOrHarvest.get(i).playerColor).equals(familyMember.playerColor)){
     					if(("uncolored").equals(familyMembersAtProductionOrHarvest.get(i).color))
     						j++;
@@ -538,7 +534,7 @@ public class GameHandler {
     				player.setMessage("You can't place another family member");
     				return false;
     			}	
-    			for(i=0;i<harvestAndProductionSize && i<familyMembersAtProductionOrHarvest.size() && !familyMembersAtProductionOrHarvest.get(i).playerColor.equals("");i++){}
+    			for(i=0;i<mainBoard.harvestAndProductionSize && i<familyMembersAtProductionOrHarvest.size() && !familyMembersAtProductionOrHarvest.get(i).playerColor.equals("");i++){}
     			//move i to the first free slot
     			if(j==-1){
     				//if there is a colored family member

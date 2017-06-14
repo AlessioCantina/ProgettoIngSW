@@ -29,6 +29,10 @@ public class MainBoard implements Serializable{
     public Rankings rankings = new Rankings();
     
     public Integer[] militaryForTerritory = {3,7,12,18};
+    
+    public Integer marketSize;
+	
+	public Integer harvestAndProductionSize;
 
     private ActionBonus[][] towersBonuses = new ActionBonus[4][4]; //the bonuses are loaded from file
     
