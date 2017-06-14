@@ -442,7 +442,7 @@ public class GameHandler {
     public void subCardPoints (CardPoints points, NetworkPlayer player) throws NotEnoughPointsException{
     	PlayerPoints playerPoints = player.points;
     	playerPoints.setFaith(-points.faith);
-    	playerPoints.setFaith(-points.victory);
+    	playerPoints.setVictory(-points.victory);
     	playerPoints.setMilitary(-points.military);
     	//if any of the set above fails this line of code is never reached
     	player.points=playerPoints;
@@ -451,7 +451,7 @@ public class GameHandler {
     public void addCardPoints (CardPoints points, NetworkPlayer player) throws NotEnoughPointsException{
     	PlayerPoints playerPoints = player.points;
     	playerPoints.setFaith(points.faith);
-    	playerPoints.setFaith(points.victory);
+    	playerPoints.setVictory(points.victory);
     	playerPoints.setMilitary(points.military);
     	player.points=playerPoints;
     }
@@ -463,7 +463,7 @@ public class GameHandler {
 
     public boolean addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException {
     	FamilyMember[] familyMembersAtTheMarket = player.personalMainBoard.familyMembersLocation.getFamilyMembersOnTheMarket(); // we use the player Personal MainBaord
-        if(("").equals(familyMembersAtTheMarket[position-1].color) && (position-1)<=mainBoard.marketSize){ 
+        if(("").equals(familyMembersAtTheMarket[position-1].color) && (position-1)<mainBoard.marketSize){ 
         	if(familyMemberValue(familyMember,player)>=1){
         	if(position==1 || position==2 || position==3 || position==4)
         		setActionBonus(player.personalMainBoard.marketBonuses[position-1],player);

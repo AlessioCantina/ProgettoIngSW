@@ -64,14 +64,17 @@ public class Game implements Runnable{
     		gameHandler.mainBoard.marketSize = 2;
     	
     	gameHandler.initializeTheGame();
+    
+    	//set players action order
+    	Collections.shuffle(players);
+   
+    	//set player colors
+    	setPlayersColor(players);
     	
     	//load the Rankings
     	loadRankings();
     	
-    	//set players action order
-    	Collections.shuffle(players);
     	ArrayList<String> order = new ArrayList<String>();
-    	setPlayersColor(players);
     	for(NetworkPlayer player : players){
     		order.add(player.playerColor);
     	}
@@ -228,7 +231,7 @@ public class Game implements Runnable{
     	
     	else if (("go to the market").equals(response)){
     		CardHandler cardHandler = new CardHandler(gameHandler);
-    		for(int i =0;i<4;i++){
+    		for(int i =0;i<gameHandler.mainBoard.marketSize;i++){
     			ActionBonus bonus = gameHandler.mainBoard.marketBonuses[i];
     			player.setMessage("Market position " + (i+1) + " gives you:");
     			cardHandler.printCardResources(bonus.resources, player);
