@@ -91,6 +91,15 @@ public class Game implements Runnable{
 			
     }
     	updatePersonalMainBoards();
+    	
+    	
+    	//TODO DEBUG
+    	try {
+			testCards();
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException e) {
+			e.printStackTrace();
+		}
     
     }
     private void setPlayersColor(ArrayList<NetworkPlayer> players){
@@ -663,6 +672,64 @@ public class Game implements Runnable{
     	}
     }
 
+    
+    //TODO debug method to be removed
+    private void testCards() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+    	CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
+    	for(int i =1;i<=24;i++){
+    		players.get(0).setMessage("Territory");
+    		players.get(0).setMessage(gameHandler.mainBoard.territoryMap.get(i).cardName);
+    		cardHandler.getInfo(gameHandler.mainBoard.territoryMap.get(i).activationReward,players.get(0));
+    		cardHandler.getInfo(gameHandler.mainBoard.territoryMap.get(i).instantBonuses,players.get(0));players.get(0).setMessage(gameHandler.mainBoard.territoryMap.get(i).activationCost.toString());
+    		players.get(0).setMessage(gameHandler.mainBoard.territoryMap.get(i).period.toString());
+    		players.get(0).setMessage(" ");
+    	}
+    	for(int i =1;i<=24;i++){
+    		players.get(0).setMessage("Character");
+    		players.get(0).setMessage(gameHandler.mainBoard.characterMap.get(i).cardName);
+    		cardHandler.getInfo(gameHandler.mainBoard.characterMap.get(i).permanentEffect,players.get(0));
+    		cardHandler.getInfo(gameHandler.mainBoard.characterMap.get(i).instantBonuses,players.get(0));
+    		players.get(0).setMessage(gameHandler.mainBoard.characterMap.get(i).costCoins.toString());
+    		players.get(0).setMessage(gameHandler.mainBoard.characterMap.get(i).period.toString());
+    		players.get(0).setMessage(" ");
+    	}
+    	for(int i =1;i<=24;i++){
+    		players.get(0).setMessage("Building");
+    		players.get(0).setMessage(gameHandler.mainBoard.buildingMap.get(i).cardName);
+    		cardHandler.getInfo(gameHandler.mainBoard.buildingMap.get(i).activationEffect,players.get(0));
+    		cardHandler.printCardPoints(gameHandler.mainBoard.buildingMap.get(i).instantBonuses,players.get(0));
+    		cardHandler.printCardResources(gameHandler.mainBoard.buildingMap.get(i).costResources,players.get(0));
+    		players.get(0).setMessage(gameHandler.mainBoard.buildingMap.get(i).activationCost.toString());
+    		players.get(0).setMessage(gameHandler.mainBoard.buildingMap.get(i).period.toString());
+    		players.get(0).setMessage(" ");
+    	}
+    	for(int i =1;i<=24;i++){
+    		players.get(0).setMessage("Venture");
+    		players.get(0).setMessage(gameHandler.mainBoard.ventureMap.get(i).cardName);
+    		cardHandler.getInfo(gameHandler.mainBoard.ventureMap.get(i).instant,players.get(0));
+    		cardHandler.printCardResources(gameHandler.mainBoard.ventureMap.get(i).costResources,players.get(0));
+    		players.get(0).setMessage(gameHandler.mainBoard.ventureMap.get(i).costMilitary.toString());
+    		players.get(0).setMessage(gameHandler.mainBoard.ventureMap.get(i).finalVictory.toString());
+    		players.get(0).setMessage(gameHandler.mainBoard.ventureMap.get(i).neededMilitary.toString());
+    		players.get(0).setMessage(gameHandler.mainBoard.ventureMap.get(i).period.toString());
+    		players.get(0).setMessage(" ");
+    	}
+    	for(int i =0;i<20;i++){
+    		players.get(0).setMessage(gameHandler.mainBoard.leaderMap.get(gameHandler.mainBoard.leaderName.get(i)).cardName);
+    		cardHandler.getInfo(gameHandler.mainBoard.leaderMap.get(gameHandler.mainBoard.leaderName.get(i)).effect,players.get(0));
+    		cardHandler.getInfo(gameHandler.mainBoard.leaderMap.get(gameHandler.mainBoard.leaderName.get(i)).requestedObjects,players.get(0));
+    		players.get(0).setMessage(" ");
+    	}
+    	for(int i =1;i<=21;i++){
+    		cardHandler.getInfo(gameHandler.mainBoard.excommunicationMap.get(i).effect,players.get(0));
+    		players.get(0).setMessage(gameHandler.mainBoard.excommunicationMap.get(i).period.toString());
+    		players.get(0).setMessage(" ");
+    	}
+    	
+    	
+    	
+    	
+    	}
     
     /*
     public static void main(String[] args) throws FailedToReadFileException, FailedToRegisterEffectException, IOException {
