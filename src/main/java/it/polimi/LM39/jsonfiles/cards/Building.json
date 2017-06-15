@@ -116,7 +116,7 @@
          "activationEffect":{  
             "type":"VictoryForCard",
             "cardType":"Character",
-            "cardValue":1
+            "victoryQty":1
          }
       },
       {  

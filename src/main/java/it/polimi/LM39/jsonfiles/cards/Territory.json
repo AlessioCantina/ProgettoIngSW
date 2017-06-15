@@ -419,7 +419,7 @@
       },
       {  
          "cardName":"Farm",
-         "perdiod":3,
+         "period":3,
          "activationCost":3,
          "instantBonuses":{  
             "type":"ResourcesAndPoints",

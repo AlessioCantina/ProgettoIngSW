@@ -143,9 +143,11 @@
          "costCoins":5,
          "instantBonuses":{  
             "type":"Points",
-            "victory":0,
-            "faith":3,
-            "military":0
+	     "points":{
+            	"victory":0,
+            	"faith":3,
+            	"military":0
+	     }
          },
          "permanentEffect":{  
             "type":"NoCharacterPermanentEffect"
@@ -153,6 +155,7 @@
       },
       {  
          "cardName":"Royal Messenger",
+         "period":2,
          "costCoins":5,
          "instantBonuses":{  
             "type":"Resources",
@@ -313,6 +316,7 @@
       },
       {  
          "cardName":"Governor",
+         "period":3,
          "costCoins":6,
          "instantBonuses":{  
             "type":"VictoryForCard",
