@@ -341,7 +341,7 @@
          "cardName":"Gold Mine",
          "period":2,
          "activationCost":1,
-         "instantReward":{  
+         "instantBonuses":{  
             "type":"Resources",
             "resources":{  
                "woods":0,
@@ -366,7 +366,7 @@
          "cardName":"Mountain Town",
          "period":2,
          "activationCost":3,
-         "instantReward":{  
+         "instantBonuses":{  
             "type":"Resources",
             "resources":{  
                "woods":0,
@@ -396,7 +396,7 @@
          "cardName":"Trading Town",
          "period":3,
          "activationCost":1,
-         "instantReward":{  
+         "instantBonuses":{  
             "type":"Resources",
             "resources":{  
                "woods":0,
@@ -421,7 +421,7 @@
          "cardName":"Farm",
          "perdiod":3,
          "activationCost":3,
-         "instantReward":{  
+         "instantBonuses":{  
             "type":"ResourcesAndPoints",
             "resources":{  
                "woods":1,
@@ -456,7 +456,7 @@
          "cardName":"Sanctuary",
          "period":3,
          "activationCost":1,
-         "instantReward":{  
+         "instantBonuses":{  
             "type":"Points",
             "points":{  
                "victory":0,
@@ -484,7 +484,7 @@
          "cardName":"Province",
          "activationCost":6,
          "period":3,
-         "instantReward":{  
+         "instantBonuses":{  
             "type":"Resources",
             "resources":{  
                "woods":0,
@@ -514,7 +514,7 @@
          "cardName":"Castle",
          "period":3,
          "activationCost":4,
-         "instantReward":{  
+         "instantBonuses":{  
             "type":"ResourcesAndPoints",
             "resources":{  
                "woods":0,
@@ -549,7 +549,7 @@
          "cardName":"Colony",
          "period":3,
          "activationCost":5,
-         "instantReward":{  
+         "instantBonuses":{  
             "type":"Points",
             "points":{  
                "victory":0,
@@ -577,7 +577,7 @@
          "cardName":"Fortified Town",
          "period":3,
          "activationCost":2,
-         "instantReward":{  
+         "instantBonuses":{  
             "type":"ResourcesAndPoints",
             "resources":{  
                "woods":0,
@@ -612,7 +612,7 @@
          "cardName":"Marble Pit",
          "activationCost":2,
          "period":3,
-         "instantReward":{  
+         "instantBonuses":{  
             "type":"Points",
             "points":{  
                "victory":3,

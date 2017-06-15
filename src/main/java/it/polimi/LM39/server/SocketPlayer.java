@@ -26,9 +26,9 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    private static MainBoard mainBoard;
 	    private String clientAction;
 	    private transient boolean requestedMainboard;
-	    private transient boolean requestedMessage;
-	    protected static transient Object LOCK = new Object();
-	    private static transient Object CLIENT_LOCK = new Object();
+	    private Boolean requestedMessage;
+	    protected transient static Object LOCK = new Object();
+	    private transient static Object CLIENT_LOCK = new Object();
     	private Boolean requestedResponse = false;
 	    /*
 	     * the constructor initialize the streams and start the thread
@@ -52,11 +52,8 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    	requestedMainboard = true;
 	    }
 	    public void setMessage(String controllerMessage){
-	    	playerSetMessage(controllerMessage);
-	    }
-	    private void playerSetMessage(String playerMessage){
 	    	synchronized(LOCK){
-	    		message = playerMessage;
+	    		message = controllerMessage;
 	    		requestedMessage = true;
 	    		try {
 	    			LOCK.wait();

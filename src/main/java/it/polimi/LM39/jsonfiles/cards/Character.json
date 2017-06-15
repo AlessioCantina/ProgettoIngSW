@@ -115,7 +115,7 @@
          "cardName":"Artisan",
          "period":1,
          "costCoins":3,
-         "instantEffect":{  
+         "instantBonuses":{  
             "type":"NoInstantEffect"
          },
          "permanentEffect":{  
@@ -128,7 +128,7 @@
          "cardName":"Farmer",
          "period":1,
          "costCoins":3,
-         "instantEffect":{  
+         "instantBonuses":{  
             "type":"NoInstantEffect"
          },
          "permanentEffect":{  
@@ -141,7 +141,7 @@
          "cardName":"Papal Messenger",
          "period":2,
          "costCoins":5,
-         "instantEffect":{  
+         "instantBonuses":{  
             "type":"Points",
             "victory":0,
             "faith":3,
@@ -154,7 +154,7 @@
       {  
          "cardName":"Royal Messenger",
          "costCoins":5,
-         "instantEffect":{  
+         "instantBonuses":{  
             "type":"Resources",
             "resources":{  
                "woods":0,
@@ -172,7 +172,7 @@
          "cardName":"Captain",
          "period":2,
          "costCoins":4,
-         "instantEffect":{  
+         "instantBonuses":{  
             "type":"GetCardAndPoints",
             "cardType":"Territory",
             "cardValue":6,
@@ -190,7 +190,7 @@
          "cardName":"Hero",
          "period":2,
          "costCoins":4,
-         "instantEffect":{  
+         "instantBonuses":{  
             "type":"GetCardAndResources",
             "cardType":"Venture",
             "cardValue":6,
@@ -210,7 +210,7 @@
          "cardName":"Patron",
          "period":2,
          "costCoins":3,
-         "instantEffect":{  
+         "instantBonuses":{  
             "type":"GetCardAndResources",
             "cardType":"Character",
             "cardValue":6,
@@ -230,7 +230,7 @@
          "cardName":"Architect",
          "period":2,
          "costCoins":4,
-         "instantEffect":{  
+         "instantBonuses":{  
             "type":"GetCardAndResources",
             "cardType":"Building",
             "cardValue":6,
@@ -250,7 +250,7 @@
          "cardName":"Peasant",
          "period":2,
          "costCoins":4,
-         "instantEffect":{  
+         "instantBonuses":{  
             "type":"NoInstantEffect"
          },
          "permanentEffect":{  
@@ -263,7 +263,7 @@
          "cardName":"Scholar",
          "period":2,
          "costCoins":4,
-         "instantEffect":{  
+         "instantBonuses":{  
             "type":"NoInstantEffect"
          },
          "permanentEffect":{  
@@ -276,7 +276,7 @@
          "cardName":"Noble",
          "period":3,
          "costCoins":6,
-         "instantEffect":{  
+         "instantBonuses":{  
             "type":"VictoryForCard",
             "cardType":"Territory",
             "victoryQty":2
@@ -289,7 +289,7 @@
          "cardName":"Paramour",
          "period":3,
          "costCoins":7,
-         "instantEffect":{  
+         "instantBonuses":{  
             "type":"VictoryForCard",
             "cardType":"Character",
             "victoryQty":2
@@ -302,7 +302,7 @@
          "cardName":"Herald",
          "period":3,
          "costCoins":6,
-         "instantEffect":{  
+         "instantBonuses":{  
             "type":"VictoryForCard",
             "cardType":"Venture",
             "victoryQty":2
@@ -314,7 +314,7 @@
       {  
          "cardName":"Governor",
          "costCoins":6,
-         "instantEffect":{  
+         "instantBonuses":{  
             "type":"VictoryForCard",
             "cardType":"Building",
             "cardValue":2
@@ -327,7 +327,7 @@
          "cardName":"Ambassador",
          "period":3,
          "costCoins":6,
-         "instantEffect":{  
+         "instantBonuses":{  
             "type":"GetCardAndResources",
             "cardType":"All",
             "cardValue":7,
@@ -347,7 +347,7 @@
          "cardName":"Cardinal",
          "period":3,
          "costCoins":4,
-         "instantEffect":{  
+         "instantBonuses":{  
             "type":"HarvestProductionAndPoints",
             "actionType":"Harvest",
             "actionValue":4,
@@ -365,7 +365,7 @@
          "cardName":"General",
          "period":3,
          "costCoins":5,
-         "instantEffect":{  
+         "instantBonuses":{  
             "type":"VictoryForMilitary",
             "victoryQty":1,
             "militaryQty":2
@@ -378,7 +378,7 @@
          "cardName":"Bishop",
          "period":3,
          "costCoins":5,
-         "instantEffect":{  
+         "instantBonuses":{  
             "type":"HarvestProductionAndPoints",
             "actionType":"Production",
             "actionValue":4,

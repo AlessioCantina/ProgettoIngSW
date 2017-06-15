@@ -70,7 +70,9 @@ public class SocketClient extends AbstractClient implements Runnable{
     			}catch (SocketTimeoutException socketException) {
     				try {
     						long moveStartTime = System.currentTimeMillis();
-    						socketOut.writeUTF(UI.askClient(player));
+    						String prova = UI.askClient(player);
+    						System.out.println(prova);
+    						socketOut.writeUTF(prova);
     						if(System.currentTimeMillis() - moveStartTime < clientTimeout){
     							socketOut.flush();
     							socket.setSoTimeout(0);
@@ -86,7 +88,9 @@ public class SocketClient extends AbstractClient implements Runnable{
     				}
     			} catch (ClassNotFoundException e) {
     				logger.log(Level.SEVERE, "Object class not found", e);
-				} catch (IOException e) {
+				} catch (EOFException e) {
+					continue;
+			    } catch (IOException e) {
 					logger.log(Level.SEVERE, "Can't write on socket", e);
 				} 			
     		}
