@@ -187,12 +187,12 @@ public class CLI extends UserInterface{
 		FamilyMember[] market = location.getFamilyMembersOnTheMarket();
 		int i = 0;
 		while(i < mainBoard.marketSize){
-			System.out.println("╔══════════════════════════════╗");
+			System.out.println("╔═══════════════════════════════╗");
 			if(("").equals(this.getFamilyMemberColor(market[i])))
 				System.out.printf("║%-30s║%n",this.tilePrinter(market[i], new int[]{i,0}, "market"));
 			else
 				System.out.printf("║%-15s %-15s║%n",this.tilePrinter(market[i], new int[]{i,0}, "market"),this.getFamilyMemberColor(market[i]));
-			System.out.println("╚══════════════════════════════╝");
+			System.out.println("╚═══════════════════════════════╝");
 			i++;
 		}
 		System.out.printf("%n");

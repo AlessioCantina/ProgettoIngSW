@@ -168,7 +168,7 @@
          "period":3,
          "effect":{  
             "type":"MalusForResourcesCost",
-            "resourcesQty":1,
+            "resourceQty":1,
             "victoryQty":1
          }
       }
