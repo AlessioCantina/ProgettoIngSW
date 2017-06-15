@@ -474,14 +474,10 @@ public class CardHandler {
 		}
 		for(int j=0;j<4;j++)
 			towersValue[j][i]-=permanentEffect.discount;
+		player.personalMainBoard.setTowersValue(towersValue);
 	}
 	
 	public void activateCharacter(CardActionResourcesDiscount permanentEffect, NetworkPlayer player){
-		//make a CardActionDiscount effect and call his method
-		CardActionDiscount effect = new CardActionDiscount();
-		effect.cardType = permanentEffect.cardType;
-		effect.discount = permanentEffect.discount;
-		activateCharacter(effect,player);
 		//need to check when a player get a card to set the discount like done for the GetDiscountedCard effect
 		if(("Character").equals(permanentEffect.cardType) && player.decoratorHandler.characterResourcesDiscountDecorator == false){
 			player.decoratorHandler.characterResourcesDiscountDecorator=true;
@@ -492,9 +488,17 @@ public class CardHandler {
 			gameHandler = new VentureResourcesDiscountDecorator(gameHandler,permanentEffect.resourcesDiscount,player);
 		}
 		else if(("Building").equals(permanentEffect.cardType) && player.decoratorHandler.buildingResourcesDiscountDecorator == false){
+			System.out.println("decorating a building");
 			player.decoratorHandler.buildingResourcesDiscountDecorator = true;
 			gameHandler = new BuildingResourcesDiscountDecorator(gameHandler,permanentEffect.resourcesDiscount,player);
+			System.out.println("gameHandler dentro l'effect " + gameHandler);
 		}
+		
+		//make a CardActionDiscount effect and call his method
+		CardActionDiscount effect = new CardActionDiscount();
+		effect.cardType = permanentEffect.cardType;
+		effect.discount = permanentEffect.discount;
+		activateCharacter(effect,player);
 	}
 	
 	

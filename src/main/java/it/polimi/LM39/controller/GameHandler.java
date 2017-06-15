@@ -165,6 +165,7 @@ public class GameHandler {
     }
     
     public void resourcesForBuilding(NetworkPlayer player ,Building building) throws NotEnoughResourcesException{
+    	System.out.println("dentro resourcesForBuilding non decorato " + this);
     	subCardResources(building.costResources,player);
     }
     
@@ -259,7 +260,7 @@ public class GameHandler {
         	}
         System.out.println(p + " " + k);
         //to store i and j as the coordinates of the position interested, the if check if the player can get the card with a specific family member
-        if(("").equals(familyMembersOnTheTowers[p][k].color) && (familyMemberValue(familyMember,player) >= (mainBoard.getTowersValue())[p][k])){
+        if(("").equals(familyMembersOnTheTowers[p][k].color) && (familyMemberValue(familyMember,player) >= (player.personalMainBoard.getTowersValue())[p][k])){
         	//if the place is free and the family member has an high enough value, ((i+1)*2)-1 is to convert the value i of the matrix to the value of the floor in dice
         	for(i=0;i<4;i++){
         		if((familyMembersOnTheTowers[i][k].playerColor).equals(familyMember.playerColor)){
@@ -286,7 +287,7 @@ public class GameHandler {
 						logger.log(Level.INFO, "Not enough resources", e);
 						return false;
 					}
-	        		setActionBonus((mainBoard.getTowersBonuses())[p][k],player);
+	        		setActionBonus((player.personalMainBoard.getTowersBonuses())[p][k],player);
 	        		(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].playerColor)=(familyMember.playerColor);
 	        		(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].color)=(familyMember.color);
 	        		removeCard(p,k);
@@ -307,7 +308,7 @@ public class GameHandler {
         			(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].playerColor)=(familyMember.playerColor);
         			(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].color)=(familyMember.color);
         			System.out.println(familyMembersOnTheTowers[p][k].playerColor + " " + familyMembersOnTheTowers[p][k].color);
-        			setActionBonus((mainBoard.getTowersBonuses())[p][k],player);
+        			setActionBonus((player.personalMainBoard.getTowersBonuses())[p][k],player);
         			removeCard(p,k);
 	        		return true;
         		}
@@ -325,7 +326,7 @@ public class GameHandler {
 							logger.log(Level.INFO, "Not enough resources", e);
 							return false;
 						}
-    	        		setActionBonus((mainBoard.getTowersBonuses())[p][k],player);
+    	        		setActionBonus((player.personalMainBoard.getTowersBonuses())[p][k],player);
     	        		(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].playerColor)=(familyMember.playerColor);
             			(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].color)=(familyMember.color);
             			removeCard(p,k);
@@ -337,12 +338,15 @@ public class GameHandler {
         				}
         		}
         	}
+        	else{
+        		player.setMessage("You can't place two colored family members on the same tower!");	
+            	return false;
+        	}
         }
         else{
         	player.setMessage("This position is occupied or your family member hasn't a value high enough!");	
         	return false;
         }
-       return false; 
     }
     
     private void removeCard(Integer p, Integer k){

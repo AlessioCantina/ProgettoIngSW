@@ -514,7 +514,6 @@ public class Game implements Runnable{
         	    		updatePersonalMainBoards();
     					NetworkPlayer player = playerColorToNetworkPlayer(order.get(move));
     					player.setMessage(gameHandler.mainBoard);
-    					System.out.println("!!!!!!!!!!!!!!!!!!");
     					playerAction(player);
     					gameHandler.updateRankings(player);
     				}
