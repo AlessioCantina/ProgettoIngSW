@@ -4,8 +4,6 @@ import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import it.polimi.LM39.exception.FailedToInstantiateServerException;
-import it.polimi.LM39.exception.ServerStartException;
 
 /**
  * server class which starts both rmi and socket servers
@@ -35,18 +33,14 @@ public class Server implements ServerInterface{
     /*
      * main which start the servers TODO: rmi
      */
-    public static void main(String[] args) throws FailedToInstantiateServerException {
-     try {
-            Server server = new Server();
-            server.StartServer();
-        } catch (Exception e) {
-            throw new FailedToInstantiateServerException(e);
-        }
+    public static void main(String[] args){
+         Server server = new Server();
+         server.StartServer();
     }
     /*
      * starts the thread
      */
-    private void StartServer() throws ServerStartException{
+    private void StartServer(){
     	System.out.println("SocketServer Creato");
     	socketServer.StartServer(SOCKET_PORT);
     }

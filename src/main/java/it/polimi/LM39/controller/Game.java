@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import it.polimi.LM39.exception.CardNotFoundException;
-import it.polimi.LM39.exception.FailedToReadFileException;
-import it.polimi.LM39.exception.FailedToRegisterEffectException;
 import it.polimi.LM39.exception.InvalidActionTypeException;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
@@ -52,7 +50,7 @@ public class Game implements Runnable{
      */
     public Integer timeOutMove;
 
-    private void initialize() throws FailedToReadFileException, FailedToRegisterEffectException, IOException{
+    private void initialize() throws IOException{
     	if(playerNumber > 2)
     		//unreachable value for harvestAndProductionSize
     		gameHandler.mainBoard.harvestAndProductionSize = 9;
@@ -496,7 +494,7 @@ public class Game implements Runnable{
     	//initialize the game loading parameters and cards
     	try {
 			initialize();
-		} catch (FailedToReadFileException | FailedToRegisterEffectException | IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
     	//make the players choose a their four leader cards
@@ -676,7 +674,7 @@ public class Game implements Runnable{
     //TODO debug method to be removed
     private void testCards() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
     	CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
-    	for(int i =1;i<=24;i++){
+   /* 	for(int i =1;i<=24;i++){
     		players.get(0).setMessage("Territory");
     		players.get(0).setMessage(gameHandler.mainBoard.territoryMap.get(i).cardName);
     		cardHandler.getInfo(gameHandler.mainBoard.territoryMap.get(i).activationReward,players.get(0));
@@ -713,7 +711,7 @@ public class Game implements Runnable{
     		players.get(0).setMessage(gameHandler.mainBoard.ventureMap.get(i).neededMilitary.toString());
     		players.get(0).setMessage(gameHandler.mainBoard.ventureMap.get(i).period.toString());
     		players.get(0).setMessage(" ");
-    	}
+    	}	
     	for(int i =0;i<20;i++){
     		players.get(0).setMessage(gameHandler.mainBoard.leaderMap.get(gameHandler.mainBoard.leaderName.get(i)).cardName);
     		cardHandler.getInfo(gameHandler.mainBoard.leaderMap.get(gameHandler.mainBoard.leaderName.get(i)).effect,players.get(0));
@@ -727,10 +725,10 @@ public class Game implements Runnable{
     	}
     	
     	
+     */	
     	
-    	
-    	}
-    
+    	}		
+   
     /*
     public static void main(String[] args) throws FailedToReadFileException, FailedToRegisterEffectException, IOException {
         

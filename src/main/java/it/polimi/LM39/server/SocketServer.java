@@ -22,7 +22,7 @@ public class SocketServer extends AbstractServer implements Runnable{
      * 
      */
     @Override
-    public void StartServer(Integer socketPort) throws ServerStartException{
+    public void StartServer(Integer socketPort){
     	try{
     		serverSocket = new ServerSocket(socketPort);
     		new Thread(this).start();

@@ -6,8 +6,7 @@ import java.util.*;
 import java.util.logging.*;
 
 import it.polimi.LM39.exception.CardNotFoundException;
-import it.polimi.LM39.exception.FailedToReadFileException;
-import it.polimi.LM39.exception.FailedToRegisterEffectException;
+
 import it.polimi.LM39.exception.InvalidActionTypeException;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
@@ -539,7 +538,7 @@ public class GameHandler {
     		return true;
     	}
 
-    public void initializeTheGame() throws FailedToReadFileException, FailedToRegisterEffectException, IOException {
+    public void initializeTheGame() throws IOException {
     	personalBoardHandler.setGameHandler(this);
     	//initialize the value of an action space on the Towers
     	Integer [] towerValue = {1,3,5,7};

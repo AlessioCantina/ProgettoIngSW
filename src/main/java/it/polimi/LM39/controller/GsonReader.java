@@ -184,7 +184,7 @@ public class GsonReader {
 	}
 	//wildcard allow us to cast the HashMap to the correct static type, we cannot do that with Card 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public HashMap<Integer,?> hashMapCreator(Card cardType) throws IOException, FailedToReadFileException, FailedToRegisterEffectException {
+	public HashMap<Integer,?> hashMapCreator(Card cardType) throws IOException {
 		//jsonreader which scans the array of cards contained in the json files. Filereader get the path using a getClass on cardType
 		 JsonReader jsonReader = new JsonReader(new FileReader("./src/main/java/it/polimi/LM39/jsonfiles/cards/" + cardType.getClass().getSimpleName() + ".json"));
 		 HashMap<Integer,?> cardHashMap = null;
@@ -314,7 +314,7 @@ public class GsonReader {
 		
 	}
 	 @SuppressWarnings("unchecked")
-	public void fileToCard(MainBoard mainBoard) throws IOException, FailedToReadFileException, FailedToRegisterEffectException{
+	public void fileToCard(MainBoard mainBoard) throws IOException{
 		 Card territory = new Territory();  //objects needed to use java reflection which checks parameters types
 		 Card building = new Building();
 		 Card venture = new Venture();

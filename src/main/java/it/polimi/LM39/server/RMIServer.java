@@ -1,6 +1,6 @@
 package it.polimi.LM39.server;
 
-import it.polimi.LM39.exception.ServerStartException;
+
 
 /**
  *  TODO: implement RMI
@@ -15,7 +15,7 @@ public class RMIServer extends AbstractServer {
     }
 
 	@Override
-	public void StartServer(Integer port) throws ServerStartException {
+	public void StartServer(Integer port){
 		// TODO Auto-generated method stub
 		
 	}

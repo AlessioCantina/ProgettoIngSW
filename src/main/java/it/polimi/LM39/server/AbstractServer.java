@@ -1,7 +1,5 @@
 package it.polimi.LM39.server;
 
-import it.polimi.LM39.exception.*;
-import java.util.*;
 
 /**
  *  abstract class extended by RMI and socket servers
@@ -15,5 +13,5 @@ public abstract class AbstractServer{
     protected ServerInterface getServerController(){
     	return this.serverController;
     }
-    public abstract void StartServer(Integer port) throws ServerStartException;
+    public abstract void StartServer(Integer port);
 }
