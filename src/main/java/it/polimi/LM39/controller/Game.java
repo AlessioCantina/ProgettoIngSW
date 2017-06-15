@@ -206,7 +206,7 @@ public class Game implements Runnable{
     		flag = false;
     		for(String card : player.personalBoard.getPossessedLeaders())
     			if((card).equals(response)){
-    				CardHandler cardHandler = new CardHandler(gameHandler);
+    				CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
     				try {
 						flag = cardHandler.checkLeaderRequestedObject(gameHandler.mainBoard.leaderMap.get(card).requestedObjects, player);
 					} catch (NoSuchMethodException | SecurityException | IllegalAccessException
@@ -220,7 +220,7 @@ public class Game implements Runnable{
     				}
     				else {
     					try {
-							cardHandler.activateLeader(gameHandler.mainBoard.leaderMap.get(card).effect, player, gameHandler.mainBoard.leaderMap.get(card).cardName);
+    						gameHandler.decoratedMethods = cardHandler.activateLeader(gameHandler.mainBoard.leaderMap.get(card).effect, player, gameHandler.mainBoard.leaderMap.get(card).cardName);
 						} catch (SecurityException | IllegalAccessException | IllegalArgumentException
 								| InvocationTargetException | NoSuchMethodException e) {
 							e.printStackTrace();
@@ -230,7 +230,7 @@ public class Game implements Runnable{
     	}
     	
     	else if (("go to the market").equals(response)){
-    		CardHandler cardHandler = new CardHandler(gameHandler);
+    		CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
     		for(int i =0;i<gameHandler.mainBoard.marketSize;i++){
     			ActionBonus bonus = gameHandler.mainBoard.marketBonuses[i];
     			player.setMessage("Market position " + (i+1) + " gives you:");
@@ -254,7 +254,7 @@ public class Game implements Runnable{
     		}
     		else{
     			try {
-					flag = gameHandler.addFamilyMemberToTheMarket(familyMember, Integer.parseInt(response), player);
+					flag = gameHandler.decoratedMethods.addFamilyMemberToTheMarket(familyMember, Integer.parseInt(response), player);
 				} catch (NumberFormatException | IOException | NotEnoughResourcesException
 						| NotEnoughPointsException e) {
 					e.printStackTrace();
@@ -310,7 +310,7 @@ public class Game implements Runnable{
     	}
     	
     	else if (("display excommunications").equals(response)){
-    		CardHandler cardHandler = new CardHandler(gameHandler);
+    		CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
 			for(int i=0;i<3;i++){
 				player.setMessage("Excommunication " + (i+1));
 				try {
@@ -335,7 +335,7 @@ public class Game implements Runnable{
     }
     
     private void searchCard(String cardName,NetworkPlayer player) throws SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, CardNotFoundException{
-    	CardHandler cardHandler = new CardHandler(gameHandler);
+    	CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
     	int p = 0; int k = 0; int j = 0; int i;
     	Integer cardNumber = -1;
     	String cardType = "";
@@ -442,7 +442,7 @@ public class Game implements Runnable{
     private FamilyMember handleFamilyMember(NetworkPlayer player){
     	FamilyMember familyMember = gameHandler.chooseFamilyMember(player);
 		try {
-			familyMember.setServants(gameHandler.addServants(player));
+			familyMember.setServants(gameHandler.decoratedMethods.addServants(player));
 		} catch (IOException | NotEnoughResourcesException e) {
 			player.setMessage("You don't have enough servants!");
 			player.setMessage("You can use another Family Member or do another action, respond change family member or do another action");
@@ -515,6 +515,7 @@ public class Game implements Runnable{
     					NetworkPlayer player = playerColorToNetworkPlayer(order.get(move));
     					player.setMessage(gameHandler.mainBoard);
     					playerAction(player);
+    					System.out.println(player +" coins " + player.resources.getCoins());
     					gameHandler.updateRankings(player);
     				}
     			}
@@ -631,7 +632,7 @@ public class Game implements Runnable{
     
     private void chooseBonusTile(){
     	int i;
-    	CardHandler cardHandler = new CardHandler(gameHandler);
+    	CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
     	for(int playerNumber = 0; playerNumber < players.size();){
     		NetworkPlayer player = players.get(playerNumber);
     		player.setMessage("Choose a tile between: (You must answer with the tile number)");

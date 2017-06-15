@@ -3,6 +3,8 @@ package it.polimi.LM39.controller.decorator;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import it.polimi.LM39.controller.CouncilHandler;
+import it.polimi.LM39.controller.DecoratedMethods;
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
@@ -15,14 +17,16 @@ import it.polimi.LM39.model.PlayerResources;
 import it.polimi.LM39.model.Venture;
 import it.polimi.LM39.server.NetworkPlayer;
 
-public class ResourcesMalusDecorator  extends GameHandler{
+public class ResourcesMalusDecorator  extends DecoratedMethods{
 
-	private GameHandler decoratedGameHandler;
+	private DecoratedMethods decoratedMethods;
+	private GameHandler gameHandler;
 	private CardResources resourcesMalus;
 	private NetworkPlayer player;
 	
-	public ResourcesMalusDecorator (GameHandler decoratedGameHandler, CardResources resourcesMalus, NetworkPlayer player) {
-		this.decoratedGameHandler = decoratedGameHandler;
+	public ResourcesMalusDecorator (DecoratedMethods decoratedMethods,GameHandler gameHandler, CardResources resourcesMalus, NetworkPlayer player) {
+		this.decoratedMethods = decoratedMethods;
+		this.gameHandler = gameHandler;
 		this.resourcesMalus = resourcesMalus;
 		this.player = player;
 	}
@@ -47,7 +51,7 @@ public class ResourcesMalusDecorator  extends GameHandler{
 				}
 				else{
 					player.setMessage("You must choose between woods and stones");
-					decoratedGameHandler.addCardResources(resources,player);
+					decoratedMethods.addCardResources(resources,player);
 					return;
 				}
 			}
@@ -61,42 +65,44 @@ public class ResourcesMalusDecorator  extends GameHandler{
 				playerResources.setCoins(resources.coins - resourcesMalus.coins);
 			if(resources.servants>=resourcesMalus.servants)
 				playerResources.setServants(resources.servants - resourcesMalus.servants);	
-			if(resources.council>=resourcesMalus.council)
-				councilHandler.getCouncil(resources.council,player,decoratedGameHandler,new ArrayList<Integer>());	
+			if(resources.council>=resourcesMalus.council){
+				CouncilHandler councilHandler = new CouncilHandler();
+				councilHandler.getCouncil(resources.council,player,gameHandler,new ArrayList<Integer>());
+			}
 			player.resources=playerResources;
 		 }
 		 else
-			 decoratedGameHandler.addCardResources(resources,player);
+			 decoratedMethods.addCardResources(resources,player);
 	    }
 	  
 	  
 	@Override
 	public void coinsForCharacter(NetworkPlayer player ,Character character) throws NotEnoughResourcesException{
-		decoratedGameHandler.coinsForCharacter(player,character);
+		decoratedMethods.coinsForCharacter(player,character);
 	}
 		
 	@Override
 	public void resourcesForBuilding(NetworkPlayer player, Building building) throws NotEnoughResourcesException{
-		decoratedGameHandler.resourcesForBuilding(player,building);
+		decoratedMethods.resourcesForBuilding(player,building);
 	}
 		
 	@Override
 	public void resourcesForVenture(NetworkPlayer player ,Venture venture) throws NotEnoughResourcesException{
-		decoratedGameHandler.resourcesForVenture(player,venture);
+		decoratedMethods.resourcesForVenture(player,venture);
 	}
 	
 	@Override
 	public boolean addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException {
-		return decoratedGameHandler.addFamilyMemberToTheMarket(familyMember, position, player);
+		return decoratedMethods.addFamilyMemberToTheMarket(familyMember, position, player);
 	}
 	
 	@Override
 	public void addCardPoints (CardPoints points, NetworkPlayer player) throws NotEnoughPointsException{
-		decoratedGameHandler.addCardPoints(points, player);
+		decoratedMethods.addCardPoints(points, player);
 	}
 	
 	@Override
 	public Integer addServants(NetworkPlayer player) throws IOException, NotEnoughResourcesException{
-		return decoratedGameHandler.addServants(player);
+		return decoratedMethods.addServants(player);
 	}
 }

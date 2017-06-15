@@ -21,7 +21,7 @@ public class PersonalBoardHandler {
     public void activateHarvest(Integer actionValue, NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException {
     	gameHandler.setActionBonus(player.personalBoard.personalBonusTile.harvestBonus,player);
     	ArrayList <Integer> territories = player.personalBoard.getPossessions("Territory");
-        CardHandler cardHandler = new CardHandler(gameHandler);
+        CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
         for (int i=0;i<territories.size();i++)
         	if(actionValue >= gameHandler.mainBoard.territoryMap.get(territories.get(i)).activationCost)
         		cardHandler.doInstantEffect((gameHandler.mainBoard.territoryMap.get(territories.get(i)).activationReward),player);
@@ -30,7 +30,7 @@ public class PersonalBoardHandler {
     public void activateProduction(Integer actionValue, NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException , IOException, NotEnoughResourcesException, NotEnoughPointsException {
     	gameHandler.setActionBonus(player.personalBoard.personalBonusTile.productionBonus,player);
     	ArrayList <Integer> buildings = player.personalBoard.getPossessions("Building");
-        CardHandler cardHandler = new CardHandler(gameHandler);
+        CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
         CardResources costResources = initializeResources();
 		CardResources bonusResources = initializeResources();
 		CardPoints costPoints = initializePoints();
@@ -60,15 +60,15 @@ public class PersonalBoardHandler {
         		 }
         		 catch (NotEnoughPointsException e){
         			 //give back the reources subtracted from the player if the action fails
-        			 gameHandler.addCardResources(costResources, player);
+        			 gameHandler.decoratedMethods.addCardResources(costResources, player);
         			 player.setMessage("You don't have enough points");
         			 activateProduction(actionValue,player);
         			 return;
         		 }
         		 
         		 //give the bonus received from the transformation to the player
-        		 gameHandler.addCardResources(bonusResources, player);
-        		 gameHandler.addCardPoints(bonusPoints, player);
+        		 gameHandler.decoratedMethods.addCardResources(bonusResources, player);
+        		 gameHandler.decoratedMethods.addCardPoints(bonusPoints, player);
     }
     
     public void checkPlayer(NetworkPlayer player,InstantEffect activationEffect,CardResources costResources, CardPoints costPoints, CardResources bonusResources, CardPoints bonusPoints) throws IOException, NotEnoughResourcesException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
@@ -84,7 +84,7 @@ public class PersonalBoardHandler {
     	fakePlayer.points.setMilitary(20);
     	fakePlayer.points.setVictory(20);
     	
-    	CardHandler cardHandler = new CardHandler(gameHandler);
+    	CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
     	cardHandler.doInstantEffect(activationEffect,fakePlayer);
     	
     	if(fakePlayer.resources.getCoins()>20)

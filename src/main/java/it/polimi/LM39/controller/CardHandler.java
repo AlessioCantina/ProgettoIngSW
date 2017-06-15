@@ -27,9 +27,11 @@ import it.polimi.LM39.model.Character;
 
 public class CardHandler {
 	private GameHandler gameHandler;
+	private DecoratedMethods decoratedMethods;
 	//TODO fix long throws with logger
-	public CardHandler(GameHandler gameHandler){
+	public CardHandler(GameHandler gameHandler,DecoratedMethods decoratedMethods){
 		this.gameHandler = gameHandler;
+		this.decoratedMethods=decoratedMethods;
 	}
 	
 	private NetworkPlayer playerDoubleResourcesFromDevelopment;
@@ -65,12 +67,12 @@ public class CardHandler {
 			//subtract the resources from the player
 			gameHandler.subCardResources(instantEffect.requestedForTransformation, player);
 			//add points to the player
-			gameHandler.addCardPoints(instantEffect.points, player);}
+			gameHandler.decoratedMethods.addCardPoints(instantEffect.points, player);}
 		else if(choice==2){
 			//subtract the resources from the player
 			gameHandler.subCardResources(instantEffect.requestedForTransformation2, player);
 			//add points to the player
-			gameHandler.addCardPoints(instantEffect.points2, player);}
+			gameHandler.decoratedMethods.addCardPoints(instantEffect.points2, player);}
 		else
 			throw new InvalidInputException("The exchange must be chosen between 1 and 2");
 			
@@ -86,12 +88,12 @@ public class CardHandler {
 					//subtract the resources from the player
 					gameHandler.subCardResources(instantEffect.requestedForTransformation, player);
 					//add resources to the player
-					gameHandler.addCardResources(instantEffect.resources, player);}
+					gameHandler.decoratedMethods.addCardResources(instantEffect.resources, player);}
 				else if(choice==2){
 					//subtract the resources from the player
 					gameHandler.subCardResources(instantEffect.requestedForTransformation2, player);
 					//add resources to the player
-					gameHandler.addCardResources(instantEffect.resources2, player);}
+					gameHandler.decoratedMethods.addCardResources(instantEffect.resources2, player);}
 				else
 					throw new InvalidInputException("The exchange must be chosen between 1 and 2");
 	}
@@ -107,7 +109,7 @@ public class CardHandler {
 			player.setMessage("What card do you want?");
 			//get the player response
 			String cardName = player.sendMessage();
-			Integer qtyServants = gameHandler.addServants(player);
+			Integer qtyServants = gameHandler.decoratedMethods.addServants(player);
 			
 			String[][] CardNamesOnTheTowers = player.personalMainBoard.getCardNamesOnTheTowers();
 			//looking for this card on the Towers
@@ -174,7 +176,7 @@ public class CardHandler {
 			// ask to the player what card he wants
 			player.setMessage("What card do you want?");
 			String cardName = player.sendMessage();
-			Integer qtyServants = gameHandler.addServants(player);
+			Integer qtyServants = gameHandler.decoratedMethods.addServants(player);
 			//converting the card name to cardNumber
 			Integer cardNumber = gameHandler.cardNameToInteger(cardName);
 			Integer[][] CardsOnTheTowers = player.personalMainBoard.getCardsOnTheTowers();
@@ -234,7 +236,7 @@ public class CardHandler {
 								bonusResources.servants=instantEffect.cardDiscount.servants;
 							bonusResources.council = 0;
 							//give the discount to the player
-							gameHandler.addCardResources(bonusResources, player);
+							gameHandler.decoratedMethods.addCardResources(bonusResources, player);
 							//if the player failed to get the card for lack of resources or not enough space on the PersonalBoard, remove the bonus given
 							if(!gameHandler.getCard(cardNumber, player, j))
 								gameHandler.subCardResources(bonusResources, player);
@@ -250,7 +252,7 @@ public class CardHandler {
 	
 	public void doInstantEffect(HarvestProductionAction instantEffect,NetworkPlayer player) throws IOException, NotEnoughResourcesException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughPointsException{
 		//ask to the player if he wants to add servants to the action
-		Integer qtyServants = gameHandler.addServants(player);
+		Integer qtyServants = gameHandler.decoratedMethods.addServants(player);
 		//check if the effect is for harvest o production and call the correct method
 		if(("Harvest").equals(instantEffect.actionType))
 			gameHandler.personalBoardHandler.activateHarvest(instantEffect.actionValue + qtyServants, player);
@@ -271,23 +273,23 @@ public class CardHandler {
 	}
 	
 	public void doInstantEffect(Points instantEffect,NetworkPlayer player) throws NotEnoughPointsException{
-		gameHandler.addCardPoints(instantEffect.points, player);
+		gameHandler.decoratedMethods.addCardPoints(instantEffect.points, player);
 	}
 	
 	public void doInstantEffect(PointsTransformation instantEffect,NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
 		//check if the player has enough resources
 		gameHandler.subCardResources(instantEffect.requestedForTransformation, player);
 		//add points to the player
-		gameHandler.addCardPoints(instantEffect.points, player);
+		gameHandler.decoratedMethods.addCardPoints(instantEffect.points, player);
 	}
 
 	public void doInstantEffect(Resources instantEffect,NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
-		gameHandler.addCardResources(instantEffect.resources, player);
+		gameHandler.decoratedMethods.addCardResources(instantEffect.resources, player);
 		//double instant bonus if the player has the leader effect DoubleResourcesFromDevelopment 
 		if(this.playerDoubleResourcesFromDevelopment==player){
 			CardResources resourcesBonus = instantEffect.resources;
 			resourcesBonus.council=0;
-			gameHandler.addCardResources(resourcesBonus, player);
+			gameHandler.decoratedMethods.addCardResources(resourcesBonus, player);
 		}
 		
 	}
@@ -446,19 +448,19 @@ public class CardHandler {
 	 * CharacterPermanentEffect
 	 */
 	
-	public void activateCharacter(CharacterPermanentEffect permanentEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{									
+	public DecoratedMethods activateCharacter(CharacterPermanentEffect permanentEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{									
 		Class[] cArg = new Class[2];
 	    cArg[0] = permanentEffect.getClass();
 	    cArg[1] = NetworkPlayer.class;
 		Method lMethod = (this.getClass().getMethod("activateCharacter",cArg));
-		lMethod.invoke(this,permanentEffect,player);
+		return (DecoratedMethods)lMethod.invoke(this,permanentEffect,player);
 		}
 	
 	public void activateCharacter(NoCharacterPermanentEffect permanentEffect, NetworkPlayer player){
 		//do nothing
 	}
 	
-	public void activateCharacter(CardActionDiscount permanentEffect, NetworkPlayer player){
+	public DecoratedMethods activateCharacter(CardActionDiscount permanentEffect, NetworkPlayer player){
 		//reducing the towersValue by the discount the effect gives
 		Integer[][] towersValue = player.personalMainBoard.getTowersValue();
 		int i = 0;
@@ -475,22 +477,24 @@ public class CardHandler {
 		for(int j=0;j<4;j++)
 			towersValue[j][i]-=permanentEffect.discount;
 		player.personalMainBoard.setTowersValue(towersValue);
+		
+		return decoratedMethods;
 	}
 	
-	public void activateCharacter(CardActionResourcesDiscount permanentEffect, NetworkPlayer player){
+	public DecoratedMethods activateCharacter(CardActionResourcesDiscount permanentEffect, NetworkPlayer player){
 		//need to check when a player get a card to set the discount like done for the GetDiscountedCard effect
 		if(("Character").equals(permanentEffect.cardType) && player.decoratorHandler.characterResourcesDiscountDecorator == false){
 			player.decoratorHandler.characterResourcesDiscountDecorator=true;
-			gameHandler = new CharacterResourcesDiscountDecorator(gameHandler,permanentEffect.resourcesDiscount,player);
+			decoratedMethods = new CharacterResourcesDiscountDecorator(decoratedMethods,gameHandler,permanentEffect.resourcesDiscount,player);
 		}
 		else if(("Venture").equals(permanentEffect.cardType) && player.decoratorHandler.ventureResourcesDiscountDecorator == false){
 			player.decoratorHandler.ventureResourcesDiscountDecorator = true;
-			gameHandler = new VentureResourcesDiscountDecorator(gameHandler,permanentEffect.resourcesDiscount,player);
+			decoratedMethods = new VentureResourcesDiscountDecorator(decoratedMethods,gameHandler,permanentEffect.resourcesDiscount,player);
 		}
 		else if(("Building").equals(permanentEffect.cardType) && player.decoratorHandler.buildingResourcesDiscountDecorator == false){
 			System.out.println("decorating a building");
 			player.decoratorHandler.buildingResourcesDiscountDecorator = true;
-			gameHandler = new BuildingResourcesDiscountDecorator(gameHandler,permanentEffect.resourcesDiscount,player);
+			decoratedMethods = new BuildingResourcesDiscountDecorator(decoratedMethods,gameHandler,permanentEffect.resourcesDiscount,player);
 			System.out.println("gameHandler dentro l'effect " + gameHandler);
 		}
 		
@@ -499,10 +503,12 @@ public class CardHandler {
 		effect.cardType = permanentEffect.cardType;
 		effect.discount = permanentEffect.discount;
 		activateCharacter(effect,player);
+		
+		return decoratedMethods;
 	}
 	
 	
-	public void activateCharacter(HarvestProductionBoost permanentEffect, NetworkPlayer player){
+	public DecoratedMethods activateCharacter(HarvestProductionBoost permanentEffect, NetworkPlayer player){
 		//need to check when a player with this effect try to do a Production or Harvest and give him the bonus
 		if(("Harvest").equals(permanentEffect.actionType) && player.decoratorHandler.harvestBoostDecorator == false){
 			player.decoratorHandler.harvestBoostDecorator = true;
@@ -511,12 +517,16 @@ public class CardHandler {
 		else if (player.decoratorHandler.productionBoostDecorator == false){
 			player.decoratorHandler.productionBoostDecorator = true;
 			gameHandler.personalBoardHandler = new ProductionBoostDecorator(gameHandler.personalBoardHandler,permanentEffect.actionValue,player);} 
+	
+		return decoratedMethods;
 	}
 	
-	public void activateCharacter(NoBoardBonuses permanentEffect, NetworkPlayer player){
+	public DecoratedMethods activateCharacter(NoBoardBonuses permanentEffect, NetworkPlayer player){
 		//create an empty towersBonuses and set it to the playerPersonalBoard
 		ActionBonus[][] towersBonuses = new ActionBonus[4][4];
 		player.personalMainBoard.setTowersBonuses(towersBonuses);
+		
+		return decoratedMethods;
 	}
 		
 	
@@ -524,30 +534,34 @@ public class CardHandler {
 	 * ExcommunicationPermanentEffect
 	 */
 		
-	public void activateExcommunication(ExcommunicationPermanentEffect permanentEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
+	public DecoratedMethods activateExcommunication(ExcommunicationPermanentEffect permanentEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
 		Class[] cArg = new Class[2];
 	    cArg[0] = permanentEffect.getClass();
 	    cArg[1] = NetworkPlayer.class;
 		Method lMethod = (this.getClass().getMethod("activateExcommunication",cArg));
-		lMethod.invoke(this,permanentEffect,player);
+		return (DecoratedMethods)lMethod.invoke(this,permanentEffect,player);
 }
 	
-	public void activateExcommunication(CardActionMalus permanentEffect,NetworkPlayer player){
+	public DecoratedMethods activateExcommunication(CardActionMalus permanentEffect,NetworkPlayer player){
 		//make a CardActionDiscount effect that will act in the opposite way giving the discount parameter as a malus, then call his method
 		CardActionDiscount effect = new CardActionDiscount();
 		effect.cardType = permanentEffect.cardType;
 		effect.discount = - permanentEffect.malus;
 		activateCharacter(effect,player);
+		
+		return decoratedMethods;
 	}
 	
-	public void activateExcommunication(DiceMalus permanentEffect,NetworkPlayer player){
+	public DecoratedMethods activateExcommunication(DiceMalus permanentEffect,NetworkPlayer player){
 		Integer[] diceValues = player.personalMainBoard.getDiceValues();
 		for(int i=0;i<3;i++)
 			diceValues[i] -= permanentEffect.malus;
 		player.personalMainBoard.setDiceValues(diceValues);
+		
+		return decoratedMethods;
 	}
 	
-	public void activateExcommunication(HarvestProductionMalus permanentEffect,NetworkPlayer player){
+	public DecoratedMethods activateExcommunication(HarvestProductionMalus permanentEffect,NetworkPlayer player){
 		if(("Harvest").equals(permanentEffect.actionType) && player.decoratorHandler.harvestMalus == false){
 			//if not set to false it would block the decoration
 			player.decoratorHandler.productionBoostDecorator = false;
@@ -560,17 +574,21 @@ public class CardHandler {
 			player.decoratorHandler.productionMalus = true;
 			gameHandler.personalBoardHandler = new ProductionBoostDecorator(gameHandler.personalBoardHandler,-permanentEffect.malus,player);
 		}
+		
+		return decoratedMethods;
 	}
 	
-	public void activateExcommunication(MalusForResources permanentEffect,NetworkPlayer player){
+	public DecoratedMethods activateExcommunication(MalusForResources permanentEffect,NetworkPlayer player){
 		Integer victoryMalus = ((player.resources.getCoins() + player.resources.getWoods() + player.resources.getStones() + player.resources.getServants()) / permanentEffect.resourceQty)* permanentEffect.victoryQty;
 		if (player.points.getVictory() >= victoryMalus)
 			player.points.setVictory(-victoryMalus);
 		else
 			player.points.setVictory(0);
+		
+		return decoratedMethods;
 	}
 	
-	public void activateExcommunication(MalusForResourcesCost permanentEffect,NetworkPlayer player){
+	public DecoratedMethods activateExcommunication(MalusForResourcesCost permanentEffect,NetworkPlayer player){
 		ArrayList<Integer> buildings = player.personalBoard.getPossessions("Building");
 		Integer victoryMalus = 0;
 		for (Integer i : buildings)
@@ -580,55 +598,70 @@ public class CardHandler {
 			player.points.setVictory(-victoryMalus);
 		else
 			player.points.setVictory(0);
+		
+		return decoratedMethods;
 	}
 	
-	public void activateExcommunication(MalusVictoryForMilitary permanentEffect,NetworkPlayer player){
+	public DecoratedMethods activateExcommunication(MalusVictoryForMilitary permanentEffect,NetworkPlayer player){
 		Integer victoryMalus = (player.points.getMilitary() / permanentEffect.militaryQty)* permanentEffect.victoryQty;
 		if (player.points.getVictory() >= victoryMalus)
 			player.points.setVictory(-victoryMalus);
 		else
 			player.points.setVictory(0);
+		
+		return decoratedMethods;
 	}
 	
-	public void activateExcommunication(MilitaryPointsMalus permanentEffect,NetworkPlayer player){
+	public DecoratedMethods activateExcommunication(MilitaryPointsMalus permanentEffect,NetworkPlayer player){
 		if (player.decoratorHandler.militaryPointsMalusDecorator == false){
 			player.decoratorHandler.militaryPointsMalusDecorator = true;
-			gameHandler = new MilitaryPointsMalusDecorator(gameHandler,permanentEffect.militaryQty ,player);
+			decoratedMethods = new MilitaryPointsMalusDecorator(decoratedMethods,gameHandler,permanentEffect.militaryQty ,player);
 		}
+		
+		return decoratedMethods;
 	}
 	
-	public void activateExcommunication(NoMarket permanentEffect,NetworkPlayer player){
+	public DecoratedMethods activateExcommunication(NoMarket permanentEffect,NetworkPlayer player){
 		if(player.decoratorHandler.noMarketDecorator == false){
 			player.decoratorHandler.noMarketDecorator=true;
-			gameHandler = new NoMarketDecorator(gameHandler,player);
+			decoratedMethods = new NoMarketDecorator(decoratedMethods,gameHandler,player);
 		}
+		
+		return decoratedMethods;
 	}
 	
-	public void activateExcommunication(ResourcesMalus permanentEffect,NetworkPlayer player){
+	public DecoratedMethods activateExcommunication(ResourcesMalus permanentEffect,NetworkPlayer player){
 		if(player.decoratorHandler.resourcesMalusDecorator == false){
 			player.decoratorHandler.resourcesMalusDecorator = true;
-			gameHandler = new ResourcesMalusDecorator(gameHandler,permanentEffect.resources,player);
+			decoratedMethods = new ResourcesMalusDecorator(decoratedMethods,gameHandler,permanentEffect.resources,player);
 		}
+		
+		return decoratedMethods;
 	}
 	
-	public void activateExcommunication(ServantsMalus permanentEffect,NetworkPlayer player){
+	public DecoratedMethods activateExcommunication(ServantsMalus permanentEffect,NetworkPlayer player){
 		if(player.decoratorHandler.servantsMalusDecorator == false){
 			player.decoratorHandler.servantsMalusDecorator = true;
-			gameHandler = new ServantsMalusDecorator(gameHandler,permanentEffect.servantsQty,player);
+			decoratedMethods = new ServantsMalusDecorator(decoratedMethods,gameHandler,permanentEffect.servantsQty,player);
 		}
+		
+		return decoratedMethods;
 	}
 	
-	public void activateExcommunication(VictoryMalus permanentEffect,NetworkPlayer player){
+	public DecoratedMethods activateExcommunication(VictoryMalus permanentEffect,NetworkPlayer player){
 		Integer victoryMalus = (player.points.getVictory() / permanentEffect.victoryQty)* permanentEffect.victoryMalus;
 		player.points.setVictory(-victoryMalus);
+		
+		return decoratedMethods;
 	}
+	
 	
 	
 	/*
 	 * LeaderPermanentEffect
 	 */
 	
-	public void activateLeader(Effect permanentEffect,NetworkPlayer player,String cardName) throws SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException	{
+	public DecoratedMethods activateLeader(Effect permanentEffect,NetworkPlayer player,String cardName) throws SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException	{
 		Class[] cArg = new Class[3];
 	    cArg[0] = permanentEffect.getClass();
 	    cArg[1] = NetworkPlayer.class;
@@ -642,23 +675,27 @@ public class CardHandler {
 			cArg1[1] = cArg[1];
 			lMethod = (this.getClass().getMethod("doInstantEffect",cArg1));
 		}
-		lMethod.invoke(this,permanentEffect,player);
+		return (DecoratedMethods)lMethod.invoke(this,permanentEffect,player);
 }
 	
-	public void activateLeader(AlreadyOccupiedTowerDiscount permanentEffect,NetworkPlayer player,String cardName){
+	public DecoratedMethods activateLeader(AlreadyOccupiedTowerDiscount permanentEffect,NetworkPlayer player,String cardName){
 		player.setPlayerPlayedLeaderCards(cardName);
 		player.personalMainBoard.occupiedTowerCost = 0;
+		
+		return decoratedMethods;
 	}
 	
-	public void activateLeader(CardCoinDiscount permanentEffect,NetworkPlayer player,String cardName){
+	public DecoratedMethods activateLeader(CardCoinDiscount permanentEffect,NetworkPlayer player,String cardName){
 		if(player.decoratorHandler.cardCoinDiscountDecorator == false){
 			player.setPlayerPlayedLeaderCards(cardName);
 			player.decoratorHandler.cardCoinDiscountDecorator = true;
-			gameHandler = new CardCoinDiscountDecorator(gameHandler,permanentEffect.coinQty,player);
+			decoratedMethods = new CardCoinDiscountDecorator(decoratedMethods,gameHandler,permanentEffect.coinQty,player);
 		}
+		
+		return decoratedMethods;
 	}
 	
-	public void activateLeader(CopyLeaderAbility permanentEffect,NetworkPlayer player,String cardName) throws CardNotFoundException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException{
+	public DecoratedMethods activateLeader(CopyLeaderAbility permanentEffect,NetworkPlayer player,String cardName) throws CardNotFoundException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException{
 		if(player.copiedLeaderCard == null){
 			player.setPlayerPlayedLeaderCards(cardName);
 			boolean flag = true;
@@ -687,8 +724,7 @@ public class CardHandler {
 					flag = true;}
 			if(flag==false){
 				player.setMessage("You must choose a Leader Card already played by one of your opponents");
-				activateLeader(permanentEffect,player,cardName);
-				return;
+				return activateLeader(permanentEffect,player,cardName);
 			}
 			//add the card to the player copiedLeaderCard attribute to prevent that the player copy more than one effect violating the rule of this effect
 			player.copiedLeaderCard = cardNumber;
@@ -699,20 +735,26 @@ public class CardHandler {
 			Leader leader = gameHandler.mainBoard.leaderMap.get(player.copiedLeaderCard);
 			activateLeader(leader.effect,player,cardName);
 		}
+		
+		return decoratedMethods;
 	}
 	
-	public void activateLeader(DoubleResourcesFromDevelopment permanentEffect,NetworkPlayer player,String cardName) {
+	public DecoratedMethods activateLeader(DoubleResourcesFromDevelopment permanentEffect,NetworkPlayer player,String cardName) {
 		player.setPlayerPlayedLeaderCards(cardName);
 		playerDoubleResourcesFromDevelopment = player;
+		
+		return decoratedMethods;
 	}
 	
-	public void activateLeader(NoMilitaryRequirementsForTerritory permanentEffect,NetworkPlayer player,String cardName) {
+	public DecoratedMethods activateLeader(NoMilitaryRequirementsForTerritory permanentEffect,NetworkPlayer player,String cardName) {
 		player.setPlayerPlayedLeaderCards(cardName);
 		for(int i=0;i<4;i++)
 			player.personalMainBoard.militaryForTerritory[i]=0;
+		
+		return decoratedMethods;
 	}
 	
-	public void activateLeader(PlaceFamilyMemberOnOccupiedSpace permanentEffect,NetworkPlayer player,String cardName) throws InvalidActionTypeException {
+	public DecoratedMethods activateLeader(PlaceFamilyMemberOnOccupiedSpace permanentEffect,NetworkPlayer player,String cardName) throws InvalidActionTypeException {
 		player.setPlayerPlayedLeaderCards(cardName);
 		//empty the market
 		for (int i=0;i<4;i++)
@@ -720,9 +762,11 @@ public class CardHandler {
 		//empty the production and the harvest area
 		player.personalMainBoard.familyMembersLocation.changeFamilyMemberOnProductionOrHarvest(new ArrayList<FamilyMember>(), "Harvest");
 		player.personalMainBoard.familyMembersLocation.changeFamilyMemberOnProductionOrHarvest(new ArrayList<FamilyMember>(), "Production");
+	
+		return decoratedMethods;
 	}
 	
-	public void activateLeader(SetColoredDicesValues permanentEffect,NetworkPlayer player,String cardName){
+	public DecoratedMethods activateLeader(SetColoredDicesValues permanentEffect,NetworkPlayer player,String cardName){
 		player.setPlayerPlayedLeaderCards(cardName);
 		Integer[] dices = player.personalMainBoard.getDiceValues();
 		if(permanentEffect.boostOrSet==true){
@@ -734,21 +778,27 @@ public class CardHandler {
 				dices[i]=permanentEffect.diceValue;
 		}
 		player.personalMainBoard.setDiceValues(dices);
+		
+		return decoratedMethods;
 	}
 	
-	public void activateLeader(UncoloredMemberBonus permanentEffect,NetworkPlayer player,String cardName){
+	public DecoratedMethods activateLeader(UncoloredMemberBonus permanentEffect,NetworkPlayer player,String cardName){
 		player.setPlayerPlayedLeaderCards(cardName);
 		Integer[] dices = player.personalMainBoard.getDiceValues();
 		dices[3]+=permanentEffect.bonus;
 		player.personalMainBoard.setDiceValues(dices);
+		
+		return decoratedMethods;
 	}
 	
-	public void activateLeader(VictoryForSupportingTheChurch permanentEffect,NetworkPlayer player,String cardName){
+	public DecoratedMethods activateLeader(VictoryForSupportingTheChurch permanentEffect,NetworkPlayer player,String cardName){
 		player.setPlayerPlayedLeaderCards(cardName);
 		ActionBonus[] faithBonus = player.personalMainBoard.faithBonuses;
 		for(int i=0;i<16;i++)
 			faithBonus[i].points.victory+=permanentEffect.victoryQty;
 		player.personalMainBoard.faithBonuses = faithBonus;
+		
+		return decoratedMethods;
 	}
 	
 

@@ -2,6 +2,7 @@ package it.polimi.LM39.controller.decorator;
 
 import java.io.IOException;
 
+import it.polimi.LM39.controller.DecoratedMethods;
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
@@ -13,14 +14,16 @@ import it.polimi.LM39.model.FamilyMember;
 import it.polimi.LM39.model.Venture;
 import it.polimi.LM39.server.NetworkPlayer;
 
-public class ServantsMalusDecorator extends GameHandler{
+public class ServantsMalusDecorator extends DecoratedMethods{
 
-	private GameHandler decoratedGameHandler;
+	private DecoratedMethods decoratedMethods;
+	private GameHandler gameHandler;
 	private Integer servantsMalus;
 	private NetworkPlayer player;
 	
-	public ServantsMalusDecorator (GameHandler decoratedGameHandler, Integer servantsMalus, NetworkPlayer player) {
-		this.decoratedGameHandler = decoratedGameHandler;
+	public ServantsMalusDecorator (DecoratedMethods decoratedMethods,GameHandler gameHandler, Integer servantsMalus, NetworkPlayer player) {
+		this.decoratedMethods = decoratedMethods;
+		this.gameHandler = gameHandler;
 		this.servantsMalus = servantsMalus;
 		this.player = player;
 	}
@@ -43,36 +46,36 @@ public class ServantsMalusDecorator extends GameHandler{
 	    	return null;
 		}
 		else
-			return decoratedGameHandler.addServants(player);
+			return decoratedMethods.addServants(player);
     }
 
 	@Override
 	public void addCardResources (CardResources resources, NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
-		decoratedGameHandler.addCardResources (resources,player);
+		decoratedMethods.addCardResources (resources,player);
 	}
 	
 	@Override
 	public void coinsForCharacter(NetworkPlayer player ,Character character) throws NotEnoughResourcesException{
-		decoratedGameHandler.coinsForCharacter(player,character);
+		decoratedMethods.coinsForCharacter(player,character);
 	}
 		
 	@Override
 	public void resourcesForBuilding(NetworkPlayer player, Building building) throws NotEnoughResourcesException{
-		decoratedGameHandler.resourcesForBuilding(player,building);
+		decoratedMethods.resourcesForBuilding(player,building);
 	}
 		
 	@Override
 	public void resourcesForVenture(NetworkPlayer player ,Venture venture) throws NotEnoughResourcesException{
-		decoratedGameHandler.resourcesForVenture(player,venture);
+		decoratedMethods.resourcesForVenture(player,venture);
 	}
 	
 	@Override
 	public boolean addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException {
-		return decoratedGameHandler.addFamilyMemberToTheMarket(familyMember, position, player);
+		return decoratedMethods.addFamilyMemberToTheMarket(familyMember, position, player);
 	}
 	
 	@Override
 	public void addCardPoints (CardPoints points, NetworkPlayer player) throws NotEnoughPointsException{
-		decoratedGameHandler.addCardPoints(points, player);
+		decoratedMethods.addCardPoints(points, player);
 	}
 }

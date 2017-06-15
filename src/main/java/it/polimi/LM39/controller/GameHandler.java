@@ -34,6 +34,8 @@ public class GameHandler {
     public MainBoard mainBoard = new MainBoard();
      
     private ArrayList<String> playerActionOrder = new ArrayList<String>();
+    
+    public DecoratedMethods decoratedMethods = new DecoratedMethods();
     /*
      * probably useless attributes
      */
@@ -106,7 +108,7 @@ public class GameHandler {
     			//add the territory to PersonalBoard
     			player.personalBoard.setPossessions(cardNumber,"Territory");
     			//get the instant effect
-    			CardHandler cardHandler = new CardHandler(this);
+    			CardHandler cardHandler = new CardHandler(this,decoratedMethods);
     			cardHandler.doInstantEffect(territory.instantBonuses, player);
     			return true;
     			}
@@ -123,16 +125,16 @@ public class GameHandler {
     	ArrayList<Integer> possessedCharacters = player.personalBoard.getPossessions("Character");
 		if (possessedCharacters.size()<6){
 	    		try {
-	    			coinsForCharacter(player,character);
+	    			decoratedMethods.coinsForCharacter(player,character);
 				} catch (NotEnoughResourcesException e) {
 					player.setMessage("You don't have enough coins!");
 					logger.log(Level.INFO, "Not enough coins", e);
 					return false;
 				}
-	    		CardHandler cardHandler = new CardHandler(this);
+	    		CardHandler cardHandler = new CardHandler(this,decoratedMethods);
     			player.personalBoard.setPossessions(cardNumber,"Character");
     			cardHandler.doInstantEffect(character.instantBonuses, player);
-    			cardHandler.activateCharacter(character.permanentEffect, player);
+    			decoratedMethods = cardHandler.activateCharacter(character.permanentEffect, player);
     			return true;
     	}
 		else
@@ -140,16 +142,13 @@ public class GameHandler {
     	return false;
     }
     
-    public void coinsForCharacter(NetworkPlayer player ,Character character) throws NotEnoughResourcesException{
-    	player.resources.setCoins(-character.costCoins);
-    }
 
     public boolean getBuildingCard(Building building,NetworkPlayer player,Integer cardNumber) throws IOException{
     	ArrayList<Integer> possessedBuildings = player.personalBoard.getPossessions("Building");
 		if (possessedBuildings.size()<6){
 	    		try {
-	    			resourcesForBuilding(player ,building);
-					addCardPoints(building.instantBonuses,player);
+	    			decoratedMethods.resourcesForBuilding(player ,building);
+					decoratedMethods.addCardPoints(building.instantBonuses,player);
 				} catch (NotEnoughResourcesException | NotEnoughPointsException e) {
 					player.setMessage("You don't have enough resources or points!");
 					logger.log(Level.INFO, "Not enough resources or points", e);
@@ -164,10 +163,6 @@ public class GameHandler {
     	return false;
     }
     
-    public void resourcesForBuilding(NetworkPlayer player ,Building building) throws NotEnoughResourcesException{
-    	System.out.println("dentro resourcesForBuilding non decorato " + this);
-    	subCardResources(building.costResources,player);
-    }
     
     public boolean getVentureCard(Venture venture,NetworkPlayer player,Integer cardNumber) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
     	ArrayList<Integer> possessedVentures = player.personalBoard.getPossessions("Venture");
@@ -181,7 +176,7 @@ public class GameHandler {
 	    	}
 	    	if(venture.costMilitary==0 || choice == 2){
 	    		try {
-	    			resourcesForVenture(player,venture);
+	    			decoratedMethods.resourcesForVenture(player,venture);
 	    		} catch (NotEnoughResourcesException e) {
 	    			player.setMessage("You don't have enough resources!");
 	    			logger.log(Level.INFO, "Not enough resources", e);
@@ -205,7 +200,7 @@ public class GameHandler {
 	    
 	    	player.personalBoard.setPossessions(cardNumber,"Venture");
 	    	player.points.setFinalVictory(venture.finalVictory);
-	    	CardHandler cardHandler = new CardHandler(this);
+	    	CardHandler cardHandler = new CardHandler(this,decoratedMethods);
 	    	cardHandler.doInstantEffect(venture.instant, player);
 	    	return true;
 	   }
@@ -214,9 +209,6 @@ public class GameHandler {
     	return false;
     }
     
-    public void resourcesForVenture(NetworkPlayer player ,Venture venture) throws NotEnoughResourcesException{
-    	subCardResources(venture.costResources,player);
-    }
     
     public Integer familyMemberColorToDiceValue(String familyMemberColor,NetworkPlayer player) throws IOException{
     	//The order followed is the one on the Game Board for the dices positions
@@ -369,7 +361,7 @@ public class GameHandler {
     
     public void supportTheChurch (NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
     	//period + 2 is the minimum amount of faith points needed to support to the church for every period
-    	CardHandler cardHandler = new CardHandler(this);
+    	CardHandler cardHandler = new CardHandler(this,decoratedMethods);
     	player.setMessage("Current Period Excommunication effect:");
 		cardHandler.getInfo((mainBoard.excommunicationMap.get(player.personalMainBoard.excommunicationsOnTheBoard[period-1])).effect, player);
     	if(player.points.getFaith()>=(period+2)){
@@ -386,14 +378,14 @@ public class GameHandler {
     	else{
     		player.setMessage("You don't have enough faith points or you answered no so you get the Excommunication");
     		player.setExcommunications(player.personalMainBoard.excommunicationsOnTheBoard[period-1]);
-			cardHandler.activateExcommunication((mainBoard.excommunicationMap.get(player.personalMainBoard.excommunicationsOnTheBoard[period-1])).effect, player);
+    		decoratedMethods = cardHandler.activateExcommunication((mainBoard.excommunicationMap.get(player.personalMainBoard.excommunicationsOnTheBoard[period-1])).effect, player);
 			System.out.println("after excommunication activation");
     	}
     }
     
     public void setActionBonus(ActionBonus actionBonus,NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
-    			addCardResources(actionBonus.resources,player);
-    			addCardPoints(actionBonus.points,player);
+    			decoratedMethods.addCardResources(actionBonus.resources,player);
+    			decoratedMethods.addCardPoints(actionBonus.points,player);
 		}
     
     //probably useless method
@@ -427,21 +419,13 @@ public class GameHandler {
     	PlayerResources playerResources = player.resources;
     	playerResources.setCoins(-resources.coins);
     	playerResources.setWoods(-resources.woods);
+    	System.out.println("stones da sottrarre " + resources.stones);
     	playerResources.setStones(-resources.stones);
     	playerResources.setServants(-resources.servants);
     	//if any of the set above fails this line of code is never reached
     	player.resources=playerResources;
     }
     
-    public void addCardResources (CardResources resources, NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
-    	PlayerResources playerResources = player.resources;
-    	playerResources.setCoins(resources.coins);
-    	playerResources.setWoods(resources.woods);
-    	playerResources.setStones(resources.stones);
-    	playerResources.setServants(resources.servants);
-    	councilHandler.getCouncil(resources.council,player,this,new ArrayList<Integer>());
-    	player.resources=playerResources;
-    }
     
     public void subCardPoints (CardPoints points, NetworkPlayer player) throws NotEnoughPointsException{
     	PlayerPoints playerPoints = player.points;
@@ -452,43 +436,12 @@ public class GameHandler {
     	player.points=playerPoints;
     }
     
-    public void addCardPoints (CardPoints points, NetworkPlayer player) throws NotEnoughPointsException{
-    	PlayerPoints playerPoints = player.points;
-    	playerPoints.setFaith(points.faith);
-    	playerPoints.setVictory(points.victory);
-    	playerPoints.setMilitary(points.military);
-    	player.points=playerPoints;
-    }
     
     public Integer familyMemberValue (FamilyMember familyMember, NetworkPlayer player) throws IOException{
     	Integer diceValue = familyMemberColorToDiceValue(familyMember.color,player);
     	return (diceValue+familyMember.getServants());
     }
 
-    public boolean addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException {
-    	FamilyMember[] familyMembersAtTheMarket = player.personalMainBoard.familyMembersLocation.getFamilyMembersOnTheMarket(); // we use the player Personal MainBaord
-        if(("").equals(familyMembersAtTheMarket[position-1].color) && (position-1)<mainBoard.marketSize){ 
-        	if(familyMemberValue(familyMember,player)>=1){
-        	if(position==1 || position==2 || position==3 || position==4)
-        		setActionBonus(player.personalMainBoard.marketBonuses[position-1],player);
-        	else{
-        		player.setMessage("Invalid position! the position must be between 1 and 4");
-	        	return false;
-	        	}
-        	(mainBoard.familyMembersLocation.getFamilyMembersOnTheMarket()[position-1].color) = (familyMember.color);
-        	(mainBoard.familyMembersLocation.getFamilyMembersOnTheMarket()[position-1].playerColor) = (familyMember.playerColor);
-        	}
-        	else {
-            	player.setMessage("Your Family Member must have a value of at least 1");
-            	return false;
-            }
-        }
-        else {
-        	player.setMessage("This place is occupied or not usable if two player game");
-        	return false;
-        }
-        return true;
-    }
     
     public boolean addFamilyMemberToProductionOrHarvest(FamilyMember familyMember, ArrayList<FamilyMember> familyMembersAtProductionOrHarvest, String actionType,NetworkPlayer player) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException {
     	int i;
@@ -599,6 +552,7 @@ public class GameHandler {
 		gsonReader.fileToCard(mainBoard);
 		//load excommunications
 		loadExcommunications ();
+		decoratedMethods.setGameHandler(this);
 		for(int i=0;i<4;i++){
 			mainBoard.familyMembersLocation.setFamilyMemberOnTheMarket(new FamilyMember(), i);
 			for(int j=0;j<4;j++)
@@ -807,20 +761,6 @@ public class GameHandler {
     	return list;
     }
 
-    //ask to the player if he wants to add servants to the action
-    public Integer addServants(NetworkPlayer player) throws IOException, NotEnoughResourcesException{
-    	player.setMessage("Do you want to add servants? yes or no");
-    	String response = player.sendMessage();
-    	response = checkResponse(response, player);
-    	if(("yes").equals(response)){
-    		player.setMessage("How many?");
-    		Integer qty = Integer.parseInt(player.sendMessage());
-    		player.resources.setServants(-qty);
-    		return qty;
-    	}
-    	else
-    		return 0;
-    }
     
     public FamilyMember chooseFamilyMember (NetworkPlayer player){
     	player.setMessage("Which Family Member do you want to use? Choose a color between orange,black,white,uncolored");
@@ -915,13 +855,13 @@ public class GameHandler {
     }
     
     public void activatePermanentEffects(NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-    	CardHandler cardHandler = new CardHandler (this);
+    	CardHandler cardHandler = new CardHandler (this,decoratedMethods);
     	for(Integer cardNumber : player.personalBoard.getPossessions("Character"))
-    		cardHandler.activateCharacter(mainBoard.characterMap.get(cardNumber).permanentEffect, player);
+    		decoratedMethods = cardHandler.activateCharacter(mainBoard.characterMap.get(cardNumber).permanentEffect, player);
     	for(String leader : player.personalBoard.getPossessedLeaders())
-    		cardHandler.activateLeader(mainBoard.leaderMap.get(leader).effect, player,leader);
+    		decoratedMethods = cardHandler.activateLeader(mainBoard.leaderMap.get(leader).effect, player,leader);
     	for(Integer excommunicationNumber : player.getExcommunications())
-    		cardHandler.activateExcommunication(mainBoard.excommunicationMap.get(excommunicationNumber).effect, player);
+    		decoratedMethods = cardHandler.activateExcommunication(mainBoard.excommunicationMap.get(excommunicationNumber).effect, player);
     }
     
     public void resetPlayerPersonalMainBoard (NetworkPlayer player)

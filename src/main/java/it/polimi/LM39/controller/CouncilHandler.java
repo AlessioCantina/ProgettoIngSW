@@ -22,15 +22,15 @@ public class CouncilHandler {
 				favorsList.add(choice);
 				//add to the player the bonus he chose
 				switch(choice){
-				case 1: gameHandler.addCardResources(council.bonus1, player);
+				case 1: gameHandler.decoratedMethods.addCardResources(council.bonus1, player);
 					break;
-				case 2: gameHandler.addCardResources(council.bonus2, player);
+				case 2: gameHandler.decoratedMethods.addCardResources(council.bonus2, player);
 					break;
-				case 3: gameHandler.addCardResources(council.bonus3, player);
+				case 3: gameHandler.decoratedMethods.addCardResources(council.bonus3, player);
 					break;
-				case 4: gameHandler.addCardPoints(council.bonus4, player);
+				case 4: gameHandler.decoratedMethods.addCardPoints(council.bonus4, player);
 					break;
-				case 5: gameHandler.addCardPoints(council.bonus5, player);
+				case 5: gameHandler.decoratedMethods.addCardPoints(council.bonus5, player);
 					break;
 				default:
 					//if the player chose a bonus that doesn't exist
