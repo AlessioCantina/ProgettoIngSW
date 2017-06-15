@@ -4,7 +4,7 @@
          "effect":{  
             "type":"HarvestProductionMalus",
             "malus":3,
-            "modifierType":"Harvest"
+            "actionType":"Harvest"
          }
       },
       {  
@@ -45,7 +45,7 @@
          "effect":{  
             "type":"HarvestProductionMalus",
             "malus":3,
-            "modifierType":"Production"
+            "actionType":"Production"
          }
       },
       {  

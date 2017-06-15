@@ -321,7 +321,7 @@
          "instantBonuses":{  
             "type":"VictoryForCard",
             "cardType":"Building",
-            "cardValue":2
+            "victoryQty":2
          },
          "permanentEffect":{  
             "type":"NoCharacterPermanentEffect"

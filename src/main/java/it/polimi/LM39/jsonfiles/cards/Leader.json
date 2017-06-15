@@ -97,14 +97,14 @@
          "cardName":"Cesare Borgia",
          "requestedObjects":{  
             "type":"RequestedCardPointsResources",
-            "requestedResources":{  
+            "resources":{  
                "woods":0,
                "stones":0,
                "servants":0,
                "coins":12,
                "council":0
             },
-            "requestedPoints":{  
+            "points":{  
                "victory":0,
                "faith":2,
                "military":0

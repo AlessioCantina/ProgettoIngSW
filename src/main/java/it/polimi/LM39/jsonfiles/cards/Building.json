@@ -49,8 +49,8 @@
          },
          "activationEffect":{  
             "type":"CoinForCard",
-            "cardType":"Building",
-            "cardValue":1
+            "coinQty":1,
+            "cardType":"Building"
          }
       },
       {  

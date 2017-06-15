@@ -1008,16 +1008,16 @@ public class CardHandler {
 	public void getInfo(ExcommunicationPermanentEffect effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
 		 Class[] cArg = new Class[2];
 		 cArg[0] = effect.getClass();
-		 System.out.println(effect.getClass());
 		 cArg[1] = NetworkPlayer.class;
 		 Method lMethod = (this.getClass().getMethod("getInfo",cArg));
-		 System.out.println(lMethod.getName());
 		 lMethod.invoke(this,effect,player);
 	 }
 	/*
 	 * ExcommunicationPermanentEffect info
 	 */
-	
+	public void getInfo (NoVictoryForCard malus,NetworkPlayer player){
+		player.setMessage("At the end of the game, you don’t score points for any of your " + malus.cardType);
+	}
 	public void getInfo (CardActionMalus malus,NetworkPlayer player){
 		player.setMessage("Each time you take a " + malus.cardType + " card (through the action space or as a Card effect), your action receives a " +  -malus.malus + " reduction");
 	}
@@ -1075,7 +1075,7 @@ public class CardHandler {
 	public void getInfo(LeaderPermanentEffect effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
 		 Class[] cArg = new Class[2];
 		 cArg[0] = effect.getClass();
-		 cArg[1] = NetworkPlayer.class;
+		 cArg[1] = NetworkPlayer.class;	
 		 Method lMethod = (this.getClass().getMethod("getInfo",cArg));
 		 lMethod.invoke(this,effect,player);
 	 }
@@ -1129,7 +1129,7 @@ public class CardHandler {
 	 */
 	
 	public void getInfo(Effect permanentEffect,NetworkPlayer player) throws SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException	{
-		Class[] cArg = new Class[3];
+		Class[] cArg = new Class[2];
 	    cArg[0] = permanentEffect.getClass();
 	    cArg[1] = NetworkPlayer.class;
 		Method lMethod;

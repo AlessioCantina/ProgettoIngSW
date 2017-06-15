@@ -514,8 +514,8 @@
          "finalVictory":5,
          "instant":{  
             "type":"HarvestProductionAction",
-            "cardValue":3,
-            "cardType":"Production"
+            "actionValue":3,
+            "actionType":"Production"
          }
       },
       {  
