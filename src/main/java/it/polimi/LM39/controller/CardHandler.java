@@ -848,17 +848,26 @@ public class CardHandler {
 	}
 	
 	public void getInfo (GetCard effect,NetworkPlayer player){
-		player.setMessage("This effect gives you a " + effect.cardType + " card of value " + effect.cardValue);
+		if(("All").equals(effect.cardType))
+			player.setMessage("This effect gives you any cards of value " + effect.cardValue);
+		else
+			player.setMessage("This effect gives you a " + effect.cardType + " card of value " + effect.cardValue);
 	}
 	
 	public void getInfo (GetCardAndPoints effect,NetworkPlayer player){
-		player.setMessage("This effect gives you a " + effect.cardType + " card of value " + effect.cardValue);
+		if(("All").equals(effect.cardType))
+			player.setMessage("This effect gives you any cards of value " + effect.cardValue);
+		else
+			player.setMessage("This effect gives you a " + effect.cardType + " card of value " + effect.cardValue);
 		player.setMessage("and ");
 		printCardPoints(effect.points,player);
 	}
 	
 	public void getInfo (GetCardAndResources effect,NetworkPlayer player){
-		player.setMessage("This effect gives you a " + effect.cardType + " card of value " + effect.cardValue);
+		if(("All").equals(effect.cardType))
+			player.setMessage("This effect gives you any cards of value " + effect.cardValue);
+		else
+			player.setMessage("This effect gives you a " + effect.cardType + " card of value " + effect.cardValue);
 		player.setMessage("and ");
 		printCardResources(effect.resources,player);
 	}

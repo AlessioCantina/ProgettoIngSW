@@ -668,12 +668,21 @@ public class GameHandler {
     public ArrayList<PlayerRank> calculateFinalPoints(ArrayList<NetworkPlayer> players) {
         Integer finalPoints;
         ArrayList<PlayerRank> list = new ArrayList<PlayerRank>();
-        boolean flag;
+        boolean flag = false;
+        Integer excommunication = -1;
         //use the method calculateMilitaryStrenght(); to create the arraylist of the first and second position of the military strenght
         ArrayList<PlayerRank> militaryStrenght = calculateMilitaryStrenght();
+        
     	
         for(NetworkPlayer player : players){
         	finalPoints = player.points.getVictory();
+        	
+        	//check if the player has the excommunication NoVictoryForCard that penalize the final points
+        	for(Integer excommunicationNumber : player.getExcommunications())
+        		if((mainBoard.excommunicationMap.get(excommunicationNumber).effect.getClass()).equals(NoVictoryForCard.class)){
+        			flag = true;
+        			excommunication = excommunicationNumber;
+        		}
         	
         	for(PlayerRank playerRank : militaryStrenght)
         		if(player.playerColor.equals(playerRank.playerColor)){
@@ -682,37 +691,41 @@ public class GameHandler {
         			else
         				finalPoints+=2;
         		}
-        	switch (player.personalBoard.getPossessions("Territory").size()){
-	        	case(3): finalPoints += 1;
-	        		break;
-	        	case(4): finalPoints += 4;
-	        		break;
-	        	case(5): finalPoints += 10;
-	        		break;
-	        	case(6): finalPoints += 20;
-	        		break;
+        	
+        	//if the player does not have the excommunication on the Territory cards
+        	if(!(flag && ((NoVictoryForCard)mainBoard.excommunicationMap.get(excommunication).effect).cardType.equals("Territory"))){
+	        	switch (player.personalBoard.getPossessions("Territory").size()){
+		        	case(3): finalPoints += 1;
+		        		break;
+		        	case(4): finalPoints += 4;
+		        		break;
+		        	case(5): finalPoints += 10;
+		        		break;
+		        	case(6): finalPoints += 20;
+		        		break;
+	        	}
         	}
-        	switch (player.personalBoard.getPossessions("Character").size()){
-        		case(1): finalPoints += 1;
-        			break;
-        		case(2): finalPoints += 3;
-        			break;
-        		case(3): finalPoints += 6;
-        			break;
-	        	case(4): finalPoints += 10;
-	        		break;
-	        	case(5): finalPoints += 15;
-	        		break;
-	        	case(6): finalPoints += 21;
-	        		break;
+        	//if the player does not have the excommunication on the Character cards
+        	if(!(flag && ((NoVictoryForCard)mainBoard.excommunicationMap.get(excommunication).effect).cardType.equals("Character"))){
+	        	switch (player.personalBoard.getPossessions("Character").size()){
+	        		case(1): finalPoints += 1;
+	        			break;
+	        		case(2): finalPoints += 3;
+	        			break;
+	        		case(3): finalPoints += 6;
+	        			break;
+		        	case(4): finalPoints += 10;
+		        		break;
+		        	case(5): finalPoints += 15;
+		        		break;
+		        	case(6): finalPoints += 21;
+		        		break;
+	        	}
         	}
-        	flag=true;
-        	for(Integer excommunicationNumber : player.getExcommunications())
-        		if((mainBoard.excommunicationMap.get(excommunicationNumber).effect.getClass()).equals(NoVictoryForCard.class))
-        			flag=false;
-        	if(flag==true){
-        		finalPoints += player.points.getFinalVictory();
-        	}
+        		//if the player does not have the excommunication on the Venture cards
+        		if(!(flag && ((NoVictoryForCard)mainBoard.excommunicationMap.get(excommunication).effect).cardType.equals("Venture")))
+        				finalPoints += player.points.getFinalVictory();
+        	
         	finalPoints += ((player.resources.getCoins()+player.resources.getWoods()+player.resources.getStones()+player.resources.getServants())/5);
         	PlayerRank playerRank = new PlayerRank();
         	playerRank.setPlayerPoints(finalPoints);

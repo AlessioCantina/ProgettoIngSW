@@ -71,7 +71,6 @@ public class SocketClient extends AbstractClient implements Runnable{
     				try {
     						long moveStartTime = System.currentTimeMillis();
     						String prova = UI.askClient(player);
-    						System.out.println(prova);
     						socketOut.writeUTF(prova);
     						if(System.currentTimeMillis() - moveStartTime < clientTimeout){
     							socketOut.flush();

@@ -92,13 +92,14 @@ public class Game implements Runnable{
     	
     	
     	//TODO DEBUG
+    	/*
     	try {
 			testCards();
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException e) {
 			e.printStackTrace();
 		}
-    
+*/
     }
     private void setPlayersColor(ArrayList<NetworkPlayer> players){
     	String[] colors = {"green","blue","red","yellow"};
@@ -330,6 +331,42 @@ public class Game implements Runnable{
 			playerAction(player);
 			return;
 		}
+    	else if(("debug").equals(response)){
+    		try {
+    			player.setMessage("set coins");
+    			response = player.sendMessage();
+				player.resources.setCoins(Integer.parseInt(response));
+				
+				player.setMessage("set woods");
+				response = player.sendMessage();
+				player.resources.setWoods(Integer.parseInt(response));
+				
+				player.setMessage("set stones");
+				response = player.sendMessage();
+				player.resources.setStones(Integer.parseInt(response));
+				
+				player.setMessage("set servants");
+				response = player.sendMessage();
+				player.resources.setServants(Integer.parseInt(response));
+				
+				player.setMessage("set victory");
+				response = player.sendMessage();
+				player.points.setVictory(Integer.parseInt(response));
+				
+				player.setMessage("set faith");
+				response = player.sendMessage();
+				player.points.setFaith(Integer.parseInt(response));
+				
+				player.setMessage("set military");
+				response = player.sendMessage();
+				player.points.setMilitary(Integer.parseInt(response));
+			} catch (NumberFormatException | NotEnoughResourcesException | NotEnoughPointsException e) {
+				e.printStackTrace();
+			}
+    		playerAction(player);
+			return;
+    		
+    	}
     	
     	else if (("skip action").equals(response)){
     		//do nothing
@@ -498,7 +535,7 @@ public class Game implements Runnable{
 			e.printStackTrace();
 		}
     	//make the players choose a their four leader cards
-    	//TODO uncomment the lines blow in the final version
+    	//TODO uncomment the line below in the final version
     	//chooseLeaderCard();
     	chooseBonusTile();
     	//the array list where the players actions order is stored
@@ -674,7 +711,7 @@ public class Game implements Runnable{
     //TODO debug method to be removed
     private void testCards() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
     	CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
-   /* 	for(int i =1;i<=24;i++){
+    	for(int i =1;i<=24;i++){
     		players.get(0).setMessage("Territory");
     		players.get(0).setMessage(gameHandler.mainBoard.territoryMap.get(i).cardName);
     		cardHandler.getInfo(gameHandler.mainBoard.territoryMap.get(i).activationReward,players.get(0));
@@ -718,6 +755,7 @@ public class Game implements Runnable{
     		cardHandler.getInfo(gameHandler.mainBoard.leaderMap.get(gameHandler.mainBoard.leaderName.get(i)).requestedObjects,players.get(0));
     		players.get(0).setMessage(" ");
     	}
+    	
     	for(int i =1;i<=21;i++){
     		cardHandler.getInfo(gameHandler.mainBoard.excommunicationMap.get(i).effect,players.get(0));
     		players.get(0).setMessage(gameHandler.mainBoard.excommunicationMap.get(i).period.toString());
@@ -725,7 +763,7 @@ public class Game implements Runnable{
     	}
     	
     	
-     */	
+     
     	
     	}		
    

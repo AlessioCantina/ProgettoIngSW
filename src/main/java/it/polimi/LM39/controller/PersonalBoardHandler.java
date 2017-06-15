@@ -4,11 +4,16 @@ package it.polimi.LM39.controller;
 import it.polimi.LM39.server.NetworkPlayer;
 import it.polimi.LM39.server.SocketPlayer;import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;import it.polimi.LM39.exception.NotEnoughPointsException;
+import java.util.ArrayList;
+
+import com.google.gson.Gson;
+
+import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.CardPoints;
 import it.polimi.LM39.model.CardResources;
 import it.polimi.LM39.model.MainBoard;
+import it.polimi.LM39.model.Player;
 import it.polimi.LM39.model.instanteffect.InstantEffect;
 
 public class PersonalBoardHandler {
@@ -31,10 +36,16 @@ public class PersonalBoardHandler {
     	gameHandler.setActionBonus(player.personalBoard.personalBonusTile.productionBonus,player);
     	ArrayList <Integer> buildings = player.personalBoard.getPossessions("Building");
         CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
+        /*
         CardResources costResources = initializeResources();
 		CardResources bonusResources = initializeResources();
 		CardPoints costPoints = initializePoints();
 		CardPoints bonusPoints = initializePoints();
+		*/
+        CardResources costResources = new CardResources();
+        CardResources bonusResources = new CardResources();
+		CardPoints costPoints = new CardPoints();
+		CardPoints bonusPoints = new CardPoints();
         for (int i=0;i<buildings.size();i++)
         	 if(actionValue >= gameHandler.mainBoard.buildingMap.get(buildings.get(i)).activationCost){
         		 player.setMessage("Do you want to activate " + gameHandler.mainBoard.buildingMap.get(buildings.get(i)).cardName + " ? yes or no");
@@ -72,7 +83,10 @@ public class PersonalBoardHandler {
     }
     
     public void checkPlayer(NetworkPlayer player,InstantEffect activationEffect,CardResources costResources, CardPoints costPoints, CardResources bonusResources, CardPoints bonusPoints) throws IOException, NotEnoughResourcesException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-    	NetworkPlayer fakePlayer = new SocketPlayer(null, null);
+    	NetworkPlayer fakePlayer;
+    	Gson gson =new Gson();
+    	fakePlayer = gson.fromJson(gson.toJson(player),player.getClass());
+ 
     	fakePlayer.decoratorHandler = player.decoratorHandler;
     	fakePlayer.resources.setCoins(20);
     	fakePlayer.resources.setServants(20);
@@ -127,6 +141,9 @@ public class PersonalBoardHandler {
     		costPoints.victory = 20 - fakePlayer.points.getVictory();
     }
     
+    
+    //probably useless methods
+    /*
     public CardResources initializeResources (){
     	CardResources resources = new CardResources();
     	resources.coins = 0;
@@ -144,5 +161,6 @@ public class PersonalBoardHandler {
     	points.victory = 0;
     	return points;
     }
+    */
 
 }
