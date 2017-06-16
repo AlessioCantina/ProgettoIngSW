@@ -78,23 +78,23 @@ public class GameHandler {
 
     public boolean getCard(Integer cardNumber,NetworkPlayer player, Integer towerNumber) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
     	boolean cardGotten=false;
-    	    		switch(towerNumber){
-    		    		case 0: Territory territory=mainBoard.territoryMap.get(cardNumber);
-    		    			cardGotten=getTerritoryCard(territory,player,cardNumber);
-    		    			break;
-    		    		case 1: Character character=mainBoard.characterMap.get(cardNumber);
-    		    			cardGotten=getCharacterCard(character,player,cardNumber);
-    		    			break;
-    		    		case 2: Building building=mainBoard.buildingMap.get(cardNumber);
-    		    			cardGotten=getBuildingCard(building,player,cardNumber);
-    		    			break;
-    		    		case 3: Venture venture=mainBoard.ventureMap.get(cardNumber);
-    		    			cardGotten=getVentureCard(venture,player,cardNumber);
-    		    			break;
-    		    		default: player.setMessage("This tower does not exist!");
-    		    			break;
-    	    		}
-    	    		return cardGotten;
+    	switch(towerNumber){
+    		case 0: Territory territory=mainBoard.territoryMap.get(cardNumber);
+    				cardGotten=getTerritoryCard(territory,player,cardNumber);
+    		   		break;
+     		case 1: Character character=mainBoard.characterMap.get(cardNumber);
+    		    	cardGotten=getCharacterCard(character,player,cardNumber);
+    		    	break;
+     		case 2: Building building=mainBoard.buildingMap.get(cardNumber);
+    		    	cardGotten=getBuildingCard(building,player,cardNumber);
+    		    	break;
+     		case 3: Venture venture=mainBoard.ventureMap.get(cardNumber);
+    		    	cardGotten=getVentureCard(venture,player,cardNumber);
+    		    	break;
+     		default: player.setMessage("This tower does not exist!");
+    		    	break;
+    	}
+    	return cardGotten;
     }
     
     
@@ -287,22 +287,26 @@ public class GameHandler {
         	//TODO delete
         		System.out.println("here1");
         	//if there is an uncolored family member on the tower or there is a colored one but the player uses an uncolored family member
-        		if(player.resources.getCoins()>=3 && getCard(cardNameToInteger(cardName),player,k)){
-        			//TODO delete
-            		System.out.println("here2");
-	        		try {
-						player.resources.setCoins(player.personalMainBoard.occupiedTowerCost);
-					} catch (NotEnoughResourcesException e) {
-						player.setMessage("You do not have enough resources!");
-						logger.log(Level.INFO, "Not enough resources", e);
-						return false;
-					}
-	        		setActionBonus((player.personalMainBoard.getTowersBonuses())[p][k],player);
-	        		(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].playerColor)=(familyMember.playerColor);
-	        		(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].color)=(familyMember.color);
-	        		removeCard(p,k);
-	        		return true;
-	        		}
+        		if(player.resources.getCoins()>=3){
+        			if(getCard(cardNameToInteger(cardName),player,k)){
+	        			//TODO delete
+	            		System.out.println("here2");
+		        		try {
+							player.resources.setCoins(player.personalMainBoard.occupiedTowerCost);
+						} catch (NotEnoughResourcesException e) {
+							player.setMessage("You do not have enough resources!");
+							logger.log(Level.INFO, "Not enough resources", e);
+							return false;
+						}
+		        		setActionBonus((player.personalMainBoard.getTowersBonuses())[p][k],player);
+		        		(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].playerColor)=(familyMember.playerColor);
+		        		(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].color)=(familyMember.color);
+		        		removeCard(p,k);
+		        		return true;
+		        		}
+        			else
+        				return false;
+        		}
         		else
         			player.setMessage("You do not have the necessary resources!");
 	        	}
@@ -311,36 +315,45 @@ public class GameHandler {
         		System.out.println("here3");
         		//if there is none of my family members
         		for(i=0;i<4 && ("").equals(familyMembersOnTheTowers[i][k].playerColor);i++){}
-        		if(i==4 && getCard(cardNameToInteger(cardName),player,k)){
-        			//TODO delete
-            		System.out.println("here4");
-        			//if the tower is free
-        			(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].playerColor)=(familyMember.playerColor);
-        			(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].color)=(familyMember.color);
-        			System.out.println(familyMembersOnTheTowers[p][k].playerColor + " " + familyMembersOnTheTowers[p][k].color);
-        			setActionBonus((player.personalMainBoard.getTowersBonuses())[p][k],player);
-        			removeCard(p,k);
-	        		return true;
+        		if(i==4) {
+        			if(getCard(cardNameToInteger(cardName),player,k)){
+	        			//TODO delete
+	            		System.out.println("here4");
+	        			//if the tower is free
+	        			(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].playerColor)=(familyMember.playerColor);
+	        			(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].color)=(familyMember.color);
+	        			System.out.println(familyMembersOnTheTowers[p][k].playerColor + " " + familyMembersOnTheTowers[p][k].color);
+	        			System.out.println(player.personalMainBoard.getTowersBonuses()[p][k]);
+	        			setActionBonus(player.personalMainBoard.getTowersBonuses()[p][k],player);
+	        			removeCard(p,k);
+		        		return true;
+        			}
+        			else
+        				return false;
         		}
         		else{
         			//TODO delete
             		System.out.println("here5");
         			//if the tower is occupied
-        			if(player.resources.getCoins()>=3 && getCard(cardNameToInteger(cardName),player,k)){
-        				//TODO delete
-                		System.out.println("here6");
-    	        		try {
-							player.resources.setCoins(player.personalMainBoard.occupiedTowerCost);
-						} catch (NotEnoughResourcesException e) {
-							player.setMessage("You do not have enough resources");
-							logger.log(Level.INFO, "Not enough resources", e);
-							return false;
-						}
-    	        		setActionBonus((player.personalMainBoard.getTowersBonuses())[p][k],player);
-    	        		(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].playerColor)=(familyMember.playerColor);
-            			(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].color)=(familyMember.color);
-            			removeCard(p,k);
-    	        		return true;
+        			if(player.resources.getCoins()>=3){
+        				if(getCard(cardNameToInteger(cardName),player,k)){
+	        				//TODO delete
+	                		System.out.println("here6");
+	    	        		try {
+								player.resources.setCoins(player.personalMainBoard.occupiedTowerCost);
+							} catch (NotEnoughResourcesException e) {
+								player.setMessage("You do not have enough resources");
+								logger.log(Level.INFO, "Not enough resources", e);
+								return false;
+							}
+	    	        		setActionBonus((player.personalMainBoard.getTowersBonuses())[p][k],player);
+	    	        		(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].playerColor)=(familyMember.playerColor);
+	            			(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].color)=(familyMember.color);
+	            			removeCard(p,k);
+	    	        		return true;
+	        			}
+        				else
+        					return false;
         			}
         			else{
         				player.setMessage("You do not have the necessary resources!");

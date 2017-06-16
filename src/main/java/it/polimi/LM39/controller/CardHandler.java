@@ -540,6 +540,13 @@ public class CardHandler {
 	public DecoratedMethods activateCharacter(NoBoardBonuses permanentEffect, NetworkPlayer player){
 		//create an empty towersBonuses and set it to the playerPersonalBoard
 		ActionBonus[][] towersBonuses = new ActionBonus[4][4];
+		ActionBonus bonus = new ActionBonus();
+		bonus.resources = new CardResources();
+		bonus.points = new CardPoints();
+		for(int i=0;i<4;i++)
+			for(int j=0;j<4;j++)
+				towersBonuses[i][j] = bonus;
+		
 		player.personalMainBoard.setTowersBonuses(towersBonuses);
 		
 		return decoratedMethods;
