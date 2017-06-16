@@ -16,7 +16,8 @@ public class PlayerRank implements Serializable{
     }
 
     public void setPlayerPoints(Integer points) {
-        this.points+=points;
+    	//not this.points+=points because it would sum the player points at the end of every move
+        this.points=points;
     }
 
 }

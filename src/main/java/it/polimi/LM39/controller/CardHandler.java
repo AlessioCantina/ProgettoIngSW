@@ -47,6 +47,24 @@ public class CardHandler {
 	 Method lMethod = (this.getClass().getMethod("doInstantEffect",cArg));
 	 lMethod.invoke(this,instantEffect,player);
  }
+ 
+ 
+ //for building transformations
+ public void doInstantEffect(InstantEffect instantEffect,NetworkPlayer player, NetworkPlayer fakePlayer) throws  SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException	{
+	 Class[] cArg = new Class[3];
+	 cArg[0] = instantEffect.getClass();
+	 cArg[1] = NetworkPlayer.class;
+	 cArg[2] = NetworkPlayer.class;
+	 Method lMethod;
+	try {
+		lMethod = (this.getClass().getMethod("doInstantEffect",cArg));
+		lMethod.invoke(this,instantEffect,player);
+	} catch (NoSuchMethodException e) {
+		doInstantEffect(instantEffect,player);
+	}
+ }
+ 
+ 
 
  	public void doInstantEffect(NoInstantEffect instantEffect,NetworkPlayer player) throws NotEnoughResourcesException{
  		//do nothing
@@ -58,42 +76,42 @@ public class CardHandler {
 			player.resources.setCoins(coinQty);	
 	}
 	
-	public void doInstantEffect(DoublePointsTransformation instantEffect,NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidInputException{
+	public void doInstantEffect(DoublePointsTransformation instantEffect,NetworkPlayer player,NetworkPlayer fakePlayer) throws IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidInputException{
 		//ask to the player what exchange he wants to do
 		player.setMessage("What exchange do you want to do? 1 or 2");
 		//get the player response
 		Integer choice = Integer.parseInt(player.sendMessage());
 		if (choice==1){
 			//subtract the resources from the player
-			gameHandler.subCardResources(instantEffect.requestedForTransformation, player);
+			gameHandler.subCardResources(instantEffect.requestedForTransformation, fakePlayer);
 			//add points to the player
-			gameHandler.decoratedMethods.addCardPoints(instantEffect.points, player);}
+			gameHandler.decoratedMethods.addCardPoints(instantEffect.points, fakePlayer);}
 		else if(choice==2){
 			//subtract the resources from the player
-			gameHandler.subCardResources(instantEffect.requestedForTransformation2, player);
+			gameHandler.subCardResources(instantEffect.requestedForTransformation2, fakePlayer);
 			//add points to the player
-			gameHandler.decoratedMethods.addCardPoints(instantEffect.points2, player);}
+			gameHandler.decoratedMethods.addCardPoints(instantEffect.points2, fakePlayer);}
 		else
 			throw new InvalidInputException("The exchange must be chosen between 1 and 2");
 			
 		
 	}
 	
-	public void doInstantEffect(DoubleResourcesTransformation instantEffect,NetworkPlayer player) throws IOException, NotEnoughResourcesException, InvalidInputException, NotEnoughPointsException{
+	public void doInstantEffect(DoubleResourcesTransformation instantEffect,NetworkPlayer player,NetworkPlayer fakePlayer) throws IOException, NotEnoughResourcesException, InvalidInputException, NotEnoughPointsException{
 		//ask to the player what exchange he wants to do
 				player.setMessage("What exchange do you want to do? 1 or 2");
 				//get the player response
 				Integer choice = Integer.parseInt(player.sendMessage());
 				if (choice==1){
 					//subtract the resources from the player
-					gameHandler.subCardResources(instantEffect.requestedForTransformation, player);
+					gameHandler.subCardResources(instantEffect.requestedForTransformation, fakePlayer);
 					//add resources to the player
-					gameHandler.decoratedMethods.addCardResources(instantEffect.resources, player);}
+					gameHandler.decoratedMethods.addCardResources(instantEffect.resources, fakePlayer);}
 				else if(choice==2){
 					//subtract the resources from the player
-					gameHandler.subCardResources(instantEffect.requestedForTransformation2, player);
+					gameHandler.subCardResources(instantEffect.requestedForTransformation2, fakePlayer);
 					//add resources to the player
-					gameHandler.decoratedMethods.addCardResources(instantEffect.resources2, player);}
+					gameHandler.decoratedMethods.addCardResources(instantEffect.resources2, fakePlayer);}
 				else
 					throw new InvalidInputException("The exchange must be chosen between 1 and 2");
 	}
@@ -276,11 +294,11 @@ public class CardHandler {
 		gameHandler.decoratedMethods.addCardPoints(instantEffect.points, player);
 	}
 	
-	public void doInstantEffect(PointsTransformation instantEffect,NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
+	public void doInstantEffect(PointsTransformation instantEffect,NetworkPlayer player,NetworkPlayer fakePlayer) throws NotEnoughResourcesException, NotEnoughPointsException{
 		//check if the player has enough resources
-		gameHandler.subCardResources(instantEffect.requestedForTransformation, player);
+		gameHandler.subCardResources(instantEffect.requestedForTransformation, fakePlayer);
 		//add points to the player
-		gameHandler.decoratedMethods.addCardPoints(instantEffect.points, player);
+		gameHandler.decoratedMethods.addCardPoints(instantEffect.points, fakePlayer);
 	}
 
 	public void doInstantEffect(Resources instantEffect,NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
@@ -305,23 +323,23 @@ public class CardHandler {
 		doInstantEffect(pointsEffect,player);
 	}
 	
-	public void doInstantEffect(ResourcesAndPointsTransformation instantEffect,NetworkPlayer player) throws NotEnoughPointsException, NotEnoughResourcesException{
+	public void doInstantEffect(ResourcesAndPointsTransformation instantEffect,NetworkPlayer player,NetworkPlayer fakePlayer) throws NotEnoughPointsException, NotEnoughResourcesException{
 		//check if the player has enough points for the transformation
-		gameHandler.subCardPoints(instantEffect.requestedForTransformation, player);
+		gameHandler.subCardPoints(instantEffect.requestedForTransformation, fakePlayer);
 		//making a ResourcesAndPoints effect and calling his method
 		ResourcesAndPoints effect = new ResourcesAndPoints();
 		effect.points = instantEffect.points;
 		effect.resources = instantEffect.resources;
-		doInstantEffect(effect,player);
+		doInstantEffect(effect,fakePlayer);
 	}
 	
-	public void doInstantEffect(ResourcesTransformation instantEffect,NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
+	public void doInstantEffect(ResourcesTransformation instantEffect,NetworkPlayer player,NetworkPlayer fakePlayer) throws NotEnoughResourcesException, NotEnoughPointsException{
 		//checking if the player has enough resources
-		gameHandler.subCardResources(instantEffect.requestedForTransformation, player);
+		gameHandler.subCardResources(instantEffect.requestedForTransformation, fakePlayer);
 		//making a Resources effect and calling his method
 		Resources resourcesEffect = new Resources();
 		resourcesEffect.resources = instantEffect.resources;
-		doInstantEffect(resourcesEffect,player);
+		doInstantEffect(resourcesEffect,fakePlayer);
 	}
 	
 	public void doInstantEffect(SetFamilyMember instantEffect,NetworkPlayer player) throws IOException, InvalidActionTypeException{
