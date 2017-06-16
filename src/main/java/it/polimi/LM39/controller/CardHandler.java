@@ -147,7 +147,7 @@ public class CardHandler {
 							flag = gameHandler.getCard(gameHandler.cardNameToInteger(cardName), player, j);
 						if (flag == false){
 							player.resources.setServants(qtyServants);
-							player.setMessage("You can't get this card");
+							player.setMessage("You cannot get this card");
 						}
 						else{
 							gameHandler.mainBoard.getCardNamesOnTheTowers()[i][j] = "";
@@ -229,7 +229,7 @@ public class CardHandler {
 						    }
 							else {
 								player.resources.setServants(qtyServants);
-								player.setMessage("You can't get this card");
+								player.setMessage("You cannot get this card");
 							}
 							CardResources bonusResources = new CardResources();
 							//check the card costs and confront it with the bonus to know how many resources to give to the player as discount
@@ -510,10 +510,8 @@ public class CardHandler {
 			decoratedMethods = new VentureResourcesDiscountDecorator(decoratedMethods,gameHandler,permanentEffect.resourcesDiscount,player);
 		}
 		else if(("Building").equals(permanentEffect.cardType) && player.decoratorHandler.buildingResourcesDiscountDecorator == false){
-			System.out.println("decorating a building");
 			player.decoratorHandler.buildingResourcesDiscountDecorator = true;
 			decoratedMethods = new BuildingResourcesDiscountDecorator(decoratedMethods,gameHandler,permanentEffect.resourcesDiscount,player);
-			System.out.println("gameHandler dentro l'effect " + gameHandler);
 		}
 		
 		//make a CardActionDiscount effect and call his method
@@ -834,7 +832,7 @@ public class CardHandler {
 	 */
 	
 	public void getInfo (NoInstantEffect effect,NetworkPlayer player){
-		player.setMessage("This Card doesn't give any Instant Effect");
+		player.setMessage("This Card does not give any Instant Effect");
 	}
 	
 	public void getInfo (CoinForCard effect,NetworkPlayer player){
@@ -1009,9 +1007,8 @@ public class CardHandler {
 	 */
 	
 	public void getInfo (NoCharacterPermanentEffect effect,NetworkPlayer player){
-		player.setMessage("This Card doesn't give any Permanent Effect");
+		player.setMessage("This Card does not give any Permanent Effect");
 	}
-	
 	
 	public void getInfo (CardActionDiscount bonus,NetworkPlayer player){
 		player.setMessage("This permanent effect gives you a discount of " + bonus.discount + " in action value to get a " + bonus.cardType + " card");

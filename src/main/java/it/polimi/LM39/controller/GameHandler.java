@@ -91,7 +91,7 @@ public class GameHandler {
     		    		case 3: Venture venture=mainBoard.ventureMap.get(cardNumber);
     		    			cardGotten=getVentureCard(venture,player,cardNumber);
     		    			break;
-    		    		default: player.setMessage("This tower doesn't exist!");
+    		    		default: player.setMessage("This tower does not exist!");
     		    			break;
     	    		}
     	    		return cardGotten;
@@ -112,10 +112,10 @@ public class GameHandler {
     			return true;
     			}
     		else
-        		player.setMessage("You don't have enough military points");
+        		player.setMessage("You do not have enough military points");
     	}
     	else 
-    		player.setMessage("You can't have more than 6 territories! ");
+    		player.setMessage("You cannot have more than 6 territories! ");
     	return false;
     }
 
@@ -126,7 +126,7 @@ public class GameHandler {
 	    		try {
 	    			decoratedMethods.coinsForCharacter(player,character);
 				} catch (NotEnoughResourcesException e) {
-					player.setMessage("You don't have enough coins!");
+					player.setMessage("You do not have enough coins!");
 					logger.log(Level.INFO, "Not enough coins", e);
 					return false;
 				}
@@ -137,7 +137,7 @@ public class GameHandler {
     			return true;
     	}
 		else
-			player.setMessage("You can't have more than 6 characters!");
+			player.setMessage("You cannot have more than 6 characters!");
     	return false;
     }
     
@@ -149,7 +149,7 @@ public class GameHandler {
 	    			decoratedMethods.resourcesForBuilding(player ,building);
 					decoratedMethods.addCardPoints(building.instantBonuses,player);
 				} catch (NotEnoughResourcesException | NotEnoughPointsException e) {
-					player.setMessage("You don't have enough resources or points!");
+					player.setMessage("You do not have enough resources or points!");
 					logger.log(Level.INFO, "Not enough resources or points", e);
 					return false;
 				}
@@ -158,7 +158,7 @@ public class GameHandler {
 	    	
     	}
 		else
-			player.setMessage("You can't have more than 6 buildings!");
+			player.setMessage("You cannot have more than 6 buildings!");
     	return false;
     }
     
@@ -177,7 +177,7 @@ public class GameHandler {
 	    		try {
 	    			decoratedMethods.resourcesForVenture(player,venture);
 	    		} catch (NotEnoughResourcesException e) {
-	    			player.setMessage("You don't have enough resources!");
+	    			player.setMessage("You do not have enough resources!");
 	    			logger.log(Level.INFO, "Not enough resources", e);
 	    			return false;
 				}
@@ -187,13 +187,13 @@ public class GameHandler {
 	    		try {
 	    			player.points.setMilitary(-venture.costMilitary);
 	    		} catch (NotEnoughPointsException e) {
-	    			player.setMessage("You don't have enough military points!");
+	    			player.setMessage("You do not have enough military points!");
 	    			logger.log(Level.INFO, "Not enough military points", e);
 	    			return false;
 	    		}
 	    	}
 	    	else{
-	    		player.setMessage("You don't have enough military points!");
+	    		player.setMessage("You do not have enough military points!");
     			return false;
     			}
 	    
@@ -204,7 +204,7 @@ public class GameHandler {
 	    	return true;
 	   }
 		else
-			player.setMessage("You can't have more than 6 ventures!");
+			player.setMessage("You cannot have more than 6 ventures!");
     	return false;
     }
     
@@ -274,7 +274,7 @@ public class GameHandler {
 	        		try {
 						player.resources.setCoins(player.personalMainBoard.occupiedTowerCost);
 					} catch (NotEnoughResourcesException e) {
-						player.setMessage("You don't have enough resources!");
+						player.setMessage("You do not have enough resources!");
 						logger.log(Level.INFO, "Not enough resources", e);
 						return false;
 					}
@@ -285,7 +285,7 @@ public class GameHandler {
 	        		return true;
 	        		}
         		else
-        			player.setMessage("You don't have the necessary resources!");
+        			player.setMessage("You do not have the necessary resources!");
 	        	}
         	if (uncoloredFamilyMemberOnTheTower==false && coloredFamilyMemberOnTheTower==false){
         		//TODO delete
@@ -313,7 +313,7 @@ public class GameHandler {
     	        		try {
 							player.resources.setCoins(player.personalMainBoard.occupiedTowerCost);
 						} catch (NotEnoughResourcesException e) {
-							player.setMessage("You don't have enough resources");
+							player.setMessage("You do not have enough resources");
 							logger.log(Level.INFO, "Not enough resources", e);
 							return false;
 						}
@@ -324,18 +324,18 @@ public class GameHandler {
     	        		return true;
         			}
         			else{
-        				player.setMessage("You don't have the necessary resources!");
+        				player.setMessage("You do not have the necessary resources!");
         				return false;
         				}
         		}
         	}
         	else{
-        		player.setMessage("You can't place two colored family members on the same tower!");	
+        		player.setMessage("You cannot place two colored family members on the same tower!");	
             	return false;
         	}
         }
         else{
-        	player.setMessage("This position is occupied or your family member hasn't a value high enough!");	
+        	player.setMessage("This position is occupied or your family member has not a value high enough!");	
         	return false;
         }
     }
@@ -375,10 +375,9 @@ public class GameHandler {
     	}
     	//if the player doesn't have enough faith points to support the Church or he decided not to support the Church
     	else{
-    		player.setMessage("You don't have enough faith points or you answered no so you get the Excommunication");
+    		player.setMessage("You do not have enough faith points or you answered no so you get the Excommunication");
     		player.setExcommunications(player.personalMainBoard.excommunicationsOnTheBoard[period-1]);
     		decoratedMethods = cardHandler.activateExcommunication((mainBoard.excommunicationMap.get(player.personalMainBoard.excommunicationsOnTheBoard[period-1])).effect, player);
-			System.out.println("after excommunication activation");
     	}
     }
     
@@ -418,7 +417,6 @@ public class GameHandler {
     	PlayerResources playerResources = player.resources;
     	playerResources.setCoins(-resources.coins);
     	playerResources.setWoods(-resources.woods);
-    	System.out.println("stones da sottrarre " + resources.stones);
     	playerResources.setStones(-resources.stones);
     	playerResources.setServants(-resources.servants);
     	//if any of the set above fails this line of code is never reached
@@ -490,7 +488,7 @@ public class GameHandler {
     			}
     			if(j==0){
     				//if there are already two of my family members
-    				player.setMessage("You can't place another family member");
+    				player.setMessage("You cannot place another family member");
     				return false;
     			}	
     			for(i=0;i<mainBoard.harvestAndProductionSize && i<familyMembersAtProductionOrHarvest.size() && !("").equals(familyMembersAtProductionOrHarvest.get(i).playerColor);i++){}
@@ -798,13 +796,17 @@ public class GameHandler {
     	for(String name : player.personalBoard.getPossessedLeaders())
     		if((name).equals(leader)){
     			for(String playedName : playedLeader)
-    				if(playedName.equals(leader))
+    				if(playedName.equals(leader)){
+    					player.setMessage("This card is activated so you cannot discard it");
     					return;
+    				}
     			ArrayList<String> leaders = player.personalBoard.getPossessedLeaders();
     			leaders.remove(leader);
     			player.personalBoard.setPossessedLeaders(leaders);
 	    		councilHandler.getCouncil(1, player, this, new ArrayList<Integer>());
 	    	}
+    		else
+    			player.setMessage("You do not have this Leader card");
     }
     
     public static String checkResponse (String response,NetworkPlayer player){

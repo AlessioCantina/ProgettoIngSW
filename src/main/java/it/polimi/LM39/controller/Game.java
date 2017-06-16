@@ -222,7 +222,7 @@ public class Game implements Runnable{
 						e.printStackTrace();
 					}
     				if(flag == false){
-    					player.setMessage("You don't have the requirements to activate this leader!");
+    					player.setMessage("You do not have the requirements to activate this leader!");
 						playerAction(player);
 						return;
     				}
@@ -488,7 +488,7 @@ public class Game implements Runnable{
 		try {
 			familyMember.setServants(gameHandler.decoratedMethods.addServants(player));
 		} catch (IOException | NotEnoughResourcesException e) {
-			player.setMessage("You don't have enough servants!");
+			player.setMessage("You do not have enough servants!");
 			player.setMessage("You can use another Family Member or do another action, respond change family member or do another action");
 			String response = player.sendMessage();
 			if(("do another action").equals(response))
@@ -559,7 +559,7 @@ public class Game implements Runnable{
     					NetworkPlayer player = playerColorToNetworkPlayer(order.get(move));
     					player.setMessage(gameHandler.mainBoard);
     					playerAction(player);
-    					System.out.println(player +" coins " + player.resources.getCoins());
+    					player.setMessage("End of your action");
     					gameHandler.updateRankings(player);
     				}
     			}
@@ -635,16 +635,13 @@ public class Game implements Runnable{
     		//send to the players the cards he should choose one every time 
     		for(int playerNumber=0,k=0;playerNumber<players.size();){
     			if(playerNumber+n<players.size()){
-    				System.out.println("playerNumber " + playerNumber + " " + n);
     				players.get(playerNumber + n).setMessage("Choose a leader card between:");
     				}
     			else if (((playerNumber + n)-players.size())<players.size()){
-    				System.out.println("playerNumber " + playerNumber + " " + n + " " + (-players.size()));
     				players.get((playerNumber + n)-players.size()).setMessage("Choose a leader card between:");}
     			else
     				players.get((playerNumber + n)-players.size()-players.size()).setMessage("Choose a leader card between:");
     			//send to the player the list of leader card in which he must choose one card
-    			System.out.println("da " + (i+k) + " a " + k);
     			for(j=i+k;j>0+k;j--){
     				if(playerNumber+n<players.size())
     					players.get(playerNumber + n).setMessage(leaders.get(j));
