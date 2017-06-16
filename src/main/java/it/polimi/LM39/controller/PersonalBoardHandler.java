@@ -86,20 +86,27 @@ public class PersonalBoardHandler {
     	NetworkPlayer fakePlayer;
     	Gson gson =new Gson();
     	fakePlayer = gson.fromJson(gson.toJson(player),player.getClass());
- 
-    	fakePlayer.decoratorHandler = player.decoratorHandler;
+    	//TODO use decorator handler
+    	fakePlayer.resources.setCoins(-fakePlayer.resources.getCoins());
     	fakePlayer.resources.setCoins(20);
+    	fakePlayer.resources.setServants(-fakePlayer.resources.getServants());
     	fakePlayer.resources.setServants(20);
+    	fakePlayer.resources.setStones(-fakePlayer.resources.getStones());
     	fakePlayer.resources.setStones(20);
+    	fakePlayer.resources.setWoods(-fakePlayer.resources.getWoods());
     	fakePlayer.resources.setWoods(20);
     	fakePlayer.resources.setCouncil(0);
+    	fakePlayer.points.setFaith(-fakePlayer.points.getFaith());
     	fakePlayer.points.setFaith(20);
+    	fakePlayer.points.setFinalVictory(-fakePlayer.points.getFinalVictory());
     	fakePlayer.points.setFinalVictory(20);
+    	fakePlayer.points.setMilitary(-fakePlayer.points.getMilitary());
     	fakePlayer.points.setMilitary(20);
+    	fakePlayer.points.setVictory(-fakePlayer.points.getVictory());
     	fakePlayer.points.setVictory(20);
     	
     	CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
-    	cardHandler.doInstantEffect(activationEffect,fakePlayer);
+    	cardHandler.doInstantEffect(activationEffect,player,fakePlayer);
     	
     	if(fakePlayer.resources.getCoins()>20)
     		bonusResources.coins = fakePlayer.resources.getCoins() - 20;

@@ -86,7 +86,7 @@ public class CLI extends UserInterface{
 	 */
 	private MainBoard mainBoard;
 	private BufferedReader userInput;
-	private Logger logger;
+	private Logger logger = Logger.getLogger(CLI.class.getName());;
 	private boolean firstMessage = true;
 	/*
 	 * set the mainboard for the client and print
@@ -115,7 +115,6 @@ public class CLI extends UserInterface{
     public CLI() {
     	System.out.println("Cli started");
     	userInput = new BufferedReader(new InputStreamReader(System.in));
-		Logger logger = Logger.getLogger(CLI.class.getName());
     }
     /*
      * show action menu
@@ -317,27 +316,35 @@ public class CLI extends UserInterface{
 		ArrayList<FamilyMember> harvestArea = new ArrayList<FamilyMember>();
 		ArrayList<FamilyMember> productionArea = new ArrayList<FamilyMember>();
 		try{
-			harvestArea = location.getFamilyMembersOnProductionOrHarvest("harvest");
-			productionArea = location.getFamilyMembersOnProductionOrHarvest("production");
+			harvestArea = location.getFamilyMembersOnProductionOrHarvest("Harvest");
+			productionArea = location.getFamilyMembersOnProductionOrHarvest("Production");
 		}catch(InvalidActionTypeException e){
 			logger.log(Level.WARNING, "Invalid Action Type", e);
 		}
 		int i = 0;
-		System.out.println("╔══════════════════════╗");	//TODO ask if also production/harvest space can have bonuses
-		while(i < mainBoard.harvestAndProductionSize){
-			System.out.printf("║%-15s║%n",this.getPlayerColor(harvestArea.get(i)));
-			System.out.printf("║%-15s║%n",this.getFamilyMemberColor(harvestArea.get(i)));
-			i++;
+		if(harvestArea.size() != 0){
+			System.out.println("═════════════════════════════");	//TODO fix size
+			while(i < mainBoard.harvestAndProductionSize){
+				System.out.printf("║%-15s║%n",this.getPlayerColor(harvestArea.get(i)));
+				System.out.printf("║%-15s║%n",this.getFamilyMemberColor(harvestArea.get(i)));
+				i++;
+			}
+			System.out.println("═════════════════════════════");
 		}
-		System.out.println("╚══════════════════════╝");
-		i = 0;
-		System.out.println("╔══════════════════════╗");	
-		while(i < mainBoard.harvestAndProductionSize){
-			System.out.printf("║%-15s║%n",this.getPlayerColor(productionArea.get(i)));
-			System.out.printf("║%-15s║%n",this.getFamilyMemberColor(productionArea.get(i)));
-			i++;
+		else
+			System.out.println("Nobody is at harvest area");
+		if(productionArea.size() != 0){
+			i = 0;
+			System.out.println("╔══════════════════════╗");	
+			while(i < mainBoard.harvestAndProductionSize){
+				System.out.printf("║%-15s║%n",this.getPlayerColor(productionArea.get(i)));
+				System.out.printf("║%-15s║%n",this.getFamilyMemberColor(productionArea.get(i)));
+				i++;
+			}
+			System.out.println("╚══════════════════════╝");
 		}
-		System.out.println("╚══════════════════════╝");
+		else
+			System.out.println("Nobody is at production area");
 		System.out.printf("%n");
 	}
 
@@ -462,6 +469,7 @@ public class CLI extends UserInterface{
 			}
 			response = response.toLowerCase();
 			stringController = Action.isIn(response);
+			System.out.println(response);
 			if(stringController == Action.CONTROLLER.toString() && firstMessage){
 				firstMessage = false;
 				return response;

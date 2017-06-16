@@ -55,13 +55,13 @@ public class CardHandler {
 	 cArg[0] = instantEffect.getClass();
 	 cArg[1] = NetworkPlayer.class;
 	 cArg[2] = NetworkPlayer.class;
-	 Method lMethod;
+	 Method lMethod = null;
 	try {
 		lMethod = (this.getClass().getMethod("doInstantEffect",cArg));
-		lMethod.invoke(this,instantEffect,player);
 	} catch (NoSuchMethodException e) {
 		doInstantEffect(instantEffect,player);
 	}
+	lMethod.invoke(this,instantEffect,player,fakePlayer);
  }
  
  
