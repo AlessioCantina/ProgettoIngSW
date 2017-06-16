@@ -60,6 +60,7 @@ public class CardHandler {
 		lMethod = (this.getClass().getMethod("doInstantEffect",cArg));
 	} catch (NoSuchMethodException e) {
 		doInstantEffect(instantEffect,player);
+		return;
 	}
 	lMethod.invoke(this,instantEffect,player,fakePlayer);
  }
@@ -362,6 +363,7 @@ public class CardHandler {
 	}
 	
 	public void doInstantEffect(VictoryForCard instantEffect,NetworkPlayer player){
+		System.out.println("entrato");
 		//calculate the victory points to receive by multiplying the possessed cards of a specific type by the victory quantity given by card
 		Integer victoryQty=(player.personalBoard.getPossessions(instantEffect.cardType).size())*instantEffect.victoryQty;
 			player.points.setVictory(victoryQty);
@@ -503,7 +505,7 @@ public class CardHandler {
 		//need to check when a player get a card to set the discount like done for the GetDiscountedCard effect
 		if(("Character").equals(permanentEffect.cardType) && player.decoratorHandler.characterResourcesDiscountDecorator == false){
 			player.decoratorHandler.characterResourcesDiscountDecorator=true;
-			decoratedMethods = new CharacterResourcesDiscountDecorator(decoratedMethods,gameHandler,permanentEffect.resourcesDiscount,player);
+			decoratedMethods = new CharacterResourcesDiscountDecorator(gameHandler,permanentEffect.resourcesDiscount,player);
 		}
 		else if(("Venture").equals(permanentEffect.cardType) && player.decoratorHandler.ventureResourcesDiscountDecorator == false){
 			player.decoratorHandler.ventureResourcesDiscountDecorator = true;

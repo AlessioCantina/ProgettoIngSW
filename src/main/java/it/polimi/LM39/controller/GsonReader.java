@@ -184,7 +184,7 @@ public class GsonReader {
 	}
 	//wildcard allow us to cast the HashMap to the correct static type, we cannot do that with Card 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public HashMap<Integer,?> hashMapCreator(Card cardType) throws IOException {
+	private HashMap<Integer,?> hashMapCreator(Card cardType) throws IOException {
 		//jsonreader which scans the array of cards contained in the json files. Filereader get the path using a getClass on cardType
 		 JsonReader jsonReader = new JsonReader(new FileReader("./src/main/java/it/polimi/LM39/jsonfiles/cards/" + cardType.getClass().getSimpleName() + ".json"));
 		 HashMap<Integer,?> cardHashMap = null;
@@ -217,7 +217,7 @@ public class GsonReader {
 	/*
 	 * since leader cards doesn't extends abstract class card we need to overload the method
 	 */
-	public HashMap<String,Leader> hashMapCreator(Leader leader,MainBoard mainBoard) throws IOException {
+	private HashMap<String,Leader> hashMapCreator(Leader leader,MainBoard mainBoard) throws IOException {
 		JsonReader jsonReader = new JsonReader(new FileReader("./src/main/java/it/polimi/LM39/jsonfiles/cards/" + leader.getClass().getSimpleName() + ".json"));
 		RuntimeTypeAdapterFactory<Effect> effectAdapter = RuntimeTypeAdapterFactory.of(Effect.class,"type");
 		RuntimeTypeAdapterFactory<LeaderRequestedObjects> requestedObjectsAdapter = RuntimeTypeAdapterFactory.of(LeaderRequestedObjects.class,"type");
@@ -238,7 +238,7 @@ public class GsonReader {
 	/*
 	 * since excommunications doesn't extends abstract class card we need to overload the method
 	 */
-	public HashMap<Integer,Excommunication> hashMapCreator(Excommunication excommunication) throws IOException {
+	private HashMap<Integer,Excommunication> hashMapCreator(Excommunication excommunication) throws IOException {
 		JsonReader jsonReader = new JsonReader(new FileReader("./src/main/java/it/polimi/LM39/jsonfiles/cards/" + excommunication.getClass().getSimpleName() + ".json"));
 		RuntimeTypeAdapterFactory<ExcommunicationPermanentEffect> effectAdapter = RuntimeTypeAdapterFactory.of(ExcommunicationPermanentEffect.class,"type");
 		subEffectRegister(effectAdapter,excommunication);
@@ -280,7 +280,7 @@ public class GsonReader {
 			}
 		}	
 	}
-	public void configLoader(MainBoard mainBoard) throws IOException{
+	private void configLoader(MainBoard mainBoard) throws IOException{
 		ActionBonus[][] bonuses = new ActionBonus[4][4]; 
 		JsonReader jsonReader = new JsonReader(new FileReader("./src/main/java/it/polimi/LM39/jsonfiles/config/gameconfiguration.json"));
 		Gson gson = new GsonBuilder().create();  
@@ -303,7 +303,7 @@ public class GsonReader {
 		mainBoard.setTowersBonuses(bonuses);
 		jsonReader.close();	
 	}
-	public void personalTileLoader(MainBoard mainBoard) throws IOException{
+	private void personalTileLoader(MainBoard mainBoard) throws IOException{
 		JsonReader jsonReader = new JsonReader(new FileReader("./src/main/java/it/polimi/LM39/jsonfiles/config/personalbonustiles.json"));
 		Gson gson = new GsonBuilder().create();
 		jsonReader.beginArray();

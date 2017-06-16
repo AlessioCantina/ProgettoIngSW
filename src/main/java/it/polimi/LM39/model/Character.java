@@ -10,7 +10,7 @@ public class Character extends Card implements Serializable{
 
 	private static final long serialVersionUID = -116916025932442030L;
 
-	public Integer costCoins;
+	public Integer costCoins = 0;
 
     public InstantEffect instantBonuses;
 

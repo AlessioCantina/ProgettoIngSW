@@ -16,12 +16,12 @@ import it.polimi.LM39.model.Venture;
 import it.polimi.LM39.server.NetworkPlayer;
 
 public class CharacterResourcesDiscountDecorator extends DecoratedMethods{
-	private DecoratedMethods decoratedMethods;
+	private DecoratedMethods decoratedMethods = new DecoratedMethods();
 	private GameHandler gameHandler;
 	private CardResources resourcesDiscount;
 	private NetworkPlayer player;
 	
-	public CharacterResourcesDiscountDecorator (DecoratedMethods decoratedMethods,GameHandler gameHandler, CardResources resourcesDiscount, NetworkPlayer player) {
+	public CharacterResourcesDiscountDecorator (GameHandler gameHandler, CardResources resourcesDiscount, NetworkPlayer player) {
 		this.gameHandler = gameHandler;
 		this.resourcesDiscount = resourcesDiscount;
 		this.player = player;
@@ -56,7 +56,7 @@ public class CharacterResourcesDiscountDecorator extends DecoratedMethods{
 	
 	@Override
 	public void addCardResources (CardResources resources, NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
-		decoratedMethods.addCardResources (resources,player);
+		decoratedMethods.addCardResources(resources,player);
 	}
 	
 	@Override
