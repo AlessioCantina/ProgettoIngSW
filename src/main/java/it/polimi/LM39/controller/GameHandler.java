@@ -165,13 +165,33 @@ public class GameHandler {
     
     public boolean getVentureCard(Venture venture,NetworkPlayer player,Integer cardNumber) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
     	ArrayList<Integer> possessedVentures = player.personalBoard.getPossessions("Venture");
+    	CardHandler cardHandler = new CardHandler(this,decoratedMethods);
+    	boolean flag = false;
     	Integer choice = 0;
 		if (possessedVentures.size()<6){
+			
+			player.setMessage("To get this card you need " + mainBoard.ventureMap.get(cardNumber).neededMilitary + " military points");
 	    	if(venture.costMilitary!=0 && (venture.costResources.coins!=0 || venture.costResources.woods!=0 || venture.costResources.stones!=0 || venture.costResources.servants!=0)) {
+	    		if(mainBoard.ventureMap.get(cardNumber).costMilitary > 0){
+					player.setMessage("This card costs " + mainBoard.ventureMap.get(cardNumber).costMilitary + " militarypoints");
+					flag = true;
+				}
+				if(mainBoard.ventureMap.get(cardNumber).costResources.coins > 0 || mainBoard.ventureMap.get(cardNumber).costResources.woods > 0
+				|| mainBoard.ventureMap.get(cardNumber).costResources.stones > 0 || mainBoard.ventureMap.get(cardNumber).costResources.servants > 0){
+					if(flag)
+						player.setMessage("or");
+					player.setMessage("This card cost in resources:");
+					cardHandler.printCardResources(mainBoard.ventureMap.get(cardNumber).costResources,player);
+				}
+				
 	    		//ask to the player what payment he wants to do
-	    		player.setMessage("What payment do you want to do? 1 or 2");
+	    		player.setMessage("What payment do you want to do? 1 or 2 or abort");
 	    		//get the player response
-	    		choice = Integer.parseInt(player.sendMessage());
+	    		String response = player.sendMessage();
+	    		if(("abort").equals(response))
+	    			return false;
+	    		else
+	    			choice = Integer.parseInt(response);
 	    	}
 	    	if(venture.costMilitary==0 || choice == 2){
 	    		try {
@@ -199,7 +219,6 @@ public class GameHandler {
 	    
 	    	player.personalBoard.setPossessions(cardNumber,"Venture");
 	    	player.points.setFinalVictory(venture.finalVictory);
-	    	CardHandler cardHandler = new CardHandler(this,decoratedMethods);
 	    	cardHandler.doInstantEffect(venture.instant, player);
 	    	return true;
 	   }

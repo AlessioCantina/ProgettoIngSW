@@ -344,7 +344,7 @@ public class CardHandler {
 	
 	public void doInstantEffect(SetFamilyMember instantEffect,NetworkPlayer player) throws IOException, InvalidActionTypeException{
 		//the color will be chosen by the user
-		player.setMessage("What FamilyMemebr color do you want to set the value?");
+		player.setMessage("What FamilyMember color do you want to set the value?");
 		//get the FamilyMember color from the player
 		String color = player.sendMessage();
 		//make a copy of diceValues then set the desired FamilyMember to the value of the bonus

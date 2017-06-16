@@ -383,6 +383,7 @@ public class Game implements Runnable{
     	int p = 0; int k = 0; int j = 0; int i;
     	Integer cardNumber = -1;
     	String cardType = "";
+    	boolean flag = false;
     	for(i=0;i<4;i++)
     		for(j=0;j<4;j++)
     			if(gameHandler.mainBoard.getCardNamesOnTheTowers()[i][j].compareToIgnoreCase(cardName) == 0){
@@ -469,10 +470,16 @@ public class Game implements Runnable{
     						player.setMessage("To get this card you need " + gameHandler.mainBoard.ventureMap.get(cardNumber).neededMilitary + " military points");
     						}
     						if(gameHandler.mainBoard.ventureMap.get(cardNumber).costMilitary > 0){
-			    			player.setMessage("This card costs " + gameHandler.mainBoard.ventureMap.get(cardNumber).costMilitary + " militarypoints");
+    							player.setMessage("This card costs " + gameHandler.mainBoard.ventureMap.get(cardNumber).costMilitary + " militarypoints");
+    							flag = true;
     						}
-			    			player.setMessage("This card cost in resources:");
-			    			cardHandler.printCardResources(gameHandler.mainBoard.ventureMap.get(cardNumber).costResources,player);
+    						if(gameHandler.mainBoard.ventureMap.get(cardNumber).costResources.coins > 0 || gameHandler.mainBoard.ventureMap.get(cardNumber).costResources.woods > 0
+    						|| gameHandler.mainBoard.ventureMap.get(cardNumber).costResources.stones > 0 || gameHandler.mainBoard.ventureMap.get(cardNumber).costResources.servants > 0){
+    							if(flag)
+    								player.setMessage("or");
+    							player.setMessage("This card cost in resources:");
+    							cardHandler.printCardResources(gameHandler.mainBoard.ventureMap.get(cardNumber).costResources,player);
+    						}
 			    			player.setMessage("This card gives you " + gameHandler.mainBoard.ventureMap.get(cardNumber).finalVictory + " victory points at the end of the game");
 			    			player.setMessage("This card gives you:");
 				   			cardHandler.getInfo(gameHandler.mainBoard.ventureMap.get(cardNumber).instant,player);
