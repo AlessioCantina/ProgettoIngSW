@@ -196,14 +196,15 @@ public class CardHandler {
 			player.setMessage("What card do you want?");
 			String cardName = player.sendMessage();
 			Integer qtyServants = gameHandler.decoratedMethods.addServants(player);
-			//converting the card name to cardNumber
-			Integer cardNumber = gameHandler.cardNameToInteger(cardName);
-			Integer[][] CardsOnTheTowers = player.personalMainBoard.getCardsOnTheTowers();
+			String[][] cardNamesOnTheTowers = gameHandler.mainBoard.getCardNamesOnTheTowers();
 			//looking for this card on the Towers
 			for(int i=0;i<4;i++)
 				for(int j=0;j<4;j++)
-					if(CardsOnTheTowers[i][j]==cardNumber){
+					if(cardNamesOnTheTowers[i][j].compareToIgnoreCase(cardName) == 0){
+						//converting the card name to cardNumber
+						Integer cardNumber = gameHandler.cardNameToInteger(cardName);
 						//if the card is a Territory the discount get lost
+						System.out.println("COLONNA: " + j + "BONUS " + instantEffect.cardType + "VALORE: " +instantEffect.cardValue);
 						if(j==0 && (("Territory").equals(instantEffect.cardType) || ("All").equals(instantEffect.cardType)) && (instantEffect.cardValue+qtyServants) >= gameHandler.mainBoard.getTowersValue()[i][j])
 							gameHandler.getCard(cardNumber, player, j);
 						//if the card is Character the discount is only on coins
@@ -234,6 +235,7 @@ public class CardHandler {
 							else {
 								player.resources.setServants(qtyServants);
 								player.setMessage("You cannot get this card");
+								return;
 							}
 							CardResources bonusResources = new CardResources();
 							//check the card costs and confront it with the bonus to know how many resources to give to the player as discount
@@ -241,7 +243,7 @@ public class CardHandler {
 								bonusResources.coins=instantEffect.cardDiscount.coins;
 							else
 								bonusResources.coins=costResources.coins;
-							
+							System.out.println(bonusResources.coins);
 							if(costResources.stones >= instantEffect.cardDiscount.stones)
 								bonusResources.stones=instantEffect.cardDiscount.stones;								
 							else
@@ -700,13 +702,15 @@ public class CardHandler {
 		Method lMethod;
 		try {
 			lMethod = (this.getClass().getMethod("activateLeader",cArg));
+			return (DecoratedMethods)lMethod.invoke(this,permanentEffect,player,cardName);
 		} catch (NoSuchMethodException e) {
 			Class[] cArg1 = new Class[2];
 			cArg1[0] = cArg[0];
 			cArg1[1] = cArg[1];
 			lMethod = (this.getClass().getMethod("doInstantEffect",cArg1));
+			return (DecoratedMethods)lMethod.invoke(this,permanentEffect,player);
 		}
-		return (DecoratedMethods)lMethod.invoke(this,permanentEffect,player);
+		
 }
 	
 	public DecoratedMethods activateLeader(AlreadyOccupiedTowerDiscount permanentEffect,NetworkPlayer player,String cardName){

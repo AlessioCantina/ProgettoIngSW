@@ -821,6 +821,7 @@ public class GameHandler {
     
     public void discardLeader (NetworkPlayer player, String leader) throws NotEnoughResourcesException, NotEnoughPointsException{
     	ArrayList<String> playedLeader = player.getPlayerPlayedLeaderCards();
+    	boolean flag = false;
     	for(String name : player.personalBoard.getPossessedLeaders())
     		if((name).equals(leader)){
     			for(String playedName : playedLeader)
@@ -828,12 +829,14 @@ public class GameHandler {
     					player.setMessage("This card is activated so you cannot discard it");
     					return;
     				}
+    			flag = true;
     			ArrayList<String> leaders = player.personalBoard.getPossessedLeaders();
     			leaders.remove(leader);
     			player.personalBoard.setPossessedLeaders(leaders);
 	    		councilHandler.getCouncil(1, player, this, new ArrayList<Integer>());
+	    		break;
 	    	}
-    		else
+    		if(!flag)
     			player.setMessage("You do not have this Leader card");
     }
     
@@ -900,7 +903,7 @@ public class GameHandler {
     	CardHandler cardHandler = new CardHandler (this,decoratedMethods);
     	for(Integer cardNumber : player.personalBoard.getPossessions("Character"))
     		decoratedMethods = cardHandler.activateCharacter(mainBoard.characterMap.get(cardNumber).permanentEffect, player);
-    	for(String leader : player.personalBoard.getPossessedLeaders())
+    	for(String leader : player.getPlayerPlayedLeaderCards())
     		decoratedMethods = cardHandler.activateLeader(mainBoard.leaderMap.get(leader).effect, player,leader);
     	for(Integer excommunicationNumber : player.getExcommunications())
     		decoratedMethods = cardHandler.activateExcommunication(mainBoard.excommunicationMap.get(excommunicationNumber).effect, player);

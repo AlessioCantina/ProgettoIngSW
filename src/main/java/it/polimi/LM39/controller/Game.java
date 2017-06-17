@@ -88,7 +88,8 @@ public class Game implements Runnable{
 			
 			
     }
-    	updatePersonalMainBoards();
+    	for(NetworkPlayer player : players)
+    		updatePersonalMainBoards(player);
     	
     	
     	//TODO DEBUG
@@ -196,25 +197,33 @@ public class Game implements Runnable{
 			
     	}
     	else if (("discard leader").equals(response)){
+    		Integer cardNumber = -1;
     		player.setMessage("Which leader card do you want to discard?");
     		response = player.sendMessage();
-    		for(String card : player.personalBoard.getPossessedLeaders())
-    			if((card).equals(response))
-					try {
-						gameHandler.discardLeader(player, card);
+    		if(player.personalBoard.getPossessedLeaders().contains(response)){
+    			cardNumber = player.personalBoard.getPossessedLeaders().indexOf(response);
+    /*		for(String card : player.personalBoard.getPossessedLeaders())
+    			if((card).equals(response))		*/
+					try {	
+						gameHandler.discardLeader(player, player.personalBoard.getPossessedLeaders().get(cardNumber));
 					} catch (NotEnoughResourcesException | NotEnoughPointsException e) {
 						e.printStackTrace();
 						playerAction(player);
 						return;
 					}
+    		}
+    		if(cardNumber == -1)
+    			player.setMessage("You don't have this leader");
+    		playerAction(player);
     	}
     	else if (("activate leader").equals(response)){
     		player.setMessage("Which leader do you want to activate?");
     		response = player.sendMessage();
     		flag = false;
-    		for(String card : player.personalBoard.getPossessedLeaders())
-    			if((card).equals(response)){
-    				CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
+			for(String card : player.personalBoard.getPossessedLeaders()){
+				System.out.println(card);
+				if((card).compareToIgnoreCase(response) == 0){
+					CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
     				try {
 						flag = cardHandler.checkLeaderRequestedObject(gameHandler.mainBoard.leaderMap.get(card).requestedObjects, player);
 					} catch (NoSuchMethodException | SecurityException | IllegalAccessException
@@ -229,12 +238,20 @@ public class Game implements Runnable{
     				else {
     					try {
     						gameHandler.decoratedMethods = cardHandler.activateLeader(gameHandler.mainBoard.leaderMap.get(card).effect, player, gameHandler.mainBoard.leaderMap.get(card).cardName);
+    						playerAction(player);
+    						return;
 						} catch (SecurityException | IllegalAccessException | IllegalArgumentException
 								| InvocationTargetException | NoSuchMethodException e) {
 							e.printStackTrace();
 						}
-    				}
+    				}	
     			}
+			}
+				if(!flag){
+					player.setMessage("You do not have this card");
+					playerAction(player);
+					return;
+			}
     	}
     	
     	else if (("go to the market").equals(response)){
@@ -545,7 +562,7 @@ public class Game implements Runnable{
 		}
     	//make the players choose a their four leader cards
     	//TODO uncomment the line below in the final version
-    	//chooseLeaderCard();
+    	chooseLeaderCard();
     	chooseBonusTile();
     	//the array list where the players actions order is stored
     	ArrayList <String> order;
@@ -564,8 +581,8 @@ public class Game implements Runnable{
     			for(int action=0;action<4;action++){
     				for(int move=0;move<playerNumber;move++){
     					//update the personalMainBoards of all players
-        	    		updatePersonalMainBoards();
     					NetworkPlayer player = playerColorToNetworkPlayer(order.get(move));
+        	    		updatePersonalMainBoards(player);
     					player.setMessage(gameHandler.mainBoard);
     					playerAction(player);
     					player.setMessage("End of your action");
@@ -608,8 +625,8 @@ public class Game implements Runnable{
     		}
     }
     
-    private void updatePersonalMainBoards(){
-    	for(NetworkPlayer player : players){
+    private void updatePersonalMainBoards(NetworkPlayer player){
+    	
     		gameHandler.resetPlayerPersonalMainBoard(player);
     		try {
 				gameHandler.activatePermanentEffects(player);
@@ -617,7 +634,6 @@ public class Game implements Runnable{
 					| InvocationTargetException e) {
 				e.printStackTrace();
 			}
-    	}
     		
     }
     
@@ -659,16 +675,23 @@ public class Game implements Runnable{
     				else
         				players.get((playerNumber + n)-players.size()-players.size()).setMessage(leaders.get(j));
     			}
-    			if(playerNumber+n<players.size())
+    			Integer playerNumber2 = -1;
+    			if(playerNumber+n<players.size()){
     				response = players.get((playerNumber + n)).sendMessage();
-    			else if (((playerNumber + n)-players.size())<players.size())
+    				playerNumber2 = playerNumber + n;
+    			}
+    			else if (((playerNumber + n)-players.size())<players.size()){
     				response = players.get((playerNumber + n)-players.size()).sendMessage();
-    			else
+    				playerNumber2 = (playerNumber + n) -players.size();
+    			}
+    			else{
     				response = players.get((playerNumber + n)-players.size()-players.size()).sendMessage();
+    				playerNumber2 = (playerNumber + n)-players.size()-players.size();
+    			}
 	    		// if the player chose a leader card between the ones he could choose
 	    		if(leaders.contains(response)){
 	    			//give to the player the card
-	    			players.get(playerNumber).personalBoard.setLeader(response);
+	    			players.get(playerNumber2).personalBoard.setLeader(response);
 	    			//remove the card from the array list so that no other players can get this same card
 	 				leaders.remove(response);
 	 				//go to the next player

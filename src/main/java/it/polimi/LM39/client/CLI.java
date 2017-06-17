@@ -467,7 +467,7 @@ public class CLI extends UserInterface{
 			}catch (IOException e) {
 				logger.log(Level.WARNING,"Unable to read input",e);
 			}
-			response = response.toLowerCase();
+			response = response.trim();
 			stringController = Action.isIn(response);
 			System.out.println(response);
 			if(stringController == Action.CONTROLLER.toString() && firstMessage){
@@ -475,7 +475,7 @@ public class CLI extends UserInterface{
 				return response;
 			}
 			else if((stringController == Action.CONTROLLER_SPECIAL.toString() && firstMessage)
-					||(stringController != Action.CLI.toString() && !firstMessage))
+					||(stringController != Action.CLI.toString() && !firstMessage)|| stringController == Action.LEADERS_NAMES.toString())
 				return response;
 			else if(stringController == Action.CLI.toString()){
 				Method lMethod = null;

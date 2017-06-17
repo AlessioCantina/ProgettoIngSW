@@ -214,10 +214,10 @@
          "period":2,
          "costCoins":3,
          "instantBonuses":{  
-            "type":"GetCardAndResources",
+            "type":"GetDiscountedCard",
             "cardType":"Character",
             "cardValue":6,
-            "resources":{  
+            "cardDiscount":{  
                "woods":0,
                "stones":0,
                "servants":0,
