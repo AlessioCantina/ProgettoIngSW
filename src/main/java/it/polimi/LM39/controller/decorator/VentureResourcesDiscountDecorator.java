@@ -21,7 +21,7 @@ public class VentureResourcesDiscountDecorator extends DecoratedMethods{
 	private CardResources resourcesDiscount;
 	private NetworkPlayer player;
 	
-	public VentureResourcesDiscountDecorator (DecoratedMethods deocoratedMethods,GameHandler gameHandler, CardResources resourcesDiscount, NetworkPlayer player) {
+	public VentureResourcesDiscountDecorator (DecoratedMethods decoratedMethods,GameHandler gameHandler, CardResources resourcesDiscount, NetworkPlayer player) {
 		this.decoratedMethods = decoratedMethods;
 		this.gameHandler = gameHandler;
 		this.resourcesDiscount = resourcesDiscount;

@@ -360,6 +360,8 @@ public class Game implements Runnable{
 				player.setMessage("set military");
 				response = player.sendMessage();
 				player.points.setMilitary(Integer.parseInt(response));
+				
+
 			} catch (NumberFormatException | NotEnoughResourcesException | NotEnoughPointsException e) {
 				e.printStackTrace();
 			}

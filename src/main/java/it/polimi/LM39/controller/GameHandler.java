@@ -403,17 +403,22 @@ public class GameHandler {
     			setActionBonus(player.personalMainBoard.faithBonuses[player.points.getFaith()],player);
     			//set to 0 the faith points
     			player.points.setFaith(-player.points.getFaith());
+    			return;
+    		}
+    		else if(!("no").equals(response)){
+    			player.setMessage("You must answer yes or no");
+    			supportTheChurch(player);
+    			return;
     		}
     	}
     	//if the player doesn't have enough faith points to support the Church or he decided not to support the Church
-    	else{
-    		player.setMessage("You do not have enough faith points or you answered no so you get the Excommunication");
-    		player.setExcommunications(player.personalMainBoard.excommunicationsOnTheBoard[period-1]);
-    		decoratedMethods = cardHandler.activateExcommunication((mainBoard.excommunicationMap.get(player.personalMainBoard.excommunicationsOnTheBoard[period-1])).effect, player);
-    	}
+    	player.setMessage("You do not have enough faith points or you answered no so you get the Excommunication");
+    	player.setExcommunications(player.personalMainBoard.excommunicationsOnTheBoard[period-1]);
+    	decoratedMethods = cardHandler.activateExcommunication((mainBoard.excommunicationMap.get(player.personalMainBoard.excommunicationsOnTheBoard[period-1])).effect, player);
     }
     
     public void setActionBonus(ActionBonus actionBonus,NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
+    			System.out.println("DECORATED METHODS" + decoratedMethods);
     			decoratedMethods.addCardResources(actionBonus.resources,player);
     			decoratedMethods.addCardPoints(actionBonus.points,player);
 		}
@@ -490,10 +495,7 @@ public class GameHandler {
     		    		penalty=0;
     		    	}
     				//if there is someone but not any of my Family Members or there is no one
-    					FamilyMember member = new FamilyMember();
-    					member.color = familyMember.color;
-    					member.playerColor = familyMember.playerColor;
-    					mainBoard.familyMembersLocation.setFamilyMemberOnProductionOrHarvest(member, actionType);
+    					mainBoard.familyMembersLocation.setFamilyMemberOnProductionOrHarvest(familyMember, actionType);
     		    		doAction=true;
     					
     				}
@@ -548,7 +550,6 @@ public class GameHandler {
     			}	
     		}
     		if (doAction==true){
-    			if(familyMemberValue(familyMember,player)>=1){
 	    			if (actionType=="Production"){
 		    			personalBoardHandler.activateProduction(familyMemberValue(familyMember,player)-penalty,player); // we use the player Personal MainBaord
 	    			}
@@ -558,12 +559,7 @@ public class GameHandler {
 		    		else {
 		    			player.setMessage("Invalid action it must be Production or Harvest");
 		    			return false;
-		    		}
-    			}
-    			else {
-	    			player.setMessage("Your Family Member must have a value of at least 1");
-	    			return false;
-	    		}
+		    		}   			
     		}
     		return true;
     	}

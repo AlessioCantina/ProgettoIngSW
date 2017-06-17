@@ -214,7 +214,10 @@ public class CardHandler {
 									player.resources.setCoins(instantEffect.cardDiscount.coins);
 								else
 									player.resources.setCoins(costCoins);
-								gameHandler.getCard(cardNumber, player, j);
+								if(!gameHandler.getCard(cardNumber, player, j))
+									//if the player doesn't have enough resources to get the card it means that costCoins >= instantEffect.cardDiscount.coins
+									//so we get the bonus back from the player
+									player.resources.setCoins(-instantEffect.cardDiscount.coins);
 							}
 						else {
 							CardResources costResources = new CardResources();
@@ -235,30 +238,33 @@ public class CardHandler {
 							CardResources bonusResources = new CardResources();
 							//check the card costs and confront it with the bonus to know how many resources to give to the player as discount
 							if(costResources.coins >= instantEffect.cardDiscount.coins)
-								bonusResources.coins=costResources.coins;
-							else
 								bonusResources.coins=instantEffect.cardDiscount.coins;
+							else
+								bonusResources.coins=costResources.coins;
 							
 							if(costResources.stones >= instantEffect.cardDiscount.stones)
-								bonusResources.stones=costResources.stones;
+								bonusResources.stones=instantEffect.cardDiscount.stones;								
 							else
-								bonusResources.stones=instantEffect.cardDiscount.stones;
+								bonusResources.stones=costResources.stones;
 							
 							if(costResources.woods >= instantEffect.cardDiscount.woods)
-								bonusResources.woods=costResources.woods;
+								bonusResources.woods=instantEffect.cardDiscount.woods;								
 							else
-								bonusResources.woods=instantEffect.cardDiscount.woods;
+								bonusResources.woods=costResources.woods;
 							
 							if(costResources.servants >= instantEffect.cardDiscount.servants)
-								bonusResources.servants=costResources.servants;
-							else
 								bonusResources.servants=instantEffect.cardDiscount.servants;
+							else
+								bonusResources.servants=costResources.servants;
+							
 							bonusResources.council = 0;
 							//give the discount to the player
 							gameHandler.decoratedMethods.addCardResources(bonusResources, player);
 							//if the player failed to get the card for lack of resources or not enough space on the PersonalBoard, remove the bonus given
-							if(!gameHandler.getCard(cardNumber, player, j))
+							if(!gameHandler.getCard(cardNumber, player, j)){
+								player.resources.setServants(qtyServants);
 								gameHandler.subCardResources(bonusResources, player);
+							}
 							else {
 								gameHandler.mainBoard.getCardNamesOnTheTowers()[i][j] = "";
 							}
@@ -363,7 +369,6 @@ public class CardHandler {
 	}
 	
 	public void doInstantEffect(VictoryForCard instantEffect,NetworkPlayer player){
-		System.out.println("entrato");
 		//calculate the victory points to receive by multiplying the possessed cards of a specific type by the victory quantity given by card
 		Integer victoryQty=(player.personalBoard.getPossessions(instantEffect.cardType).size())*instantEffect.victoryQty;
 			player.points.setVictory(victoryQty);
@@ -476,8 +481,9 @@ public class CardHandler {
 		return (DecoratedMethods)lMethod.invoke(this,permanentEffect,player);
 		}
 	
-	public void activateCharacter(NoCharacterPermanentEffect permanentEffect, NetworkPlayer player){
+	public DecoratedMethods activateCharacter(NoCharacterPermanentEffect permanentEffect, NetworkPlayer player){
 		//do nothing
+		return decoratedMethods;
 	}
 	
 	public DecoratedMethods activateCharacter(CardActionDiscount permanentEffect, NetworkPlayer player){
@@ -505,7 +511,7 @@ public class CardHandler {
 		//need to check when a player get a card to set the discount like done for the GetDiscountedCard effect
 		if(("Character").equals(permanentEffect.cardType) && player.decoratorHandler.characterResourcesDiscountDecorator == false){
 			player.decoratorHandler.characterResourcesDiscountDecorator=true;
-			decoratedMethods = new CharacterResourcesDiscountDecorator(gameHandler,permanentEffect.resourcesDiscount,player);
+			decoratedMethods = new CharacterResourcesDiscountDecorator(decoratedMethods,gameHandler,permanentEffect.resourcesDiscount,player);
 		}
 		else if(("Venture").equals(permanentEffect.cardType) && player.decoratorHandler.ventureResourcesDiscountDecorator == false){
 			player.decoratorHandler.ventureResourcesDiscountDecorator = true;
@@ -898,7 +904,7 @@ public class CardHandler {
 	}
 	
 	public void getInfo (GetDiscountedCard effect,NetworkPlayer player){
-		player.setMessage("This effect gives you a " + effect.cardType + " card of value " + effect.cardValue + " with a dsicount of");
+		player.setMessage("This effect gives you a " + effect.cardType + " card of value " + effect.cardValue + " with a discount of");
 		printCardResources(effect.cardDiscount,player);
 	}
 	

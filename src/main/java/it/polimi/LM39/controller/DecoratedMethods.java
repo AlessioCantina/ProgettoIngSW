@@ -25,7 +25,6 @@ public class DecoratedMethods {
 	}
 	
 	 public void resourcesForBuilding(NetworkPlayer player ,Building building) throws NotEnoughResourcesException{
-	    	System.out.println("dentro resourcesForBuilding non decorato " + this);
 	    	gameHandler.subCardResources(building.costResources,player);
 	    }
 	 

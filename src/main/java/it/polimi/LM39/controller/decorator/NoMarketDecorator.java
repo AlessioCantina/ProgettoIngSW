@@ -21,6 +21,7 @@ public class NoMarketDecorator extends DecoratedMethods{
 	private NetworkPlayer player;
 	
 	public NoMarketDecorator (DecoratedMethods decoratedMethods,GameHandler gameHandler, NetworkPlayer player) {
+		this.decoratedMethods = decoratedMethods;
 		this.gameHandler = gameHandler;
 		this.player = player;
 	}

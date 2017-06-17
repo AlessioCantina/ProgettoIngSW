@@ -6,10 +6,6 @@ import it.polimi.LM39.model.Player;
  * socket and rmi servers
  */
 public abstract class NetworkPlayer extends Player{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1742541982856068421L;
 	private String nickName;
 	/*
 	 * get and set nickname
