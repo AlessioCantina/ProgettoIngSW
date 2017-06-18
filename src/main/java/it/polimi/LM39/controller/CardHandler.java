@@ -714,15 +714,14 @@ public class CardHandler {
 }
 	
 	public DecoratedMethods activateLeader(AlreadyOccupiedTowerDiscount permanentEffect,NetworkPlayer player,String cardName){
-		player.setPlayerPlayedLeaderCards(cardName);
+		addPlayerPlayedLeaderCard(cardName,player);
 		player.personalMainBoard.occupiedTowerCost = 0;
-		
 		return decoratedMethods;
 	}
 	
 	public DecoratedMethods activateLeader(CardCoinDiscount permanentEffect,NetworkPlayer player,String cardName){
 		if(player.decoratorHandler.cardCoinDiscountDecorator == false){
-			player.setPlayerPlayedLeaderCards(cardName);
+			addPlayerPlayedLeaderCard(cardName,player);
 			player.decoratorHandler.cardCoinDiscountDecorator = true;
 			decoratedMethods = new CardCoinDiscountDecorator(decoratedMethods,gameHandler,permanentEffect.coinQty,player);
 		}
@@ -731,13 +730,13 @@ public class CardHandler {
 	}
 	
 	public DecoratedMethods activateLeader(CopyLeaderAbility permanentEffect,NetworkPlayer player,String cardName) throws CardNotFoundException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException{
-		if(player.copiedLeaderCard == null){
-			player.setPlayerPlayedLeaderCards(cardName);
+		if(player.copiedLeaderCard == -1){
+			addPlayerPlayedLeaderCard(cardName,player);
 			boolean flag = true;
 			ArrayList<String> list = new ArrayList<String>();
 			for (String playedCard : player.personalMainBoard.getPlayedLeaderCard()){
-				for (String playerPlayedCArd : player.getPlayerPlayedLeaderCards()){
-					if(playedCard.equals(playerPlayedCArd))
+				for (String playerPlayedCard : player.getPlayerPlayedLeaderCards()){
+					if(playedCard.equals(playerPlayedCard))
 						flag = false;
 					}
 			if(flag==true)
@@ -775,14 +774,14 @@ public class CardHandler {
 	}
 	
 	public DecoratedMethods activateLeader(DoubleResourcesFromDevelopment permanentEffect,NetworkPlayer player,String cardName) {
-		player.setPlayerPlayedLeaderCards(cardName);
+		addPlayerPlayedLeaderCard(cardName,player);
 		playerDoubleResourcesFromDevelopment = player;
 		
 		return decoratedMethods;
 	}
 	
 	public DecoratedMethods activateLeader(NoMilitaryRequirementsForTerritory permanentEffect,NetworkPlayer player,String cardName) {
-		player.setPlayerPlayedLeaderCards(cardName);
+		addPlayerPlayedLeaderCard(cardName,player);
 		for(int i=0;i<4;i++)
 			player.personalMainBoard.militaryForTerritory[i]=0;
 		
@@ -790,7 +789,7 @@ public class CardHandler {
 	}
 	
 	public DecoratedMethods activateLeader(PlaceFamilyMemberOnOccupiedSpace permanentEffect,NetworkPlayer player,String cardName) throws InvalidActionTypeException {
-		player.setPlayerPlayedLeaderCards(cardName);
+		addPlayerPlayedLeaderCard(cardName,player);
 		//empty the market
 		for (int i=0;i<4;i++)
 			player.personalMainBoard.familyMembersLocation.setFamilyMemberOnTheMarket(new FamilyMember(),i);
@@ -802,7 +801,7 @@ public class CardHandler {
 	}
 	
 	public DecoratedMethods activateLeader(SetColoredDicesValues permanentEffect,NetworkPlayer player,String cardName){
-		player.setPlayerPlayedLeaderCards(cardName);
+		addPlayerPlayedLeaderCard(cardName,player);
 		Integer[] dices = player.personalMainBoard.getDiceValues();
 		if(permanentEffect.boostOrSet==true){
 			for(int i=0;i<3;i++)
@@ -818,7 +817,7 @@ public class CardHandler {
 	}
 	
 	public DecoratedMethods activateLeader(UncoloredMemberBonus permanentEffect,NetworkPlayer player,String cardName){
-		player.setPlayerPlayedLeaderCards(cardName);
+		addPlayerPlayedLeaderCard(cardName,player);
 		Integer[] dices = player.personalMainBoard.getDiceValues();
 		dices[3]+=permanentEffect.bonus;
 		player.personalMainBoard.setDiceValues(dices);
@@ -827,7 +826,7 @@ public class CardHandler {
 	}
 	
 	public DecoratedMethods activateLeader(VictoryForSupportingTheChurch permanentEffect,NetworkPlayer player,String cardName){
-		player.setPlayerPlayedLeaderCards(cardName);
+		addPlayerPlayedLeaderCard(cardName,player);
 		ActionBonus[] faithBonus = player.personalMainBoard.faithBonuses;
 		for(int i=0;i<16;i++)
 			faithBonus[i].points.victory+=permanentEffect.victoryQty;
@@ -836,7 +835,10 @@ public class CardHandler {
 		return decoratedMethods;
 	}
 	
-
+	private void addPlayerPlayedLeaderCard(String cardName,NetworkPlayer player){
+    	if(!player.getPlayerPlayedLeaderCards().contains(cardName))
+    		player.setPlayerPlayedLeaderCards(cardName);
+	}
 	
 	public void getInfo(InstantEffect effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
 		 Class[] cArg = new Class[2];

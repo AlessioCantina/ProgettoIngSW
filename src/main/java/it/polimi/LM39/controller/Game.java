@@ -217,15 +217,17 @@ public class Game implements Runnable{
     		playerAction(player);
     	}
     	else if (("activate leader").equals(response)){
+    		Integer cardNumber = -1;
     		player.setMessage("Which leader do you want to activate?");
     		response = player.sendMessage();
     		flag = false;
-			for(String card : player.personalBoard.getPossessedLeaders()){
+    		if(player.personalBoard.getPossessedLeaders().contains(response)){
+	/*		for(String card : player.personalBoard.getPossessedLeaders()){
 				System.out.println(card);
-				if((card).compareToIgnoreCase(response) == 0){
+				if((card).compareToIgnoreCase(response) == 0){		*/
 					CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
     				try {
-						flag = cardHandler.checkLeaderRequestedObject(gameHandler.mainBoard.leaderMap.get(card).requestedObjects, player);
+						flag = cardHandler.checkLeaderRequestedObject(gameHandler.mainBoard.leaderMap.get(response).requestedObjects, player);
 					} catch (NoSuchMethodException | SecurityException | IllegalAccessException
 							| IllegalArgumentException | InvocationTargetException e) {
 						e.printStackTrace();
@@ -237,7 +239,7 @@ public class Game implements Runnable{
     				}
     				else {
     					try {
-    						gameHandler.decoratedMethods = cardHandler.activateLeader(gameHandler.mainBoard.leaderMap.get(card).effect, player, gameHandler.mainBoard.leaderMap.get(card).cardName);
+    						gameHandler.decoratedMethods = cardHandler.activateLeader(gameHandler.mainBoard.leaderMap.get(response).effect, player, gameHandler.mainBoard.leaderMap.get(response).cardName);
     						playerAction(player);
     						return;
 						} catch (SecurityException | IllegalAccessException | IllegalArgumentException
@@ -245,9 +247,8 @@ public class Game implements Runnable{
 							e.printStackTrace();
 						}
     				}	
-    			}
 			}
-				if(!flag){
+    		else{
 					player.setMessage("You do not have this card");
 					playerAction(player);
 					return;

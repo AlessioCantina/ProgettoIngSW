@@ -903,7 +903,7 @@ public class GameHandler {
     	CardHandler cardHandler = new CardHandler (this,decoratedMethods);
     	for(Integer cardNumber : player.personalBoard.getPossessions("Character"))
     		decoratedMethods = cardHandler.activateCharacter(mainBoard.characterMap.get(cardNumber).permanentEffect, player);
-    	for(String leader : player.getPlayerPlayedLeaderCards())
+    	for(String leader : player.getPlayerPlayedLeaderCards())  //TODO TENTA DI ACCEDERE
     		decoratedMethods = cardHandler.activateLeader(mainBoard.leaderMap.get(leader).effect, player,leader);
     	for(Integer excommunicationNumber : player.getExcommunications())
     		decoratedMethods = cardHandler.activateExcommunication(mainBoard.excommunicationMap.get(excommunicationNumber).effect, player);
@@ -912,7 +912,7 @@ public class GameHandler {
     public void resetPlayerPersonalMainBoard (NetworkPlayer player)
     {
     	//clone the MainBoard into the player personal mainboard
-    	Gson gson =new Gson();
+    	Gson gson = new Gson();
     	player.personalMainBoard = gson.fromJson(gson.toJson(mainBoard),mainBoard.getClass());
     }
     public void setFirstRoundBonuses(NetworkPlayer player,Integer position) throws NotEnoughResourcesException{

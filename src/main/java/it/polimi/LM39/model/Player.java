@@ -25,9 +25,10 @@ public class Player implements Serializable{
     
     private ArrayList<String> playedFamilyMembers = new ArrayList<String>();
     
-    public Integer copiedLeaderCard;
+    public Integer copiedLeaderCard = -1;
 
     public DecoratorHandler decoratorHandler = new DecoratorHandler();
+    
     
 
     public void setPlayerPlayedLeaderCards(String cardName) {
