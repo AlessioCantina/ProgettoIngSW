@@ -29,7 +29,6 @@ public class Player implements Serializable{
 
     public DecoratorHandler decoratorHandler = new DecoratorHandler();
     
-    
 
     public void setPlayerPlayedLeaderCards(String cardName) {
     	playerPlayedLeaderCards.add(cardName);

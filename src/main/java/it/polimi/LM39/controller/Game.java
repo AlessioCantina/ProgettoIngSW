@@ -585,29 +585,31 @@ public class Game implements Runnable{
     					//update the personalMainBoards of all players
     					NetworkPlayer player = playerColorToNetworkPlayer(order.get(move));
         	    		updatePersonalMainBoards(player);
-        	    		if(turn == 0 && !skipFirstTurn(player)){
+        	    		if((turn == 0 && !skipFirstTurn(player)) || turn != 0){
+        	    			System.out.println("primo if");
 	    					player.setMessage(gameHandler.mainBoard);
 	    					playerAction(player);
-	    					player.setMessage("End of your action");
+	    					player.setMessage("End of your turn");
 	    					gameHandler.updateRankings(player);
 	    				}
         	    		//else skip the first turn
         	    		
         	    		//if it is the last turn and the last move, give to the player with the SkipFirstTurn excommunication the chance do place his latest family member
         	    		if(turn==3 && move==3){
+    	    				System.out.println("secondo if");
         	    			for(int i=0;i<playerNumber;i++){
         	    				player = playerColorToNetworkPlayer(order.get(i));
         	    				if(skipFirstTurn(player)){
         	    					player.setMessage(gameHandler.mainBoard);
         	    					playerAction(player);
-        	    					player.setMessage("End of your action");
+        	    					player.setMessage("End of your turn");
         	    					gameHandler.updateRankings(player);
         	    				}
         	    			}
         	    		}
     				}
     			}
-    			
+    			System.out.println("FINE FOR");
 	    		gameHandler.setPlayerActionOrder(playerNumber);
 	    		
 	    		//clean all the action spaces for a new round

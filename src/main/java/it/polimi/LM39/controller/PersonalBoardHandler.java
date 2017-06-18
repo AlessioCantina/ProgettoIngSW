@@ -24,6 +24,7 @@ public class PersonalBoardHandler {
     }
 	
     public void activateHarvest(Integer actionValue, NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException {
+    	System.out.println(actionValue);
     	gameHandler.setActionBonus(player.personalBoard.personalBonusTile.harvestBonus,player);
     	ArrayList <Integer> territories = player.personalBoard.getPossessions("Territory");
         CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
@@ -33,6 +34,7 @@ public class PersonalBoardHandler {
     }
 
     public void activateProduction(Integer actionValue, NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException , IOException, NotEnoughResourcesException, NotEnoughPointsException {
+    	System.out.println(actionValue);
     	gameHandler.setActionBonus(player.personalBoard.personalBonusTile.productionBonus,player);
     	ArrayList <Integer> buildings = player.personalBoard.getPossessions("Building");
         CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);

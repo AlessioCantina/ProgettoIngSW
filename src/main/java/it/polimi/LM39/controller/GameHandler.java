@@ -132,7 +132,7 @@ public class GameHandler {
 				}
 	    		CardHandler cardHandler = new CardHandler(this,decoratedMethods);
     			player.personalBoard.setPossessions(cardNumber,"Character");
-    			cardHandler.doInstantEffect(character.instantBonuses, player);
+    			cardHandler.doInstantEffect(character.instantBonuses,player);
     			decoratedMethods = cardHandler.activateCharacter(character.permanentEffect, player);
     			return true;
     	}
@@ -170,9 +170,9 @@ public class GameHandler {
     	Integer choice = 0;
 		if (possessedVentures.size()<6){
 			
-			player.setMessage("To get this card you need " + mainBoard.ventureMap.get(cardNumber).neededMilitary + " military points");
 	    	if(venture.costMilitary!=0 && (venture.costResources.coins!=0 || venture.costResources.woods!=0 || venture.costResources.stones!=0 || venture.costResources.servants!=0)) {
 	    		if(mainBoard.ventureMap.get(cardNumber).costMilitary > 0){
+	    			player.setMessage("To get this card you need " + mainBoard.ventureMap.get(cardNumber).neededMilitary + " military points");
 					player.setMessage("This card costs " + mainBoard.ventureMap.get(cardNumber).costMilitary + " militarypoints");
 					flag = true;
 				}

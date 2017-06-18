@@ -4,7 +4,7 @@
          "requestedObjects":{  
             "type":"RequestedTwoCards",
             "cardType":"Venture",
-            "cardType2":"Character",
+            "cardType2":"Building",
             "cardQty":4,
             "cardQty2":2
          },
@@ -109,7 +109,7 @@
                "faith":2,
                "military":0
             },
-            "cardType":"Character",
+            "cardType":"Building",
             "cardQty":3
          },
          "effect":{  
@@ -216,7 +216,7 @@
          },
          "effect":{  
             "type":"HarvestProductionAction",
-            "actionType":"ProductionLeader",
+            "actionType":"Production",
             "actionValue":0
          }
       },
@@ -331,8 +331,8 @@
          },
          "effect":{  
             "type":"HarvestProductionAction",
-            "actionType":"HarvestLeader",
-            "actionValue":0
+            "actionType":"Harvest",
+            "actionValue":1
          }
       }
 ]

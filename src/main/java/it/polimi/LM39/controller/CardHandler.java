@@ -351,7 +351,7 @@ public class CardHandler {
 		doInstantEffect(resourcesEffect,fakePlayer);
 	}
 	
-	public void doInstantEffect(SetFamilyMember instantEffect,NetworkPlayer player) throws IOException, InvalidActionTypeException{
+	public void doInstantEffect(SetFamilyMember instantEffect,NetworkPlayer player) throws IOException{
 		//the color will be chosen by the user
 		player.setMessage("What FamilyMember color do you want to set the value?");
 		//get the FamilyMember color from the player
@@ -365,10 +365,13 @@ public class CardHandler {
 	    		break;
 	    	case "orange": diceValues[2] = instantEffect.familyMemberValue;
 	    		break;
-	    	default: throw new InvalidActionTypeException("Invalid FamilyMember color!");
+	    	default: player.setMessage("Invalid Family Member color");
+	    		doInstantEffect(instantEffect,player);
+	    		return;
 	}
 		player.personalMainBoard.setDiceValues(diceValues);
 	}
+
 	
 	public void doInstantEffect(VictoryForCard instantEffect,NetworkPlayer player){
 		//calculate the victory points to receive by multiplying the possessed cards of a specific type by the victory quantity given by card
@@ -397,8 +400,16 @@ public class CardHandler {
 	}
 	
 	public boolean checkLeaderRequestedObject(RequestedCard requestedObject,NetworkPlayer player){
+		//chech if the leader request all card types
+		if (requestedObject.cardType.compareToIgnoreCase("all") == 0){
+			if(player.personalBoard.getPossessions("Venture").size() >= requestedObject.cardQty
+			&& player.personalBoard.getPossessions("Territory").size() >= requestedObject.cardQty
+			&& player.personalBoard.getPossessions("Character").size() >= requestedObject.cardQty
+			&& player.personalBoard.getPossessions("Building").size() >= requestedObject.cardQty)
+				return true;
+		}
 		//check if the player has enough card of a type
-		if (player.personalBoard.getPossessions(requestedObject.cardType).size() >= requestedObject.cardQty)
+		else if (player.personalBoard.getPossessions(requestedObject.cardType).size() >= requestedObject.cardQty)
 			return true;
 		return false;
 	}
@@ -708,7 +719,8 @@ public class CardHandler {
 			cArg1[0] = cArg[0];
 			cArg1[1] = cArg[1];
 			lMethod = (this.getClass().getMethod("doInstantEffect",cArg1));
-			return (DecoratedMethods)lMethod.invoke(this,permanentEffect,player);
+			lMethod.invoke(this,permanentEffect,player);
+			return decoratedMethods;
 		}
 		
 }
