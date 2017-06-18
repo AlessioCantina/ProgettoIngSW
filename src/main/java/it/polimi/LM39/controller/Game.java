@@ -15,6 +15,8 @@ import it.polimi.LM39.model.MainBoard;
 import it.polimi.LM39.model.PersonalBonusTile;
 import it.polimi.LM39.model.Player;
 import it.polimi.LM39.model.PlayerRank;
+import it.polimi.LM39.model.excommunicationpermanenteffect.NoVictoryForCard;
+import it.polimi.LM39.model.excommunicationpermanenteffect.SkipFirstTurn;
 import it.polimi.LM39.server.NetworkPlayer;
 import it.polimi.LM39.server.Room;
 
@@ -553,7 +555,6 @@ public class Game implements Runnable{
     }
     
     
-    //TODO handle SkipFirstTurn Excommunication
     public void run() {
     	//initialize the game loading parameters and cards
     	try {
@@ -579,17 +580,34 @@ public class Game implements Runnable{
 				}
     			gameHandler.rollTheDices();
     			
-    			for(int action=0;action<4;action++){
+    			for(int turn=0;turn<4;turn++){
     				for(int move=0;move<playerNumber;move++){
     					//update the personalMainBoards of all players
     					NetworkPlayer player = playerColorToNetworkPlayer(order.get(move));
         	    		updatePersonalMainBoards(player);
-    					player.setMessage(gameHandler.mainBoard);
-    					playerAction(player);
-    					player.setMessage("End of your action");
-    					gameHandler.updateRankings(player);
+        	    		if(turn == 0 && !skipFirstTurn(player)){
+	    					player.setMessage(gameHandler.mainBoard);
+	    					playerAction(player);
+	    					player.setMessage("End of your action");
+	    					gameHandler.updateRankings(player);
+	    				}
+        	    		//else skip the first turn
+        	    		
+        	    		//if it is the last turn and the last move, give to the player with the SkipFirstTurn excommunication the chance do place his latest family member
+        	    		if(turn==3 && move==3){
+        	    			for(int i=0;i<playerNumber;i++){
+        	    				player = playerColorToNetworkPlayer(order.get(i));
+        	    				if(skipFirstTurn(player)){
+        	    					player.setMessage(gameHandler.mainBoard);
+        	    					playerAction(player);
+        	    					player.setMessage("End of your action");
+        	    					gameHandler.updateRankings(player);
+        	    				}
+        	    			}
+        	    		}
     				}
     			}
+    			
 	    		gameHandler.setPlayerActionOrder(playerNumber);
 	    		
 	    		//clean all the action spaces for a new round
@@ -617,6 +635,13 @@ public class Game implements Runnable{
     	//calculate and send the final points made by every player to every player
     	sendFinalPoints(gameHandler.calculateFinalPoints(players));
     	
+    }
+    
+    private boolean skipFirstTurn(NetworkPlayer player){
+    	for(Integer excommunicationNumber : player.getExcommunications())
+    		if((gameHandler.mainBoard.excommunicationMap.get(excommunicationNumber).effect.getClass()).equals(SkipFirstTurn.class))
+    			return true;
+    	return false;
     }
 
     private void sendFinalPoints (ArrayList<PlayerRank> finalScores){
