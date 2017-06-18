@@ -158,7 +158,7 @@ public class Game implements Runnable{
     	else if (("activate production").equals(response)){
     		FamilyMember familyMember = handleFamilyMember(player);
     		try {
-    			flag = gameHandler.addFamilyMemberToProductionOrHarvest(familyMember,gameHandler.mainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Production"),"Production",player);
+    			flag = gameHandler.addFamilyMemberToProductionOrHarvest(familyMember,player.personalMainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Production"),"Production",player);
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException | IOException | NotEnoughResourcesException | NotEnoughPointsException
 					| InvalidActionTypeException e) {
@@ -179,7 +179,7 @@ public class Game implements Runnable{
     	else if (("activate harvest").equals(response)){
     		FamilyMember familyMember = handleFamilyMember(player);
 			try {
-				flag = gameHandler.addFamilyMemberToProductionOrHarvest(familyMember,gameHandler.mainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Harvest"),"Harvest",player);
+				flag = gameHandler.addFamilyMemberToProductionOrHarvest(familyMember,player.personalMainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Harvest"),"Harvest",player);
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException | IOException | NotEnoughResourcesException | NotEnoughPointsException
 					| InvalidActionTypeException e) {
@@ -391,6 +391,18 @@ public class Game implements Runnable{
     		
     	}
     	
+    	else if (("debug excommunication").equals(response)){
+    		player.setMessage("set excommunication number");
+    		response = player.sendMessage();
+    		CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
+    		try {
+				cardHandler.activateExcommunication(gameHandler.mainBoard.excommunicationMap.get(Integer.parseInt(response)).effect,player);
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
+				e.printStackTrace();
+			}
+    	}
+    	
     	else if (("skip action").equals(response)){
     		//do nothing
     	}
@@ -565,7 +577,7 @@ public class Game implements Runnable{
 		}
     	//make the players choose a their four leader cards
     	//TODO uncomment the line below in the final version
-    	chooseLeaderCard();
+    	//chooseLeaderCard();
     	chooseBonusTile();
     	//the array list where the players actions order is stored
     	ArrayList <String> order;

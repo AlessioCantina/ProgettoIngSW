@@ -498,7 +498,6 @@ public class GameHandler {
     				//if there is someone but not any of my Family Members or there is no one
     					mainBoard.familyMembersLocation.setFamilyMemberOnProductionOrHarvest(familyMember, actionType);
     		    		doAction=true;
-    					
     				}
     			else {
     				//this happens only in matches of 2 players
@@ -537,7 +536,10 @@ public class GameHandler {
     					mainBoard.familyMembersLocation.setFamilyMemberOnProductionOrHarvest(member, actionType);
     		    		doAction=true;}
     				else{
-    					player.setMessage("You can place just one uncolored family member");
+    					if(mainBoard.harvestAndProductionSize == 1)
+    						player.setMessage("The area is full!");
+    					else
+    						player.setMessage("You can place just one uncolored family member");
     					return false;
     				}
     			}
@@ -551,17 +553,25 @@ public class GameHandler {
     			}	
     		}
     		if (doAction==true){
+    			if(familyMemberValue(familyMember,player)>0){
 	    			if (actionType=="Production"){
 		    			personalBoardHandler.activateProduction(familyMemberValue(familyMember,player)-penalty,player); // we use the player Personal MainBaord
 	    			}
 	    			else if(actionType=="Harvest"){
 	    				personalBoardHandler.activateHarvest(familyMemberValue(familyMember,player)-penalty,player); // we use the player Personal MainBaord
 	    			}
-		    		else {
-		    			player.setMessage("Invalid action it must be Production or Harvest");
-		    			return false;
-		    		}   			
+	    			
+    			}
+    			else{
+    				player.setMessage("Your Family Member must have a value of at least 1");
+		    		return false;
+    			}
     		}
+    			else {
+		    		player.setMessage("Invalid action it must be Production or Harvest");
+		    		return false;
+		    	}   			
+    		
     		return true;
     	}
 

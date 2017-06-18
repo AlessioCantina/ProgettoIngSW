@@ -34,7 +34,7 @@ public class CardHandler {
 		this.decoratedMethods=decoratedMethods;
 	}
 	
-	private NetworkPlayer playerDoubleResourcesFromDevelopment;
+	private static String playerDoubleResourcesFromDevelopment = "";
 	
 	/*
 	 * InstantEffect
@@ -149,6 +149,8 @@ public class CardHandler {
 						if (flag == false){
 							player.resources.setServants(qtyServants);
 							player.setMessage("You cannot get this card");
+							doInstantEffect(instantEffect,player);
+							return;
 						}
 						else{
 							gameHandler.mainBoard.getCardNamesOnTheTowers()[i][j] = "";
@@ -313,8 +315,7 @@ public class CardHandler {
 	public void doInstantEffect(Resources instantEffect,NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
 		gameHandler.decoratedMethods.addCardResources(instantEffect.resources, player);
 		//double instant bonus if the player has the leader effect DoubleResourcesFromDevelopment 
-		if(this.playerDoubleResourcesFromDevelopment==player){
-			System.out.println("Entro dentro Santa Rita");
+		if(playerDoubleResourcesFromDevelopment.equals(player.playerColor)){
 			CardResources resourcesBonus = instantEffect.resources;
 			resourcesBonus.council=0;
 			gameHandler.decoratedMethods.addCardResources(resourcesBonus, player);
@@ -786,7 +787,7 @@ public class CardHandler {
 	
 	public DecoratedMethods activateLeader(DoubleResourcesFromDevelopment permanentEffect,NetworkPlayer player,String cardName) {
 		addPlayerPlayedLeaderCard(cardName,player);
-		playerDoubleResourcesFromDevelopment = player;
+		playerDoubleResourcesFromDevelopment = player.playerColor;
 		
 		return decoratedMethods;
 	}
