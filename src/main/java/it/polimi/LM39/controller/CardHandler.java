@@ -730,39 +730,33 @@ public class CardHandler {
 	}
 	
 	public DecoratedMethods activateLeader(CopyLeaderAbility permanentEffect,NetworkPlayer player,String cardName) throws CardNotFoundException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException{
-		if(player.copiedLeaderCard == -1){
-			addPlayerPlayedLeaderCard(cardName,player);
-			boolean flag = true;
-			ArrayList<String> list = new ArrayList<String>();
-			for (String playedCard : player.personalMainBoard.getPlayedLeaderCard()){
-				for (String playerPlayedCard : player.getPlayerPlayedLeaderCards()){
-					if(playedCard.equals(playerPlayedCard))
-						flag = false;
-					}
-			if(flag==true)
-				list.add(playedCard);
-			flag=true;
+		String response = "";
+		if(player.copiedLeaderCard == ""){
+			ArrayList<String> choosableCards = new ArrayList<String>();
+			for (String playedCard : player.personalMainBoard.getPlayedLeaderCard())
+				if(!player.getPlayerPlayedLeaderCards().contains(playedCard))
+					choosableCards.add(playedCard);
+			
+			if(choosableCards.isEmpty()){
+				player.setMessage("There is no card you can copy");
+				return decoratedMethods;
 			}
+			
+			//add the card to the played cards list only if the player can copy at least one leader card
+			addPlayerPlayedLeaderCard(cardName,player);
+			
 			player.setMessage("What Leader do you want to copy?");
-			ArrayList<String> nameList = new ArrayList<String>();
-			for(String i : list){
-				player.setMessage(gameHandler.mainBoard.leaderMap.get(i).cardName);
-				nameList.add(gameHandler.mainBoard.leaderMap.get(i).cardName);
+			for(String name : choosableCards){
+				player.setMessage(name);
 				}
-			String response = player.sendMessage();
-			flag = false;
-			Integer cardNumber = 0;
-			for (String name : nameList)
-				if(name.equals(response)){
-					cardNumber = gameHandler.cardNameToInteger(response);
-					flag = true;}
-			if(flag==false){
+			response = player.sendMessage();
+			if(!choosableCards.contains(response)){
 				player.setMessage("You must choose a Leader Card already played by one of your opponents");
 				return activateLeader(permanentEffect,player,cardName);
 			}
 			//add the card to the player copiedLeaderCard attribute to prevent that the player copy more than one effect violating the rule of this effect
-			player.copiedLeaderCard = cardNumber;
-			Leader leader = gameHandler.mainBoard.leaderMap.get(cardNumber);
+			player.copiedLeaderCard = response;
+			Leader leader = gameHandler.mainBoard.leaderMap.get(response);
 			activateLeader(leader.effect,player,cardName);
 		}
 		else{
