@@ -314,6 +314,7 @@ public class CardHandler {
 		gameHandler.decoratedMethods.addCardResources(instantEffect.resources, player);
 		//double instant bonus if the player has the leader effect DoubleResourcesFromDevelopment 
 		if(this.playerDoubleResourcesFromDevelopment==player){
+			System.out.println("Entro dentro Santa Rita");
 			CardResources resourcesBonus = instantEffect.resources;
 			resourcesBonus.council=0;
 			gameHandler.decoratedMethods.addCardResources(resourcesBonus, player);
@@ -719,6 +720,7 @@ public class CardHandler {
 			cArg1[0] = cArg[0];
 			cArg1[1] = cArg[1];
 			lMethod = (this.getClass().getMethod("doInstantEffect",cArg1));
+			addPlayerInstantLeaderCard(cardName,player);
 			lMethod.invoke(this,permanentEffect,player);
 			return decoratedMethods;
 		}
@@ -746,7 +748,7 @@ public class CardHandler {
 		if(player.copiedLeaderCard == ""){
 			ArrayList<String> choosableCards = new ArrayList<String>();
 			for (String playedCard : player.personalMainBoard.getPlayedLeaderCard())
-				if(!player.getPlayerPlayedLeaderCards().contains(playedCard))
+				if(!player.getPlayerPlayedLeaderCards().contains(playedCard) && !player.getPlayerInstantLeaderCards().contains(playedCard))
 					choosableCards.add(playedCard);
 			
 			if(choosableCards.isEmpty()){
@@ -754,13 +756,12 @@ public class CardHandler {
 				return decoratedMethods;
 			}
 			
-			//add the card to the played cards list only if the player can copy at least one leader card
-			addPlayerPlayedLeaderCard(cardName,player);
+
 			
 			player.setMessage("What Leader do you want to copy?");
 			for(String name : choosableCards){
 				player.setMessage(name);
-				}
+			}
 			response = player.sendMessage();
 			if(!choosableCards.contains(response)){
 				player.setMessage("You must choose a Leader Card already played by one of your opponents");
@@ -769,6 +770,10 @@ public class CardHandler {
 			//add the card to the player copiedLeaderCard attribute to prevent that the player copy more than one effect violating the rule of this effect
 			player.copiedLeaderCard = response;
 			Leader leader = gameHandler.mainBoard.leaderMap.get(response);
+			if(!(leader.effect instanceof InstantEffect))
+				//add the card to the played cards list only if the player can copy at least one leader card and the card is not copying an instant effect
+				addPlayerPlayedLeaderCard(cardName,player);
+			
 			activateLeader(leader.effect,player,cardName);
 		}
 		else{
@@ -842,8 +847,17 @@ public class CardHandler {
 	}
 	
 	private void addPlayerPlayedLeaderCard(String cardName,NetworkPlayer player){
-    	if(!player.getPlayerPlayedLeaderCards().contains(cardName))
-    		player.setPlayerPlayedLeaderCards(cardName);
+    	if(!player.getPlayerPlayedLeaderCards().contains(cardName)){
+    		player.setPlayerPlayedLeaderCard(cardName);
+    		gameHandler.mainBoard.setPlayedLeaderCard(cardName);
+    	}
+	}
+	
+	private void addPlayerInstantLeaderCard(String cardName, NetworkPlayer player){
+		if(!player.getPlayerInstantLeaderCards().contains(cardName))
+			player.setPlayerInstantLeaderCard(cardName);
+		if(!gameHandler.mainBoard.getPlayedLeaderCard().contains(cardName))
+			gameHandler.mainBoard.setPlayedLeaderCard(cardName);
 	}
 	
 	public void getInfo(InstantEffect effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{

@@ -25,12 +25,14 @@ public class Player implements Serializable{
     
     private ArrayList<String> playedFamilyMembers = new ArrayList<String>();
     
+    private ArrayList<String> playerInstantLeaderCards = new ArrayList<String>();
+    
     public String copiedLeaderCard = "";
 
     public DecoratorHandler decoratorHandler = new DecoratorHandler();
     
 
-    public void setPlayerPlayedLeaderCards(String cardName) {
+    public void setPlayerPlayedLeaderCard(String cardName) {
     	playerPlayedLeaderCards.add(cardName);
     }
 
@@ -56,6 +58,17 @@ public class Player implements Serializable{
 	
 	public void setPlayedFamilyMembers(ArrayList<String> playedFamilyMembers) {
 		this.playedFamilyMembers = playedFamilyMembers;
+	}
+
+	public ArrayList<String> getPlayerInstantLeaderCards() {
+		return playerInstantLeaderCards;
+	}
+
+	public void setPlayerInstantLeaderCard(String playerInstantLeaderCard) {
+		this.playerInstantLeaderCards.add(playerInstantLeaderCard);
+	}
+	public void setPlayerInstantLeaderCards(ArrayList<String> playerInstantLeaderCards){
+		this.playerInstantLeaderCards = playerInstantLeaderCards;
 	}
 
 	

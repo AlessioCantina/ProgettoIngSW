@@ -101,8 +101,8 @@ public class MainBoard implements Serializable{
        return this.diceValues;  
     }
 
-    public void setPlayedLeaderCard(ArrayList<String> playedLeaderCard) {
-        this.playedLeaderCard=playedLeaderCard;
+    public void setPlayedLeaderCard(String playedLeaderCard) {
+        this.playedLeaderCard.add(playedLeaderCard);
     }
 
     public ArrayList<String> getPlayedLeaderCard() {

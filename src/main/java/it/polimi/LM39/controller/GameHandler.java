@@ -14,6 +14,7 @@ import it.polimi.LM39.model.*;
 import it.polimi.LM39.model.Character;
 import it.polimi.LM39.model.characterpermanenteffect.CharacterPermanentEffect;
 import it.polimi.LM39.model.excommunicationpermanenteffect.NoVictoryForCard;
+import it.polimi.LM39.model.instanteffect.InstantEffect;
 import it.polimi.LM39.server.NetworkPlayer;
 
 import com.google.gson.Gson;
@@ -829,6 +830,11 @@ public class GameHandler {
     					player.setMessage("This card is activated so you cannot discard it");
     					return;
     				}
+    			for(String playedName : player.getPlayerInstantLeaderCards())
+    				if(playedName.equals(leader)){
+    					player.setMessage("This card is activated so you cannot discard it");
+    					return;
+    				}
     			flag = true;
     			ArrayList<String> leaders = player.personalBoard.getPossessedLeaders();
     			leaders.remove(leader);
@@ -903,8 +909,10 @@ public class GameHandler {
     	CardHandler cardHandler = new CardHandler (this,decoratedMethods);
     	for(Integer cardNumber : player.personalBoard.getPossessions("Character"))
     		decoratedMethods = cardHandler.activateCharacter(mainBoard.characterMap.get(cardNumber).permanentEffect, player);
-    	for(String leader : player.getPlayerPlayedLeaderCards())  //TODO TENTA DI ACCEDERE
-    		decoratedMethods = cardHandler.activateLeader(mainBoard.leaderMap.get(leader).effect, player,leader);
+    	for(String leader : player.getPlayerPlayedLeaderCards())
+			//checks if the copied effect is an instant effect, in this case it shouldn't be 
+			if(("Lorenzo de' Medici").equals(leader) && !(mainBoard.leaderMap.get(player.copiedLeaderCard).effect instanceof InstantEffect))
+				decoratedMethods = cardHandler.activateLeader(mainBoard.leaderMap.get(leader).effect, player,leader);
     	for(Integer excommunicationNumber : player.getExcommunications())
     		decoratedMethods = cardHandler.activateExcommunication(mainBoard.excommunicationMap.get(excommunicationNumber).effect, player);
     }

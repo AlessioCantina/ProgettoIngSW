@@ -223,7 +223,8 @@ public class Game implements Runnable{
     		player.setMessage("Which leader do you want to activate?");
     		response = player.sendMessage();
     		flag = false;
-    		if(player.personalBoard.getPossessedLeaders().contains(response)){
+    		if(player.personalBoard.getPossessedLeaders().contains(response) && !player.getPlayerInstantLeaderCards().contains(response) 
+    		&& !player.getPlayerPlayedLeaderCards().contains(response)){
 	/*		for(String card : player.personalBoard.getPossessedLeaders()){
 				System.out.println(card);
 				if((card).compareToIgnoreCase(response) == 0){		*/
@@ -251,7 +252,7 @@ public class Game implements Runnable{
     				}	
 			}
     		else{
-					player.setMessage("You do not have this card");
+					player.setMessage("You do not have this card or this card is active");
 					playerAction(player);
 					return;
 			}
@@ -609,6 +610,7 @@ public class Game implements Runnable{
         	    		}
     				}
     			}
+    			emptyPlayerInstantLeaderCards();
     			System.out.println("FINE FOR");
 	    		gameHandler.setPlayerActionOrder(playerNumber);
 	    		
@@ -621,7 +623,6 @@ public class Game implements Runnable{
 	    		
 	    		//give the played family members back to the players
 	    		giveFamilyMembersBack();
-	    		
     		}
     		//support the church at the end of a period
     		for(NetworkPlayer player : players){
@@ -637,6 +638,12 @@ public class Game implements Runnable{
     	//calculate and send the final points made by every player to every player
     	sendFinalPoints(gameHandler.calculateFinalPoints(players));
     	
+    }
+    
+    private void emptyPlayerInstantLeaderCards(){
+    	for(NetworkPlayer player : players){
+    		player.setPlayerInstantLeaderCards(new ArrayList<String>());
+    	}
     }
     
     private boolean skipFirstTurn(NetworkPlayer player){
