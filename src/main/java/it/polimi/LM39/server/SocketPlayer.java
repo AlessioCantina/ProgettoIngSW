@@ -6,11 +6,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-/**
+/*
  * every player connected to the socket has this object which manipulates connection between server and client
  * this is the server side, so we send objects and strings and receive strings from client
  */
@@ -25,11 +26,9 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    private static String message;				//information which will be send to the client
 	    private static MainBoard mainBoard;
 	    private String clientAction;
-	    private transient boolean requestedMainboard;
 	    private Boolean requestedMessage;
 	    protected transient static Object LOCK = new Object();
 	    private transient static Object CLIENT_LOCK = new Object();
-    	private Boolean requestedResponse = false;
 	    /*
 	     * the constructor initialize the streams and start the thread
 	     */
@@ -37,7 +36,6 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    	  message = "";
 	    	  this.clientAction = "";
 	          this.socket = socket;
-	          this.requestedMainboard = false;
 	          this.requestedMessage = false;
 	          this.serverInterface = serverInterface;
 	          this.objOutput = new ObjectOutputStream(this.socket.getOutputStream()); 
@@ -45,26 +43,38 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	          this.objInput = new ObjectInputStream(new BufferedInputStream(this.socket.getInputStream()));
 	    }
 	    /*
-	     * used from the controller to set what we want to send
+	     * used from the controller to send mainboard
 	     */
 	    public void setMessage(MainBoard mainboard){
 	    	mainBoard = mainboard;
-	    	requestedMainboard = true;
+	    	try{
+        		objOutput.writeObject(this);
+        		objOutput.writeObject(mainBoard);
+        		objOutput.flush();
+        		objOutput.reset();
+	    	}catch (IOException e) {
+	    		logger.log(Level.WARNING, "Can't write objects on stream", e);
+		    }	
 	    }
+	    /*
+	     * synchronized method which avoid deadlock if the controller want to send multiple messages to a client
+	     */
 	    public void setMessage(String controllerMessage){
 	    	synchronized(LOCK){
 	    		message = controllerMessage;
-	    		requestedMessage = true;
-	    		try {
-	    			LOCK.wait();
-	    		} catch (InterruptedException e) {
-	    			Thread.currentThread().interrupt();
+    			requestedMessage = false;
+    			try {
+    				objOutput.writeObject(requestedMessage);
+    				objOutput.writeUTF(message);
+    				objOutput.flush();
+	    		} catch (IOException e) {
+					Thread.currentThread().interrupt();
 	    		}
 	    	}
 	    }
 	    /*
-	     * infinite loop which listen the client from input and send the available information to it
-	     * it checks if we have something to send to the client and waits for the answer
+	     * wait for the room to start, then unlocks player's threads
+	     * 
 	     */
 	    public void run() {
 	    	synchronized(LOCK){
@@ -76,79 +86,32 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 					Thread.currentThread().interrupt();
 				}
 	    	}
-			while(!socket.isClosed()){
-					if(requestedMainboard){
-						sendMainBoardToClient();
-					}
-					if(requestedMessage){
-						sendMessageToClient();
-					}
-					if(requestedResponse)
-						receiveFromClient();
-					try {
-						Thread.sleep(50);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}	
-				}
-	    }
-	    private synchronized void sendMainBoardToClient(){
-	    		try{
-        			System.out.println("Invio mainboard");
-        			objOutput.writeObject(this);
-        			objOutput.writeObject(mainBoard);
-        			objOutput.flush();
-        			objOutput.reset();
-        			requestedMainboard = false;
-	    		}catch (Exception e) {
-	    			logger.log(Level.WARNING, "Can't write objects on stream", e);
-		        }	    			
-	    	}
-	    private void sendMessageToClient(){
-	    	System.out.println("Invio Messaggio");
-	    	synchronized(LOCK){
-	    		try{
-	    			requestedMessage = false;
-	    			objOutput.writeObject(requestedMessage);
-	    			objOutput.writeUTF(message);
-	    			objOutput.flush();
-	    		}catch (Exception e){
-	    			logger.log(Level.WARNING, "Can't write strings on stream", e);
-	    		}
-	    		LOCK.notifyAll();
-	    	}
-		}
-	    private void receiveFromClient(){
-	    	synchronized(CLIENT_LOCK){
-	    		try{
-	    			if(objInput.available() > 0){
-	    				clientAction = objInput.readUTF();
-	    				System.out.println(clientAction);
-	    				CLIENT_LOCK.notifyAll();
-	    			}	    		
-	    		}catch (Exception e) {
-	    		logger.log(Level.WARNING, "Can't read input on stream", e);
-	    		}
-	    	}
 	    }
 	    /*
 	     * this method return the client action to the game controller
 	     */
 	    public String sendMessage(){
 	    	synchronized(CLIENT_LOCK){
-	    		while(("").equals(clientAction)){
-	    			try {
-	    				requestedResponse = true;
-	    				objOutput.writeObject(requestedResponse);
+	    		try {
+	    			if(clientAction.equals("")){
+	    				objOutput.writeObject(true);
 	    				objOutput.flush();
-						CLIENT_LOCK.wait();
-					} catch (InterruptedException | IOException e) {
-						Thread.currentThread().interrupt();
-					}
-	    		}
+	    				clientAction = objInput.readUTF();
+	    				if(("Client Timedout").equals(clientAction))
+	    					CLIENT_LOCK.wait();
+	    			}
+				} catch (IOException e) {
+						try {
+							CLIENT_LOCK.wait();
+						} catch (InterruptedException e1) {
+							Thread.currentThread().interrupt();
+						}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+	    	}
 	    	String stringToSet = clientAction;
 	    	clientAction = "";
 	    	return stringToSet;
-	    	}	
 	    }
 }

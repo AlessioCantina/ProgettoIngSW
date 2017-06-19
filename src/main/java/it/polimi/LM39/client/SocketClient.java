@@ -15,13 +15,11 @@ import it.polimi.LM39.server.NetworkPlayer;
  * socket client: enables the socket in/out for the client
  */
 public class SocketClient extends AbstractClient implements Runnable{
-	private String ip;
-	private Integer port;
 	private String userName;
 	private Socket socket;
 	private ObjectOutputStream socketOut;
 	private ObjectInputStream socketIn;
-	private long clientTimeout = 1000000;
+	private long clientTimeout = 10000;
 
 	public void setClientTimeout(long timeout){
 		this.clientTimeout = timeout;
@@ -32,8 +30,6 @@ public class SocketClient extends AbstractClient implements Runnable{
      */
     public SocketClient(String ip, int port, String userName, UserInterface UI) throws UnknownHostException, IOException {
     	super(UI);
-    	this.ip = ip;
-    	this.port = port;
     	this.userName = userName;
     	socket = new Socket(ip,port);
     	socket.setKeepAlive(true);	
@@ -70,8 +66,8 @@ public class SocketClient extends AbstractClient implements Runnable{
     			}catch (SocketTimeoutException socketException) {
     				try {
     						long moveStartTime = System.currentTimeMillis();
-    						String prova = UI.askClient(player);
-    						socketOut.writeUTF(prova);
+    						socketOut.writeUTF(UI.askClient(player));
+							System.out.println("ORA CORRENTE: " + System.currentTimeMillis() + "ORA INIZIO" + moveStartTime);
     						if(System.currentTimeMillis() - moveStartTime < clientTimeout){
     							socketOut.flush();
     							socket.setSoTimeout(0);
@@ -80,17 +76,19 @@ public class SocketClient extends AbstractClient implements Runnable{
     							UI.printMessage("Client timedout. Please reconnect to play again");
     							socketOut.writeUTF("Client timedout");
     							socketOut.flush();
+    							Thread.currentThread().join();
     							socket.close();
     						}
-    				}catch (IOException writeException) {
+    				} catch (IOException | InterruptedException writeException) {
     						logger.log(Level.SEVERE, "Can't write on socket", writeException);
     				}
-    			} catch (ClassNotFoundException e) {
-    				logger.log(Level.SEVERE, "Object class not found", e);
-				} catch (EOFException e) {
-					continue;
-			    } catch (IOException e) {
-					logger.log(Level.SEVERE, "Can't write on socket", e);
+    				} catch (ClassNotFoundException e) {
+    						logger.log(Level.SEVERE, "Object class not found", e);
+    				} catch (EOFException e) {
+    						continue;
+    				} catch (IOException e) {
+    					Thread.currentThread().interrupt();
+    					//	logger.log(Level.SEVERE, "Can't write on socket", e);
 				} 			
     		}
     	}
