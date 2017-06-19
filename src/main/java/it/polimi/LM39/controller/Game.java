@@ -396,7 +396,7 @@ public class Game implements Runnable{
     		response = player.sendMessage();
     		CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
     		try {
-				cardHandler.activateExcommunication(gameHandler.mainBoard.excommunicationMap.get(Integer.parseInt(response)).effect,player);
+				gameHandler.decoratedMethods = cardHandler.activateExcommunication(gameHandler.mainBoard.excommunicationMap.get(Integer.parseInt(response)).effect,player);
 				player.setExcommunications(Integer.parseInt(response));
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException e) {

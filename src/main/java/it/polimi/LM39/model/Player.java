@@ -28,10 +28,7 @@ public class Player implements Serializable{
     private ArrayList<String> playerInstantLeaderCards = new ArrayList<String>();
     
     public String copiedLeaderCard = "";
-
-    public DecoratorHandler decoratorHandler = new DecoratorHandler();
     
-
     public void setPlayerPlayedLeaderCard(String cardName) {
     	playerPlayedLeaderCards.add(cardName);
     }

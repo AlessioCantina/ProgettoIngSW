@@ -1,6 +1,7 @@
 package it.polimi.LM39.controller;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import it.polimi.LM39.exception.NotEnoughPointsException;
@@ -94,6 +95,13 @@ public class DecoratedMethods {
 	    		return 0;
 	    }
 	 
+	 public void activateHarvest(Integer actionValue, NetworkPlayer player,PersonalBoardHandler personalBoardHandler) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException{
+		 personalBoardHandler.activateHarvest(actionValue,player);
+	 }
+	
+	 public void activateProduction(Integer actionValue, NetworkPlayer player,PersonalBoardHandler personalBoardHandler) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException{
+		 personalBoardHandler.activateProduction(actionValue, player);
+	 }
 	 
 	 
 	 

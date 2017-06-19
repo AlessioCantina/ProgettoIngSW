@@ -2,9 +2,11 @@ package it.polimi.LM39.controller.decorator;
 
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import it.polimi.LM39.controller.DecoratedMethods;
 import it.polimi.LM39.controller.GameHandler;
+import it.polimi.LM39.controller.PersonalBoardHandler;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.Building;
@@ -31,18 +33,12 @@ public class CharacterResourcesDiscountDecorator extends DecoratedMethods{
 	
 	@Override
 	public void coinsForCharacter(NetworkPlayer player ,Character character) throws NotEnoughResourcesException{
-		if(this.player == player){
 			Character character2 = new Character();
 			if(character.costCoins>=resourcesDiscount.coins)
 				character2.costCoins = character.costCoins - resourcesDiscount.coins;
 			else
 				character2.costCoins = 0;
 			decoratedMethods.coinsForCharacter(player,character2);
-			//if the card cost is lower than the bonus no cost are applied to the player
-		}
-		else
-			//if the bonus is not for the player that is now using this method
-			decoratedMethods.coinsForCharacter(player,character);
 	}
 	
 	@Override
@@ -73,6 +69,16 @@ public class CharacterResourcesDiscountDecorator extends DecoratedMethods{
 	@Override
 	public Integer addServants(NetworkPlayer player) throws IOException, NotEnoughResourcesException{
 		return decoratedMethods.addServants(player);
+	}
+	
+	@Override
+	public void activateHarvest(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException {
+		decoratedMethods.activateHarvest(value,player,personalBoardHandler);
+	}
+	
+	@Override
+	public void activateProduction(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, IOException {
+		decoratedMethods.activateProduction(value,player,personalBoardHandler);
 	}
 
 }

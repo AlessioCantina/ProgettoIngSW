@@ -1,9 +1,11 @@
 package it.polimi.LM39.controller.decorator;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import it.polimi.LM39.controller.DecoratedMethods;
 import it.polimi.LM39.controller.GameHandler;
+import it.polimi.LM39.controller.PersonalBoardHandler;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.Building;
@@ -30,7 +32,6 @@ public class CardCoinDiscountDecorator extends DecoratedMethods{
 	
 	@Override
 	public void resourcesForBuilding(NetworkPlayer player ,Building building) throws NotEnoughResourcesException{
-		if(this.player == player){
 			//creating a CardResources object that is the result of the card costs - the bonus  
 			CardResources resources = new CardResources();
     		if(building.costResources.coins>=coinDiscount)
@@ -43,14 +44,10 @@ public class CardCoinDiscountDecorator extends DecoratedMethods{
     		Building building2 = new Building();
 			building2.costResources = resources;
 			decoratedMethods.resourcesForBuilding(player,building2);
-		}
-		//if the bonus is not for the player that is now using this method
-		decoratedMethods.resourcesForBuilding(player,building);
 	}
 	
 	@Override
 	public void coinsForCharacter(NetworkPlayer player ,Character character) throws NotEnoughResourcesException{
-		if(this.player == player){
 			Character character2 = new Character();
 			if(character.costCoins>=coinDiscount)
 				character2.costCoins -= coinDiscount;
@@ -58,14 +55,10 @@ public class CardCoinDiscountDecorator extends DecoratedMethods{
 				character2.costCoins = 0;
 			decoratedMethods.coinsForCharacter(player,character2);
 		//if the card cost is lower than the bonus no cost are applied to the player
-		}
-		//if the bonus is not for the player that is now using this method
-		decoratedMethods.coinsForCharacter(player,character);
 	}
 	
 	@Override
 	public void resourcesForVenture(NetworkPlayer player ,Venture venture) throws NotEnoughResourcesException{
-		if(this.player == player){
 			//creating a CardResources object that is the result of the card costs - the bonus  
 			CardResources resources = new CardResources();
     		if(venture.costResources.coins>=coinDiscount)
@@ -78,10 +71,6 @@ public class CardCoinDiscountDecorator extends DecoratedMethods{
     		Venture venture2 = new Venture();
 			venture2.costResources = resources;
 			decoratedMethods.resourcesForVenture(player,venture2);
-		}
-		else
-			//if the bonus is not for the player that is now using this method
-			decoratedMethods.resourcesForVenture(player,venture);
 	}
 	
 	@Override
@@ -102,6 +91,16 @@ public class CardCoinDiscountDecorator extends DecoratedMethods{
 	@Override
 	public Integer addServants(NetworkPlayer player) throws IOException, NotEnoughResourcesException{
 		return decoratedMethods.addServants(player);
+	}
+	
+	@Override
+	public void activateHarvest(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException {
+		decoratedMethods.activateHarvest(value,player,personalBoardHandler);
+	}
+	
+	@Override
+	public void activateProduction(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, IOException {
+		decoratedMethods.activateProduction(value,player,personalBoardHandler);
 	}
 	
 	

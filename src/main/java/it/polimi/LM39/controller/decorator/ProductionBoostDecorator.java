@@ -3,38 +3,75 @@ package it.polimi.LM39.controller.decorator;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
+import it.polimi.LM39.controller.DecoratedMethods;
 import it.polimi.LM39.controller.PersonalBoardHandler;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
+import it.polimi.LM39.model.Building;
+import it.polimi.LM39.model.CardPoints;
+import it.polimi.LM39.model.CardResources;
+import it.polimi.LM39.model.Character;
+import it.polimi.LM39.model.FamilyMember;
+import it.polimi.LM39.model.Venture;
 import it.polimi.LM39.server.NetworkPlayer;
 
-public class ProductionBoostDecorator extends PersonalBoardHandler{
+public class ProductionBoostDecorator extends DecoratedMethods{
 	
-	private PersonalBoardHandler decoratedPlayerBoardHandler;
+	private DecoratedMethods decoratedMethods;
 	private Integer productionBonus;
 	private NetworkPlayer player;
 	
-	public ProductionBoostDecorator (PersonalBoardHandler decoratedPlayerBoardHandler, Integer boost, NetworkPlayer player) {
-		this.decoratedPlayerBoardHandler = decoratedPlayerBoardHandler;
+	public ProductionBoostDecorator (DecoratedMethods decoratedMethods, Integer boost, NetworkPlayer player) {
+		this.decoratedMethods = decoratedMethods;
 		this.productionBonus = boost;
 		this.player = player;
 	}
 
 	@Override
-	public void activateProduction(Integer value,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, IOException{
-		//check if the player who is activating the production is the player who has activated the bonus
-		if(this.player == player)
-			decoratedPlayerBoardHandler.activateProduction(value + productionBonus,player);
-		else
-			//if the player does not have the bonus do a normal activateProduction
-			decoratedPlayerBoardHandler.activateProduction(value,player);
+	public void activateProduction(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, IOException{
+		decoratedMethods.activateProduction(value + productionBonus,player,personalBoardHandler);
 	}
 
 	@Override
 	//the override must be done because the method activateHarvest could me decorated by another decorator
 	//even if ProductionBoostDecorator does not decorate this method
-	public void activateHarvest(Integer value,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException {
-		decoratedPlayerBoardHandler.activateHarvest(value,player);
+	public void activateHarvest(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException {
+		decoratedMethods.activateHarvest(value,player,personalBoardHandler);
+	}
+	
+	@Override
+	public void coinsForCharacter(NetworkPlayer player ,Character character) throws NotEnoughResourcesException{
+		decoratedMethods.coinsForCharacter(player,character);
+	}
+	
+	@Override
+	 public void resourcesForVenture(NetworkPlayer player ,Venture venture) throws NotEnoughResourcesException{
+		decoratedMethods.resourcesForVenture(player,venture);
+	}
+	
+	@Override
+	public void addCardResources (CardResources resources, NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
+		decoratedMethods.addCardResources (resources,player);
+	}
+	
+	@Override
+	public boolean addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException {
+		return decoratedMethods.addFamilyMemberToTheMarket(familyMember, position, player);
+	}
+	
+	@Override
+	public void addCardPoints (CardPoints points, NetworkPlayer player) throws NotEnoughPointsException{
+		decoratedMethods.addCardPoints(points, player);
+	}
+	
+	@Override
+	public Integer addServants(NetworkPlayer player) throws IOException, NotEnoughResourcesException{
+		return decoratedMethods.addServants(player);
+	}
+	
+	@Override
+	public void resourcesForBuilding(NetworkPlayer player, Building building) throws NotEnoughResourcesException{
+		decoratedMethods.resourcesForBuilding(player,building);
 	}
 }
 

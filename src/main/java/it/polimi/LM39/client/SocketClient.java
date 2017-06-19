@@ -19,7 +19,7 @@ public class SocketClient extends AbstractClient implements Runnable{
 	private Socket socket;
 	private ObjectOutputStream socketOut;
 	private ObjectInputStream socketIn;
-	private long clientTimeout = 10000;
+	private long clientTimeout = 1000000;
 
 	public void setClientTimeout(long timeout){
 		this.clientTimeout = timeout;

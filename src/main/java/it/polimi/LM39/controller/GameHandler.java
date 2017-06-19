@@ -555,10 +555,10 @@ public class GameHandler {
     		if (doAction==true){
     			if(familyMemberValue(familyMember,player)>0){
 	    			if (actionType=="Production"){
-		    			personalBoardHandler.activateProduction(familyMemberValue(familyMember,player)-penalty,player); // we use the player Personal MainBaord
+		    			decoratedMethods.activateProduction(familyMemberValue(familyMember,player)-penalty,player,personalBoardHandler); // we use the player Personal MainBaord
 	    			}
 	    			else if(actionType=="Harvest"){
-	    				personalBoardHandler.activateHarvest(familyMemberValue(familyMember,player)-penalty,player); // we use the player Personal MainBaord
+	    				decoratedMethods.activateHarvest(familyMemberValue(familyMember,player)-penalty,player,personalBoardHandler); // we use the player Personal MainBaord
 	    			}
 	    			
     			}
@@ -916,6 +916,7 @@ public class GameHandler {
     }
     
     public void activatePermanentEffects(NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+    	decoratedMethods = new DecoratedMethods();
     	CardHandler cardHandler = new CardHandler (this,decoratedMethods);
     	for(Integer cardNumber : player.personalBoard.getPossessions("Character"))
     		decoratedMethods = cardHandler.activateCharacter(mainBoard.characterMap.get(cardNumber).permanentEffect, player);

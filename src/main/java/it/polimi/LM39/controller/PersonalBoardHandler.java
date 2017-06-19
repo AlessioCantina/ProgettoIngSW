@@ -84,7 +84,7 @@ public class PersonalBoardHandler {
         		 gameHandler.decoratedMethods.addCardPoints(bonusPoints, player);
     }
     
-    public void checkPlayer(NetworkPlayer player,InstantEffect activationEffect,CardResources costResources, CardPoints costPoints, CardResources bonusResources, CardPoints bonusPoints) throws IOException, NotEnoughResourcesException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+    private void checkPlayer(NetworkPlayer player,InstantEffect activationEffect,CardResources costResources, CardPoints costPoints, CardResources bonusResources, CardPoints bonusPoints) throws IOException, NotEnoughResourcesException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
     	NetworkPlayer fakePlayer;
     	Gson gson =new Gson();
     	fakePlayer = gson.fromJson(gson.toJson(player),player.getClass());

@@ -1,11 +1,13 @@
 package it.polimi.LM39.controller.decorator;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import it.polimi.LM39.controller.CouncilHandler;
 import it.polimi.LM39.controller.DecoratedMethods;
 import it.polimi.LM39.controller.GameHandler;
+import it.polimi.LM39.controller.PersonalBoardHandler;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.Building;
@@ -33,7 +35,6 @@ public class ResourcesMalusDecorator  extends DecoratedMethods{
 	
 	@Override
 	public void addCardResources (CardResources resources, NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
-		if(this.player == player){
 			PlayerResources playerResources = player.resources;
 			if(resources.woods>0 && resources.stones>0){
 				player.setMessage("Do you want to have your Excommunication malus on woods or stones?");
@@ -70,9 +71,6 @@ public class ResourcesMalusDecorator  extends DecoratedMethods{
 				councilHandler.getCouncil(resources.council,player,gameHandler,new ArrayList<Integer>());
 			}
 			player.resources=playerResources;
-		 }
-		 else
-			 decoratedMethods.addCardResources(resources,player);
 	    }
 	  
 	  
@@ -104,5 +102,15 @@ public class ResourcesMalusDecorator  extends DecoratedMethods{
 	@Override
 	public Integer addServants(NetworkPlayer player) throws IOException, NotEnoughResourcesException{
 		return decoratedMethods.addServants(player);
+	}
+	
+	@Override
+	public void activateHarvest(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException {
+		decoratedMethods.activateHarvest(value,player,personalBoardHandler);
+	}
+	
+	@Override
+	public void activateProduction(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, IOException {
+		decoratedMethods.activateProduction(value,player,personalBoardHandler);
 	}
 }
