@@ -715,7 +715,7 @@ public class GameHandler {
         	
         	//check if the player has the excommunication NoVictoryForCard that penalize the final points
         	for(Integer excommunicationNumber : player.getExcommunications())
-        		if((mainBoard.excommunicationMap.get(excommunicationNumber).effect.getClass()).equals(NoVictoryForCard.class)){
+        		if((mainBoard.excommunicationMap.get(excommunicationNumber).effect.getClass().getSimpleName()).equals(NoVictoryForCard.class)){
         			flag = true;
         			excommunication = excommunicationNumber;
         		}

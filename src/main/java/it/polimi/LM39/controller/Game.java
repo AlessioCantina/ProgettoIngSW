@@ -238,7 +238,6 @@ public class Game implements Runnable{
     		playerAction(player);
     	}
     	else if (("activate leader").equals(response)){
-    		Integer cardNumber = -1;
     		player.setMessage("Which leader do you want to activate?");
     		response = player.sendMessage();
     		flag = false;
