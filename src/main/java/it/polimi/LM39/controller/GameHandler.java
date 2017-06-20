@@ -147,7 +147,7 @@ public class GameHandler {
     	ArrayList<Integer> possessedBuildings = player.personalBoard.getPossessions("Building");
 		if (possessedBuildings.size()<6){
 	    		try {
-	    			decoratedMethods.resourcesForBuilding(player ,building);
+	    			decoratedMethods.resourcesForBuilding(player ,building,this);
 					decoratedMethods.addCardPoints(building.instantBonuses,player);
 				} catch (NotEnoughResourcesException | NotEnoughPointsException e) {
 					player.setMessage("You do not have enough resources or points!");
