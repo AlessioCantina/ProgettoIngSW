@@ -136,16 +136,13 @@ public class CardHandler {
 			for(int i=0;i<4;i++)
 				for(int j=0;j<4;j++)
 					if((CardNamesOnTheTowers[i][j]).compareToIgnoreCase(cardName) == 0){
-						if(j==0 && ("Territory").equals(instantEffect.cardType) && (instantEffect.cardValue+qtyServants) >= gameHandler.mainBoard.getTowersValue()[i][j])
+						if((j==0 && ("Territory").equals(instantEffect.cardType) && (instantEffect.cardValue+qtyServants) >= gameHandler.mainBoard.getTowersValue()[i][j])
+								|| (j==1 && ("Character").equals(instantEffect.cardType) && (instantEffect.cardValue+qtyServants) >= gameHandler.mainBoard.getTowersValue()[i][j])
+								|| (j==2 && ("Building").equals(instantEffect.cardType) && (instantEffect.cardValue+qtyServants) >= gameHandler.mainBoard.getTowersValue()[i][j])
+								|| (j==3 && ("Venture").equals(instantEffect.cardType) && (instantEffect.cardValue+qtyServants) >= gameHandler.mainBoard.getTowersValue()[i][j])
+								|| (("All").equals(instantEffect.cardType) && (instantEffect.cardValue+qtyServants) >= gameHandler.mainBoard.getTowersValue()[i][j]))
 							flag = gameHandler.getCard(gameHandler.cardNameToInteger(cardName), player, j);
-						else if(j==1 && ("Character").equals(instantEffect.cardType) && (instantEffect.cardValue+qtyServants) >= gameHandler.mainBoard.getTowersValue()[i][j])
-							flag = gameHandler.getCard(gameHandler.cardNameToInteger(cardName), player, j);
-						else if(j==2 && ("Building").equals(instantEffect.cardType) && (instantEffect.cardValue+qtyServants) >= gameHandler.mainBoard.getTowersValue()[i][j])
-							flag = gameHandler.getCard(gameHandler.cardNameToInteger(cardName), player, j);
-						else if(j==3 && ("Venture").equals(instantEffect.cardType) && (instantEffect.cardValue+qtyServants) >= gameHandler.mainBoard.getTowersValue()[i][j])
-							flag = gameHandler.getCard(gameHandler.cardNameToInteger(cardName), player, j);
-						else if(("All").equals(instantEffect.cardType) && (instantEffect.cardValue+qtyServants) >= gameHandler.mainBoard.getTowersValue()[i][j])
-							flag = gameHandler.getCard(gameHandler.cardNameToInteger(cardName), player, j);
+						
 						if (flag == false){
 							player.resources.setServants(qtyServants);
 							player.setMessage("You cannot get this card");
@@ -223,7 +220,7 @@ public class CardHandler {
 									player.resources.setCoins(-instantEffect.cardDiscount.coins);
 							}
 						else {
-							CardResources costResources = new CardResources();
+							CardResources costResources;
 							//if the card is a Building
 							if(j==2 && (("Building").equals(instantEffect.cardType) || ("All").equals(instantEffect.cardType)) && (instantEffect.cardValue+qtyServants) >= gameHandler.mainBoard.getTowersValue()[i][j]){
 								Building building = gameHandler.mainBoard.buildingMap.get(cardNumber);
@@ -731,7 +728,7 @@ public class CardHandler {
 	}
 	
 	public DecoratedMethods activateLeader(CopyLeaderAbility permanentEffect,NetworkPlayer player,String cardName) throws CardNotFoundException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException{
-		String response = "";
+		String response;
 		if(player.copiedLeaderCard == ""){
 			ArrayList<String> choosableCards = new ArrayList<String>();
 			for (String playedCard : player.personalMainBoard.getPlayedLeaderCard())

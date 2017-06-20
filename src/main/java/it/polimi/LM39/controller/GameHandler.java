@@ -729,7 +729,7 @@ public class GameHandler {
         		}
         	
         	//if the player does not have the excommunication on the Territory cards
-        	if(!(flag && ((NoVictoryForCard)mainBoard.excommunicationMap.get(excommunication).effect).cardType.equals("Territory"))){
+        	if(!(flag && ("Territory").equals(((NoVictoryForCard)mainBoard.excommunicationMap.get(excommunication).effect).cardType))){
 	        	switch (player.personalBoard.getPossessions("Territory").size()){
 		        	case(3): finalPoints += 1;
 		        		break;
@@ -742,7 +742,7 @@ public class GameHandler {
 	        	}
         	}
         	//if the player does not have the excommunication on the Character cards
-        	if(!(flag && ((NoVictoryForCard)mainBoard.excommunicationMap.get(excommunication).effect).cardType.equals("Character"))){
+        	if(!(flag && ("Character").equals(((NoVictoryForCard)mainBoard.excommunicationMap.get(excommunication).effect).cardType))){
 	        	switch (player.personalBoard.getPossessions("Character").size()){
 	        		case(1): finalPoints += 1;
 	        			break;
@@ -759,7 +759,7 @@ public class GameHandler {
 	        	}
         	}
         		//if the player does not have the excommunication on the Venture cards
-        		if(!(flag && ((NoVictoryForCard)mainBoard.excommunicationMap.get(excommunication).effect).cardType.equals("Venture")))
+        		if(!(flag && ("Character").equals(((NoVictoryForCard)mainBoard.excommunicationMap.get(excommunication).effect).cardType)))
         				finalPoints += player.points.getFinalVictory();
         	
         	finalPoints += ((player.resources.getCoins()+player.resources.getWoods()+player.resources.getStones()+player.resources.getServants())/5);
@@ -832,7 +832,7 @@ public class GameHandler {
     public void discardLeader (NetworkPlayer player, String leader) throws NotEnoughResourcesException, NotEnoughPointsException{
     	ArrayList<String> playedLeader = player.getPlayerPlayedLeaderCards();
     	boolean flag = false;
-    	for(String name : player.personalBoard.getPossessedLeaders())
+    	for(String name : player.personalBoard.getPossessedLeaders()){
     		if((name).equals(leader)){
     			for(String playedName : playedLeader)
     				if(playedName.equals(leader)){
@@ -851,11 +851,13 @@ public class GameHandler {
 	    		councilHandler.getCouncil(1, player, this, new ArrayList<Integer>());
 	    		break;
 	    	}
+    	}
     		if(!flag)
     			player.setMessage("You do not have this Leader card");
     }
     
-    public static String checkResponse (String response,NetworkPlayer player){
+    public static String checkResponse (String responsePlayer,NetworkPlayer player){
+    	String response = responsePlayer;
     	while(!("no").equals(response) && !("yes").equals(response)){
 			 player.setMessage("You must answer yes or no");
 			 response = player.sendMessage();}
