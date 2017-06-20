@@ -25,9 +25,8 @@ public class DecoratedMethods {
 		this.gameHandler = gameHandler;
 	}
 	
-	 public void resourcesForBuilding(NetworkPlayer player ,Building building,GameHandler gameHandler) throws NotEnoughResourcesException{
-		 	this.setGameHandler(gameHandler);
-		 	this.gameHandler.subCardResources(building.costResources,player);
+	 public void resourcesForBuilding(NetworkPlayer player ,Building building) throws NotEnoughResourcesException{
+		 	gameHandler.subCardResources(building.costResources,player);
 	    }
 	 
 	 public void coinsForCharacter(NetworkPlayer player ,Character character) throws NotEnoughResourcesException{
