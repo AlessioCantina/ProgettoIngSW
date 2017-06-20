@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import it.polimi.LM39.controller.DecoratedMethods;
 import it.polimi.LM39.controller.PersonalBoardHandler;
+import it.polimi.LM39.exception.InvalidActionTypeException;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.Building;
@@ -28,15 +29,16 @@ public class ProductionBoostDecorator extends DecoratedMethods{
 	}
 
 	@Override
-	public void activateProduction(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, IOException{
-		decoratedMethods.activateProduction(value + productionBonus,player,personalBoardHandler);
+	public boolean activateProduction(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, IOException, InvalidActionTypeException{
+		return decoratedMethods.activateProduction(value + productionBonus,player,personalBoardHandler,familyMember);
 	}
 
-	@Override
+	
 	//the override must be done because the method activateHarvest could me decorated by another decorator
 	//even if ProductionBoostDecorator does not decorate this method
-	public void activateHarvest(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException {
-		decoratedMethods.activateHarvest(value,player,personalBoardHandler);
+	@Override
+	public boolean activateHarvest(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException {
+		return decoratedMethods.activateHarvest(value,player,personalBoardHandler,familyMember);
 	}
 	
 	@Override

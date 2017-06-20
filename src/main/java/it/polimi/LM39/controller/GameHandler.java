@@ -289,27 +289,30 @@ public class GameHandler {
         		System.out.println("here1");
         	//if there is an uncolored family member on the tower or there is a colored one but the player uses an uncolored family member
         		if(player.resources.getCoins()>=3){
+        			try {
+						player.resources.setCoins(player.personalMainBoard.occupiedTowerCost);
+					} catch (NotEnoughResourcesException e) {
+						player.setMessage("You do not have enough coins!");
+						logger.log(Level.INFO, "Not enough resources", e);
+						return false;
+					}
         			if(getCard(cardNameToInteger(cardName),player,k)){
 	        			//TODO delete
 	            		System.out.println("here2");
-		        		try {
-							player.resources.setCoins(player.personalMainBoard.occupiedTowerCost);
-						} catch (NotEnoughResourcesException e) {
-							player.setMessage("You do not have enough resources!");
-							logger.log(Level.INFO, "Not enough resources", e);
-							return false;
-						}
 		        		setActionBonus((player.personalMainBoard.getTowersBonuses())[p][k],player);
 		        		(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].playerColor)=(familyMember.playerColor);
 		        		(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].color)=(familyMember.color);
 		        		removeCard(p,k);
 		        		return true;
 		        		}
-        			else
+        			else{
+        				//give the occupied tower cost back to the player
+        				player.resources.setCoins(-player.personalMainBoard.occupiedTowerCost);
         				return false;
+        			}
         		}
         		else
-        			player.setMessage("You do not have the necessary resources!");
+        			player.setMessage("You do not have enough coins!");
 	        	}
         	if (uncoloredFamilyMemberOnTheTower==false && coloredFamilyMemberOnTheTower==false){
         		//TODO delete
@@ -337,24 +340,27 @@ public class GameHandler {
             		System.out.println("here5");
         			//if the tower is occupied
         			if(player.resources.getCoins()>=3){
+        				try {
+							player.resources.setCoins(player.personalMainBoard.occupiedTowerCost);
+						} catch (NotEnoughResourcesException e) {
+							player.setMessage("You do not have enough resources");
+							logger.log(Level.INFO, "Not enough resources", e);
+							return false;
+						}
         				if(getCard(cardNameToInteger(cardName),player,k)){
 	        				//TODO delete
 	                		System.out.println("here6");
-	    	        		try {
-								player.resources.setCoins(player.personalMainBoard.occupiedTowerCost);
-							} catch (NotEnoughResourcesException e) {
-								player.setMessage("You do not have enough resources");
-								logger.log(Level.INFO, "Not enough resources", e);
-								return false;
-							}
 	    	        		setActionBonus((player.personalMainBoard.getTowersBonuses())[p][k],player);
 	    	        		(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].playerColor)=(familyMember.playerColor);
 	            			(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].color)=(familyMember.color);
 	            			removeCard(p,k);
 	    	        		return true;
 	        			}
-        				else
-        					return false;
+        				else{
+        					//give the occupied tower cost back to the player
+            				player.resources.setCoins(-player.personalMainBoard.occupiedTowerCost);
+            				return false;
+            			}
         			}
         			else{
         				player.setMessage("You do not have the necessary resources!");
@@ -553,20 +559,13 @@ public class GameHandler {
     			}	
     		}
     		if (doAction==true){
-    			if(familyMemberValue(familyMember,player)>0){
 	    			if (actionType=="Production"){
-		    			decoratedMethods.activateProduction(familyMemberValue(familyMember,player)-penalty,player,personalBoardHandler); // we use the player Personal MainBaord
+		    			return decoratedMethods.activateProduction(familyMemberValue(familyMember,player)-penalty,player,personalBoardHandler,familyMember); // we use the player Personal MainBaord
 	    			}
 	    			else if(actionType=="Harvest"){
-	    				decoratedMethods.activateHarvest(familyMemberValue(familyMember,player)-penalty,player,personalBoardHandler); // we use the player Personal MainBaord
+	    				return decoratedMethods.activateHarvest(familyMemberValue(familyMember,player)-penalty,player,personalBoardHandler,familyMember); // we use the player Personal MainBaord
 	    			}
-	    			
-    			}
-    			else{
-    				player.setMessage("Your Family Member must have a value of at least 1");
-		    		return false;
-    			}
-    		}
+	    	}
     			else {
 		    		player.setMessage("Invalid action it must be Production or Harvest");
 		    		return false;
@@ -923,7 +922,8 @@ public class GameHandler {
     		decoratedMethods = cardHandler.activateCharacter(mainBoard.characterMap.get(cardNumber).permanentEffect, player);
     	for(String leader : player.getPlayerPlayedLeaderCards())
 			//checks if the copied effect is an instant effect, in this case it shouldn't be 
-			if(("Lorenzo de' Medici").equals(leader) && !(mainBoard.leaderMap.get(player.copiedLeaderCard).effect instanceof InstantEffect))
+			if((("Lorenzo de' Medici").equals(leader) && !(mainBoard.leaderMap.get(player.copiedLeaderCard).effect instanceof InstantEffect)) || 
+					!("Lorenzo de' Medici").equals(leader))
 				decoratedMethods = cardHandler.activateLeader(mainBoard.leaderMap.get(leader).effect, player,leader);
     	for(Integer excommunicationNumber : player.getExcommunications())
     		decoratedMethods = cardHandler.activateExcommunication(mainBoard.excommunicationMap.get(excommunicationNumber).effect, player);

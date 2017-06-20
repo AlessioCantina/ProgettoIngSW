@@ -279,17 +279,17 @@ public class CardHandler {
 		}
 	}
 	
-	public void doInstantEffect(HarvestProductionAction instantEffect,NetworkPlayer player) throws IOException, NotEnoughResourcesException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughPointsException{
+	public void doInstantEffect(HarvestProductionAction instantEffect,NetworkPlayer player) throws IOException, NotEnoughResourcesException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughPointsException, InvalidActionTypeException{
 		//ask to the player if he wants to add servants to the action
 		Integer qtyServants = gameHandler.decoratedMethods.addServants(player);
 		//check if the effect is for harvest o production and call the correct method
 		if(("Harvest").equals(instantEffect.actionType))
-			gameHandler.decoratedMethods.activateHarvest(instantEffect.actionValue + qtyServants, player,gameHandler.personalBoardHandler);
+			gameHandler.decoratedMethods.activateHarvest(instantEffect.actionValue + qtyServants, player,gameHandler.personalBoardHandler,new FamilyMember());
 		else if(("Production").equals(instantEffect.actionType))
-			gameHandler.decoratedMethods.activateProduction(instantEffect.actionValue + qtyServants, player,gameHandler.personalBoardHandler);
+			gameHandler.decoratedMethods.activateProduction(instantEffect.actionValue + qtyServants, player,gameHandler.personalBoardHandler,new FamilyMember());
 	}
 	
-	public void doInstantEffect(HarvestProductionAndPoints instantEffect,NetworkPlayer player) throws NotEnoughPointsException, IOException, NotEnoughResourcesException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	public void doInstantEffect(HarvestProductionAndPoints instantEffect,NetworkPlayer player) throws NotEnoughPointsException, IOException, NotEnoughResourcesException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InvalidActionTypeException{
 		//making an HarvestProductionAction effect and calling his method
 		HarvestProductionAction effect = new HarvestProductionAction();
 		effect.actionType = instantEffect.actionType;
@@ -679,6 +679,17 @@ public class CardHandler {
 		
 		return decoratedMethods;
 	}
+	
+	public DecoratedMethods activateExcommunication(SkipFirstTurn permanentEffect,NetworkPlayer player){
+		//this excommunication is handled by run() in Game
+		return decoratedMethods;
+	}
+	
+	public DecoratedMethods activateExcommunication(NoVictoryForCard permanentEffect,NetworkPlayer player){
+		//this excommunication is handled by calculateFinalPoints() in GameHandler
+		return decoratedMethods;
+	}
+	
 	
 	
 	

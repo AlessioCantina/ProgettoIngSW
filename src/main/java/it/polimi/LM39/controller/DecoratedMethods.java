@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
+import it.polimi.LM39.exception.InvalidActionTypeException;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.Building;
@@ -95,12 +96,12 @@ public class DecoratedMethods {
 	    		return 0;
 	    }
 	 
-	 public void activateHarvest(Integer actionValue, NetworkPlayer player,PersonalBoardHandler personalBoardHandler) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException{
-		 personalBoardHandler.activateHarvest(actionValue,player);
+	 public boolean activateHarvest(Integer actionValue, NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
+		 return personalBoardHandler.activateHarvest(actionValue,player,familyMember);
 	 }
 	
-	 public void activateProduction(Integer actionValue, NetworkPlayer player,PersonalBoardHandler personalBoardHandler) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException{
-		 personalBoardHandler.activateProduction(actionValue, player);
+	 public boolean activateProduction(Integer actionValue, NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
+		 return personalBoardHandler.activateProduction(actionValue, player,familyMember);
 	 }
 	 
 	 
