@@ -525,7 +525,7 @@ public class Game implements Runnable{
     						cardHandler.getInfo(gameHandler.mainBoard.characterMap.get(cardNumber).instantBonuses,player);
     						cardHandler.getInfo(gameHandler.mainBoard.characterMap.get(cardNumber).permanentEffect,player);
     						break;
-    		case("Building"): player.setMessage("This card cost in resources:");
+    		case("Building"): player.setMessage("This card costs in resources:");
 			   				cardHandler.printCardResources(gameHandler.mainBoard.buildingMap.get(cardNumber).costResources,player);
 			   				player.setMessage("This card gives you:");
 			   				cardHandler.printCardPoints(gameHandler.mainBoard.buildingMap.get(cardNumber).instantBonuses,player);
@@ -544,7 +544,7 @@ public class Game implements Runnable{
     						|| gameHandler.mainBoard.ventureMap.get(cardNumber).costResources.stones > 0 || gameHandler.mainBoard.ventureMap.get(cardNumber).costResources.servants > 0){
     							if(flag)
     								player.setMessage("or");
-    							player.setMessage("This card cost in resources:");
+    							player.setMessage("This card costs in resources:");
     							cardHandler.printCardResources(gameHandler.mainBoard.ventureMap.get(cardNumber).costResources,player);
     						}
 			    			player.setMessage("This card gives you " + gameHandler.mainBoard.ventureMap.get(cardNumber).finalVictory + " victory points at the end of the game");
@@ -613,7 +613,7 @@ public class Game implements Runnable{
     	chooseBonusTile();
     	//the array list where the players actions order is stored
     	ArrayList <String> order;
-    	for(int period=0;period<3;period++){
+    	for(int period=0;period<1;period++){
     		gameHandler.setPeriod(period+1);
     		for(int round=0;round<2;round++){
     			order = gameHandler.getPlayersActionOrder();
@@ -655,7 +655,6 @@ public class Game implements Runnable{
     				}
     			}
     			emptyPlayerInstantLeaderCards();
-    			System.out.println("FINE FOR");
 	    		gameHandler.setPlayerActionOrder(playerNumber);
 	    		
 	    		//clean all the action spaces for a new round
@@ -791,6 +790,7 @@ public class Game implements Runnable{
     		//send the list of choosable Bonus Tiles to every player
     		for(i=0; i < gameHandler.mainBoard.personalBonusTiles.size(); i++){
     			PersonalBonusTile tile = gameHandler.mainBoard.personalBonusTiles.get(i);
+    			player.setMessage(" ");
     			player.setMessage("Tile " + (i+1));
     			player.setMessage("Harvest Bonuses:");
     			cardHandler.printCardPoints(tile.harvestBonus.points, player);

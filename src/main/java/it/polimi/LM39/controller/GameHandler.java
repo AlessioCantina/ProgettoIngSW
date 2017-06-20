@@ -759,7 +759,7 @@ public class GameHandler {
 	        	}
         	}
         		//if the player does not have the excommunication on the Venture cards
-        		if(!(flag && ("Character").equals(((NoVictoryForCard)mainBoard.excommunicationMap.get(excommunication).effect).cardType)))
+        		if(!(flag && ("Venture").equals(((NoVictoryForCard)mainBoard.excommunicationMap.get(excommunication).effect).cardType)))
         				finalPoints += player.points.getFinalVictory();
         	
         	finalPoints += ((player.resources.getCoins()+player.resources.getWoods()+player.resources.getStones()+player.resources.getServants())/5);
@@ -948,6 +948,9 @@ public class GameHandler {
 	    	case(4): player.resources.setCoins(8);
 	    		break;
     	}
+    	player.resources.setServants(3);
+    	player.resources.setWoods(2);
+    	player.resources.setStones(2);
     }
     
     
