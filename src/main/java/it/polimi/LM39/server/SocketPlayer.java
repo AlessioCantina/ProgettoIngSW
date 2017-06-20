@@ -93,7 +93,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    public String sendMessage(){
 	    	synchronized(CLIENT_LOCK){
 	    		try {
-	    			if(clientAction.equals("")){
+	    			if(("").equals(clientAction)){
 	    				objOutput.writeObject(true);
 	    				objOutput.flush();
 	    				clientAction = objInput.readUTF();
@@ -107,7 +107,8 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 							Thread.currentThread().interrupt();
 						}
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					logger.log(Level.SEVERE,"Can't interrupt the thread", e);
+					Thread.currentThread().interrupt();
 				}
 	    	}
 	    	String stringToSet = clientAction;

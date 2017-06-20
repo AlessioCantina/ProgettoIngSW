@@ -1,5 +1,4 @@
 package it.polimi.LM39.client;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -86,7 +85,7 @@ public class CLI extends UserInterface{
 	 */
 	private MainBoard mainBoard;
 	private BufferedReader userInput;
-	private Logger logger = Logger.getLogger(CLI.class.getName());;
+	private Logger logger = Logger.getLogger(CLI.class.getName());
 	private boolean firstMessage = true;
 	/*
 	 * set the mainboard for the client and print
@@ -322,7 +321,7 @@ public class CLI extends UserInterface{
 			logger.log(Level.WARNING, "Invalid Action Type", e);
 		}
 		int i = 0;
-		if(harvestArea.size() != 0){
+		if(!harvestArea.isEmpty()){
 			System.out.println("═════════════════════════════");	//TODO fix size
 			while(i < mainBoard.harvestAndProductionSize){
 				System.out.printf("║%-15s║%n",this.getPlayerColor(harvestArea.get(i)));
@@ -333,7 +332,7 @@ public class CLI extends UserInterface{
 		}
 		else
 			System.out.println("Nobody is at harvest area");
-		if(productionArea.size() != 0){
+		if(!productionArea.isEmpty()){
 			i = 0;
 			System.out.println("╔══════════════════════╗");	
 			while(i < mainBoard.harvestAndProductionSize){

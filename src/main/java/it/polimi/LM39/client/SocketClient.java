@@ -80,15 +80,15 @@ public class SocketClient extends AbstractClient implements Runnable{
     							socket.close();
     						}
     				} catch (IOException | InterruptedException writeException) {
-    						logger.log(Level.SEVERE, "Can't write on socket", writeException);
+    					logger.log(Level.SEVERE, "Can't write on socket", writeException);
     				}
     				} catch (ClassNotFoundException e) {
-    						logger.log(Level.SEVERE, "Object class not found", e);
+    					logger.log(Level.SEVERE, "Object class not found", e);
     				} catch (EOFException e) {
-    						continue;
+    					continue;
     				} catch (IOException e) {
     					Thread.currentThread().interrupt();
-    					//	logger.log(Level.SEVERE, "Can't write on socket", e);
+    					logger.log(Level.SEVERE, "Can't write on socket", e);
 				} 			
     		}
     	}
