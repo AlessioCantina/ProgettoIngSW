@@ -39,6 +39,7 @@ public class PersonalBoardHandler {
     	else{
     		if(gameHandler.mainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Harvest").contains(familyMember))
     			gameHandler.mainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Harvest").remove(familyMember);
+    		player.setMessage("Your family member has not an high enough value");
     		return false;
     	}
     }
@@ -97,6 +98,7 @@ public class PersonalBoardHandler {
     	else{
     		if(gameHandler.mainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Production").contains(familyMember))
     			gameHandler.mainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Production").remove(familyMember);
+    		player.setMessage("Your family member has not an high enough value");
     		return false;
     	}
     		

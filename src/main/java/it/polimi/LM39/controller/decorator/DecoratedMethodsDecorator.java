@@ -1,10 +1,7 @@
 package it.polimi.LM39.controller.decorator;
 
-import it.polimi.LM39.server.NetworkPlayer;
-
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-
 import it.polimi.LM39.controller.DecoratedMethods;
 import it.polimi.LM39.controller.PersonalBoardHandler;
 import it.polimi.LM39.exception.InvalidActionTypeException;
@@ -16,29 +13,25 @@ import it.polimi.LM39.model.CardResources;
 import it.polimi.LM39.model.Character;
 import it.polimi.LM39.model.FamilyMember;
 import it.polimi.LM39.model.Venture;
+import it.polimi.LM39.server.NetworkPlayer;
 
-public class HarvestBoostDecorator extends DecoratedMethodsDecorator{
-	private Integer harvestBonus;
-	private NetworkPlayer player;
+public class DecoratedMethodsDecorator extends DecoratedMethods{
+
+	public DecoratedMethods decoratedMethods;
 	
-	public HarvestBoostDecorator (DecoratedMethods decoratedMethods, Integer boost, NetworkPlayer player) {
-		super(decoratedMethods);
-		this.harvestBonus = boost;
-		this.player = player;
+	public DecoratedMethodsDecorator (DecoratedMethods decoratedMethods) {
+		this.decoratedMethods = decoratedMethods;
 	}
 	
-	@Override
-	public boolean activateHarvest(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
-		return super.decoratedMethods.activateHarvest(value + harvestBonus,player,personalBoardHandler,familyMember);
-	}
-
-
-	/*
-	//the override must be done because the method activateProduction could me decorated by another decorator
-	//even if HarvestBoostDecorator does not decorate this method
+	
 	@Override
 	public boolean activateProduction(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, IOException, InvalidActionTypeException {
 		return decoratedMethods.activateProduction(value,player,personalBoardHandler,familyMember);
+	}
+	
+	@Override
+	public boolean activateHarvest(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException {
+		return decoratedMethods.activateHarvest(value,player,personalBoardHandler,familyMember);
 	}
 	
 	@Override
@@ -75,5 +68,5 @@ public class HarvestBoostDecorator extends DecoratedMethodsDecorator{
 	public void resourcesForBuilding(NetworkPlayer player, Building building) throws NotEnoughResourcesException{
 		decoratedMethods.resourcesForBuilding(player,building);
 	}
-	*/
+	
 }

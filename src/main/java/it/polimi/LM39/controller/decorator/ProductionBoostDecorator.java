@@ -16,14 +16,13 @@ import it.polimi.LM39.model.FamilyMember;
 import it.polimi.LM39.model.Venture;
 import it.polimi.LM39.server.NetworkPlayer;
 
-public class ProductionBoostDecorator extends DecoratedMethods{
+public class ProductionBoostDecorator extends DecoratedMethodsDecorator{
 	
-	private DecoratedMethods decoratedMethods;
 	private Integer productionBonus;
 	private NetworkPlayer player;
 	
 	public ProductionBoostDecorator (DecoratedMethods decoratedMethods, Integer boost, NetworkPlayer player) {
-		this.decoratedMethods = decoratedMethods;
+		super(decoratedMethods);
 		this.productionBonus = boost;
 		this.player = player;
 	}
@@ -34,6 +33,7 @@ public class ProductionBoostDecorator extends DecoratedMethods{
 	}
 
 	
+	/*
 	//the override must be done because the method activateHarvest could me decorated by another decorator
 	//even if ProductionBoostDecorator does not decorate this method
 	@Override
@@ -75,5 +75,6 @@ public class ProductionBoostDecorator extends DecoratedMethods{
 	public void resourcesForBuilding(NetworkPlayer player, Building building) throws NotEnoughResourcesException{
 		decoratedMethods.resourcesForBuilding(player,building);
 	}
+	*/
 }
 

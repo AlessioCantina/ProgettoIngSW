@@ -18,15 +18,14 @@ import it.polimi.LM39.model.PlayerPoints;
 import it.polimi.LM39.model.Venture;
 import it.polimi.LM39.server.NetworkPlayer;
 
-public class MilitaryPointsMalusDecorator extends DecoratedMethods{
+public class MilitaryPointsMalusDecorator extends DecoratedMethodsDecorator{
 
-	private DecoratedMethods decoratedMethods;
 	private GameHandler gameHandler;
 	private Integer militaryMalus;
 	private NetworkPlayer player;
 	
 	public MilitaryPointsMalusDecorator (DecoratedMethods decoratedMethods,GameHandler gameHandler, Integer militaryMalus, NetworkPlayer player) {
-		this.decoratedMethods = decoratedMethods;
+		super(decoratedMethods);
 		this.gameHandler = gameHandler;
 		this.militaryMalus = militaryMalus;
 		this.player = player;
@@ -43,6 +42,7 @@ public class MilitaryPointsMalusDecorator extends DecoratedMethods{
 	    	player.points=playerPoints;
 	}
 	
+	/*
 	@Override
 	public void addCardResources (CardResources resources, NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
 		decoratedMethods.addCardResources (resources,player);
@@ -82,4 +82,5 @@ public class MilitaryPointsMalusDecorator extends DecoratedMethods{
 	public boolean activateProduction(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, IOException, InvalidActionTypeException {
 		return decoratedMethods.activateProduction(value,player,personalBoardHandler,familyMember);
 	}
+	*/
 }

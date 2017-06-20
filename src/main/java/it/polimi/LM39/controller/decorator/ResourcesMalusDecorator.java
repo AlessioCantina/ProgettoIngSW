@@ -20,15 +20,14 @@ import it.polimi.LM39.model.PlayerResources;
 import it.polimi.LM39.model.Venture;
 import it.polimi.LM39.server.NetworkPlayer;
 
-public class ResourcesMalusDecorator  extends DecoratedMethods{
+public class ResourcesMalusDecorator  extends DecoratedMethodsDecorator{
 
-	private DecoratedMethods decoratedMethods;
 	private GameHandler gameHandler;
 	private CardResources resourcesMalus;
 	private NetworkPlayer player;
 	
 	public ResourcesMalusDecorator (DecoratedMethods decoratedMethods,GameHandler gameHandler, CardResources resourcesMalus, NetworkPlayer player) {
-		this.decoratedMethods = decoratedMethods;
+		super(decoratedMethods);
 		this.gameHandler = gameHandler;
 		this.resourcesMalus = resourcesMalus;
 		this.player = player;
@@ -75,6 +74,7 @@ public class ResourcesMalusDecorator  extends DecoratedMethods{
 	    }
 	  
 	  
+	/*
 	@Override
 	public void coinsForCharacter(NetworkPlayer player ,Character character) throws NotEnoughResourcesException{
 		decoratedMethods.coinsForCharacter(player,character);
@@ -114,4 +114,5 @@ public class ResourcesMalusDecorator  extends DecoratedMethods{
 	public boolean activateProduction(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, IOException, InvalidActionTypeException {
 		return decoratedMethods.activateProduction(value,player,personalBoardHandler,familyMember);
 	}
+	*/
 }

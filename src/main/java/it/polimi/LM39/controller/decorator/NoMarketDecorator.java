@@ -17,14 +17,13 @@ import it.polimi.LM39.model.FamilyMember;
 import it.polimi.LM39.model.Venture;
 import it.polimi.LM39.server.NetworkPlayer;
 
-public class NoMarketDecorator extends DecoratedMethods{
+public class NoMarketDecorator extends DecoratedMethodsDecorator{
 
-	private DecoratedMethods decoratedMethods;
 	private GameHandler gameHandler;
 	private NetworkPlayer player;
 	
 	public NoMarketDecorator (DecoratedMethods decoratedMethods,GameHandler gameHandler, NetworkPlayer player) {
-		this.decoratedMethods = decoratedMethods;
+		super(decoratedMethods);
 		this.gameHandler = gameHandler;
 		this.player = player;
 	}
@@ -36,6 +35,7 @@ public class NoMarketDecorator extends DecoratedMethods{
 		return false;
 	}
 	
+	/*
 	@Override
 	public void resourcesForBuilding(NetworkPlayer player, Building building) throws NotEnoughResourcesException{
 		decoratedMethods.resourcesForBuilding(player,building);
@@ -75,4 +75,5 @@ public class NoMarketDecorator extends DecoratedMethods{
 	public boolean activateProduction(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, IOException, InvalidActionTypeException {
 		return decoratedMethods.activateProduction(value,player,personalBoardHandler,familyMember);
 	}
+	*/
 }

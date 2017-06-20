@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import it.polimi.LM39.exception.CardNotFoundException;
+import it.polimi.LM39.exception.DoAnotherActionException;
 import it.polimi.LM39.exception.InvalidActionTypeException;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
@@ -126,7 +127,13 @@ public class Game implements Runnable{
 				playerAction(player);
 				return;
 			}
-    		FamilyMember familyMember = handleFamilyMember(player);
+    		FamilyMember familyMember;
+			try {
+				familyMember = handleFamilyMember(player);
+			} catch (DoAnotherActionException e2) {
+				playerAction(player);
+				return;
+			}
     		try {
 				flag = gameHandler.addFamilyMemberToTheTower(familyMember, response, player);
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
@@ -156,7 +163,13 @@ public class Game implements Runnable{
     		player.setPlayedFamilyMember(familyMember.color);
     	}
     	else if (("activate production").equals(response)){
-    		FamilyMember familyMember = handleFamilyMember(player);
+    		FamilyMember familyMember;
+			try {
+				familyMember = handleFamilyMember(player);
+			} catch (DoAnotherActionException e2) {
+				playerAction(player);
+				return;
+			}
     		try {
     			flag = gameHandler.addFamilyMemberToProductionOrHarvest(familyMember,player.personalMainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Production"),"Production",player);
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
@@ -177,7 +190,13 @@ public class Game implements Runnable{
     			return;}
     	}
     	else if (("activate harvest").equals(response)){
-    		FamilyMember familyMember = handleFamilyMember(player);
+    		FamilyMember familyMember;
+			try {
+				familyMember = handleFamilyMember(player);
+			} catch (DoAnotherActionException e2) {
+				playerAction(player);
+				return;
+			}
 			try {
 				flag = gameHandler.addFamilyMemberToProductionOrHarvest(familyMember,player.personalMainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Harvest"),"Harvest",player);
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
@@ -266,7 +285,13 @@ public class Game implements Runnable{
     			cardHandler.printCardResources(bonus.resources, player);
     			cardHandler.printCardPoints(bonus.points, player);
     		}
-    		FamilyMember familyMember = handleFamilyMember(player);
+    		FamilyMember familyMember;
+			try {
+				familyMember = handleFamilyMember(player);
+			} catch (DoAnotherActionException e1) {
+				playerAction(player);
+				return;
+			}
     		player.setMessage("In which position do you want to go? From 1 to " + gameHandler.mainBoard.marketSize);
     		flag = false;
     		response = player.sendMessage();
@@ -303,7 +328,13 @@ public class Game implements Runnable{
     	
     	else if (("go to the council palace").equals(response)){
     		flag = false;
-    		FamilyMember familyMember = handleFamilyMember(player);
+    		FamilyMember familyMember;
+			try {
+				familyMember = handleFamilyMember(player);
+			} catch (DoAnotherActionException e1) {
+				playerAction(player);
+				return;
+			}
     		try {
 				flag = gameHandler.addFamilyMemberToTheCouncilPalace(familyMember, player);
 			} catch (IOException | NotEnoughResourcesException | NotEnoughPointsException e) {
@@ -526,7 +557,7 @@ public class Game implements Runnable{
 
 
     
-    private FamilyMember handleFamilyMember(NetworkPlayer player){
+    private FamilyMember handleFamilyMember(NetworkPlayer player) throws DoAnotherActionException{
     	FamilyMember familyMember = gameHandler.chooseFamilyMember(player);
 		try {
 			familyMember.setServants(gameHandler.decoratedMethods.addServants(player));
@@ -535,7 +566,7 @@ public class Game implements Runnable{
 			player.setMessage("You can use another Family Member or do another action, respond change family member or do another action");
 			String response = player.sendMessage();
 			if(("do another action").equals(response))
-				playerAction(player);
+				throw new DoAnotherActionException("do another action");
 			else
 				return handleFamilyMember(player);
 		}
