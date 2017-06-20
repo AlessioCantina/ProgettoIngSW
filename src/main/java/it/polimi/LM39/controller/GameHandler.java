@@ -577,6 +577,7 @@ public class GameHandler {
 
     public void initializeTheGame() throws IOException {
     	personalBoardHandler.setGameHandler(this);
+    	decoratedMethods.setGameHandler(this);
     	//initialize the value of an action space on the Towers
     	Integer [] towerValue = {1,3,5,7};
     	Integer[][] towersValue = new Integer[4][4];
@@ -588,7 +589,6 @@ public class GameHandler {
 		gsonReader.fileToCard(mainBoard);
 		//load excommunications
 		loadExcommunications ();
-		decoratedMethods.setGameHandler(this);
 		for(int i=0;i<4;i++){
 			mainBoard.familyMembersLocation.setFamilyMemberOnTheMarket(new FamilyMember(), i);
 			for(int j=0;j<4;j++)
@@ -917,6 +917,7 @@ public class GameHandler {
     
     public void activatePermanentEffects(NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
     	decoratedMethods = new DecoratedMethods();
+    	decoratedMethods.setGameHandler(this);
     	CardHandler cardHandler = new CardHandler (this,decoratedMethods);
     	for(Integer cardNumber : player.personalBoard.getPossessions("Character"))
     		decoratedMethods = cardHandler.activateCharacter(mainBoard.characterMap.get(cardNumber).permanentEffect, player);
