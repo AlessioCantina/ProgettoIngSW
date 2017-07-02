@@ -329,7 +329,7 @@ public class GsonReader {
 		 mainBoard.ventureMap = (HashMap<Integer,Venture>)hashMapCreator(venture);	
 		 mainBoard.leaderMap = hashMapCreator(leader,mainBoard);
 		 mainBoard.excommunicationMap = hashMapCreator(excommunication);
-		 this.personalTileLoader(mainBoard);
-		 this.configLoader(mainBoard);
+		 personalTileLoader(mainBoard);
+		 configLoader(mainBoard);
 	 }
 }

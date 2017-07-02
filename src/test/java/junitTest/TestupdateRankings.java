@@ -1,29 +1,28 @@
-package JunitTest;
+package junitTest;
 
 import org.junit.Before;
+import org.junit.Test;
 
 import it.polimi.LM39.controller.GameHandler;
-import it.polimi.LM39.model.MainBoard;
+import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.model.PlayerPoints;
 import junit.framework.TestCase;
 
 public class TestupdateRankings extends TestCase{
 	private TestPlayer testPlayer1 = new TestPlayer();
-	private MainBoard testMainBoard = new MainBoard();
 	private GameHandler testGame = new GameHandler();
 
 	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-		
+	public void setUp() throws NotEnoughPointsException {
+	
 		testPlayer1.points = new PlayerPoints();
 		testPlayer1.points.setFaith(1);
 		testPlayer1.points.setVictory(1);
 		testPlayer1.points.setMilitary(1);
 		testPlayer1.playerColor = "black";
-		testGame.mainBoard = testMainBoard;
 	}
 
+	@Test
 	public void testRankings() {
 		int player1Victory = 1;
 		int player1Faith = 1;

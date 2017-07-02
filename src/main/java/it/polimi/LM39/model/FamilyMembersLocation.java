@@ -52,10 +52,10 @@ public class FamilyMembersLocation implements Serializable{
     }
 
     public void setFamilyMemberOnProductionOrHarvest(FamilyMember familyMember, String actionType) throws InvalidActionTypeException{
-    	if("Production".equals(actionType))
+    	if(actionType.compareToIgnoreCase("Production") == 0)
     		this.familyMembersAtTheProduction.add(familyMember);
     	else 
-    		if ("Harvest".equals(actionType))
+    		if (actionType.compareToIgnoreCase("Harvest") == 0)
     			this.familyMembersAtTheHarvest.add(familyMember);
     		else
     			throw new InvalidActionTypeException("The actionType is invalid"); // invalid action

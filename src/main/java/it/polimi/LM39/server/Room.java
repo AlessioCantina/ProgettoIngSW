@@ -26,6 +26,12 @@ public class Room implements Runnable{
     	roomCounter++;
     	GsonReader.configLoader(this);
     }
+    public long getRoomTimeout(){
+    	return roomStartTimeout;
+    }
+    public long getPlayerMoveTimeout(){
+    	return playerMoveTimeout;
+    }
     public Boolean getRoomState(){
     	return this.roomState;
     }

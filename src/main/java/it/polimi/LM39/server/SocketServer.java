@@ -1,7 +1,6 @@
 package it.polimi.LM39.server;
 
 import java.io.IOException;
-import it.polimi.LM39.exception.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -30,6 +29,7 @@ public class SocketServer extends AbstractServer implements Runnable{
     		logger.log(Level.SEVERE, "Can't launch socket server", e);
     	}
     }
+
     /*
      * listen clients for connect requests
      */

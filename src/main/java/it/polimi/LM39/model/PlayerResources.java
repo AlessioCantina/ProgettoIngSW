@@ -53,7 +53,6 @@ public class PlayerResources implements Serializable{
      }
 
     public void setCoins(Integer qtycoins) throws NotEnoughResourcesException{
-    	System.out.println("AVAILABLE COINS: " + coins + "COINS TO PAY: " + qtycoins);
     	if(this.coins+qtycoins>=0)
     		this.coins+=qtycoins;
     	else throw new NotEnoughResourcesException ("Not enough coins!");

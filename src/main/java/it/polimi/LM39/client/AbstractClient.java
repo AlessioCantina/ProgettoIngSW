@@ -1,8 +1,6 @@
 package it.polimi.LM39.client;
 
-/**
- * 
- */
+
 public abstract class AbstractClient {
 
 	protected static long playerMoveTimeout = 1000;
