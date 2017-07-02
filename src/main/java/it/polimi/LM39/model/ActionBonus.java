@@ -6,8 +6,8 @@ public class ActionBonus implements Serializable {
 
 	private static final long serialVersionUID = 4262477847646997148L;
 
-	public CardResources resources;
+	public CardResources resources = new CardResources();
 
-	public CardPoints points;
+	public CardPoints points = new CardPoints();
 
 }

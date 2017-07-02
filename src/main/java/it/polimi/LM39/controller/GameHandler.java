@@ -523,6 +523,15 @@ public class GameHandler {
     		
     		else{
     			//if there is already one of my family members
+    			if(mainBoard.harvestAndProductionSize==1){
+    				//this happens only in matches of 2 players
+    				if(("Harvest").compareToIgnoreCase(actionType)==0)
+    					player.setMessage("The Harvest area is full!");
+    				if(("Production").compareToIgnoreCase(actionType)==0)
+    					player.setMessage("The Production area is full!");
+    				return false;
+    			}
+    				
     			int j=0;
     			for(i=0;i<mainBoard.harvestAndProductionSize && i<familyMembersAtProductionOrHarvest.size() ;i++){
     				if((familyMembersAtProductionOrHarvest.get(i).playerColor).equals(familyMember.playerColor)){

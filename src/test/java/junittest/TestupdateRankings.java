@@ -1,6 +1,8 @@
 package junittest;
 
 import org.junit.Before;
+import org.junit.Test;
+
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.model.MainBoard;
 import it.polimi.LM39.model.PlayerPoints;
@@ -23,6 +25,7 @@ public class TestupdateRankings extends TestCase{
 		testGame.mainBoard = testMainBoard;
 	}
 
+	@Test
 	public void testRankings() {
 		int player1Victory = 1;
 		int player1Faith = 1;

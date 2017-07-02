@@ -2,6 +2,8 @@ package junittest;
 
 import java.util.ArrayList;
 
+import org.junit.Test;
+
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
@@ -10,6 +12,7 @@ import junit.framework.TestCase;
 public class TestdiscardLeader extends TestCase{
 	GameHandler gameHandler = new GameHandler();
 	
+	@Test
 	public void testDiscardLeader() throws NotEnoughResourcesException, NotEnoughPointsException{
 		//case of a player that has not played the leader card he wants to discard
 		TestPlayer player = new TestPlayer();
