@@ -57,6 +57,7 @@ public class GameHandler {
     
     public GsonReader gsonReader = new GsonReader();
 
+    
     public void setPeriod(Integer period){
     	this.period=period;
     }
@@ -99,7 +100,7 @@ public class GameHandler {
     }
     
     
-    public boolean getTerritoryCard(Territory territory,NetworkPlayer player,Integer cardNumber) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+    private boolean getTerritoryCard(Territory territory,NetworkPlayer player,Integer cardNumber) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
     	ArrayList<Integer> possessedTerritories = player.personalBoard.getPossessions("Territory");
     	int militaryPoints = player.points.getMilitary();
     	if (possessedTerritories.size()<6){
@@ -120,7 +121,7 @@ public class GameHandler {
     	return false;
     }
 
-    public boolean getCharacterCard(Character character,NetworkPlayer player,Integer cardNumber) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+    private boolean getCharacterCard(Character character,NetworkPlayer player,Integer cardNumber) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
     	
     	ArrayList<Integer> possessedCharacters = player.personalBoard.getPossessions("Character");
 		if (possessedCharacters.size()<6){
@@ -143,7 +144,7 @@ public class GameHandler {
     }
     
 
-    public boolean getBuildingCard(Building building,NetworkPlayer player,Integer cardNumber) throws IOException{
+    private boolean getBuildingCard(Building building,NetworkPlayer player,Integer cardNumber) throws IOException{
     	ArrayList<Integer> possessedBuildings = player.personalBoard.getPossessions("Building");
 		if (possessedBuildings.size()<6){
 	    		try {
@@ -164,7 +165,7 @@ public class GameHandler {
     }
     
     
-    public boolean getVentureCard(Venture venture,NetworkPlayer player,Integer cardNumber) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+    private boolean getVentureCard(Venture venture,NetworkPlayer player,Integer cardNumber) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
     	ArrayList<Integer> possessedVentures = player.personalBoard.getPossessions("Venture");
     	CardHandler cardHandler = new CardHandler(this,decoratedMethods);
     	boolean flag = false;
@@ -229,7 +230,7 @@ public class GameHandler {
     }
     
     
-    public Integer familyMemberColorToDiceValue(String familyMemberColor,NetworkPlayer player) throws IOException{
+    private Integer familyMemberColorToDiceValue(String familyMemberColor,NetworkPlayer player) throws IOException{
     	//The order followed is the one on the Game Board for the dices positions
     	Integer value = -1;
     	Integer[] diceValues = player.personalMainBoard.getDiceValues();
@@ -458,7 +459,11 @@ public class GameHandler {
     
     
     public void subCardResources (CardResources resources, NetworkPlayer player) throws NotEnoughResourcesException{
-    	PlayerResources playerResources = player.resources;
+    	PlayerResources playerResources = new PlayerResources();
+    	playerResources.setCoins(player.resources.getCoins());
+    	playerResources.setWoods(player.resources.getWoods());
+    	playerResources.setStones(player.resources.getStones());
+    	playerResources.setServants(player.resources.getServants());
     	playerResources.setCoins(-resources.coins);
     	playerResources.setWoods(-resources.woods);
     	playerResources.setStones(-resources.stones);
@@ -469,9 +474,10 @@ public class GameHandler {
     
     
     public void subCardPoints (CardPoints points, NetworkPlayer player) throws NotEnoughPointsException{
-    	PlayerPoints playerPoints = player.points;
+    	PlayerPoints playerPoints = new PlayerPoints();
+    	playerPoints.setFaith(player.points.getFaith());
+    	playerPoints.setMilitary(player.points.getMilitary());
     	playerPoints.setFaith(-points.faith);
-    	playerPoints.setVictory(-points.victory);
     	playerPoints.setMilitary(-points.military);
     	//if any of the set above fails this line of code is never reached
     	player.points=playerPoints;
@@ -667,7 +673,7 @@ public class GameHandler {
     	mainBoard.excommunicationsOnTheBoard = excommunications;
     }
    
-    public void loadCardNamesOnTheMainBoard() throws IOException{
+    private void loadCardNamesOnTheMainBoard() throws IOException{
     	Integer[][] cardsOnTheTowers = mainBoard.getCardsOnTheTowers();
     	String[][] cardNamesOnTheTowers = new String[4][4]; 
     	for(int i=0;i<4;i++){
@@ -771,7 +777,7 @@ public class GameHandler {
     	return list;
     }
     
-    public ArrayList<PlayerRank> calculateMilitaryStrenght (){
+    private ArrayList<PlayerRank> calculateMilitaryStrenght (){
     	int max = 0;
     	ArrayList<PlayerRank> list = new ArrayList<PlayerRank>();
     	//finding how many points have the first
