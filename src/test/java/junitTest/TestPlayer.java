@@ -1,4 +1,4 @@
-package junitTest;
+package junittest;
 
 import it.polimi.LM39.model.MainBoard;
 import it.polimi.LM39.server.NetworkPlayer;
