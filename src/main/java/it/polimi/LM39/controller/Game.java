@@ -706,8 +706,7 @@ public class Game implements Runnable{
     }
     
     private void updatePersonalMainBoards(NetworkPlayer player){
-    	
-    		gameHandler.resetPlayerPersonalMainBoard(player);
+    	gameHandler.resetPlayerPersonalMainBoard(player);
     		try {
 				gameHandler.activatePermanentEffects(player);
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
