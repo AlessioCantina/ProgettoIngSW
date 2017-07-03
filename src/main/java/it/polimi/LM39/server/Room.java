@@ -2,44 +2,53 @@ package it.polimi.LM39.server;
 
 import it.polimi.LM39.controller.*;
 
+import java.io.IOException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  *  class that handle room 
  */
 public class Room implements Runnable{
+	Logger logger = Logger.getLogger(Room.class.getName());
 	public final Integer MIN_CLIENT = 2;
 	public final Integer MAX_CLIENT = 4;
 	protected static Integer roomCounter = 0;
 	private Game game;
 	private ArrayList<NetworkPlayer> players;
 	private long roomCreationTime;
-	private static long roomStartTimeout;
-	private static long playerMoveTimeout;
+	private long roomStartTimeout;
+	private long playerMoveTimeout;
 	private Boolean roomState;	//TODO check if we need something more than a boolean
     /*
      * initialize the room properties
      */
-    public Room(){
+    public Room() {
     	players = new ArrayList<NetworkPlayer>();
     	roomState = false;
     	roomCounter++;
-    	GsonReader.configLoader(this);
+    	try{
+    		GsonReader.configLoader(this);
+    	}
+    	catch(IOException exception){
+    		logger.log(Level.SEVERE, "Failed to read file", exception);
+    	}
     }
     public long getRoomTimeout(){
-    	return roomStartTimeout;
+    	return this.roomStartTimeout;
     }
     public long getPlayerMoveTimeout(){
-    	return playerMoveTimeout;
+    	return this.playerMoveTimeout;
     }
     public Boolean getRoomState(){
     	return this.roomState;
     }
     public void setRoomTimeout(long roomStartTimeOut){
-    	roomStartTimeout = roomStartTimeOut;
+    	this.roomStartTimeout = roomStartTimeOut;
     }
     public void setPlayerMoveTimeout(long playerMoveTimeOut){
-    	playerMoveTimeout = playerMoveTimeOut;
+    	this.playerMoveTimeout = playerMoveTimeOut;
     }
     /*
      * thread which measure time elapsed and if there are enough player starts the game
@@ -80,10 +89,10 @@ public class Room implements Runnable{
      */
     public void startRoom(){
     	this.game = new Game(this.getConnectedPlayers(),players);
+    	roomState = true;
     	synchronized(SocketPlayer.LOCK){
     		SocketPlayer.LOCK.notifyAll();
     	}
-    	roomState = true;
     	new Thread(game).start();
     }
 

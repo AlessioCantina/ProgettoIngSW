@@ -22,8 +22,8 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    private transient ServerInterface serverInterface;
 	    private transient ObjectInputStream objInput;			//player's interface and I/O streams
 	    private transient ObjectOutputStream objOutput;
-	    private static String message;				//information which will be send to the client
-	    private static MainBoard mainBoard;
+	    private String message;				//information which will be send to the client
+	    private MainBoard mainBoard;
 	    private String clientAction;
 	    private Boolean requestedMessage;
 	    protected transient static Object LOCK = new Object();
@@ -44,11 +44,11 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    /*
 	     * used from the controller to send mainboard
 	     */
-	    public void setMessage(MainBoard mainboard){
-	    	mainBoard = mainboard;
+	    public void setMessage(MainBoard mainBoard){
+	    	this.mainBoard = mainBoard;
 	    	try{
         		objOutput.writeObject(this);
-        		objOutput.writeObject(mainBoard);
+        		objOutput.writeObject(this.mainBoard);
         		objOutput.flush();
         		objOutput.reset();
 	    	}catch (IOException e) {
@@ -60,11 +60,11 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	     */
 	    public void setMessage(String controllerMessage){
 	    	synchronized(LOCK){
-	    		message = controllerMessage;
+	    		this.message = controllerMessage;
     			requestedMessage = false;
     			try {
     				objOutput.writeObject(requestedMessage);
-    				objOutput.writeUTF(message);
+    				objOutput.writeUTF(this.message);
     				objOutput.flush();
 	    		} catch (IOException e) {
 					Thread.currentThread().interrupt();
@@ -79,7 +79,8 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    	synchronized(LOCK){
 	    		try {
 	    	    	this.serverInterface.joinRoom(this);
-					LOCK.wait();
+	    	    	while(!Thread.currentThread().isInterrupted())
+	    	    		LOCK.wait();
 	    			System.out.println("THREAD UNLOCKED" + Thread.currentThread());
 				} catch (InterruptedException e) {
 					Thread.currentThread().interrupt();
@@ -96,15 +97,11 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    				objOutput.writeObject(true);
 	    				objOutput.flush();
 	    				clientAction = objInput.readUTF();
-	    				if(("Client Timedout").equals(clientAction))
+	    				while(("Client Timedout").equals(clientAction))
 	    					CLIENT_LOCK.wait();
 	    			}
 				} catch (IOException e) {
-						try {
-							CLIENT_LOCK.wait();
-						} catch (InterruptedException e1) {
-							Thread.currentThread().interrupt();
-						}
+					logger.log(Level.SEVERE,"Socket closed", e); //TODO handle the ioexception from socket closed
 				} catch (InterruptedException e) {
 					logger.log(Level.SEVERE,"Can't interrupt the thread", e);
 					Thread.currentThread().interrupt();

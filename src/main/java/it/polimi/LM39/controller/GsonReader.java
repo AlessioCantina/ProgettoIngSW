@@ -2,7 +2,6 @@ package it.polimi.LM39.controller;
 
 import it.polimi.LM39.model.characterpermanenteffect.*;
 
-import it.polimi.LM39.exception.*;
 import it.polimi.LM39.model.excommunicationpermanenteffect.*;
 import it.polimi.LM39.model.leaderpermanenteffect.*;
 import it.polimi.LM39.server.Room;
@@ -254,10 +253,8 @@ public class GsonReader {
 		jsonReader.close();
 		return excommunicationHashMap;
 	}
-	public static void configLoader(Room room){
-		JsonReader jsonReader = null;
-		try {
-			jsonReader = new JsonReader(new FileReader("./src/main/java/it/polimi/LM39/jsonfiles/config/gameconfiguration.json"));
+	public static void configLoader(Room room) throws IOException{
+		JsonReader jsonReader = new JsonReader(new FileReader("./src/main/java/it/polimi/LM39/jsonfiles/config/gameconfiguration.json"));
 			Gson gson = new GsonBuilder().create();  
 			jsonReader.beginObject();
 			while(jsonReader.hasNext()){
@@ -272,15 +269,7 @@ public class GsonReader {
 				else
 					gson.fromJson(jsonReader, Object.class);
 			}
-		} catch (IOException e) {
-			logger.log(Level.WARNING,"Failed to read file" , e);
-		} finally {
-			try {
-				jsonReader.close();
-			} catch (IOException e) {
-				logger.log(Level.WARNING,"Failed to access file" , e);
-			}
-		}	
+		jsonReader.close();
 	}
 	private void configLoader(MainBoard mainBoard) throws IOException{
 		ActionBonus[][] bonuses = new ActionBonus[4][4]; 

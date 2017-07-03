@@ -1,14 +1,14 @@
 package it.polimi.LM39.server;
 
 import java.util.*;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+
 
 
 /**
  * server class which starts both rmi and socket servers
  */
 public class Server implements ServerInterface{
+	
 	/* network and game constants */
 	public static final Integer ROOM_CAPACITY = 4;
 	public static final Integer SOCKET_PORT = 3421;
