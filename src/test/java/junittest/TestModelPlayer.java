@@ -23,7 +23,7 @@ public class TestModelPlayer extends TestCase{
 		assertEquals(testLeader,testPlayer.getPlayerPlayedLeaderCards().get(0));
 		
 	}
-	
+
 	@Test
 	public void testPlayerExcommunication(){
 		Integer testExcommunication = 3;
@@ -36,6 +36,11 @@ public class TestModelPlayer extends TestCase{
 		String testFamilyMember = "black";
 		testPlayer.setPlayedFamilyMember(testFamilyMember);
 		assertEquals(testFamilyMember,testPlayer.getPlayedFamilyMembers().get(0));
+		ArrayList<String> testFamilyList = new ArrayList<String>();
+		testFamilyList.add(testFamilyMember);
+		testPlayer.getPlayedFamilyMembers().clear();
+		testPlayer.setPlayedFamilyMembers(testFamilyList);
+		assertEquals(testFamilyList,testPlayer.getPlayedFamilyMembers());
 	}
 	
 	@Test

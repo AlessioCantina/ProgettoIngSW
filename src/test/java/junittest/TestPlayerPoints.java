@@ -25,6 +25,8 @@ public class TestPlayerPoints extends TestCase{
 		assertEquals(testPoints.getMilitary(),testValue);
 		testPoints.setVictory(testValue);
 		assertEquals(testPoints.getVictory(),testValue);
+		testPoints.setFinalVictory(testValue);
+		assertEquals(testPoints.getFinalVictory(),testValue);
 	}
 	
 	@Test

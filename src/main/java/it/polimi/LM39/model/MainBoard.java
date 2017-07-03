@@ -58,9 +58,6 @@ public class MainBoard implements Serializable{
 
     public  HashMap<Integer,Excommunication> excommunicationMap = new HashMap<Integer,Excommunication>();
 
-    public Rankings getRankings(){
-    	return this.rankings;
-    }
     public void setTowersBonuses(ActionBonus[][] towersBonuses) {
         this.towersBonuses=towersBonuses;
     }

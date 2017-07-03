@@ -68,5 +68,27 @@ public class TestFamilyMemberLocation extends TestCase{
 		testHarvestPosition.clear();
 		testLocation.changeFamilyMemberOnProductionOrHarvest(testHarvestPosition, testHarvest);
 		assertTrue(testHarvestPosition.isEmpty());
+		testHarvest = "";
+		try{
+			testLocation.setFamilyMemberOnProductionOrHarvest(testFamilyMember, testHarvest);
+			fail("Expected a InvalidActionTypeException");
+		}
+		catch(InvalidActionTypeException invalidActionTypeException){
+			assertTrue(("The actionType is invalid").equals(invalidActionTypeException.getMessage()));
+		}
+		try{
+			testHarvestPosition = testLocation.getFamilyMembersOnProductionOrHarvest(testHarvest);
+			fail("Expected a InvalidActionTypeException");
+		}
+		catch(InvalidActionTypeException invalidActionTypeException){
+			assertTrue(("The actionType is invalid").equals(invalidActionTypeException.getMessage()));
+		}
+		try{
+			testLocation.changeFamilyMemberOnProductionOrHarvest(testHarvestPosition, testHarvest);
+			fail("Expected a InvalidActionTypeException");
+		}
+		catch(InvalidActionTypeException invalidActionTypeException){
+			assertTrue(("The actionType is invalid").equals(invalidActionTypeException.getMessage()));
+		}
 	}
 }

@@ -80,9 +80,4 @@ public class TestMainBoard extends TestCase{
 		assertEquals(testTowersValues,testMainBoard.getTowersValue());
 	}
 	
-	@Test
-	public void testGetRankings(){
-		testMainBoard.getRankings();
-		assertTrue(true);
-	}
 }

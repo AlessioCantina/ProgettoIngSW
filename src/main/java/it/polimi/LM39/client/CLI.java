@@ -199,7 +199,7 @@ public class CLI extends UserInterface{
 	 * print faith track, victory track and military track
 	 */
 	public void displayrankings(){
-		Rankings rankings = mainBoard.getRankings();
+		Rankings rankings = mainBoard.rankings;
 		ArrayList<PlayerRank> victoryRank = rankings.getVictoryRanking();
 		ArrayList<PlayerRank> militaryRank = rankings.getMilitaryRanking();
 		ArrayList<PlayerRank> faithRank = rankings.getFaithRanking();
