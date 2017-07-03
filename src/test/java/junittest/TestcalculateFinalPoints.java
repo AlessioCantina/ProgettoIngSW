@@ -2,10 +2,8 @@ package junittest;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
