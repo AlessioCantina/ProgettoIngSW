@@ -515,7 +515,6 @@ public class CardHandler {
 		for(int j=0;j<4;j++)
 			towersValue[j][i]-=permanentEffect.discount;
 		player.personalMainBoard.setTowersValue(towersValue);
-		
 		return decoratedMethods;
 	}
 	

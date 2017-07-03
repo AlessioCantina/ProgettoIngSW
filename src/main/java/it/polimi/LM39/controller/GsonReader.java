@@ -24,7 +24,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 
-import it.polimi.LM39.external_libraries.RuntimeTypeAdapterFactory;
+import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 
 /*
  * json file parser. uses library from https://github.com/google/gson/blob/master/extras/src/main/java/com/google/gson/typeadapters/RuntimeTypeAdapterFactory.java
