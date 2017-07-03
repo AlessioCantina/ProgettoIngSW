@@ -50,7 +50,7 @@ public class CardCoinDiscountDecorator extends DecoratedMethodsDecorator{
 	public void coinsForCharacter(NetworkPlayer player ,Character character) throws NotEnoughResourcesException{
 			Character character2 = new Character();
 			if(character.costCoins>=coinDiscount)
-				character2.costCoins -= coinDiscount;
+				character2.costCoins = character.costCoins - coinDiscount;
 			else
 				character2.costCoins = 0;
 			decoratedMethods.coinsForCharacter(player,character2);

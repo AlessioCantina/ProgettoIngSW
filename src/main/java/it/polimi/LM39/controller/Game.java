@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import it.polimi.LM39.exception.CardNotFoundException;
 import it.polimi.LM39.exception.DoAnotherActionException;
@@ -20,6 +22,7 @@ import it.polimi.LM39.model.excommunicationpermanenteffect.NoVictoryForCard;
 import it.polimi.LM39.model.excommunicationpermanenteffect.SkipFirstTurn;
 import it.polimi.LM39.server.NetworkPlayer;
 import it.polimi.LM39.server.Room;
+import it.polimi.LM39.server.SocketServer;
 
 /**
  * 
@@ -34,7 +37,7 @@ public class Game implements Runnable{
     	this.players = players;
     	gameHandler = new GameHandler();
     }
-    
+	private Logger logger = Logger.getLogger(Game.class.getName());
     private GameHandler gameHandler;
     private int playerNumber;
 
@@ -86,7 +89,7 @@ public class Game implements Runnable{
 			try {
 				gameHandler.setFirstRoundBonuses(playerColorToNetworkPlayer(order.get(i)),i+1);
 			} catch (NotEnoughResourcesException e) {
-				e.printStackTrace();
+				logger.log(Level.WARNING,"Not enough resources",e);
 			}
 			
 			
@@ -139,12 +142,12 @@ public class Game implements Runnable{
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException | IOException | NotEnoughResourcesException | NotEnoughPointsException
 					| CardNotFoundException e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE, "Reflection error", e);
 				//give the servants back to the player if the action failed
 				try {
 					player.resources.setServants(familyMember.getServants());
 				} catch (NotEnoughResourcesException e1) {
-					e1.printStackTrace();
+					logger.log(Level.WARNING, "Not enough servants", e1);
 				}
 				playerAction(player);
 				return;
@@ -154,7 +157,7 @@ public class Game implements Runnable{
 				try {
 					player.resources.setServants(familyMember.getServants());
 				} catch (NotEnoughResourcesException e1) {
-					e1.printStackTrace();
+					logger.log(Level.WARNING, "Not enough servants", e1);
 				}
 				playerAction(player);
 				return;
@@ -175,12 +178,12 @@ public class Game implements Runnable{
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException | IOException | NotEnoughResourcesException | NotEnoughPointsException
 					| InvalidActionTypeException e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE, "Reflection error", e);
 				//give the servants back to the player if the action failed
 				try {
 					player.resources.setServants(familyMember.getServants());
 				} catch (NotEnoughResourcesException e1) {
-					e1.printStackTrace();
+					logger.log(Level.WARNING, "Not enough servants", e1);
 				}
 				playerAction(player);
 				return;
@@ -202,12 +205,12 @@ public class Game implements Runnable{
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException | IOException | NotEnoughResourcesException | NotEnoughPointsException
 					| InvalidActionTypeException e) {
-					e.printStackTrace();
+					logger.log(Level.SEVERE, "Reflection error", e);
 					//give the servants back to the player if the action failed
 					try {
 						player.resources.setServants(familyMember.getServants());
 					} catch (NotEnoughResourcesException e1) {
-						e1.printStackTrace();
+						logger.log(Level.WARNING, "Not enough servants", e1);
 					}
 					playerAction(player);
 					return;
@@ -228,7 +231,7 @@ public class Game implements Runnable{
 					try {	
 						gameHandler.discardLeader(player, player.personalBoard.getPossessedLeaders().get(cardNumber));
 					} catch (NotEnoughResourcesException | NotEnoughPointsException e) {
-						e.printStackTrace();
+						logger.log(Level.WARNING, "Not enough points or resources", e);
 						playerAction(player);
 						return;
 					}
@@ -251,7 +254,7 @@ public class Game implements Runnable{
 						flag = cardHandler.checkLeaderRequestedObject(gameHandler.mainBoard.leaderMap.get(response).requestedObjects, player);
 					} catch (NoSuchMethodException | SecurityException | IllegalAccessException
 							| IllegalArgumentException | InvocationTargetException e) {
-						e.printStackTrace();
+						logger.log(Level.SEVERE, "Reflection error", e);
 					}
     				if(flag == false){
     					player.setMessage("You do not have the requirements to activate this leader!");
@@ -265,7 +268,7 @@ public class Game implements Runnable{
     						return;
 						} catch (SecurityException | IllegalAccessException | IllegalArgumentException
 								| InvocationTargetException | NoSuchMethodException e) {
-							e.printStackTrace();
+							logger.log(Level.SEVERE, "Reflection error", e);
 						}
     				}	
 			}
@@ -300,7 +303,7 @@ public class Game implements Runnable{
 				try {
 					player.resources.setServants(familyMember.getServants());
 				} catch (NotEnoughResourcesException e) {
-					e.printStackTrace();
+					logger.log(Level.WARNING, "Not enough resources", e);
 				}
 				playerAction(player);
 				return;
@@ -310,14 +313,14 @@ public class Game implements Runnable{
 					flag = gameHandler.decoratedMethods.addFamilyMemberToTheMarket(familyMember, Integer.parseInt(response), player);
 				} catch (NumberFormatException | IOException | NotEnoughResourcesException
 						| NotEnoughPointsException e) {
-					e.printStackTrace();
+					logger.log(Level.SEVERE,"Not enough resources or points", e);
 				}
     			if(flag==false){
     				//give the servants back to the player if the action failed
     				try {
     					player.resources.setServants(familyMember.getServants());
     				} catch (NotEnoughResourcesException e) {
-    					e.printStackTrace();
+    					logger.log(Level.WARNING,"Not enough resources or points", e);
     				}
     				playerAction(player);
     				return;
@@ -337,14 +340,14 @@ public class Game implements Runnable{
     		try {
 				flag = gameHandler.addFamilyMemberToTheCouncilPalace(familyMember, player);
 			} catch (IOException | NotEnoughResourcesException | NotEnoughPointsException e) {
-				e.printStackTrace();
+				logger.log(Level.WARNING,"Not enough resources or points", e);
 			}
     		if(flag==false){
 				//give the servants back to the player if the action failed
 				try {
 					player.resources.setServants(familyMember.getServants());
 				} catch (NotEnoughResourcesException e) {
-					e.printStackTrace();
+					logger.log(Level.WARNING,"Not enough servants", e);
 				}
 				playerAction(player);
 				return;
@@ -360,7 +363,7 @@ public class Game implements Runnable{
 				return;
 			} catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
 					| NoSuchMethodException e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE,"Reflection error", e);
 			}
     		catch (CardNotFoundException e) {
     			playerAction(player);
@@ -376,7 +379,7 @@ public class Game implements Runnable{
 					cardHandler.getInfo(gameHandler.mainBoard.excommunicationMap.get(gameHandler.mainBoard.excommunicationsOnTheBoard[i]).effect,player);
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException
 						| IllegalArgumentException | InvocationTargetException e) {
-					e.printStackTrace();
+					logger.log(Level.SEVERE,"Reflection error", e);
 				}
 			}
 			playerAction(player);
@@ -414,7 +417,7 @@ public class Game implements Runnable{
 				
 
 			} catch (NumberFormatException | NotEnoughResourcesException | NotEnoughPointsException e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE,"Reflection error", e);
 			}
     		playerAction(player);
 			return;
@@ -430,7 +433,7 @@ public class Game implements Runnable{
 				player.setExcommunications(Integer.parseInt(response));
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE,"Reflection error", e);
 			}
     	}
     	
@@ -604,7 +607,7 @@ public class Game implements Runnable{
     	try {
 			initialize();
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.log(Level.SEVERE,"Failed to read json files", e);
 		}
     	//make the players choose a their four leader cards
     	//TODO uncomment the line below in the final version
@@ -620,7 +623,7 @@ public class Game implements Runnable{
     			try {
 					gameHandler.loadCardsOnTheMainBoard();
 				} catch (IOException e2) {
-					e2.printStackTrace();
+					logger.log(Level.SEVERE,"Failed to read configuration files", e2);
 				}
     			gameHandler.rollTheDices();
     			
@@ -660,7 +663,7 @@ public class Game implements Runnable{
 	    		try {
 					gameHandler.cleanActionSpaces();
 				} catch (InvalidActionTypeException e1) {
-					e1.printStackTrace();
+					logger.log(Level.INFO,"Invalid Action Type", e1);
 				}
 	    		
 	    		//give the played family members back to the players
@@ -672,7 +675,7 @@ public class Game implements Runnable{
 					gameHandler.supportTheChurch(player);
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException | NotEnoughResourcesException | NotEnoughPointsException e) {
-					e.printStackTrace();
+					logger.log(Level.SEVERE,"Reflection error", e);
 				}
     		}
     	
@@ -709,7 +712,7 @@ public class Game implements Runnable{
 				gameHandler.activatePermanentEffects(player);
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException e) {
-				e.printStackTrace();
+				logger.log(Level.SEVERE,"Reflection error", e);
 			}
     		
     }
