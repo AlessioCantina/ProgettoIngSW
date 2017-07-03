@@ -5,6 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import org.junit.Before;
+import org.junit.Test;
+
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.InvalidActionTypeException;
 import it.polimi.LM39.exception.NotEnoughPointsException;
@@ -25,6 +27,7 @@ public class TestaddFamilyMemberToProductionOrHarvest extends TestCase{
 		gameHandler.rollTheDices();
 	}
 	
+	@Test
 	public void testAddFamilyMemberToProductionOrHarvest1() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
 		gameHandler.mainBoard.harvestAndProductionSize=1;
 		TestPlayer player = new TestPlayer();
@@ -53,6 +56,7 @@ public class TestaddFamilyMemberToProductionOrHarvest extends TestCase{
 		assertTrue(!(gameHandler.addFamilyMemberToProductionOrHarvest(familyMember,gameHandler.mainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Production"), "Production", player)));
 	}
 	
+	@Test
 	public void testAddFamilyMemberToProductionOrHarvest2() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
 		gameHandler.mainBoard.harvestAndProductionSize=20;
 		TestPlayer player = new TestPlayer();
