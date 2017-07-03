@@ -18,7 +18,6 @@ import it.polimi.LM39.model.Venture;
 import it.polimi.LM39.server.NetworkPlayer;
 
 public class DecoratedMethods {
-	//TODO setter di gameHandler
 	GameHandler gameHandler;
 	
 

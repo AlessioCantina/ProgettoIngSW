@@ -816,6 +816,7 @@ public class Game implements Runnable{
 
     
     //TODO debug method to be removed
+    /*
     private void testCards() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
     	CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
     	for(int i =1;i<=24;i++){
@@ -872,7 +873,8 @@ public class Game implements Runnable{
     	
      
     	
-    	}		
+    	}	
+    	*/	
    
     /*
     public static void main(String[] args) throws FailedToReadFileException, FailedToRegisterEffectException, IOException {
