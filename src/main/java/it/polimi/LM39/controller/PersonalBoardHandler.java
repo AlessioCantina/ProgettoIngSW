@@ -2,31 +2,48 @@ package it.polimi.LM39.controller;
 
 
 import it.polimi.LM39.server.NetworkPlayer;
-import it.polimi.LM39.server.SocketPlayer;import java.io.IOException;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-
 import com.google.gson.Gson;
-
 import it.polimi.LM39.exception.InvalidActionTypeException;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.CardPoints;
 import it.polimi.LM39.model.CardResources;
 import it.polimi.LM39.model.FamilyMember;
-import it.polimi.LM39.model.MainBoard;
-import it.polimi.LM39.model.Player;
 import it.polimi.LM39.model.instanteffect.InstantEffect;
 
+/**
+ * this calss contains the methods to handle the player PersonalBoard
+ */
 public class PersonalBoardHandler {
 	private GameHandler gameHandler;
     
+	/**
+	 * setter fo rgameHandler
+	 * @param gameHandler
+	 */
 	public void setGameHandler(GameHandler gameHandler){
     	this.gameHandler = gameHandler;
     }
 	
+	/**
+	 * to activate the harvest
+	 * @param actionValue
+	 * @param player
+	 * @param familyMember
+	 * @return
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 * @throws NotEnoughResourcesException
+	 * @throws NotEnoughPointsException
+	 * @throws InvalidActionTypeException
+	 */
     public boolean activateHarvest(Integer actionValue, NetworkPlayer player,FamilyMember familyMember) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException {
-    	System.out.println("Harvest Action Value: " + actionValue);
     	if(actionValue > 0){
     	gameHandler.setActionBonus(player.personalBoard.personalBonusTile.harvestBonus,player);
     	ArrayList <Integer> territories = player.personalBoard.getPossessions("Territory");
@@ -44,17 +61,27 @@ public class PersonalBoardHandler {
     	}
     }
 
+    /**
+     * to activate the Production
+     * @param actionValue
+     * @param player
+     * @param familyMember
+     * @return
+     * @throws NoSuchMethodException
+     * @throws SecurityException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     * @throws IOException
+     * @throws NotEnoughResourcesException
+     * @throws NotEnoughPointsException
+     * @throws InvalidActionTypeException
+     */
     public boolean activateProduction(Integer actionValue, NetworkPlayer player,FamilyMember familyMember) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException , IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException {
     	if(actionValue > 0){
     	gameHandler.setActionBonus(player.personalBoard.personalBonusTile.productionBonus,player);
     	ArrayList <Integer> buildings = player.personalBoard.getPossessions("Building");
         CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
-        /*
-        CardResources costResources = initializeResources();
-		CardResources bonusResources = initializeResources();
-		CardPoints costPoints = initializePoints();
-		CardPoints bonusPoints = initializePoints();
-		*/
         CardResources costResources = new CardResources();
         CardResources bonusResources = new CardResources();
 		CardPoints costPoints = new CardPoints();
@@ -104,11 +131,27 @@ public class PersonalBoardHandler {
     		
     }
     
+    /**
+     * to check if a player has the resources and points to do the transformations he chose
+     * @param player
+     * @param activationEffect
+     * @param costResources
+     * @param costPoints
+     * @param bonusResources
+     * @param bonusPoints
+     * @throws IOException
+     * @throws NotEnoughResourcesException
+     * @throws NotEnoughPointsException
+     * @throws NoSuchMethodException
+     * @throws SecurityException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     */
     private void checkPlayer(NetworkPlayer player,InstantEffect activationEffect,CardResources costResources, CardPoints costPoints, CardResources bonusResources, CardPoints bonusPoints) throws IOException, NotEnoughResourcesException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
     	NetworkPlayer fakePlayer;
     	Gson gson =new Gson();
     	fakePlayer = gson.fromJson(gson.toJson(player),player.getClass());
-    	//TODO use decorator handler
     	fakePlayer.resources.setCoins(-fakePlayer.resources.getCoins());
     	fakePlayer.resources.setCoins(20);
     	fakePlayer.resources.setServants(-fakePlayer.resources.getServants());
@@ -169,27 +212,5 @@ public class PersonalBoardHandler {
     	else if (fakePlayer.points.getVictory()<20)
     		costPoints.victory = 20 - fakePlayer.points.getVictory();
     }
-    
-    
-    //probably useless methods
-    /*
-    public CardResources initializeResources (){
-    	CardResources resources = new CardResources();
-    	resources.coins = 0;
-    	resources.woods = 0;
-    	resources.stones = 0;
-    	resources.servants = 0;
-    	resources.council = 0;
-    	return resources;
-    }
-    
-    public CardPoints initializePoints (){
-    	CardPoints points = new CardPoints();
-    	points.faith = 0;
-    	points.military = 0;
-    	points.victory = 0;
-    	return points;
-    }
-    */
 
 }

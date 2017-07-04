@@ -3,7 +3,6 @@ package it.polimi.LM39.controller;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-
 import it.polimi.LM39.exception.InvalidActionTypeException;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
@@ -17,26 +16,57 @@ import it.polimi.LM39.model.PlayerResources;
 import it.polimi.LM39.model.Venture;
 import it.polimi.LM39.server.NetworkPlayer;
 
+/**
+ * this class contains the methods that are decorated by the cards effects
+ */
 public class DecoratedMethods {
 	GameHandler gameHandler;
 	
-
+	/**
+	 * to set gameHandler
+	 * @param gameHandler
+	 */
 	public void setGameHandler(GameHandler gameHandler){
 		this.gameHandler = gameHandler;
 	}
 	
+	/**
+	 * used when the player has to pay resources for a building
+	 * @param player
+	 * @param building
+	 * @throws NotEnoughResourcesException
+	 */
 	 public void resourcesForBuilding(NetworkPlayer player ,Building building) throws NotEnoughResourcesException{
 		 	gameHandler.subCardResources(building.costResources,player);
 	    }
 	 
+	 /**
+	  * used when the player has to pay coins for a character
+	  * @param player
+	  * @param character
+	  * @throws NotEnoughResourcesException
+	  */
 	 public void coinsForCharacter(NetworkPlayer player ,Character character) throws NotEnoughResourcesException{
 	    	player.resources.setCoins(-character.costCoins);
 	    }
 	 
+	 /**
+	  * used when the player has to pay resources for a venture
+	  * @param player
+	  * @param venture
+	  * @throws NotEnoughResourcesException
+	  */
 	 public void resourcesForVenture(NetworkPlayer player ,Venture venture) throws NotEnoughResourcesException{
 	    	gameHandler.subCardResources(venture.costResources,player);
 	    }
 	 
+	 /**
+	  * to add resources stored in a CardResources object
+	  * @param resources
+	  * @param player
+	  * @throws NotEnoughResourcesException
+	  * @throws NotEnoughPointsException
+	  */
 	 public void addCardResources (CardResources resources, NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
 	    	CouncilHandler councilHandler = new CouncilHandler();
 		 	PlayerResources playerResources = player.resources;
@@ -48,6 +78,16 @@ public class DecoratedMethods {
 	    	player.resources=playerResources;
 	    }
 	 
+	 /**
+	  * to add a family member to the market
+	  * @param familyMember
+	  * @param position
+	  * @param player
+	  * @return
+	  * @throws IOException
+	  * @throws NotEnoughResourcesException
+	  * @throws NotEnoughPointsException
+	  */
 	 public boolean addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException {
 	    	FamilyMember[] familyMembersAtTheMarket = player.personalMainBoard.familyMembersLocation.getFamilyMembersOnTheMarket(); // we use the player Personal MainBaord
 	        if(("").equals(familyMembersAtTheMarket[position-1].color) && (position-1)<gameHandler.mainBoard.marketSize){ 
@@ -73,6 +113,12 @@ public class DecoratedMethods {
 	        return true;
 	    }
 	 
+	 /**
+	  * to add points stored in a CardPoints object
+	  * @param points
+	  * @param player
+	  * @throws NotEnoughPointsException
+	  */
 	 public void addCardPoints (CardPoints points, NetworkPlayer player) throws NotEnoughPointsException{
 	    	PlayerPoints playerPoints = player.points;
 	    	playerPoints.setFaith(points.faith);
@@ -81,6 +127,13 @@ public class DecoratedMethods {
 	    	player.points=playerPoints;
 	    }
 	 
+	 /**
+	  * to add servants to a family member
+	  * @param player
+	  * @return
+	  * @throws IOException
+	  * @throws NotEnoughResourcesException
+	  */
 	 public Integer addServants(NetworkPlayer player) throws IOException, NotEnoughResourcesException{
 	    	player.setMessage("Do you want to add servants? yes or no");
 	    	String response = player.sendMessage();
@@ -95,14 +148,43 @@ public class DecoratedMethods {
 	    		return 0;
 	    }
 	 
+	 /**
+	  * to activate the harvest
+	  * @param actionValue
+	  * @param player
+	  * @param personalBoardHandler
+	  * @param familyMember
+	  * @throws NoSuchMethodException
+	  * @throws SecurityException
+	  * @throws IllegalAccessException
+	  * @throws IllegalArgumentException
+	  * @throws InvocationTargetException
+	  * @throws NotEnoughResourcesException
+	  * @throws NotEnoughPointsException
+	  * @throws InvalidActionTypeException
+	  */
 	 public boolean activateHarvest(Integer actionValue, NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
 		 return personalBoardHandler.activateHarvest(actionValue,player,familyMember);
 	 }
 	
+	 /**
+	  * to activate the production
+	  * @param actionValue
+	  * @param player
+	  * @param personalBoardHandler
+	  * @param familyMember
+	  * @throws NoSuchMethodException
+	  * @throws SecurityException
+	  * @throws IllegalAccessException
+	  * @throws IllegalArgumentException
+	  * @throws InvocationTargetException
+	  * @throws IOException
+	  * @throws NotEnoughResourcesException
+	  * @throws NotEnoughPointsException
+	  * @throws InvalidActionTypeException
+	  */
 	 public boolean activateProduction(Integer actionValue, NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
 		 return personalBoardHandler.activateProduction(actionValue, player,familyMember);
 	 }
-	 
-	 
-	 
+
 }

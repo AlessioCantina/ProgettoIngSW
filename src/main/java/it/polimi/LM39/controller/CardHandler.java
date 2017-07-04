@@ -4,15 +4,12 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-
 import it.polimi.LM39.controller.decorator.*;
 import it.polimi.LM39.exception.*;
 import it.polimi.LM39.model.Effect;
 import it.polimi.LM39.model.FamilyMember;
 import it.polimi.LM39.model.Leader;
-import it.polimi.LM39.model.MainBoard;
 import it.polimi.LM39.server.NetworkPlayer;
-import it.polimi.LM39.model.PlayerResources;
 import it.polimi.LM39.model.characterpermanenteffect.*;
 import it.polimi.LM39.model.excommunicationpermanenteffect.*;
 import it.polimi.LM39.model.instanteffect.*;
@@ -25,58 +22,110 @@ import it.polimi.LM39.model.CardResources;
 import it.polimi.LM39.model.Venture;
 import it.polimi.LM39.model.Character;
 
+/**
+ * this class handles all the cards effects
+ */
 public class CardHandler {
 	private GameHandler gameHandler;
 	private DecoratedMethods decoratedMethods;
-	//TODO fix long throws with logger
+	
+	/**
+	 * constructor 
+	 * @param gameHandler
+	 * @param decoratedMethods
+	 */
 	public CardHandler(GameHandler gameHandler,DecoratedMethods decoratedMethods){
 		this.gameHandler = gameHandler;
 		this.decoratedMethods=decoratedMethods;
 	}
 	
+	/**
+	 * here is stored the color of the player with the DoubleResourcesFromDevelopment bonus
+	 */
 	private static String playerDoubleResourcesFromDevelopment = "";
 	
-	/*
-	 * InstantEffect
+	/**
+	 * InstantEffects
 	 */
 	
- public void doInstantEffect(InstantEffect instantEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
-	 Class[] cArg = new Class[2];
-	 cArg[0] = instantEffect.getClass();
-	 cArg[1] = NetworkPlayer.class;
-	 Method lMethod = (this.getClass().getMethod("doInstantEffect",cArg));
-	 lMethod.invoke(this,instantEffect,player);
- }
- 
- 
- //for building transformations
- public void doInstantEffect(InstantEffect instantEffect,NetworkPlayer player, NetworkPlayer fakePlayer) throws  SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException	{
-	 Class[] cArg = new Class[3];
-	 cArg[0] = instantEffect.getClass();
-	 cArg[1] = NetworkPlayer.class;
-	 cArg[2] = NetworkPlayer.class;
-	 Method lMethod = null;
-	try {
-		lMethod = (this.getClass().getMethod("doInstantEffect",cArg));
-	} catch (NoSuchMethodException e) {
-		doInstantEffect(instantEffect,player);
-		return;
+	/**
+	 * reflection to call the correct method that handles a specific instant effect
+	 * @param instantEffect
+	 * @param player
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
+	public void doInstantEffect(InstantEffect instantEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
+		 Class[] cArg = new Class[2];
+		 cArg[0] = instantEffect.getClass();
+		 cArg[1] = NetworkPlayer.class;
+		 Method lMethod = (this.getClass().getMethod("doInstantEffect",cArg));
+		 lMethod.invoke(this,instantEffect,player);
 	}
-	lMethod.invoke(this,instantEffect,player,fakePlayer);
- }
  
  
-
+	 /**
+	  * reflection for instant effects used by building transformations
+	  * @param instantEffect
+	  * @param player
+	  * @param fakePlayer
+	  * @throws SecurityException
+	  * @throws IllegalAccessException
+	  * @throws IllegalArgumentException
+	  * @throws InvocationTargetException
+	  * @throws NoSuchMethodException
+	  */
+	 public void doInstantEffect(InstantEffect instantEffect,NetworkPlayer player, NetworkPlayer fakePlayer) throws  SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException	{
+		 Class[] cArg = new Class[3];
+		 cArg[0] = instantEffect.getClass();
+		 cArg[1] = NetworkPlayer.class;
+		 cArg[2] = NetworkPlayer.class;
+		 Method lMethod = null;
+		try {
+			lMethod = (this.getClass().getMethod("doInstantEffect",cArg));
+		} catch (NoSuchMethodException e) {
+			doInstantEffect(instantEffect,player);
+			return;
+		}
+		lMethod.invoke(this,instantEffect,player,fakePlayer);
+	 }
+ 
+ 
+ 	/**
+ 	 * to handle cards that does not have any instant effect
+ 	 * @param instantEffect
+ 	 * @param player
+ 	 * @throws NotEnoughResourcesException
+ 	 */
  	public void doInstantEffect(NoInstantEffect instantEffect,NetworkPlayer player) throws NotEnoughResourcesException{
  		//do nothing
  	}
  
+ 	/**
+ 	 * to handle CoinForCard instant effect
+ 	 * @param instantEffect
+ 	 * @param player
+ 	 * @throws NotEnoughResourcesException
+ 	 */
 	public void doInstantEffect(CoinForCard instantEffect,NetworkPlayer player) throws NotEnoughResourcesException{
-		//calculate the coin to receive by multiplying the possessed cards of a specific type by the coin quantity given by card
+		//calculate the coins to receive by multiplying the possessed cards of a specific type by the coin quantity given by the card
 		Integer coinQty=(player.personalBoard.getPossessions(instantEffect.cardType).size())*instantEffect.coinQty;
 			player.resources.setCoins(coinQty);	
 	}
 	
+	/**
+	 * to handle DoublePointsTransformation instant effect
+	 * @param instantEffect
+	 * @param player
+	 * @param fakePlayer
+	 * @throws IOException
+	 * @throws NotEnoughResourcesException
+	 * @throws NotEnoughPointsException
+	 * @throws InvalidInputException
+	 */
 	public void doInstantEffect(DoublePointsTransformation instantEffect,NetworkPlayer player,NetworkPlayer fakePlayer) throws IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidInputException{
 		//ask to the player what exchange he wants to do
 		player.setMessage("What exchange do you want to do? 1 or 2");
@@ -98,6 +147,16 @@ public class CardHandler {
 		
 	}
 	
+	/**
+	 * to handle DoubleResourcesTransformation instant effect
+	 * @param instantEffect
+	 * @param player
+	 * @param fakePlayer
+	 * @throws IOException
+	 * @throws NotEnoughResourcesException
+	 * @throws InvalidInputException
+	 * @throws NotEnoughPointsException
+	 */
 	public void doInstantEffect(DoubleResourcesTransformation instantEffect,NetworkPlayer player,NetworkPlayer fakePlayer) throws IOException, NotEnoughResourcesException, InvalidInputException, NotEnoughPointsException{
 		//ask to the player what exchange he wants to do
 				player.setMessage("What exchange do you want to do? 1 or 2");
@@ -117,6 +176,20 @@ public class CardHandler {
 					throw new InvalidInputException("The exchange must be chosen between 1 and 2");
 	}
 	
+	/**
+	 * to handle GetCard instant effect
+	 * @param instantEffect
+	 * @param player
+	 * @throws IOException
+	 * @throws CardNotFoundException
+	 * @throws NotEnoughResourcesException
+	 * @throws NotEnoughPointsException
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
 	public void doInstantEffect(GetCard instantEffect,NetworkPlayer player) throws IOException, CardNotFoundException, NotEnoughResourcesException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		// ask to the player if he wants to use this effect
 		getInfo(instantEffect,player);
@@ -153,13 +226,27 @@ public class CardHandler {
 							gameHandler.mainBoard.getCardNamesOnTheTowers()[i][j] = "";
 						}
 						
-						//avoid useless cicles
+						//avoid useless cycles
 						return;
 					}
 			}
 			
 	}
 	
+	/**
+	 * to handle GetCardAndPoints instant effect
+	 * @param instantEffect
+	 * @param player
+	 * @throws IOException
+	 * @throws NotEnoughPointsException
+	 * @throws CardNotFoundException
+	 * @throws NotEnoughResourcesException
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
 	public void doInstantEffect(GetCardAndPoints instantEffect,NetworkPlayer player) throws IOException, NotEnoughPointsException, CardNotFoundException, NotEnoughResourcesException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		//making a GetCard effect and calling his method
 		GetCard effect = new GetCard();
@@ -172,6 +259,20 @@ public class CardHandler {
 		doInstantEffect(pointsEffect,player);
 	}
 	
+	/**
+	 * to handle GetCardAndResources instant effect
+	 * @param instantEffect
+	 * @param player
+	 * @throws IOException
+	 * @throws NotEnoughResourcesException
+	 * @throws CardNotFoundException
+	 * @throws NotEnoughPointsException
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
 	public void doInstantEffect(GetCardAndResources instantEffect,NetworkPlayer player) throws IOException, NotEnoughResourcesException, CardNotFoundException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		//making a GetCard effect and calling his method
 		GetCard effect = new GetCard();
@@ -184,6 +285,20 @@ public class CardHandler {
 		doInstantEffect(resourcesEffect,player);
 	}
 	
+	/**
+	 * to handle GetDiscountedCard instant effect
+	 * @param instantEffect
+	 * @param player
+	 * @throws IOException
+	 * @throws CardNotFoundException
+	 * @throws NotEnoughResourcesException
+	 * @throws NotEnoughPointsException
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
 	public void doInstantEffect(GetDiscountedCard instantEffect,NetworkPlayer player) throws IOException, CardNotFoundException, NotEnoughResourcesException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
 		// ask to the player if he wants to use this effect
 		getInfo(instantEffect,player);
@@ -203,7 +318,6 @@ public class CardHandler {
 						//converting the card name to cardNumber
 						Integer cardNumber = gameHandler.cardNameToInteger(cardName);
 						//if the card is a Territory the discount get lost
-						System.out.println("COLONNA: " + j + "BONUS " + instantEffect.cardType + "VALORE: " +instantEffect.cardValue);
 						if(j==0 && (("Territory").equals(instantEffect.cardType) || ("All").equals(instantEffect.cardType)) && (instantEffect.cardValue+qtyServants) >= gameHandler.mainBoard.getTowersValue()[i][j])
 							gameHandler.getCard(cardNumber, player, j);
 						//if the card is Character the discount is only on coins
@@ -242,7 +356,6 @@ public class CardHandler {
 								bonusResources.coins=instantEffect.cardDiscount.coins;
 							else
 								bonusResources.coins=costResources.coins;
-							System.out.println(bonusResources.coins);
 							if(costResources.stones >= instantEffect.cardDiscount.stones)
 								bonusResources.stones=instantEffect.cardDiscount.stones;								
 							else
@@ -270,12 +383,26 @@ public class CardHandler {
 								gameHandler.mainBoard.getCardNamesOnTheTowers()[i][j] = "";
 							}
 						}
-						//avoid useless cicles
+						//avoid useless cycles
 						return;
 					}
 		}
 	}
 	
+	/**
+	 * to handle HarvestProductionAction instant effect
+	 * @param instantEffect
+	 * @param player
+	 * @throws IOException
+	 * @throws NotEnoughResourcesException
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 * @throws NotEnoughPointsException
+	 * @throws InvalidActionTypeException
+	 */
 	public void doInstantEffect(HarvestProductionAction instantEffect,NetworkPlayer player) throws IOException, NotEnoughResourcesException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughPointsException, InvalidActionTypeException{
 		//ask to the player if he wants to add servants to the action
 		Integer qtyServants = gameHandler.decoratedMethods.addServants(player);
@@ -286,6 +413,20 @@ public class CardHandler {
 			gameHandler.decoratedMethods.activateProduction(instantEffect.actionValue + qtyServants, player,gameHandler.personalBoardHandler,new FamilyMember());
 	}
 	
+	/**
+	 * to handle HarvestProductionAndPoints instant effect
+	 * @param instantEffect
+	 * @param player
+	 * @throws NotEnoughPointsException
+	 * @throws IOException
+	 * @throws NotEnoughResourcesException
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 * @throws InvalidActionTypeException
+	 */
 	public void doInstantEffect(HarvestProductionAndPoints instantEffect,NetworkPlayer player) throws NotEnoughPointsException, IOException, NotEnoughResourcesException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InvalidActionTypeException{
 		//making an HarvestProductionAction effect and calling his method
 		HarvestProductionAction effect = new HarvestProductionAction();
@@ -298,10 +439,24 @@ public class CardHandler {
 		doInstantEffect(pointsEffect,player);
 	}
 	
+	/**
+	 * to handle Points instant effect
+	 * @param instantEffect
+	 * @param player
+	 * @throws NotEnoughPointsException
+	 */
 	public void doInstantEffect(Points instantEffect,NetworkPlayer player) throws NotEnoughPointsException{
 		gameHandler.decoratedMethods.addCardPoints(instantEffect.points, player);
 	}
 	
+	/**
+	 * to handle PointsTransformation instant effect
+	 * @param instantEffect
+	 * @param player
+	 * @param fakePlayer
+	 * @throws NotEnoughResourcesException
+	 * @throws NotEnoughPointsException
+	 */
 	public void doInstantEffect(PointsTransformation instantEffect,NetworkPlayer player,NetworkPlayer fakePlayer) throws NotEnoughResourcesException, NotEnoughPointsException{
 		//check if the player has enough resources
 		gameHandler.subCardResources(instantEffect.requestedForTransformation, fakePlayer);
@@ -309,6 +464,13 @@ public class CardHandler {
 		gameHandler.decoratedMethods.addCardPoints(instantEffect.points, fakePlayer);
 	}
 
+	/**
+	 * to handle Resources instant effect
+	 * @param instantEffect
+	 * @param player
+	 * @throws NotEnoughResourcesException
+	 * @throws NotEnoughPointsException
+	 */
 	public void doInstantEffect(Resources instantEffect,NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
 		gameHandler.decoratedMethods.addCardResources(instantEffect.resources, player);
 		//double instant bonus if the player has the leader effect DoubleResourcesFromDevelopment 
@@ -320,6 +482,13 @@ public class CardHandler {
 		
 	}
 	
+	/**
+	 * to handle ResourcesAndPoints instant effect
+	 * @param instantEffect
+	 * @param player
+	 * @throws NotEnoughPointsException
+	 * @throws NotEnoughResourcesException
+	 */
 	public void doInstantEffect(ResourcesAndPoints instantEffect,NetworkPlayer player) throws NotEnoughPointsException, NotEnoughResourcesException{
 		//making a Resources effect and calling his method
 		Resources resourcesEffect = new Resources();
@@ -331,6 +500,14 @@ public class CardHandler {
 		doInstantEffect(pointsEffect,player);
 	}
 	
+	/**
+	 * to handle ResourcesAndPointsTransformation instant effect
+	 * @param instantEffect
+	 * @param player
+	 * @param fakePlayer
+	 * @throws NotEnoughPointsException
+	 * @throws NotEnoughResourcesException
+	 */
 	public void doInstantEffect(ResourcesAndPointsTransformation instantEffect,NetworkPlayer player,NetworkPlayer fakePlayer) throws NotEnoughPointsException, NotEnoughResourcesException{
 		//check if the player has enough points for the transformation
 		gameHandler.subCardPoints(instantEffect.requestedForTransformation, fakePlayer);
@@ -341,6 +518,14 @@ public class CardHandler {
 		doInstantEffect(effect,fakePlayer);
 	}
 	
+	/**
+	 * to handle ResourcesTransformation instant effect
+	 * @param instantEffect
+	 * @param player
+	 * @param fakePlayer
+	 * @throws NotEnoughResourcesException
+	 * @throws NotEnoughPointsException
+	 */
 	public void doInstantEffect(ResourcesTransformation instantEffect,NetworkPlayer player,NetworkPlayer fakePlayer) throws NotEnoughResourcesException, NotEnoughPointsException{
 		//checking if the player has enough resources
 		gameHandler.subCardResources(instantEffect.requestedForTransformation, fakePlayer);
@@ -350,6 +535,12 @@ public class CardHandler {
 		doInstantEffect(resourcesEffect,fakePlayer);
 	}
 	
+	/**
+	 * to handle SetFamilyMember instant effect
+	 * @param instantEffect
+	 * @param player
+	 * @throws IOException
+	 */
 	public void doInstantEffect(SetFamilyMember instantEffect,NetworkPlayer player) throws IOException{
 		//the color will be chosen by the user
 		player.setMessage("What FamilyMember color do you want to set the value?");
@@ -371,13 +562,22 @@ public class CardHandler {
 		player.personalMainBoard.setDiceValues(diceValues);
 	}
 
-	
+	/**
+	 * to handle VictoryForCard instant effect
+	 * @param instantEffect
+	 * @param player
+	 */
 	public void doInstantEffect(VictoryForCard instantEffect,NetworkPlayer player){
 		//calculate the victory points to receive by multiplying the possessed cards of a specific type by the victory quantity given by card
 		Integer victoryQty=(player.personalBoard.getPossessions(instantEffect.cardType).size())*instantEffect.victoryQty;
 			player.points.setVictory(victoryQty);
 	}
 	
+	/**
+	 * to handle VictoryForMilitary instantr effect
+	 * @param instantEffect
+	 * @param player
+	 */
 	public void doInstantEffect(VictoryForMilitary instantEffect,NetworkPlayer player){
 		//calculate the victory points to receive by multiplying the possessed cards of a specific type by the victory quantity given by card
 		Integer victoryQty=(player.points.getMilitary())*instantEffect.victoryQty;
@@ -386,10 +586,21 @@ public class CardHandler {
 	}
 	
 	
-	/*
+	/**
 	 * LeaderRequestedObjects
 	 */
 	
+	/**
+	 * reflection to call the correct method that handles a specific LeaderRequestedObjects
+	 * @param requestedObject
+	 * @param player
+	 * @return
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
 	public boolean checkLeaderRequestedObject(LeaderRequestedObjects requestedObject,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{	
 		Class[] cArg = new Class[2];
 		cArg[0] = requestedObject.getClass();
@@ -398,6 +609,12 @@ public class CardHandler {
 		return (boolean)lMethod.invoke(this,requestedObject,player);
 	}
 	
+	/**
+	 * to handle RequestedCard requested object
+	 * @param requestedObject
+	 * @param player
+	 * @return
+	 */
 	public boolean checkLeaderRequestedObject(RequestedCard requestedObject,NetworkPlayer player){
 		//chech if the leader request all card types
 		if (requestedObject.cardType.compareToIgnoreCase("all") == 0){
@@ -413,6 +630,12 @@ public class CardHandler {
 		return false;
 	}
 	
+	/**
+	 * to handle RequestedCardPointsResources requested object
+	 * @param requestedObject
+	 * @param player
+	 * @return
+	 */
 	public boolean checkLeaderRequestedObject(RequestedCardPointsResources requestedObject,NetworkPlayer player){
 		//making a RequestedCard effect to call his specific method
 		RequestedCard requestedCard = new RequestedCard();
@@ -431,6 +654,12 @@ public class CardHandler {
 		return (flag1 && flag2 && flag3);
 	}
 	
+	/**
+	 * to handle RequestedPoints requested object
+	 * @param requestedObject
+	 * @param player
+	 * @return
+	 */
 	public boolean checkLeaderRequestedObject(RequestedPoints requestedObject,NetworkPlayer player){
 		if(player.points.getMilitary() >= requestedObject.points.military &&
 				player.points.getFaith() >= requestedObject.points.faith &&
@@ -439,6 +668,12 @@ public class CardHandler {
 		return false;
 	}
 	
+	/**
+	 * to handle RequestedResources requested object
+	 * @param requestedObject
+	 * @param player
+	 * @return
+	 */
 	public boolean checkLeaderRequestedObject(RequestedResources requestedObject,NetworkPlayer player){
 		if(player.resources.getWoods() >= requestedObject.resources.woods &&
 				player.resources.getStones() >= requestedObject.resources.stones &&
@@ -448,6 +683,12 @@ public class CardHandler {
 		return false;
 	}
 	
+	/**
+	 * to handle RequestedSameCard requested object
+	 * @param requestedObject
+	 * @param player
+	 * @return
+	 */
 	public boolean checkLeaderRequestedObject(RequestedSameCard requestedObject,NetworkPlayer player){
 		//flag is false by default
 		boolean flag;
@@ -464,15 +705,21 @@ public class CardHandler {
 		return false;
 	}
 		
+	/**
+	 * to handle RequestedTwoCards requested object
+	 * @param requestedObject
+	 * @param player
+	 * @return
+	 */
 	public boolean checkLeaderRequestedObject(RequestedTwoCards requestedObject,NetworkPlayer player){
 		//flag1 and flag2 are false by default
 		boolean flag1,flag2;
 		RequestedCard requestedCard = new RequestedCard();
-		//check the first condition on the requeted cards
+		//check the first condition on the requested cards
 		requestedCard.cardQty=requestedObject.cardQty;
 		requestedCard.cardType=requestedObject.cardType;
 		flag1 = checkLeaderRequestedObject(requestedCard,player);
-		//check the second condition on the requeted cards
+		//check the second condition on the requested cards
 		requestedCard.cardQty=requestedObject.cardQty2;
 		requestedCard.cardType=requestedObject.cardType2;
 		flag2 = checkLeaderRequestedObject(requestedCard,player);
@@ -481,10 +728,21 @@ public class CardHandler {
 	}
 		
 	
-	/*
+	/**
 	 * CharacterPermanentEffect
 	 */
 	
+	/**
+	 * reflection to call the correct method that handles a specific CharacterPermanentEffect
+	 * @param permanentEffect
+	 * @param player
+	 * @return
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
 	public DecoratedMethods activateCharacter(CharacterPermanentEffect permanentEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{									
 		Class[] cArg = new Class[2];
 	    cArg[0] = permanentEffect.getClass();
@@ -493,11 +751,23 @@ public class CardHandler {
 		return (DecoratedMethods)lMethod.invoke(this,permanentEffect,player);
 		}
 	
+	/**
+	 * to handle NoCharacterPermanentEffect permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @return
+	 */
 	public DecoratedMethods activateCharacter(NoCharacterPermanentEffect permanentEffect, NetworkPlayer player){
 		//do nothing
 		return decoratedMethods;
 	}
 	
+	/**
+	 * to handle CardActionDiscount permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @return
+	 */
 	public DecoratedMethods activateCharacter(CardActionDiscount permanentEffect, NetworkPlayer player){
 		//reducing the towersValue by the discount the effect gives
 		Integer[][] towersValue = player.personalMainBoard.getTowersValue();
@@ -518,6 +788,12 @@ public class CardHandler {
 		return decoratedMethods;
 	}
 	
+	/**
+	 * to handle CardActionResourcesDiscount permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @return
+	 */
 	public DecoratedMethods activateCharacter(CardActionResourcesDiscount permanentEffect, NetworkPlayer player){
 		//need to check when a player get a card to set the discount like done for the GetDiscountedCard effect
 		if(("Character").equals(permanentEffect.cardType)){
@@ -539,7 +815,12 @@ public class CardHandler {
 		return decoratedMethods;
 	}
 	
-	
+	/**
+	 * to handle HarvestProductionBoost permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @return
+	 */
 	public DecoratedMethods activateCharacter(HarvestProductionBoost permanentEffect, NetworkPlayer player){
 		//need to check when a player with this effect try to do a Production or Harvest and give him the bonus
 		if(("Harvest").equals(permanentEffect.actionType)){
@@ -551,6 +832,12 @@ public class CardHandler {
 		return decoratedMethods;
 	}
 	
+	/**
+	 * to handle NoBoardBonuses permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @return
+	 */
 	public DecoratedMethods activateCharacter(NoBoardBonuses permanentEffect, NetworkPlayer player){
 		//create an empty towersBonuses and set it to the playerPersonalBoard
 		ActionBonus[][] towersBonuses = new ActionBonus[4][4];
@@ -567,20 +854,37 @@ public class CardHandler {
 	}
 		
 	
-	/*
+	/**
 	 * ExcommunicationPermanentEffect
 	 */
 		
+	/**
+	 * reflection to call the correct method that handles a specific ExcommunicationPermanentEffect
+	 * @param permanentEffect
+	 * @param player
+	 * @return
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
 	public DecoratedMethods activateExcommunication(ExcommunicationPermanentEffect permanentEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
 		Class[] cArg = new Class[2];
 	    cArg[0] = permanentEffect.getClass();
 	    cArg[1] = NetworkPlayer.class;
 		Method lMethod = (this.getClass().getMethod("activateExcommunication",cArg));
-		Method lMethod2 = (this.getClass().getMethod("getInfo",cArg));		//TODO DEBUG AUTOMATIC GET INFO
+		Method lMethod2 = (this.getClass().getMethod("getInfo",cArg));
 		lMethod2.invoke(this,permanentEffect,player);
 		return (DecoratedMethods)lMethod.invoke(this,permanentEffect,player);
-}
+	}	
 	
+	/**
+	 * to handle CardActionMalus permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @return
+	 */
 	public DecoratedMethods activateExcommunication(CardActionMalus permanentEffect,NetworkPlayer player){
 		//make a CardActionDiscount effect that will act in the opposite way giving the discount parameter as a malus, then call his method
 		CardActionDiscount effect = new CardActionDiscount();
@@ -591,6 +895,12 @@ public class CardHandler {
 		return decoratedMethods;
 	}
 	
+	/**
+	 * to handle DiceMalus permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @return
+	 */
 	public DecoratedMethods activateExcommunication(DiceMalus permanentEffect,NetworkPlayer player){
 		Integer[] diceValues = player.personalMainBoard.getDiceValues();
 		for(int i=0;i<3;i++)
@@ -600,6 +910,12 @@ public class CardHandler {
 		return decoratedMethods;
 	}
 	
+	/**
+	 * to handle HarvestProductionMalus permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @return
+	 */
 	public DecoratedMethods activateExcommunication(HarvestProductionMalus permanentEffect,NetworkPlayer player){
 		if(("Harvest").equals(permanentEffect.actionType)){
 			//if not set to false it would block the decoration
@@ -613,6 +929,12 @@ public class CardHandler {
 		return decoratedMethods;
 	}
 	
+	/**
+	 * to handle MalusForResources permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @return
+	 */
 	public DecoratedMethods activateExcommunication(MalusForResources permanentEffect,NetworkPlayer player){
 		Integer victoryMalus = ((player.resources.getCoins() + player.resources.getWoods() + player.resources.getStones() + player.resources.getServants()) / permanentEffect.resourceQty)* permanentEffect.victoryQty;
 		if (player.points.getVictory() >= victoryMalus)
@@ -623,6 +945,12 @@ public class CardHandler {
 		return decoratedMethods;
 	}
 	
+	/**
+	 * to handle MalusForResourcesCost permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @return
+	 */
 	public DecoratedMethods activateExcommunication(MalusForResourcesCost permanentEffect,NetworkPlayer player){
 		ArrayList<Integer> buildings = player.personalBoard.getPossessions("Building");
 		Integer victoryMalus = 0;
@@ -637,6 +965,12 @@ public class CardHandler {
 		return decoratedMethods;
 	}
 	
+	/**
+	 * to handle MalusVictoryForMilitary permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @return
+	 */
 	public DecoratedMethods activateExcommunication(MalusVictoryForMilitary permanentEffect,NetworkPlayer player){
 		Integer victoryMalus = (player.points.getMilitary() / permanentEffect.militaryQty)* permanentEffect.victoryQty;
 		if (player.points.getVictory() >= victoryMalus)
@@ -647,28 +981,58 @@ public class CardHandler {
 		return decoratedMethods;
 	}
 	
+	/**
+	 * to handle MilitaryPointsMalus permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @return
+	 */
 	public DecoratedMethods activateExcommunication(MilitaryPointsMalus permanentEffect,NetworkPlayer player){
 		decoratedMethods = new MilitaryPointsMalusDecorator(decoratedMethods,gameHandler,permanentEffect.militaryQty ,player);
 		
 		return decoratedMethods;
 	}
 	
+	/**
+	 * to handle NoMarket permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @return
+	 */
 	public DecoratedMethods activateExcommunication(NoMarket permanentEffect,NetworkPlayer player){
 		decoratedMethods = new NoMarketDecorator(decoratedMethods,gameHandler,player);
 		return decoratedMethods;
 	}
 	
+	/**
+	 * to handle ResourcesMalus permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @return
+	 */
 	public DecoratedMethods activateExcommunication(ResourcesMalus permanentEffect,NetworkPlayer player){
 		decoratedMethods = new ResourcesMalusDecorator(decoratedMethods,gameHandler,permanentEffect.resources,player);
 		
 		return decoratedMethods;
 	}
 	
+	/**
+	 * to handle ServantsMalus permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @return
+	 */
 	public DecoratedMethods activateExcommunication(ServantsMalus permanentEffect,NetworkPlayer player){
 		decoratedMethods = new ServantsMalusDecorator(decoratedMethods,gameHandler,permanentEffect.servantsQty,player);
 		return decoratedMethods;
 	}
 	
+	/**
+	 * to handle VictoryMalus permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @return
+	 */
 	public DecoratedMethods activateExcommunication(VictoryMalus permanentEffect,NetworkPlayer player){
 		Integer victoryMalus = (player.points.getVictory() / permanentEffect.victoryQty)* permanentEffect.victoryMalus;
 		player.points.setVictory(-victoryMalus);
@@ -676,11 +1040,23 @@ public class CardHandler {
 		return decoratedMethods;
 	}
 	
+	/**
+	 * to handle SkipFirstTurn permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @return
+	 */
 	public DecoratedMethods activateExcommunication(SkipFirstTurn permanentEffect,NetworkPlayer player){
 		//this excommunication is handled by run() in Game
 		return decoratedMethods;
 	}
 	
+	/**
+	 * to handle NoVictoryForCard permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @return
+	 */
 	public DecoratedMethods activateExcommunication(NoVictoryForCard permanentEffect,NetworkPlayer player){
 		//this excommunication is handled by calculateFinalPoints() in GameHandler
 		return decoratedMethods;
@@ -689,10 +1065,22 @@ public class CardHandler {
 	
 	
 	
-	/*
+	/**
 	 * LeaderPermanentEffect
 	 */
 	
+	/**
+	 * reflection to call the correct method that handles a specific Effect
+	 * @param permanentEffect
+	 * @param player
+	 * @param cardName
+	 * @return
+	 * @throws SecurityException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 * @throws NoSuchMethodException
+	 */
 	public DecoratedMethods activateLeader(Effect permanentEffect,NetworkPlayer player,String cardName) throws SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException	{
 		Class[] cArg = new Class[3];
 	    cArg[0] = permanentEffect.getClass();
@@ -712,20 +1100,47 @@ public class CardHandler {
 			return decoratedMethods;
 		}
 		
-}
+	}
 	
+	/**
+	 * to handle AlreadyOccupiedTowerDiscount permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @param cardName
+	 * @return
+	 */
 	public DecoratedMethods activateLeader(AlreadyOccupiedTowerDiscount permanentEffect,NetworkPlayer player,String cardName){
 		addPlayerPlayedLeaderCard(cardName,player);
 		player.personalMainBoard.occupiedTowerCost = 0;
 		return decoratedMethods;
 	}
 	
+	/**
+	 * to handle CardCoinDiscount permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @param cardName
+	 * @return
+	 */
 	public DecoratedMethods activateLeader(CardCoinDiscount permanentEffect,NetworkPlayer player,String cardName){
 		addPlayerPlayedLeaderCard(cardName,player);
 		decoratedMethods = new CardCoinDiscountDecorator(decoratedMethods,gameHandler,permanentEffect.coinQty,player);
 		return decoratedMethods;
 	}
 	
+	/**
+	 * to handle CopyLeaderAbility permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @param cardName
+	 * @return
+	 * @throws CardNotFoundException
+	 * @throws SecurityException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 * @throws NoSuchMethodException
+	 */
 	public DecoratedMethods activateLeader(CopyLeaderAbility permanentEffect,NetworkPlayer player,String cardName) throws CardNotFoundException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException{
 		String response;
 		if(player.copiedLeaderCard == ""){
@@ -738,8 +1153,6 @@ public class CardHandler {
 				player.setMessage("There is no card you can copy");
 				return decoratedMethods;
 			}
-			
-
 			
 			player.setMessage("What Leader do you want to copy?");
 			for(String name : choosableCards){
@@ -767,6 +1180,13 @@ public class CardHandler {
 		return decoratedMethods;
 	}
 	
+	/**
+	 * to handle DoubleResourcesFromDevelopment permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @param cardName
+	 * @return
+	 */
 	public DecoratedMethods activateLeader(DoubleResourcesFromDevelopment permanentEffect,NetworkPlayer player,String cardName) {
 		addPlayerPlayedLeaderCard(cardName,player);
 		playerDoubleResourcesFromDevelopment = player.playerColor;
@@ -774,6 +1194,13 @@ public class CardHandler {
 		return decoratedMethods;
 	}
 	
+	/**
+	 * to handle NoMilitaryRequirementsForTerritory permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @param cardName
+	 * @return
+	 */
 	public DecoratedMethods activateLeader(NoMilitaryRequirementsForTerritory permanentEffect,NetworkPlayer player,String cardName) {
 		addPlayerPlayedLeaderCard(cardName,player);
 		for(int i=0;i<4;i++)
@@ -782,6 +1209,14 @@ public class CardHandler {
 		return decoratedMethods;
 	}
 	
+	/**
+	 * to handle PlaceFamilyMemberOnOccupiedSpace permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @param cardName
+	 * @return
+	 * @throws InvalidActionTypeException
+	 */
 	public DecoratedMethods activateLeader(PlaceFamilyMemberOnOccupiedSpace permanentEffect,NetworkPlayer player,String cardName) throws InvalidActionTypeException {
 		addPlayerPlayedLeaderCard(cardName,player);
 		//empty the market
@@ -794,6 +1229,13 @@ public class CardHandler {
 		return decoratedMethods;
 	}
 	
+	/**
+	 * to handle SetColoredDicesValues permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @param cardName
+	 * @return
+	 */
 	public DecoratedMethods activateLeader(SetColoredDicesValues permanentEffect,NetworkPlayer player,String cardName){
 		addPlayerPlayedLeaderCard(cardName,player);
 		Integer[] dices = player.personalMainBoard.getDiceValues();
@@ -810,6 +1252,13 @@ public class CardHandler {
 		return decoratedMethods;
 	}
 	
+	/**
+	 * to handle UncoloredMemberBonus permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @param cardName
+	 * @return
+	 */
 	public DecoratedMethods activateLeader(UncoloredMemberBonus permanentEffect,NetworkPlayer player,String cardName){
 		addPlayerPlayedLeaderCard(cardName,player);
 		Integer[] dices = player.personalMainBoard.getDiceValues();
@@ -819,6 +1268,13 @@ public class CardHandler {
 		return decoratedMethods;
 	}
 	
+	/**
+	 * to handle VictoryForSupportingTheChurch permanent effect
+	 * @param permanentEffect
+	 * @param player
+	 * @param cardName
+	 * @return
+	 */
 	public DecoratedMethods activateLeader(VictoryForSupportingTheChurch permanentEffect,NetworkPlayer player,String cardName){
 		addPlayerPlayedLeaderCard(cardName,player);
 		ActionBonus[] faithBonus = player.personalMainBoard.faithBonuses;
@@ -829,6 +1285,11 @@ public class CardHandler {
 		return decoratedMethods;
 	}
 	
+	/**
+	 * to add a leader card to the list of the leader cards played by a player
+	 * @param cardName
+	 * @param player
+	 */
 	private void addPlayerPlayedLeaderCard(String cardName,NetworkPlayer player){
     	if(!player.getPlayerPlayedLeaderCards().contains(cardName)){
     		player.setPlayerPlayedLeaderCard(cardName);
@@ -836,6 +1297,11 @@ public class CardHandler {
     	}
 	}
 	
+	/**
+	 * to add a leader card to the list of the leader cards that gives instant bonuses played by a player
+	 * @param cardName
+	 * @param player
+	 */
 	private void addPlayerInstantLeaderCard(String cardName, NetworkPlayer player){
 		if(!player.getPlayerInstantLeaderCards().contains(cardName))
 			player.setPlayerInstantLeaderCard(cardName);
@@ -843,6 +1309,16 @@ public class CardHandler {
 			gameHandler.mainBoard.setPlayedLeaderCard(cardName);
 	}
 	
+	/**
+	 * reflection to call the correct method that send to the player a specific InstantEffect info
+	 * @param effect
+	 * @param player
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
 	public void getInfo(InstantEffect effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
 		 Class[] cArg = new Class[2];
 		 cArg[0] = effect.getClass();
@@ -851,7 +1327,7 @@ public class CardHandler {
 		 lMethod.invoke(this,effect,player);
 	 }
 	 
-	/*
+	/**
 	 * InstantEffect info
 	 */
 	
@@ -978,6 +1454,16 @@ public class CardHandler {
 	}
 	
 	
+	/**
+	 * reflection to call the correct method that send to the player a specific LeaderRequestedObjects info
+	 * @param effect
+	 * @param player
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
 	public void getInfo(LeaderRequestedObjects effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
 		 Class[] cArg = new Class[2];
 		 cArg[0] = effect.getClass();
@@ -985,7 +1471,7 @@ public class CardHandler {
 		 Method lMethod = (this.getClass().getMethod("getInfo",cArg));
 		 lMethod.invoke(this,effect,player);
 	 }
-	/*
+	/**
 	 * LeaderObject info
 	 */
 	
@@ -1017,7 +1503,16 @@ public class CardHandler {
 		player.setMessage("To activate this Leader you need " + requested.cardQty + " " + requested.cardType + " cards and " + requested.cardQty2 + " " + requested.cardType2 + " cards");
 	}
 	
-	
+	/**
+	 * reflection to call the correct method that send to the player a specific CharacterPermanentEffect info
+	 * @param effect
+	 * @param player
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
 	public void getInfo(CharacterPermanentEffect effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
 		 Class[] cArg = new Class[2];
 		 cArg[0] = effect.getClass();
@@ -1026,7 +1521,7 @@ public class CardHandler {
 		 lMethod.invoke(this,effect,player);
 	 }
 	
-	/*
+	/**
 	 * CharacterPermanentEffect info
 	 */
 	
@@ -1052,7 +1547,16 @@ public class CardHandler {
 		player.setMessage("This permanent effect blocks all the bonuses on the Towers action spaces");
 	}
 	
-	
+	/**
+	 * reflection to call the correct method that send to the player a specific ExcommunicationPermanentEffect info
+	 * @param effect
+	 * @param player
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
 	public void getInfo(ExcommunicationPermanentEffect effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
 		 Class[] cArg = new Class[2];
 		 cArg[0] = effect.getClass();
@@ -1060,9 +1564,11 @@ public class CardHandler {
 		 Method lMethod = (this.getClass().getMethod("getInfo",cArg));
 		 lMethod.invoke(this,effect,player);
 	 }
-	/*
+	
+	/**
 	 * ExcommunicationPermanentEffect info
 	 */
+	
 	public void getInfo (NoVictoryForCard malus,NetworkPlayer player){
 		player.setMessage("At the end of the game, you don’t score points for any of your " + malus.cardType);
 	}
@@ -1120,6 +1626,16 @@ public class CardHandler {
 		player.setMessage("At the end of the game, before the Final Scoring, you lose " + malus.victoryMalus + " Victory Points for every " + malus.victoryQty + " Victory Points you have");
 	}
 	
+	/**
+	 * reflection to call the correct method that send to the player a specific LeaderPermanentEffect info
+	 * @param effect
+	 * @param player
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 */
 	public void getInfo(LeaderPermanentEffect effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
 		 Class[] cArg = new Class[2];
 		 cArg[0] = effect.getClass();
@@ -1128,7 +1644,7 @@ public class CardHandler {
 		 lMethod.invoke(this,effect,player);
 	 }
 	
-	/*
+	/**
 	 * LeaderPermanentEffect info
 	 */
 	
@@ -1172,10 +1688,16 @@ public class CardHandler {
 	}
 	
 	
-	/*
-	 * Leader Cards 
+	/**
+	 * reflection to call the correct method that send to the player a specific Effect info
+	 * @param permanentEffect
+	 * @param player
+	 * @throws SecurityException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 * @throws NoSuchMethodException
 	 */
-	
 	public void getInfo(Effect permanentEffect,NetworkPlayer player) throws SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException	{
 		Class[] cArg = new Class[2];
 	    cArg[0] = permanentEffect.getClass();
@@ -1186,7 +1708,11 @@ public class CardHandler {
 	}
 	
 	
-	//methods needed for the getInfo
+	/**
+	 * to send the resources values to the player
+	 * @param resources
+	 * @param player
+	 */
 	public void printCardResources (CardResources resources,NetworkPlayer player){
 		if(resources.coins>0)
 			player.setMessage(resources.coins + " coins");
@@ -1200,6 +1726,11 @@ public class CardHandler {
 			player.setMessage(resources.council + " Council Favor");
 	}
 	
+	/**
+	 * to send the points values to the player
+	 * @param points
+	 * @param player
+	 */
 	public void printCardPoints (CardPoints points,NetworkPlayer player){
 		if(points.faith>0)
 			player.setMessage(points.faith + " Faith Points");
@@ -1209,192 +1740,4 @@ public class CardHandler {
 			player.setMessage(points.victory + " Victory Points");
 	}
 	
-	 
-	
-	//TODO getInfo methods
-	
-	/*
-	
-	//probably useless code
-	//reflection to call the correct method getEffect
-    public Effect getEffect(Effect effect)
-	{
-	try{
-		Class[] cArg = new Class[1];
-        cArg[0] = effect.getClass();
-		Method method = (getClass().getMethod("getEffect",cArg));
-		return (Effect)method.invoke(this,effect);
-	}catch(Exception e){
-		e.printStackTrace();
-		return null;}
-	}
-
-    //overload of getEffect that returns the Effect casted at his dynamic type
-    
-    //InstantEffect
-	public HarvestProductionAction getEffect(HarvestProductionAction effect)
-	{
-		return (HarvestProductionAction)effect;
-	}
-	
-	public HarvestProductionAndPoints getEffect(HarvestProductionAndPoints effect)
-	{
-		return (HarvestProductionAndPoints)effect;
-	}
-	
-	public Resources getEffect(Resources effect)
-	{
-		return (Resources)effect;
-	}
-	
-	public ResourcesAndPoints getEffect(ResourcesAndPoints effect)
-	{
-		return (ResourcesAndPoints)effect;
-	}
-	
-	public ResourcesAndPointsTransformation getEffect(ResourcesAndPointsTransformation effect)
-	{
-		return (ResourcesAndPointsTransformation)effect;
-	}
-	
-	public ResourcesTransformation getEffect(ResourcesTransformation effect)
-	{
-		return (ResourcesTransformation)effect;
-	}
-	
-	public DoubleResourcesTransformation getEffect(DoubleResourcesTransformation effect)
-	{
-		return (DoubleResourcesTransformation)effect;
-	}
-	
-	public Points getEffect(Points effect)
-	{
-		return (Points)effect;
-	}
-	
-	public PointsTransformation getEffect(PointsTransformation effect)
-	{
-		return (PointsTransformation)effect;
-	}
-	
-	public DoublePointsTransformation getEffect(DoublePointsTransformation effect)
-	{
-		return (DoublePointsTransformation)effect;
-	}
-	
-	public VictoryForCard getEffect(VictoryForCard effect)
-	{
-		return (VictoryForCard)effect;
-	}
-	
-	public GetCard getEffect(GetCard effect)
-	{
-		return (GetCard)effect;
-	}
-	
-	public GetDiscountedCard getEffect(GetDiscountedCard effect)
-	{
-		return (GetDiscountedCard)effect;
-	}
-	
-	public GetCardAndResources getEffect(GetCardAndResources effect)
-	{
-		return (GetCardAndResources)effect;
-	}
-	
-	public GetCardAndPoints getEffect(GetCardAndPoints effect)
-	{
-		return (GetCardAndPoints)effect;
-	}
-	
-	public CoinForCard getEffect(CoinForCard effect)
-	{
-		return (CoinForCard)effect;
-	}
-	
-	public VictoryForMilitary getEffect(VictoryForMilitary effect)
-	{
-		return (VictoryForMilitary) effect;
-	}
-	
-	public SetFamilyMember getEffect(SetFamilyMember effect)
-	{
-		return (SetFamilyMember)effect;
-	}
-
-//LeaderPermannetEffect
-	public UncoloredMemberBonus getEffect(UncoloredMemberBonus effect)
-	{
-		return (UncoloredMemberBonus)effect;
-	}
-	
-	public AlreadyOccupiedTowerDiscount getEffect(AlreadyOccupiedTowerDiscount effect)
-	{
-		return (AlreadyOccupiedTowerDiscount)effect;
-	}
-	
-	public VictoryForSupportingTheChurch getEffect(VictoryForSupportingTheChurch effect)
-	{
-		return (VictoryForSupportingTheChurch)effect;
-	}
-	
-	public SetColoredDicesValues getEffect(SetColoredDicesValues effect)
-	{
-		return (SetColoredDicesValues)effect;
-	}
-	
-	public CopyLeaderAbility getEffect(CopyLeaderAbility effect)
-	{
-		return (CopyLeaderAbility)effect;
-	}
-	
-	public DoubleResourcesFromDevelopment getEffect(DoubleResourcesFromDevelopment effect)
-	{
-		return (DoubleResourcesFromDevelopment)effect;
-	}
-	
-	public PlaceFamilyMemberOnOccupiedSpace getEffect(PlaceFamilyMemberOnOccupiedSpace effect)
-	{
-		return (PlaceFamilyMemberOnOccupiedSpace)effect;
-	}
-	
-	public NoMilitaryRequirmentsForTerritory getEffect(NoMilitaryRequirmentsForTerritory effect)
-	{
-		return (NoMilitaryRequirmentsForTerritory)effect;
-	}
-	
-	public CardCoinDiscount getEffect(CardCoinDiscount effect)
-	{
-		return (CardCoinDiscount)effect;
-	}
-	
-//CharacterPermanentEffect
-	
-	public HarvestProductionBoost getEffect(HarvestProductionBoost effect)
-	{
-		return (HarvestProductionBoost)effect;
-	}
-	
-	public NoBoardBonuses getEffect(NoBoardBonuses effect)
-	{
-		return (NoBoardBonuses)effect;
-	}
-	
-	public CardActionResourcesDiscount getEffect(CardActionResourcesDiscount effect)
-	{
-		return (CardActionResourcesDiscount)effect;
-	}
-	
-	public CardActionDiscount getEffect(CardActionDiscount effect)
-	{
-		return (CardActionDiscount)effect;
-	}
-	
-//NoEffect
-	
-	public NoEffect getEffect(NoEffect effect)
-	{
-		return (NoEffect)effect;
-	}
-	*/
 }

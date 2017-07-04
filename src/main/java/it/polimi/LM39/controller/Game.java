@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import it.polimi.LM39.exception.CardNotFoundException;
 import it.polimi.LM39.exception.DoAnotherActionException;
 import it.polimi.LM39.exception.InvalidActionTypeException;
@@ -14,48 +13,37 @@ import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.ActionBonus;
 import it.polimi.LM39.model.FamilyMember;
-import it.polimi.LM39.model.MainBoard;
 import it.polimi.LM39.model.PersonalBonusTile;
-import it.polimi.LM39.model.Player;
 import it.polimi.LM39.model.PlayerRank;
-import it.polimi.LM39.model.excommunicationpermanenteffect.NoVictoryForCard;
 import it.polimi.LM39.model.excommunicationpermanenteffect.SkipFirstTurn;
 import it.polimi.LM39.server.NetworkPlayer;
-import it.polimi.LM39.server.Room;
-import it.polimi.LM39.server.SocketServer;
 
 /**
- * 
+ * this class is the core of the game there is one for every room
  */
 public class Game implements Runnable{
 
-    /**
-     * Default constructor
-     */
+   /**
+    * the constructor
+    * @param playerNumber the number of players in the room
+    * @param players the array list of players in the room
+    */
     public Game(Integer playerNumber, ArrayList<NetworkPlayer> players) {
     	this.playerNumber = playerNumber;
     	this.players = players;
     	gameHandler = new GameHandler();
     }
+    
 	private Logger logger = Logger.getLogger(Game.class.getName());
     private GameHandler gameHandler;
     private int playerNumber;
 
-    /**
-     * 
-     */
     private ArrayList<NetworkPlayer> players = new ArrayList<NetworkPlayer>();
 
     /**
-     * 
+     * to initialize the game, prepare the MainBoard and the players
+     * @throws IOException
      */
-    public Integer timeOutStart;
-
-    /**
-     * 
-     */
-    public Integer timeOutMove;
-
     private void initialize() throws IOException{
     	if(playerNumber > 2)
     		//unreachable value for harvestAndProductionSize
@@ -91,23 +79,15 @@ public class Game implements Runnable{
 			} catch (NotEnoughResourcesException e) {
 				logger.log(Level.WARNING,"Not enough resources",e);
 			}
-			
-			
-    }
+    	}
     	for(NetworkPlayer player : players)
     		updatePersonalMainBoards(player);
-    	
-    	
-    	//TODO DEBUG
-    	/*
-    	try {
-			testCards();
-		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException e) {
-			e.printStackTrace();
-		}
-*/
     }
+    
+    /**
+     * to give a clor to the players
+     * @param players
+     */
     private void setPlayersColor(ArrayList<NetworkPlayer> players){
     	String[] colors = {"green","blue","red","yellow"};
     	for(int i = 0; i < players.size(); i++){
@@ -115,6 +95,10 @@ public class Game implements Runnable{
     	}
     }
     
+    /**
+     * to handle the various actions that a player can do
+     * @param player
+     */
     private void playerAction(NetworkPlayer player){
     	player.setMessage("What action do you want to perform?");
     	String response = player.sendMessage();
@@ -226,8 +210,6 @@ public class Game implements Runnable{
     		response = player.sendMessage();
     		if(player.personalBoard.getPossessedLeaders().contains(response)){
     			cardNumber = player.personalBoard.getPossessedLeaders().indexOf(response);
-    /*		for(String card : player.personalBoard.getPossessedLeaders())
-    			if((card).equals(response))		*/
 					try {	
 						gameHandler.discardLeader(player, player.personalBoard.getPossessedLeaders().get(cardNumber));
 					} catch (NotEnoughResourcesException | NotEnoughPointsException e) {
@@ -246,9 +228,6 @@ public class Game implements Runnable{
     		flag = false;
     		if(player.personalBoard.getPossessedLeaders().contains(response) && !player.getPlayerInstantLeaderCards().contains(response) 
     		&& !player.getPlayerPlayedLeaderCards().contains(response)){
-	/*		for(String card : player.personalBoard.getPossessedLeaders()){
-				System.out.println(card);
-				if((card).compareToIgnoreCase(response) == 0){		*/
 					CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
     				try {
 						flag = cardHandler.checkLeaderRequestedObject(gameHandler.mainBoard.leaderMap.get(response).requestedObjects, player);
@@ -447,6 +426,17 @@ public class Game implements Runnable{
     	}
     }
     
+    /**
+     * to search a card on the MainBoard and on the player PersonalBoard
+     * @param cardName
+     * @param player
+     * @throws SecurityException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     * @throws NoSuchMethodException
+     * @throws CardNotFoundException
+     */
     private void searchCard(String cardName,NetworkPlayer player) throws SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, CardNotFoundException{
     	CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
     	int p = 0; int k = 0; int j = 0; int i;
@@ -557,8 +547,12 @@ public class Game implements Runnable{
     	}
     }
 
-
-    
+    /**
+     * to handle the family members
+     * @param player
+     * @return
+     * @throws DoAnotherActionException
+     */
     private FamilyMember handleFamilyMember(NetworkPlayer player) throws DoAnotherActionException{
     	FamilyMember familyMember = gameHandler.chooseFamilyMember(player);
 		try {
@@ -575,6 +569,9 @@ public class Game implements Runnable{
 		return familyMember;
     }
 
+  /**
+   * to initialize the rankings
+   */
     private void loadRankings(){
     	ArrayList<PlayerRank> faithRanking = new ArrayList<PlayerRank>();
     	ArrayList<PlayerRank> victoryRanking = new ArrayList<PlayerRank>();
@@ -601,7 +598,9 @@ public class Game implements Runnable{
     	gameHandler.mainBoard.rankings.setMilitaryRanking(militaryRanking);
     }
     
-    
+    /**
+     * the core of the game, handles periods, rounds and player moves
+     */
     public void run() {
     	//initialize the game loading parameters and cards
     	try {
@@ -609,15 +608,16 @@ public class Game implements Runnable{
 		} catch (IOException e) {
 			logger.log(Level.SEVERE,"Failed to read json files", e);
 		}
-    	//make the players choose a their four leader cards
-    	//TODO uncomment the line below in the final version
-    	//chooseLeaderCard();
+    	//make the players choose four leader cards
+    	chooseLeaderCard();
+    	//make the player choose one bonus tile
     	chooseBonusTile();
     	//the array list where the players actions order is stored
     	ArrayList <String> order;
-    	//TODO the period must be set < 3 in the final version
-    	for(int period=0;period<1;period++){
+    	
+    	for(int period=0;period<3;period++){
     		gameHandler.setPeriod(period+1);
+    		
     		for(int round=0;round<2;round++){
     			order = gameHandler.getPlayersActionOrder();
     			gameHandler.setRound(round+1);
@@ -634,7 +634,6 @@ public class Game implements Runnable{
     					NetworkPlayer player = playerColorToNetworkPlayer(order.get(move));
         	    		updatePersonalMainBoards(player);
         	    		if((turn == 0 && !skipFirstTurn(player)) || turn != 0){
-        	    			System.out.println("primo if");
 	    					player.setMessage(gameHandler.mainBoard);
 	    					playerAction(player);
 	    					player.setMessage("End of your turn");
@@ -644,7 +643,6 @@ public class Game implements Runnable{
         	    		
         	    		//if it is the last turn and the last move, give to the player with the SkipFirstTurn excommunication the chance do place his latest family member
         	    		if(turn==3 && move==3){
-    	    				System.out.println("secondo if");
         	    			for(int i=0;i<playerNumber;i++){
         	    				player = playerColorToNetworkPlayer(order.get(i));
         	    				if(skipFirstTurn(player)){
@@ -686,12 +684,20 @@ public class Game implements Runnable{
     	
     }
     
+    /**
+     * clean the list of played leaders that gives an instant bonus
+     */
     private void emptyPlayerInstantLeaderCards(){
     	for(NetworkPlayer player : players){
     		player.setPlayerInstantLeaderCards(new ArrayList<String>());
     	}
     }
     
+    /**
+     * check if a player has the SkipFirstTurn excommunication
+     * @param player
+     * @return
+     */
     private boolean skipFirstTurn(NetworkPlayer player){
     	for(Integer excommunicationNumber : player.getExcommunications())
     		if((gameHandler.mainBoard.excommunicationMap.get(excommunicationNumber).effect.getClass()).equals(SkipFirstTurn.class))
@@ -699,6 +705,10 @@ public class Game implements Runnable{
     	return false;
     }
 
+    /**
+     * send the final scores to the players
+     * @param finalScores
+     */
     private void sendFinalPoints (ArrayList<PlayerRank> finalScores){
     	for(NetworkPlayer player : players)
     		for(PlayerRank playerRank : finalScores){
@@ -706,6 +716,10 @@ public class Game implements Runnable{
     		}
     }
     
+    /**
+     * updates the player personal MainBoard
+     * @param player
+     */
     private void updatePersonalMainBoards(NetworkPlayer player){
     	gameHandler.resetPlayerPersonalMainBoard(player);
     		try {
@@ -717,6 +731,10 @@ public class Game implements Runnable{
     		
     }
     
+    /**
+     * return a NetworkPlayer from his color
+     * @param color
+     */
     private NetworkPlayer playerColorToNetworkPlayer (String color){
     	for(NetworkPlayer player: players)
     		if(player.playerColor.equals(color))
@@ -724,11 +742,17 @@ public class Game implements Runnable{
     	return null;
     }
     
+    /**
+     * give back the family members to all players
+     */
     private void giveFamilyMembersBack(){
     	for(NetworkPlayer player : players)
     		player.setPlayedFamilyMembers(new ArrayList<String>());
     }
 
+    /**
+     * to choose the leader cards at the start of the game
+     */
     private void chooseLeaderCard(){
     	//creating an array list of leaders names randomly ordinated
     	ArrayList<String> leaders;
@@ -776,13 +800,16 @@ public class Game implements Runnable{
 	 				leaders.remove(response);
 	 				//go to the next player
 	 				playerNumber++;
-	 				//updating k this way ensures that going through the cicles the players send the cards they discarded to the next player like in the game rules
+	 				//updating k this way ensures that going through the cycles the players send the cards they discarded to the next player like in the game rules
 	 				k+=i;
 	    		}
 	    		//if the player response is not a leader card in between the ones he could choose keep sending the same list of cards
 	   		}
     }
     
+    /**
+     * to choose the bonus tiles at the start of the game
+     */
     private void chooseBonusTile(){
     	int i;
     	CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
@@ -816,100 +843,5 @@ public class Game implements Runnable{
     			player.setMessage("You must answer with a valid Tile number");
     	}
     }
-
     
-    //TODO debug method to be removed
-    /*
-    private void testCards() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-    	CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
-    	for(int i =1;i<=24;i++){
-    		players.get(0).setMessage("Territory");
-    		players.get(0).setMessage(gameHandler.mainBoard.territoryMap.get(i).cardName);
-    		cardHandler.getInfo(gameHandler.mainBoard.territoryMap.get(i).activationReward,players.get(0));
-    		cardHandler.getInfo(gameHandler.mainBoard.territoryMap.get(i).instantBonuses,players.get(0));players.get(0).setMessage(gameHandler.mainBoard.territoryMap.get(i).activationCost.toString());
-    		players.get(0).setMessage(gameHandler.mainBoard.territoryMap.get(i).period.toString());
-    		players.get(0).setMessage(" ");
-    	}
-    	for(int i =1;i<=24;i++){
-    		players.get(0).setMessage("Character");
-    		players.get(0).setMessage(gameHandler.mainBoard.characterMap.get(i).cardName);
-    		cardHandler.getInfo(gameHandler.mainBoard.characterMap.get(i).permanentEffect,players.get(0));
-    		cardHandler.getInfo(gameHandler.mainBoard.characterMap.get(i).instantBonuses,players.get(0));
-    		players.get(0).setMessage(gameHandler.mainBoard.characterMap.get(i).costCoins.toString());
-    		players.get(0).setMessage(gameHandler.mainBoard.characterMap.get(i).period.toString());
-    		players.get(0).setMessage(" ");
-    	}
-    	for(int i =1;i<=24;i++){
-    		players.get(0).setMessage("Building");
-    		players.get(0).setMessage(gameHandler.mainBoard.buildingMap.get(i).cardName);
-    		cardHandler.getInfo(gameHandler.mainBoard.buildingMap.get(i).activationEffect,players.get(0));
-    		cardHandler.printCardPoints(gameHandler.mainBoard.buildingMap.get(i).instantBonuses,players.get(0));
-    		cardHandler.printCardResources(gameHandler.mainBoard.buildingMap.get(i).costResources,players.get(0));
-    		players.get(0).setMessage(gameHandler.mainBoard.buildingMap.get(i).activationCost.toString());
-    		players.get(0).setMessage(gameHandler.mainBoard.buildingMap.get(i).period.toString());
-    		players.get(0).setMessage(" ");
-    	}
-    	for(int i =1;i<=24;i++){
-    		players.get(0).setMessage("Venture");
-    		players.get(0).setMessage(gameHandler.mainBoard.ventureMap.get(i).cardName);
-    		cardHandler.getInfo(gameHandler.mainBoard.ventureMap.get(i).instant,players.get(0));
-    		cardHandler.printCardResources(gameHandler.mainBoard.ventureMap.get(i).costResources,players.get(0));
-    		players.get(0).setMessage(gameHandler.mainBoard.ventureMap.get(i).costMilitary.toString());
-    		players.get(0).setMessage(gameHandler.mainBoard.ventureMap.get(i).finalVictory.toString());
-    		players.get(0).setMessage(gameHandler.mainBoard.ventureMap.get(i).neededMilitary.toString());
-    		players.get(0).setMessage(gameHandler.mainBoard.ventureMap.get(i).period.toString());
-    		players.get(0).setMessage(" ");
-    	}	
-    	for(int i =0;i<20;i++){
-    		players.get(0).setMessage(gameHandler.mainBoard.leaderMap.get(gameHandler.mainBoard.leaderName.get(i)).cardName);
-    		cardHandler.getInfo(gameHandler.mainBoard.leaderMap.get(gameHandler.mainBoard.leaderName.get(i)).effect,players.get(0));
-    		cardHandler.getInfo(gameHandler.mainBoard.leaderMap.get(gameHandler.mainBoard.leaderName.get(i)).requestedObjects,players.get(0));
-    		players.get(0).setMessage(" ");
-    	}
-    	
-    	for(int i =1;i<=21;i++){
-    		cardHandler.getInfo(gameHandler.mainBoard.excommunicationMap.get(i).effect,players.get(0));
-    		players.get(0).setMessage(gameHandler.mainBoard.excommunicationMap.get(i).period.toString());
-    		players.get(0).setMessage(" ");
-    	}
-    	
-    	
-     
-    	
-    	}	
-    	*/	
-   
-    /*
-    public static void main(String[] args) throws FailedToReadFileException, FailedToRegisterEffectException, IOException {
-        
-    	//code to test the method loadCardsOnTheMainBoard();
-    	
-    	MainBoard mainBoard = new MainBoard();
-        GameHandler gameHandler = new GameHandler();
-        gameHandler.mainBoard = mainBoard;
-        //calls the  to populate the hashmaps
-        gameHandler.setPeriod(1);
-        gameHandler.setRound(1);
-        gameHandler.initializeTheGame();
-        gameHandler.loadCardsOnTheMainBoard();
-        String[][] cards = gameHandler.mainBoard.getCardNamesOnTheTowers();
-        for(int i=0;i<4;i++){
-            for (int j=0; j<4; j++){
-            	System.out.println(cards[j][i]);
-            }
-            }
-        System.out.println();
-        gameHandler.setRound(2);
-        gameHandler.loadCardsOnTheMainBoard();
-        cards = gameHandler.mainBoard.getCardNamesOnTheTowers();
-        for(int i=0;i<4;i++){
-            for (int j=0; j<4; j++){
-            	System.out.println(cards[j][i]);
-            }
-            } 
-    } 
-    */
-    
-    
-
 }

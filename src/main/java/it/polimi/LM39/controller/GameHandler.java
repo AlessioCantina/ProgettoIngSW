@@ -4,27 +4,22 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.logging.*;
-
 import it.polimi.LM39.exception.CardNotFoundException;
-
 import it.polimi.LM39.exception.InvalidActionTypeException;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.*;
 import it.polimi.LM39.model.Character;
-import it.polimi.LM39.model.characterpermanenteffect.CharacterPermanentEffect;
 import it.polimi.LM39.model.excommunicationpermanenteffect.NoVictoryForCard;
 import it.polimi.LM39.model.instanteffect.InstantEffect;
 import it.polimi.LM39.server.NetworkPlayer;
-
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonReader;
+
 /**
- * 
+ * this class contains all the methods to support the game
  */
 public class GameHandler {
-	//TODO fix long throws with logger
+	
 	private Logger logger = Logger.getLogger(GameHandler.class.getName());
     
 	private Integer period;
@@ -36,20 +31,6 @@ public class GameHandler {
     private ArrayList<String> playerActionOrder = new ArrayList<String>();
     
     public DecoratedMethods decoratedMethods = new DecoratedMethods();
-    /*
-     * probably useless attributes
-     */
- /* public BuildingHandler buildingHandler = new BuildingHandler();		
-    
-    public TerritoryHandler territoryHandler = new TerritoryHandler();
-
-    public VentureHandler ventureHandler = new VentureHandler();
-
-    public CharacterHandler characterHandler = new CharacterHandler();
-
-    public LeaderHandler leaderHandler = new LeaderHandler();
-
-    public ExcommunicationHandler excommunicationHandler = new ExcommunicationHandler(); */	
 
     public PersonalBoardHandler personalBoardHandler = new PersonalBoardHandler();
     
@@ -58,14 +39,25 @@ public class GameHandler {
     public GsonReader gsonReader = new GsonReader();
 
     
+    /**
+     * to set the period
+     * @param period
+     */
     public void setPeriod(Integer period){
     	this.period=period;
     }
+    
+    /**
+     * to set the round
+     * @param round
+     */
     public void setRound(Integer round){
     	this.round=round;
     }
     
-    
+    /**
+     * to roll the dices
+     */
     public void rollTheDices() {
     	Integer[] diceValues = new Integer[4];
     	for(int i=0;i<3;i++){
@@ -78,6 +70,19 @@ public class GameHandler {
     	mainBoard.setDiceValues(diceValues);    
     }
 
+    /**
+     * to get a card that is on the Towers
+     * @param cardNumber
+     * @param player
+     * @param towerNumber
+     * @return
+     * @throws IOException
+     * @throws NoSuchMethodException
+     * @throws SecurityException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     */
     public boolean getCard(Integer cardNumber,NetworkPlayer player, Integer towerNumber) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
     	boolean cardGotten=false;
     	switch(towerNumber){
@@ -99,7 +104,18 @@ public class GameHandler {
     	return cardGotten;
     }
     
-    
+    /**
+     * to get a territory card
+     * @param territory
+     * @param player
+     * @param cardNumber
+     * @throws IOException
+     * @throws NoSuchMethodException
+     * @throws SecurityException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     */
     private boolean getTerritoryCard(Territory territory,NetworkPlayer player,Integer cardNumber) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
     	ArrayList<Integer> possessedTerritories = player.personalBoard.getPossessions("Territory");
     	int militaryPoints = player.points.getMilitary();
@@ -121,6 +137,18 @@ public class GameHandler {
     	return false;
     }
 
+    /**
+     * to get a character card
+     * @param character
+     * @param player
+     * @param cardNumber
+     * @throws IOException
+     * @throws NoSuchMethodException
+     * @throws SecurityException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     */
     private boolean getCharacterCard(Character character,NetworkPlayer player,Integer cardNumber) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
     	
     	ArrayList<Integer> possessedCharacters = player.personalBoard.getPossessions("Character");
@@ -143,7 +171,14 @@ public class GameHandler {
     	return false;
     }
     
-
+	/**
+	 * to get a building card
+	 * @param building
+	 * @param player
+	 * @param cardNumber
+	 * @return
+	 * @throws IOException
+	 */
     private boolean getBuildingCard(Building building,NetworkPlayer player,Integer cardNumber) throws IOException{
     	ArrayList<Integer> possessedBuildings = player.personalBoard.getPossessions("Building");
 		if (possessedBuildings.size()<6){
@@ -164,7 +199,19 @@ public class GameHandler {
     	return false;
     }
     
-    
+    /**
+     * to get a venture card
+     * @param venture
+     * @param player
+     * @param cardNumber
+     * @return
+     * @throws IOException
+     * @throws NoSuchMethodException
+     * @throws SecurityException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     */
     private boolean getVentureCard(Venture venture,NetworkPlayer player,Integer cardNumber) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
     	ArrayList<Integer> possessedVentures = player.personalBoard.getPossessions("Venture");
     	CardHandler cardHandler = new CardHandler(this,decoratedMethods);
@@ -229,7 +276,13 @@ public class GameHandler {
     	return false;
     }
     
-    
+    /**
+     * to get the value of a family member knowing his color
+     * @param familyMemberColor
+     * @param player
+     * @return
+     * @throws IOException
+     */
     private Integer familyMemberColorToDiceValue(String familyMemberColor,NetworkPlayer player) throws IOException{
     	//The order followed is the one on the Game Board for the dices positions
     	Integer value = -1;
@@ -249,6 +302,22 @@ public class GameHandler {
     	return value;
     }
     
+    /**
+     * to add a family member to a tower
+     * @param familyMember
+     * @param cardName
+     * @param player
+     * @return
+     * @throws IOException
+     * @throws NotEnoughResourcesException
+     * @throws NotEnoughPointsException
+     * @throws NoSuchMethodException
+     * @throws SecurityException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     * @throws CardNotFoundException
+     */
     public boolean addFamilyMemberToTheTower(FamilyMember familyMember , String cardName, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, CardNotFoundException {
         int i,j;
         boolean coloredFamilyMemberOnTheTower = false;
@@ -270,7 +339,6 @@ public class GameHandler {
         		}
         			
         	}
-        System.out.println(p + " " + k);
         //to store i and j as the coordinates of the position interested, the if check if the player can get the card with a specific family member
         if(("").equals(familyMembersOnTheTowers[p][k].color) && (familyMemberValue(familyMember,player) >= (player.personalMainBoard.getTowersValue())[p][k])){
         	//if the place is free and the family member has an high enough value, ((i+1)*2)-1 is to convert the value i of the matrix to the value of the floor in dice
@@ -286,8 +354,6 @@ public class GameHandler {
         		}
         	}
         	if ((uncoloredFamilyMemberOnTheTower==true && coloredFamilyMemberOnTheTower==false) || (coloredFamilyMemberOnTheTower==true && ("uncolored").equals(familyMember.color))){
-        	//TODO delete
-        		System.out.println("here1");
         	//if there is an uncolored family member on the tower or there is a colored one but the player uses an uncolored family member
         		if(player.resources.getCoins()>=3){
         			try {
@@ -298,8 +364,6 @@ public class GameHandler {
 						return false;
 					}
         			if(getCard(cardNameToInteger(cardName),player,k)){
-	        			//TODO delete
-	            		System.out.println("here2");
 		        		setActionBonus((player.personalMainBoard.getTowersBonuses())[p][k],player);
 		        		(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].playerColor)=(familyMember.playerColor);
 		        		(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].color)=(familyMember.color);
@@ -316,19 +380,13 @@ public class GameHandler {
         			player.setMessage("You do not have enough coins!");
 	        	}
         	if (uncoloredFamilyMemberOnTheTower==false && coloredFamilyMemberOnTheTower==false){
-        		//TODO delete
-        		System.out.println("here3");
         		//if there is none of my family members
         		for(i=0;i<4 && ("").equals(familyMembersOnTheTowers[i][k].playerColor);i++){}
         		if(i==4) {
         			if(getCard(cardNameToInteger(cardName),player,k)){
-	        			//TODO delete
-	            		System.out.println("here4");
 	        			//if the tower is free
 	        			(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].playerColor)=(familyMember.playerColor);
 	        			(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].color)=(familyMember.color);
-	        			System.out.println(familyMembersOnTheTowers[p][k].playerColor + " " + familyMembersOnTheTowers[p][k].color);
-	        			System.out.println(player.personalMainBoard.getTowersBonuses()[p][k]);
 	        			setActionBonus(player.personalMainBoard.getTowersBonuses()[p][k],player);
 	        			removeCard(p,k);
 		        		return true;
@@ -337,8 +395,6 @@ public class GameHandler {
         				return false;
         		}
         		else{
-        			//TODO delete
-            		System.out.println("here5");
         			//if the tower is occupied
         			if(player.resources.getCoins()>=3){
         				try {
@@ -349,8 +405,6 @@ public class GameHandler {
 							return false;
 						}
         				if(getCard(cardNameToInteger(cardName),player,k)){
-	        				//TODO delete
-	                		System.out.println("here6");
 	    	        		setActionBonus((player.personalMainBoard.getTowersBonuses())[p][k],player);
 	    	        		(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].playerColor)=(familyMember.playerColor);
 	            			(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].color)=(familyMember.color);
@@ -380,12 +434,26 @@ public class GameHandler {
         }
     }
     
+    /**
+     * to remove a card fromthe Towers
+     * @param p
+     * @param k
+     */
     private void removeCard(Integer p, Integer k){
 		String[][] cards = mainBoard.getCardNamesOnTheTowers();
 		cards[p][k] = "";
 		mainBoard.setCardNamesOnTheTowers(cards);
     }
     
+    /**
+     * to add a family emmebr to the Council Palace
+     * @param familyMember
+     * @param player
+     * @return
+     * @throws IOException
+     * @throws NotEnoughResourcesException
+     * @throws NotEnoughPointsException
+     */
     public boolean addFamilyMemberToTheCouncilPalace(FamilyMember familyMember, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException{
     	if (familyMemberValue(familyMember,player)>=1){
 	    	mainBoard.familyMembersLocation.setFamilyMemberAtTheCouncilPalace(familyMember);
@@ -398,6 +466,17 @@ public class GameHandler {
     	return true;
     }
     
+    /**
+     * to handle the support the church event
+     * @param player
+     * @throws NotEnoughResourcesException
+     * @throws NotEnoughPointsException
+     * @throws NoSuchMethodException
+     * @throws SecurityException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     */
     public void supportTheChurch (NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
     	//period + 2 is the minimum amount of faith points needed to support to the church for every period
     	CardHandler cardHandler = new CardHandler(this,decoratedMethods);
@@ -425,39 +504,24 @@ public class GameHandler {
     	decoratedMethods = cardHandler.activateExcommunication((mainBoard.excommunicationMap.get(player.personalMainBoard.excommunicationsOnTheBoard[period-1])).effect, player);
     }
     
+    /**
+     * to give to a player an action bonus
+     * @param actionBonus
+     * @param player
+     * @throws NotEnoughResourcesException
+     * @throws NotEnoughPointsException
+     */
     public void setActionBonus(ActionBonus actionBonus,NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
-    			System.out.println("DECORATED METHODS" + decoratedMethods);
-    			decoratedMethods.addCardResources(actionBonus.resources,player);
-    			decoratedMethods.addCardPoints(actionBonus.points,player);
+    		decoratedMethods.addCardResources(actionBonus.resources,player);
+    		decoratedMethods.addCardPoints(actionBonus.points,player);
 		}
     
-    //probably useless method
-    /*
-    public void addPlayerResources (PlayerResources resources, NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
-    	PlayerResources playerResources = player.resources;
-    	playerResources.setCoins(resources.getCoins());
-    	playerResources.setWoods(resources.getWoods());
-    	playerResources.setStones(resources.getStones());
-    	playerResources.setServants(resources.getServants());
-    	ArrayList<Integer> list = new ArrayList<Integer>();
-    	councilHandler.getCouncil(resources.getCouncil(),player,this,list);
-    	player.resources=playerResources;
-    }
-    */
-    
-    //probably useless method
-    /*
-    public void addPlayerPoints (PlayerPoints points, NetworkPlayer player) throws NotEnoughPointsException{
-    	PlayerPoints playerPoints = player.points;
-    	playerPoints.setFaith(points.getFaith());
-    	playerPoints.setFaith(points.getVictory());
-    	playerPoints.setFinalVictory(points.getFinalVictory());
-    	playerPoints.setMilitary(points.getMilitary());
-    	player.points=playerPoints;
-    }
-    */
-    
-    
+    /**
+     * to subtract resources from a player
+     * @param resources
+     * @param player
+     * @throws NotEnoughResourcesException
+     */
     public void subCardResources (CardResources resources, NetworkPlayer player) throws NotEnoughResourcesException{
     	PlayerResources playerResources = new PlayerResources();
     	playerResources.setCoins(player.resources.getCoins());
@@ -472,7 +536,12 @@ public class GameHandler {
     	player.resources=playerResources;
     }
     
-    
+    /**
+     * to subtract points to a player
+     * @param points
+     * @param player
+     * @throws NotEnoughPointsException
+     */
     public void subCardPoints (CardPoints points, NetworkPlayer player) throws NotEnoughPointsException{
     	PlayerPoints playerPoints = new PlayerPoints();
     	playerPoints.setFaith(player.points.getFaith());
@@ -483,13 +552,35 @@ public class GameHandler {
     	player.points=playerPoints;
     }
     
-    
+    /**
+     * to get a family member value, considering his color and his servants
+     * @param familyMember
+     * @param player
+     * @return
+     * @throws IOException
+     */
     public Integer familyMemberValue (FamilyMember familyMember, NetworkPlayer player) throws IOException{
     	Integer diceValue = familyMemberColorToDiceValue(familyMember.color,player);
     	return (diceValue+familyMember.getServants());
     }
 
-    
+    /**
+     * to add a family member to the production or harvest
+     * @param familyMember
+     * @param familyMembersAtProductionOrHarvest
+     * @param actionType
+     * @param player
+     * @return
+     * @throws IOException
+     * @throws NoSuchMethodException
+     * @throws SecurityException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     * @throws NotEnoughResourcesException
+     * @throws NotEnoughPointsException
+     * @throws InvalidActionTypeException
+     */
     public boolean addFamilyMemberToProductionOrHarvest(FamilyMember familyMember, ArrayList<FamilyMember> familyMembersAtProductionOrHarvest, String actionType,NetworkPlayer player) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException {
     	int i;
     	//doAction is false by default, to know if the action Harvest or Production can be done
@@ -589,6 +680,10 @@ public class GameHandler {
     		return true;
     	}
 
+    /**
+     * to initialize the MainBoard
+     * @throws IOException
+     */
     public void initializeTheGame() throws IOException {
     	personalBoardHandler.setGameHandler(this);
     	decoratedMethods.setGameHandler(this);
@@ -610,6 +705,10 @@ public class GameHandler {
 		}
     }
     
+    /**
+     * to load the cards on the MainBoard
+     * @throws IOException
+     */
     public void loadCardsOnTheMainBoard() throws IOException{
     	int j;
     	Integer[][] cardsOnTheTowers = mainBoard.getCardsOnTheTowers();
@@ -672,6 +771,9 @@ public class GameHandler {
     	
     }
     
+    /**
+     * to load the excommunications at the start of the game
+     */
     private void loadExcommunications (){
     	Integer[] excommunications = new Integer[3];
     	//generating three random numbers from 1 to 7, 8 to 14 , 15 to 21 ,to choose the excommunications that are ordered by period in their hashmap
@@ -682,6 +784,10 @@ public class GameHandler {
     	mainBoard.excommunicationsOnTheBoard = excommunications;
     }
    
+    /**
+     * to get the card names on the MainBaord
+     * @throws IOException
+     */
     private void loadCardNamesOnTheMainBoard() throws IOException{
     	Integer[][] cardsOnTheTowers = mainBoard.getCardsOnTheTowers();
     	String[][] cardNamesOnTheTowers = new String[4][4]; 
@@ -706,6 +812,12 @@ public class GameHandler {
     	mainBoard.setCardNamesOnTheTowers(cardNamesOnTheTowers);
     }
 
+    /**
+     * to convert a card name to its integer key value used by the HashMap
+     * @param card
+     * @return
+     * @throws CardNotFoundException
+     */
     public Integer cardNameToInteger (String card) throws CardNotFoundException{
     	for(int i=0;i<4;i++)
     		for(int j=0;j<4;j++){
@@ -715,7 +827,11 @@ public class GameHandler {
     			
     }
     
-    
+    /**
+     * calculate the points at the end of a game
+     * @param players
+     * @return
+     */
     public ArrayList<PlayerRank> calculateFinalPoints(ArrayList<NetworkPlayer> players) {
         Integer finalPoints;
         ArrayList<PlayerRank> list = new ArrayList<PlayerRank>();
@@ -788,6 +904,10 @@ public class GameHandler {
     	return list;
     }
     
+    /**
+     * calculate the military strenght at the end of a game
+     * @return
+     */
     private ArrayList<PlayerRank> calculateMilitaryStrenght (){
     	int max = 0;
     	ArrayList<PlayerRank> list = new ArrayList<PlayerRank>();
@@ -826,7 +946,11 @@ public class GameHandler {
     	return list;
     }
 
-    
+    /**
+     * to choose which family member to play
+     * @param player
+     * @return
+     */
     public FamilyMember chooseFamilyMember (NetworkPlayer player){
     	player.setMessage("Which Family Member do you want to use? Choose a color between orange,black,white,uncolored");
 		String response = player.sendMessage();
@@ -846,6 +970,13 @@ public class GameHandler {
 		return familyMember;
 	}
     
+    /**
+     * to discard a leader card
+     * @param player
+     * @param leader
+     * @throws NotEnoughResourcesException
+     * @throws NotEnoughPointsException
+     */
     public void discardLeader (NetworkPlayer player, String leader) throws NotEnoughResourcesException, NotEnoughPointsException{
     	ArrayList<String> playedLeader = player.getPlayerPlayedLeaderCards();
     	boolean flag = false;
@@ -873,6 +1004,12 @@ public class GameHandler {
     			player.setMessage("You do not have this Leader card");
     }
     
+    /**
+     * to check if a response from a player is correct
+     * @param responsePlayer
+     * @param player
+     * @return
+     */
     public static String checkResponse (String responsePlayer,NetworkPlayer player){
     	String response = responsePlayer;
     	while(!("no").equals(response) && !("yes").equals(response)){
@@ -881,6 +1018,10 @@ public class GameHandler {
 		return response;
     }
     
+    /**
+     * to update the rankings
+     * @param player
+     */
     public void updateRankings (NetworkPlayer player){
     	//set faith points
     	for(PlayerRank playerFaithRank : mainBoard.rankings.getFaithRanking())
@@ -897,6 +1038,10 @@ public class GameHandler {
     }
     
     
+    /**
+     * to set the players action order based on their position on the Council Palace and their position in the previous round
+     * @param playersQty
+     */
     public void setPlayerActionOrder (Integer playersQty){
     	ArrayList<String> order = new ArrayList<String>();
     	//firstly set the order places by the order of the family members at the Council Palace
@@ -910,6 +1055,10 @@ public class GameHandler {
     	this.playerActionOrder = order;
     }
     
+    /**
+     * to clean action spaces at the end of a round
+     * @throws InvalidActionTypeException
+     */
     public void cleanActionSpaces() throws InvalidActionTypeException{
     	//empty the market
     	for (int i=0;i<4;i++)
@@ -924,15 +1073,32 @@ public class GameHandler {
     				mainBoard.familyMembersLocation.setFamilyMemberOnTheTower(new FamilyMember(), x, y);
     }
     
+    /**
+     * setter for the array list of the action order
+     * @param playerActionOrder
+     */
     public void setPlayersActionOrder (ArrayList<String> playerActionOrder){
     	//to be used only for the first round of the first period
     	this.playerActionOrder = playerActionOrder;
     }
     
+    /**
+     * getter for the array list of the action order
+     * @return
+     */
     public ArrayList<String> getPlayersActionOrder (){
     	return this.playerActionOrder;
     }
     
+    /**
+     * to activate the permanent effects on a player
+     * @param player
+     * @throws NoSuchMethodException
+     * @throws SecurityException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     */
     public void activatePermanentEffects(NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
     	decoratedMethods = new DecoratedMethods();
     	decoratedMethods.setGameHandler(this);
@@ -948,6 +1114,10 @@ public class GameHandler {
     		decoratedMethods = cardHandler.activateExcommunication(mainBoard.excommunicationMap.get(excommunicationNumber).effect, player);
     }
     
+    /**
+     * to reset the player Personal MainBoard
+     * @param player
+     */
     public void resetPlayerPersonalMainBoard (NetworkPlayer player)
     {
     	//clone the MainBoard into the player personal mainboard
@@ -969,15 +1139,4 @@ public class GameHandler {
     	player.resources.setWoods(2);
     	player.resources.setStones(2);
     }
-    
-    
-    
-    //probably useless code
-    /*
-    public void removeDecoration(Class toRemove, NetworkPlayer player){
-		//if it is not a decorator
-    	if (this.getClass() == toRemove)
-			return;
-	}
-	*/
 }

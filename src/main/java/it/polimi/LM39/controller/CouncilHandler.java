@@ -1,14 +1,26 @@
 package it.polimi.LM39.controller;
 
 import java.util.ArrayList;
-
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.Council;
 import it.polimi.LM39.server.NetworkPlayer;
 
+/**
+ * this class handles the council favors
+ */
 public class CouncilHandler {
 	Council council = new Council();
+	
+	/**
+	 * to handle the council favors
+	 * @param qty
+	 * @param player
+	 * @param gameHandler
+	 * @param favorsList
+	 * @throws NotEnoughResourcesException
+	 * @throws NotEnoughPointsException
+	 */
 	public void getCouncil(Integer qty,NetworkPlayer player,GameHandler gameHandler,ArrayList<Integer> favorsList) throws NotEnoughResourcesException, NotEnoughPointsException{
 		if(qty>=1){
 			//ask to the player what Council Favor he wants
@@ -47,6 +59,12 @@ public class CouncilHandler {
 		}
 	}
 	
+	/**
+	 * to check if a player is trying to get the same council favor twice
+	 * @param list
+	 * @param j
+	 * @return
+	 */
 	private boolean checkAlreadyTaken (ArrayList<Integer> list, Integer j){
 		for(Integer i: list)
 			if(i==j)
@@ -54,6 +72,10 @@ public class CouncilHandler {
 		return false;
 	}
 	
+	/**
+	 * to send to the player what bonuses the favors give
+	 * @param player
+	 */
 	private void bonusInfo(NetworkPlayer player){
 		//send to the player what the bonuses give
 		player.setMessage("Bonus 1 gives " + council.bonus1.stones + " stones " + council.bonus1.woods + " woods");
@@ -62,14 +84,5 @@ public class CouncilHandler {
 		player.setMessage("Bonus 4 gives " + council.bonus4.military + " military points");
 		player.setMessage("Bonus 5 gives " + council.bonus5.faith + " faith points");
 	}
-	
-	//useless if as we think the bonuses are not configured by file
-	/*player.setMessage("Bonus 1 gives " + council.bonus1.coins + " coins " + council.bonus1.stones + " stones " + council.bonus1.woods + " woods " + council.bonus1.servants + " servants");
-		player.setMessage("Bonus 2 gives " + council.bonus2.coins + " coins " + council.bonus2.stones + " stones " + council.bonus2.woods + " woods " + council.bonus2.servants + " servants");
-		player.setMessage("Bonus 3 gives " + council.bonus3.coins + " coins " + council.bonus3.stones + " stones " + council.bonus3.woods + " woods " + council.bonus3.servants + " servants");
-		player.setMessage("Bonus 4 gives " + council.bonus4.faith + " faith points " + council.bonus4.military + " military points " + council.bonus4.victory + " victory points");
-		player.setMessage("Bonus 5 gives " + council.bonus5.faith + " faith points " + council.bonus5.military + " military points " + council.bonus5.victory + " victory points");
-		*/
-			
 	
 }
