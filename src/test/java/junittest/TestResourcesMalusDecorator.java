@@ -57,14 +57,17 @@ public class TestResourcesMalusDecorator extends TestCase{
 	
 	@Test
 	public void testBuildingResourcesDecoratorSingleResource() throws NotEnoughResourcesException, NotEnoughPointsException{
-		// malus is 1 wood
+		// malus is 1 wood, 1 stone
 		Integer expectedWoods = 1;
-		testMalus.stones = 0;
+		testResources.stones = 0;
 		// 2 woods earned (testResources)
 		testResourcesDecorator.addCardResources(testResources,testPlayer);
 		assertEquals(expectedWoods,testPlayer.resources.getWoods());
 		
-		Integer expectedStones = 4;
+		testResources.stones = 2;
+		testResources.woods = 0;
+		
+		Integer expectedStones = 1;
 		// 3 stones earned (2 times from testResources, both without malus)
 		testResourcesDecorator.addCardResources(testResources,testPlayer);
 		

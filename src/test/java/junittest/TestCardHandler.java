@@ -108,10 +108,7 @@ public class TestCardHandler extends TestCase{
     		(!("Raising a Statue").equals(testGameHandler.mainBoard.ventureMap.get(i).cardName)))
     			testCardHandler.doInstantEffect(testGameHandler.mainBoard.ventureMap.get(i).instant,testPlayer);
     		if(testGameHandler.mainBoard.ventureMap.get(i).instant instanceof HarvestProductionAction ||
-    		testGameHandler.mainBoard.ventureMap.get(i).instant instanceof GetCardAndPoints ||
-    		testGameHandler.mainBoard.ventureMap.get(i).instant instanceof GetCardAndResources ||
-    		testGameHandler.mainBoard.ventureMap.get(i).instant instanceof GetDiscountedCard ||
-    		testGameHandler.mainBoard.ventureMap.get(i).instant instanceof HarvestProductionAndPoints){
+    		testGameHandler.mainBoard.ventureMap.get(i).instant instanceof GetCardAndPoints){
     			testPlayer.setResponse("no");
     			testCardHandler.doInstantEffect(testGameHandler.mainBoard.ventureMap.get(i).instant,testPlayer);
     			testPlayer.setResponse("1");
@@ -125,6 +122,18 @@ public class TestCardHandler extends TestCase{
     		testGameHandler.mainBoard.characterMap.get(i).instantBonuses instanceof VictoryForCard) &&
     		(!("Royal Messenger").equals(testGameHandler.mainBoard.characterMap.get(i).cardName)))
     			testCardHandler.doInstantEffect(testGameHandler.mainBoard.characterMap.get(i).instantBonuses,testPlayer);
+    		if((testGameHandler.mainBoard.characterMap.get(i).instantBonuses instanceof GetCardAndPoints ||
+    		testGameHandler.mainBoard.characterMap.get(i).instantBonuses instanceof GetCardAndResources ||
+    		testGameHandler.mainBoard.characterMap.get(i).instantBonuses instanceof GetDiscountedCard ||
+    		testGameHandler.mainBoard.characterMap.get(i).instantBonuses instanceof HarvestProductionAndPoints ||
+    		testGameHandler.mainBoard.characterMap.get(i).instantBonuses instanceof VictoryForMilitary) &&
+    		!("Hero").equals(testGameHandler.mainBoard.characterMap.get(i).cardName) &&
+    		!("Ambassador").equals(testGameHandler.mainBoard.characterMap.get(i).cardName)){
+    			testPlayer.setResponse("no");
+    			testCardHandler.doInstantEffect(testGameHandler.mainBoard.characterMap.get(i).instantBonuses,testPlayer);
+    			testPlayer.setResponse("1");
+    		}
+    			
     		
     	}
     	
