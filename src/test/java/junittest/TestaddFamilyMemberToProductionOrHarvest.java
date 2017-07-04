@@ -85,4 +85,29 @@ public class TestaddFamilyMemberToProductionOrHarvest extends TestCase{
 		
 	}
 	
+	@Test
+	public void testAddFamilyMemberToProductionOrHarvest3() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
+		gameHandler.mainBoard.harvestAndProductionSize=20;
+		TestPlayer player = new TestPlayer();
+		player.personalMainBoard=gameHandler.mainBoard;
+		player.personalBoard.personalBonusTile.harvestBonus = new ActionBonus();
+		FamilyMember familyMember = new FamilyMember();
+		familyMember.playerColor="green";
+		
+		//one player add a family member to the Harvest
+		familyMember.color="white";
+		assertTrue(gameHandler.addFamilyMemberToProductionOrHarvest(familyMember, gameHandler.mainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Harvest"), "Harvest", player));
+	
+		//another player add a family emmebr to the occupied Harvest
+		TestPlayer player2 = new TestPlayer();
+		player2.personalMainBoard=gameHandler.mainBoard;
+		player2.personalBoard.personalBonusTile.harvestBonus = new ActionBonus();
+		FamilyMember familyMember2 = new FamilyMember();
+		familyMember2.playerColor="blue";
+		//to be sure the family member can be placed
+		familyMember2.setServants(3);
+		familyMember2.color="white";
+		assertTrue(gameHandler.addFamilyMemberToProductionOrHarvest(familyMember2, gameHandler.mainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Harvest"), "Harvest", player2));
+	}
+	
 }
