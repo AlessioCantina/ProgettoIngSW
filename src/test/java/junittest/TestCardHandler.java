@@ -107,6 +107,16 @@ public class TestCardHandler extends TestCase{
     		testGameHandler.mainBoard.ventureMap.get(i).instant instanceof ResourcesAndPoints) &&
     		(!("Raising a Statue").equals(testGameHandler.mainBoard.ventureMap.get(i).cardName)))
     			testCardHandler.doInstantEffect(testGameHandler.mainBoard.ventureMap.get(i).instant,testPlayer);
+    		if(testGameHandler.mainBoard.ventureMap.get(i).instant instanceof HarvestProductionAction ||
+    		testGameHandler.mainBoard.ventureMap.get(i).instant instanceof GetCardAndPoints ||
+    		testGameHandler.mainBoard.ventureMap.get(i).instant instanceof GetCardAndResources ||
+    		testGameHandler.mainBoard.ventureMap.get(i).instant instanceof GetDiscountedCard ||
+    		testGameHandler.mainBoard.ventureMap.get(i).instant instanceof HarvestProductionAndPoints){
+    			testPlayer.setResponse("no");
+    			testCardHandler.doInstantEffect(testGameHandler.mainBoard.ventureMap.get(i).instant,testPlayer);
+    			testPlayer.setResponse("1");
+    		}
+
     		
     		if((testGameHandler.mainBoard.characterMap.get(i).instantBonuses instanceof Points ||
     		testGameHandler.mainBoard.characterMap.get(i).instantBonuses instanceof Resources ||
@@ -115,6 +125,7 @@ public class TestCardHandler extends TestCase{
     		testGameHandler.mainBoard.characterMap.get(i).instantBonuses instanceof VictoryForCard) &&
     		(!("Royal Messenger").equals(testGameHandler.mainBoard.characterMap.get(i).cardName)))
     			testCardHandler.doInstantEffect(testGameHandler.mainBoard.characterMap.get(i).instantBonuses,testPlayer);
+    		
     	}
     	
     	assertEquals(expectedCoins,testPlayer.resources.getCoins());
@@ -149,7 +160,6 @@ public class TestCardHandler extends TestCase{
     public void testActivateLeader() throws SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException{
     	for(int i =0;i<leaderNumber;i++){
 
-    		System.out.println(testGameHandler.mainBoard.leaderName.get(i));
     		if(("Federico da Montefeltro").equals(testGameHandler.mainBoard.leaderName.get(i)))
     			testPlayer.setResponse("black");
     		if(("Leonardo da Vinci").equals(testGameHandler.mainBoard.leaderName.get(i)) ||

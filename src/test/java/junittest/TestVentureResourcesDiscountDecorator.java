@@ -50,5 +50,21 @@ public class TestVentureResourcesDiscountDecorator extends TestCase{
 		testResourcesDecorator.resourcesForVenture(testPlayer, testGameHandler.mainBoard.ventureMap.get(6));
 		assertEquals(expectedStones,testPlayer.resources.getStones());
 	}
+	
+	@Test
+	public void testBuildingResourcesDecoratorOneResource() throws NotEnoughResourcesException{
+		// discount is only 1 wood
+		Integer expectedWoods = 3;
+		ventureDiscount.stones = 0;
+		
+		testResourcesDecorator.resourcesForVenture(testPlayer, testGameHandler.mainBoard.ventureMap.get(2));
+		
+		assertEquals(expectedWoods,testPlayer.resources.getWoods());
+		testResourcesDecorator.resourcesForVenture(testPlayer, testGameHandler.mainBoard.ventureMap.get(6));
+
+		assertEquals(expectedWoods,testPlayer.resources.getStones());
+		
+
+	}
 
 }

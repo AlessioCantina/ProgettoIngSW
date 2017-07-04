@@ -38,7 +38,7 @@ public class TestBuildingResourcesDiscountDecorator extends TestCase{
 	public void testBuildingResourcesDecorator() throws NotEnoughResourcesException{
 		// discount is 1 wood
 		Integer expectedWoods = 4;
-		// first card is Chapel (which costs 3 woods) 
+		// first card is Chapel (which costs 2 woods) 
 		testResourcesDecorator.resourcesForBuilding(testPlayer, testGameHandler.mainBoard.buildingMap.get(1));
 		assertEquals(expectedWoods,testPlayer.resources.getWoods());
 		
@@ -49,5 +49,24 @@ public class TestBuildingResourcesDiscountDecorator extends TestCase{
 		testResourcesDecorator.resourcesForBuilding(testPlayer, testGameHandler.mainBoard.buildingMap.get(2));
 		assertEquals(expectedStones,testPlayer.resources.getStones());
 	}
+	
+	@Test
+	public void testBuildingResourcesDecoratorOneResource() throws NotEnoughResourcesException{
+		// discount is only 1 wood
+		Integer expectedWoods = 4;
+		buildingDiscount.stones = 0;
+		
+		// first card is Chapel (which costs 2 woods) 
+		testResourcesDecorator.resourcesForBuilding(testPlayer, testGameHandler.mainBoard.buildingMap.get(1));
+		assertEquals(expectedWoods,testPlayer.resources.getWoods());
+		
+		Integer expectedStones = 2;
+		// first card is Mint (which costs 3 stones) but we have no discount
+		testResourcesDecorator.resourcesForBuilding(testPlayer, testGameHandler.mainBoard.buildingMap.get(2));
+		assertEquals(expectedStones,testPlayer.resources.getStones());
+		
+
+	}
+
 	
 }
