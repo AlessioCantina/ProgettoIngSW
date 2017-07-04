@@ -615,6 +615,7 @@ public class Game implements Runnable{
     	chooseBonusTile();
     	//the array list where the players actions order is stored
     	ArrayList <String> order;
+    	//TODO the period must be set < 3 in the final version
     	for(int period=0;period<1;period++){
     		gameHandler.setPeriod(period+1);
     		for(int round=0;round<2;round++){
