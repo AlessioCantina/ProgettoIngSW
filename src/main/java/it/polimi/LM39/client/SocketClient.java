@@ -19,14 +19,15 @@ public class SocketClient extends AbstractClient implements Runnable{
 	private Socket socket;
 	private ObjectOutputStream socketOut;
 	private ObjectInputStream socketIn;
-
+	private String password;
 
     /*
 	 * set the socket properties and initialize the stream
      */
-    public SocketClient(String ip, int port, String userName, UserInterface UI) throws UnknownHostException, IOException {
+    public SocketClient(String ip, int port, String userName,String password, UserInterface UI) throws UnknownHostException, IOException {
     	super(UI);
     	this.userName = userName;
+    	this.password = password;
     	socket = new Socket(ip,port);
     	socketOut = new ObjectOutputStream(socket.getOutputStream());
     	socketOut.flush();
@@ -45,6 +46,7 @@ public class SocketClient extends AbstractClient implements Runnable{
     	NetworkPlayer player = null;
     	try {
 			socketOut.writeUTF(userName);
+			socketOut.writeUTF(password);
 	    	socketOut.flush();
 	    	UI.setMoveTimeout(socketIn.readLong());
 		} catch (IOException e1) {

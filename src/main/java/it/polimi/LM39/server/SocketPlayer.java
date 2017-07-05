@@ -121,7 +121,9 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    public void run() {
 	    	synchronized(LOCK){
 	    		try {
-	    			if(this.serverInterface.loginPlayer(objInput.readUTF(), this)){
+	    			String userName = objInput.readUTF();
+	    			String password = objInput.readUTF();
+	    			if(this.serverInterface.loginPlayer(userName,password,this)){
 	    				synchronized(DISCONNECT_LOCK){
 	    					DISCONNECT_LOCK.notifyAll();
 	    				}

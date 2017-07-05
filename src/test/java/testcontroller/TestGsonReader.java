@@ -1,4 +1,4 @@
-package junittest;
+package testcontroller;
 
 import java.io.IOException;
 

@@ -11,33 +11,23 @@ import java.io.InputStreamReader;
 
 public class StartGame {
 	public static void main (String[] args) throws NumberFormatException, IOException{
-		int uiChoice;
-		int connectionChoice;
 		String ip;
 		int port;
 		SocketClient socketClient;
-		String userName = "user";
+		String userName;
+		String password;
 		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-		System.out.println("Welcome to Lorenzo il Magnifico! \nSelect the User Interface");
-		do{
-		System.out.println("1 - Command Line Interface");
-		uiChoice = Integer.parseInt(input.readLine());
-		}while(uiChoice != 1 && uiChoice != 2);
-		do{
-			System.out.println("Select the connection method:");
-			System.out.println("1 - Socket");
-			connectionChoice = Integer.parseInt(input.readLine());
-		}while(connectionChoice != 1);
+		System.out.println("Welcome to Lorenzo il Magnifico! \n");
 		System.out.println("Write the server IP:");
 		ip = input.readLine();
 		System.out.println("Write the server Port:");
 		port = Integer.parseInt(input.readLine());
 		System.out.println("Choose a username:");
-		userName = input.readLine();
-		if(uiChoice == 1 && connectionChoice == 1){		
-			CLI cli = new CLI();
-			socketClient = new SocketClient("localhost",3421,userName,cli);	
-			new Thread(socketClient).start();		
-		}
+		userName = input.readLine();	
+		System.out.println("Choose a password:");
+		password = input.readLine();	
+		CLI cli = new CLI();
+		socketClient = new SocketClient("localhost",3421,userName,password,cli);	
+		new Thread(socketClient).start();		
 	}
 }

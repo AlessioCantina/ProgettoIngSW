@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.*;
 
+import it.polimi.LM39.credentials.Hash;
+
 
 
 /**
@@ -51,14 +53,15 @@ public class Server implements ServerInterface{
      * 
      */
 	@Override
-	public Boolean loginPlayer(String nickName, NetworkPlayer networkPlayer) throws IOException {
+	public Boolean loginPlayer(String nickName,String password,NetworkPlayer networkPlayer) throws IOException {
 		if (!players.containsKey(nickName)){
 			this.joinRoom(networkPlayer);
 			players.put(nickName, networkPlayer);
 			networkPlayer.setNickName(nickName);
+			Hash.register(nickName, password);
 			return false;
 		}
-		else{
+		else if(Hash.login(nickName, password)){
 			SocketPlayer player = ((SocketPlayer)players.get(nickName));
 			if(player.getSocket().isClosed()){
 				SocketPlayer newPlayer = (SocketPlayer)networkPlayer;
@@ -69,12 +72,18 @@ public class Server implements ServerInterface{
 				SocketPlayer newPlayer = (SocketPlayer)networkPlayer;
 				player.resetConnection(newPlayer.getSocket(), newPlayer.getOutputStream(), newPlayer.getInputStream());
 				player.getOutputStream().writeLong(Room.playerMoveTimeout);
+				player.getOutputStream().flush();
 				player.clientAction = "";
 				player.setIdleStatus(false);
 				SocketPlayer.disconnectedPlayers--;
 			}
 		return true;
+		}else{
+			((SocketPlayer)networkPlayer).getOutputStream().writeLong(Room.playerMoveTimeout);
+			((SocketPlayer)networkPlayer).getOutputStream().flush();
+			((SocketPlayer)networkPlayer).setMessage("Wrong password, please reconnect");
 		}
+		return false;
 	}
 
 	/*
