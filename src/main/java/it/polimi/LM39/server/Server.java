@@ -52,7 +52,7 @@ public class Server implements ServerInterface{
      * 
      */
 	@Override
-	public Boolean loginPlayer(String nickName, NetworkPlayer networkPlayer) {
+	public Boolean loginPlayer(String nickName, NetworkPlayer networkPlayer) throws IOException {
 		synchronized(LOGIN_LOCK){
 			if (!players.containsKey(nickName)){
 				players.put(nickName, networkPlayer);
@@ -61,18 +61,15 @@ public class Server implements ServerInterface{
 				return false;
 			}
 			else{
-				try {
-					if(((SocketPlayer)players.get(nickName)).getSocket().isClosed())
-					((SocketPlayer)players.get(nickName)).resetConnection(((SocketPlayer)networkPlayer).getSocket(),
-							((SocketPlayer)networkPlayer).getOutputStream(),((SocketPlayer)networkPlayer).getInputStream());
-					else{
-						ObjectOutputStream objOutput = new ObjectOutputStream(((SocketPlayer)networkPlayer).getSocket().getOutputStream());
-						objOutput.writeObject(false);
-					}
-						
-				} catch (IOException e) {
-					e.printStackTrace();
+				//TODO clean up code
+				if(((SocketPlayer)players.get(nickName)).getSocket().isClosed())
+				((SocketPlayer)players.get(nickName)).resetConnection(((SocketPlayer)networkPlayer).getSocket(),
+						((SocketPlayer)networkPlayer).getOutputStream(),((SocketPlayer)networkPlayer).getInputStream());
+				else{
+					ObjectOutputStream objOutput = new ObjectOutputStream(((SocketPlayer)networkPlayer).getSocket().getOutputStream());
+					objOutput.writeObject(false);
 				}
+						
 				return true;
 			}
 		}	

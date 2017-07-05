@@ -96,12 +96,12 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    	synchronized(DISCONNECT_LOCK){
 	    		try {
 	    			socket.close();
-					DISCONNECT_LOCK.wait();
+	    			while(socket.isClosed())
+	    				DISCONNECT_LOCK.wait();
 				} catch (InterruptedException e) {
 					Thread.currentThread().interrupt();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.log(Level.SEVERE, "Can't close socket", e);
 				}
 	    	}
 	    }
@@ -138,14 +138,17 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    				objOutput.writeObject(true);
 	    				objOutput.flush();
 	    				clientAction = objInput.readUTF();
-	    				while(("Client Timedout").equals(clientAction))
-	    					CLIENT_LOCK.wait();
+	    				while(("Client Timedout").equals(clientAction)){
+	    					synchronized(CLIENT_LOCK){
+	    						CLIENT_LOCK.wait();
+	    					}
+	    				}	    					
 	    			}
 				} catch (IOException e) {
 					logger.log(Level.WARNING, "Can't write objects on stream", e);
 					disconnectionHandler();
 				} catch (InterruptedException e) {
-					logger.log(Level.SEVERE,"Can't interrupt the thread", e);
+					Thread.currentThread().interrupt();
 				}
 	    	String stringToSet = clientAction;
 	    	clientAction = "";
