@@ -27,7 +27,7 @@ public class TestNoMarketDecorator extends TestCase{
 	    testGameHandler.setPeriod(1);
 	    testGameHandler.setRound(1);
 	    testGameHandler.initializeTheGame();
-	    testNoMarket = new NoMarketDecorator(testDecorator,testGameHandler,testPlayer);
+	    testNoMarket = new NoMarketDecorator(testDecorator);
 	}
 
 	@Test

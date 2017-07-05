@@ -28,7 +28,7 @@ public class TestCharacterResourcesDiscountDecorator extends TestCase{
 	    testGameHandler.initializeTheGame();
 	    testPlayer.resources.setCoins(5);
 	    buildingDiscount.coins = 1;
-	    testResourcesDecorator = new CharacterResourcesDiscountDecorator(testDecorator,testGameHandler,buildingDiscount,testPlayer);
+	    testResourcesDecorator = new CharacterResourcesDiscountDecorator(testDecorator,buildingDiscount);
 	}
 	
 	@Test

@@ -30,7 +30,7 @@ public class TestMilitaryPointsMalusDecorator extends TestCase{
 	    testPlayer.playerColor = "black";
 	    testPlayer.points.setMilitary(5);
 	    testMalus = 1;
-	    testResourcesDecorator = new MilitaryPointsMalusDecorator(testDecorator,testGameHandler,testMalus,testPlayer);
+	    testResourcesDecorator = new MilitaryPointsMalusDecorator(testDecorator,testMalus);
 	}
 	
 	@Test

@@ -31,7 +31,7 @@ public class TestCardCoinDiscountDecorator extends TestCase{
 	    testPlayer.resources.setWoods(1);
 	    testPlayer.resources.setStones(3);
 	    testBonus = 1;
-	    testResourcesDecorator = new CardCoinDiscountDecorator(testDecorator,testGameHandler,testBonus,testPlayer);
+	    testResourcesDecorator = new CardCoinDiscountDecorator(testDecorator,testBonus);
 	}
 	
 	@Test

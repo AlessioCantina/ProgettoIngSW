@@ -29,7 +29,7 @@ public class TestServantsMalusDecorator extends TestCase{
 	    testPlayer.resources.setServants(5);
 		testPlayer.setResponse("no");
 	    testMalus = 1;
-	    testResourcesDecorator = new ServantsMalusDecorator(testDecorator,testGameHandler,testMalus,testPlayer);
+	    testResourcesDecorator = new ServantsMalusDecorator(testDecorator,testMalus);
 	}
 	
 	@Test

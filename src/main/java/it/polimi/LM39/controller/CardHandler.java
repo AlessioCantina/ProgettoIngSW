@@ -797,13 +797,13 @@ public class CardHandler {
 	public DecoratedMethods activateCharacter(CardActionResourcesDiscount permanentEffect, NetworkPlayer player){
 		//need to check when a player get a card to set the discount like done for the GetDiscountedCard effect
 		if(("Character").equals(permanentEffect.cardType)){
-			decoratedMethods = new CharacterResourcesDiscountDecorator(decoratedMethods,gameHandler,permanentEffect.resourcesDiscount,player);
+			decoratedMethods = new CharacterResourcesDiscountDecorator(decoratedMethods,permanentEffect.resourcesDiscount);
 		}
 		else if(("Venture").equals(permanentEffect.cardType) ){
-			decoratedMethods = new VentureResourcesDiscountDecorator(decoratedMethods,gameHandler,permanentEffect.resourcesDiscount,player);
+			decoratedMethods = new VentureResourcesDiscountDecorator(decoratedMethods,permanentEffect.resourcesDiscount);
 		}
 		else if(("Building").equals(permanentEffect.cardType)){
-			decoratedMethods = new BuildingResourcesDiscountDecorator(decoratedMethods,gameHandler,permanentEffect.resourcesDiscount,player);
+			decoratedMethods = new BuildingResourcesDiscountDecorator(decoratedMethods,permanentEffect.resourcesDiscount);
 		}
 		
 		//make a CardActionDiscount effect and call his method
@@ -824,10 +824,10 @@ public class CardHandler {
 	public DecoratedMethods activateCharacter(HarvestProductionBoost permanentEffect, NetworkPlayer player){
 		//need to check when a player with this effect try to do a Production or Harvest and give him the bonus
 		if(("Harvest").equals(permanentEffect.actionType)){
-			decoratedMethods = new HarvestBoostDecorator(decoratedMethods,permanentEffect.actionValue,player);
+			decoratedMethods = new HarvestBoostDecorator(decoratedMethods,permanentEffect.actionValue);
 		}
 		else 
-			decoratedMethods = new ProductionBoostDecorator(decoratedMethods,permanentEffect.actionValue,player);
+			decoratedMethods = new ProductionBoostDecorator(decoratedMethods,permanentEffect.actionValue);
 	
 		return decoratedMethods;
 	}
@@ -919,11 +919,11 @@ public class CardHandler {
 	public DecoratedMethods activateExcommunication(HarvestProductionMalus permanentEffect,NetworkPlayer player){
 		if(("Harvest").equals(permanentEffect.actionType)){
 			//if not set to false it would block the decoration
-			decoratedMethods = new HarvestBoostDecorator(decoratedMethods,-permanentEffect.malus,player);
+			decoratedMethods = new HarvestBoostDecorator(decoratedMethods,-permanentEffect.malus);
 		}
 		else {
 			//if not set to false it would block the decoration
-			decoratedMethods = new ProductionBoostDecorator(decoratedMethods,-permanentEffect.malus,player);
+			decoratedMethods = new ProductionBoostDecorator(decoratedMethods,-permanentEffect.malus);
 		}
 		
 		return decoratedMethods;
@@ -988,7 +988,7 @@ public class CardHandler {
 	 * @return
 	 */
 	public DecoratedMethods activateExcommunication(MilitaryPointsMalus permanentEffect,NetworkPlayer player){
-		decoratedMethods = new MilitaryPointsMalusDecorator(decoratedMethods,gameHandler,permanentEffect.militaryQty ,player);
+		decoratedMethods = new MilitaryPointsMalusDecorator(decoratedMethods,permanentEffect.militaryQty);
 		
 		return decoratedMethods;
 	}
@@ -1000,7 +1000,7 @@ public class CardHandler {
 	 * @return
 	 */
 	public DecoratedMethods activateExcommunication(NoMarket permanentEffect,NetworkPlayer player){
-		decoratedMethods = new NoMarketDecorator(decoratedMethods,gameHandler,player);
+		decoratedMethods = new NoMarketDecorator(decoratedMethods);
 		return decoratedMethods;
 	}
 	
@@ -1011,7 +1011,7 @@ public class CardHandler {
 	 * @return
 	 */
 	public DecoratedMethods activateExcommunication(ResourcesMalus permanentEffect,NetworkPlayer player){
-		decoratedMethods = new ResourcesMalusDecorator(decoratedMethods,gameHandler,permanentEffect.resources,player);
+		decoratedMethods = new ResourcesMalusDecorator(decoratedMethods,gameHandler,permanentEffect.resources);
 		
 		return decoratedMethods;
 	}
@@ -1023,7 +1023,7 @@ public class CardHandler {
 	 * @return
 	 */
 	public DecoratedMethods activateExcommunication(ServantsMalus permanentEffect,NetworkPlayer player){
-		decoratedMethods = new ServantsMalusDecorator(decoratedMethods,gameHandler,permanentEffect.servantsQty,player);
+		decoratedMethods = new ServantsMalusDecorator(decoratedMethods,permanentEffect.servantsQty);
 		return decoratedMethods;
 	}
 	
@@ -1124,7 +1124,7 @@ public class CardHandler {
 	 */
 	public DecoratedMethods activateLeader(CardCoinDiscount permanentEffect,NetworkPlayer player,String cardName){
 		addPlayerPlayedLeaderCard(cardName,player);
-		decoratedMethods = new CardCoinDiscountDecorator(decoratedMethods,gameHandler,permanentEffect.coinQty,player);
+		decoratedMethods = new CardCoinDiscountDecorator(decoratedMethods,permanentEffect.coinQty);
 		return decoratedMethods;
 	}
 	

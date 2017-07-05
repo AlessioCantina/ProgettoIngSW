@@ -31,7 +31,7 @@ public class TestBuildingResourcesDiscountDecorator extends TestCase{
 	    testPlayer.setResponse("woods");
 	    buildingDiscount.woods = 1;
 	    buildingDiscount.stones = 1;
-	    testResourcesDecorator = new BuildingResourcesDiscountDecorator(testDecorator,testGameHandler,buildingDiscount,testPlayer);
+	    testResourcesDecorator = new BuildingResourcesDiscountDecorator(testDecorator,buildingDiscount);
 	}
 	
 	@Test

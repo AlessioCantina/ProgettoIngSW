@@ -36,7 +36,7 @@ public class TestResourcesMalusDecorator extends TestCase{
 	    testMalus.stones = 1;
 	    testResources.woods = 2;
 	    testResources.stones = 2;
-	    testResourcesDecorator = new ResourcesMalusDecorator(testDecorator,testGameHandler,testMalus,testPlayer);
+	    testResourcesDecorator = new ResourcesMalusDecorator(testDecorator,testGameHandler,testMalus);
 	}
 	
 	@Test

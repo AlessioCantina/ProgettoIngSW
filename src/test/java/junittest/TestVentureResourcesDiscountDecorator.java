@@ -31,7 +31,7 @@ public class TestVentureResourcesDiscountDecorator extends TestCase{
 	    testPlayer.setResponse("woods");
 	    ventureDiscount.woods = 1;
 	    ventureDiscount.stones = 1;
-	    testResourcesDecorator = new VentureResourcesDiscountDecorator(testDecorator,testGameHandler,ventureDiscount,testPlayer);
+	    testResourcesDecorator = new VentureResourcesDiscountDecorator(testDecorator,ventureDiscount);
 	}
 	
 	@Test
