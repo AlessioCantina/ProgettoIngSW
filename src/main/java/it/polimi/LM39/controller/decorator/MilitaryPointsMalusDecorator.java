@@ -6,6 +6,9 @@ import it.polimi.LM39.model.CardPoints;
 import it.polimi.LM39.model.PlayerPoints;
 import it.polimi.LM39.server.NetworkPlayer;
 
+/**
+ * this class decorates DecoratedMethods with the decorator of addCardPoints
+ */
 public class MilitaryPointsMalusDecorator extends DecoratedMethodsDecorator{
 
 	private Integer militaryMalus;
@@ -15,9 +18,11 @@ public class MilitaryPointsMalusDecorator extends DecoratedMethodsDecorator{
 		this.militaryMalus = militaryMalus;
 	}
 	
+	/**
+	 * this method overrides addCardPoints to set a malus on military points received from cards
+	 */
 	@Override
 	public void addCardPoints (CardPoints points, NetworkPlayer player) throws NotEnoughPointsException{
-			System.out.println("Dentro a addCardPoints decorato");
 			PlayerPoints playerPoints = player.points;
 	    	playerPoints.setFaith(points.faith);
 	    	playerPoints.setVictory(points.victory);

@@ -10,6 +10,9 @@ import it.polimi.LM39.model.CardResources;
 import it.polimi.LM39.model.PlayerResources;
 import it.polimi.LM39.server.NetworkPlayer;
 
+/**
+ * this class decorates DecoratedMethods with the decorator of addCardResources
+ */
 public class ResourcesMalusDecorator  extends DecoratedMethodsDecorator{
 
 	private GameHandler gameHandler;
@@ -21,6 +24,9 @@ public class ResourcesMalusDecorator  extends DecoratedMethodsDecorator{
 		this.resourcesMalus = resourcesMalus;
 	}
 	
+	/**
+	 * this method overrides addCardResources to set a malus on resources received by a card
+	 */
 	@Override
 	public void addCardResources (CardResources resources, NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException{
 			PlayerResources playerResources = player.resources;

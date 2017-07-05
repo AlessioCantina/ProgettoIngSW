@@ -2,6 +2,9 @@ package it.polimi.LM39.model;
 
 import java.io.Serializable;
 
+/**
+ * this class contains all the attributes of a Family Member
+ */
 public class FamilyMember implements Serializable{
 
 	private static final long serialVersionUID = 2498858899679886939L;

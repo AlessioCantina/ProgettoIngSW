@@ -2,6 +2,9 @@ package it.polimi.LM39.model;
 
 import java.io.Serializable;
 
+/**
+ * this class is used to handle the rankings, it stores the player points in a specific ranking
+ */
 public class PlayerRank implements Serializable{
 
 	private static final long serialVersionUID = -802117554699921290L;

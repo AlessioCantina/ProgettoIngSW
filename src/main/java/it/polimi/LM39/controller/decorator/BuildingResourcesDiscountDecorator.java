@@ -19,7 +19,7 @@ public class BuildingResourcesDiscountDecorator extends DecoratedMethodsDecorato
 	}
 	
 	/**
-	 * this method override 
+	 * this method overrides resourcesForBuilding to set a discount on building cost
 	 */
 	@Override
 	public void resourcesForBuilding(NetworkPlayer player ,Building building) throws NotEnoughResourcesException{

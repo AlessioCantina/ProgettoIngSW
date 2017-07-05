@@ -15,6 +15,10 @@ import it.polimi.LM39.model.FamilyMember;
 import it.polimi.LM39.model.Venture;
 import it.polimi.LM39.server.NetworkPlayer;
 
+/**
+ * this class contains all the overrides of the DecoratedMethods, this is needed to allow a layer of decoration that overrides a single method
+ * to call the other methods (that may or may not have been overridden) from the layer below
+ */
 public class DecoratedMethodsDecorator extends DecoratedMethods{
 
 	public DecoratedMethods decoratedMethods;

@@ -3,6 +3,9 @@ package it.polimi.LM39.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * this class is used to handle all the rankings: victory, faith and military
+ */
 public class Rankings implements Serializable{
 
 	private static final long serialVersionUID = 3477030534526157937L;

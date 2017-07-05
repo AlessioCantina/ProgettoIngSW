@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import it.polimi.LM39.exception.*;
 
-
+/**
+ * this class contains the arrays that contain the Family members locations in the game
+ */
 public class FamilyMembersLocation implements Serializable{
 
 	private static final long serialVersionUID = -7342514104269107127L;

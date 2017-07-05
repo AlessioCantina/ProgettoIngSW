@@ -8,6 +8,9 @@ import it.polimi.LM39.model.Character;
 import it.polimi.LM39.model.Venture;
 import it.polimi.LM39.server.NetworkPlayer;
 
+/**
+ * this class decorates DecoratedMethods with the decorator of resourcesForBuilding, coinsForCharacter, resourcesForVenture
+ */
 public class CardCoinDiscountDecorator extends DecoratedMethodsDecorator{
 
 	private Integer coinDiscount;
@@ -17,6 +20,9 @@ public class CardCoinDiscountDecorator extends DecoratedMethodsDecorator{
 		this.coinDiscount = coinDiscount;
 	}
 	
+	/**
+	 * this method overrides resourcesForBuilding to set a coin discount on a building cost
+	 */
 	@Override
 	public void resourcesForBuilding(NetworkPlayer player ,Building building) throws NotEnoughResourcesException{
 			//creating a CardResources object that is the result of the card costs - the bonus  
@@ -33,6 +39,9 @@ public class CardCoinDiscountDecorator extends DecoratedMethodsDecorator{
 			decoratedMethods.resourcesForBuilding(player,building2);
 	}
 	
+	/**
+	 * this method overrides coinsForCharacter to set a coin discount on a character cost
+	 */
 	@Override
 	public void coinsForCharacter(NetworkPlayer player ,Character character) throws NotEnoughResourcesException{
 			Character character2 = new Character();
@@ -44,6 +53,9 @@ public class CardCoinDiscountDecorator extends DecoratedMethodsDecorator{
 		//if the card cost is lower than the bonus no cost are applied to the player
 	}
 	
+	/**
+	 * this method overrides resourcesForVenture to set a coin discount on a venture cost
+	 */
 	@Override
 	public void resourcesForVenture(NetworkPlayer player ,Venture venture) throws NotEnoughResourcesException{
 			//creating a CardResources object that is the result of the card costs - the bonus  

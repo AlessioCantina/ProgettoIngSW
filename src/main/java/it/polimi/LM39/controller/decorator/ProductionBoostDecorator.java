@@ -10,6 +10,9 @@ import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.FamilyMember;
 import it.polimi.LM39.server.NetworkPlayer;
 
+/**
+ * this class decorates DecoratedMethods with the decorator of activateProduction
+ */
 public class ProductionBoostDecorator extends DecoratedMethodsDecorator{
 	
 	private Integer productionBonus;
@@ -19,6 +22,9 @@ public class ProductionBoostDecorator extends DecoratedMethodsDecorator{
 		this.productionBonus = boost;
 	}
 
+	/**
+	 * this method overrides activateProduction to set a bonus on a production action value
+	 */
 	@Override
 	public boolean activateProduction(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, IOException, InvalidActionTypeException{
 		return decoratedMethods.activateProduction(value + productionBonus,player,personalBoardHandler,familyMember);

@@ -1,10 +1,11 @@
 package it.polimi.LM39.model;
 
 import java.io.Serializable;
-
 import it.polimi.LM39.exception.NotEnoughPointsException;
-import it.polimi.LM39.exception.NotEnoughResourcesException;
 
+/**
+ * this class is used by the player to store his points
+ */
 public class PlayerPoints implements Serializable{
 
 	private static final long serialVersionUID = 238408352644162214L;

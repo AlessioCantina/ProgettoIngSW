@@ -2,7 +2,14 @@ package it.polimi.LM39.model;
 
 import java.io.Serializable;
 
+/**
+ * this class contains the bonuses that a council favor can give
+ */
 public class Council implements Serializable{
+	
+	/**
+	 * to set the bonuses values
+	 */
 	public Council(){
 		bonus1.woods=1;
 		bonus1.stones=1;

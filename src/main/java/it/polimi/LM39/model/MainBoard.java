@@ -1,11 +1,12 @@
 package it.polimi.LM39.model;
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
+/**
+ * this class contains all the attributes of the MainBoard
+ */
 public class MainBoard implements Serializable{
 
 	private static final long serialVersionUID = 5321590011683617039L;

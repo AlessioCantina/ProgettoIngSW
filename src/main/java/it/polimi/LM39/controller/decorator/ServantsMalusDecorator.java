@@ -6,6 +6,9 @@ import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.server.NetworkPlayer;
 
+/**
+ * this class decorates DecoratedMethods with the decorator of addServants
+ */
 public class ServantsMalusDecorator extends DecoratedMethodsDecorator{
 
 	private Integer servantsMalus;
@@ -15,6 +18,10 @@ public class ServantsMalusDecorator extends DecoratedMethodsDecorator{
 		this.servantsMalus = servantsMalus;
 	}
 	
+	/**
+	 * this method overrides addServants to set a malus on the number of servants that need to be played to increase
+	 * the value of a family member by 1
+	 */
 	@Override
 	 public Integer addServants(NetworkPlayer player) throws IOException, NotEnoughResourcesException{
 			player.setMessage("Do you want to add servants? yes or no \n You have an Excommunication so if you add "+ servantsMalus + " your action will increase by 1");

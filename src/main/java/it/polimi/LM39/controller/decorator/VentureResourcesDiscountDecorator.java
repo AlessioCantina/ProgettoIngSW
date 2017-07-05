@@ -6,6 +6,9 @@ import it.polimi.LM39.model.CardResources;
 import it.polimi.LM39.model.Venture;
 import it.polimi.LM39.server.NetworkPlayer;
 
+/**
+ * this class decorates DecoratedMethods with the decorator of resourcesForVenture
+ */
 public class VentureResourcesDiscountDecorator extends DecoratedMethodsDecorator{
 
 	private CardResources resourcesDiscount;
@@ -15,10 +18,12 @@ public class VentureResourcesDiscountDecorator extends DecoratedMethodsDecorator
 		this.resourcesDiscount = resourcesDiscount;
 	}
 
-	
+	/**
+	 * this method overrides resourcesForVenture to set a resources discount on a venture cost
+	 */
 	@Override
 	public void resourcesForVenture(NetworkPlayer player ,Venture venture) throws NotEnoughResourcesException{
-			//creating a CardResources object that is the result of the card costs - the bonus  
+			//creating a CardResources object that is the result of the card costs - the discount  
 			CardResources resources = new CardResources();
 			if(resourcesDiscount.stones > 0 && resourcesDiscount.woods > 0){
 				player.setMessage("Do you want a discount of " + resourcesDiscount.stones + " stones or " + resourcesDiscount.woods + " woods?\n Respond woods or stones" );

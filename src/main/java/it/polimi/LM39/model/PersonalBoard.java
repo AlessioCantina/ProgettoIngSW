@@ -3,6 +3,9 @@ package it.polimi.LM39.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * this class contains all the attributes of the player PersonalBoard
+ */
 public class PersonalBoard implements Serializable{
 
 	private static final long serialVersionUID = -8268917967400496440L;

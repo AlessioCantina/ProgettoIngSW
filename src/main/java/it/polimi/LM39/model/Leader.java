@@ -1,11 +1,12 @@
 package it.polimi.LM39.model;
 
-
 import java.io.Serializable;
 
 import it.polimi.LM39.model.leaderobject.*;
 
-
+/**
+ * this class contains the period, the effect and the name of a Leader card
+ */
 public class Leader implements Serializable{
 
 	private static final long serialVersionUID = -1386992865586803229L;
@@ -15,50 +16,5 @@ public class Leader implements Serializable{
     public Effect effect;
 
     public String cardName;
-    //probably useless code
-   /*
-    public LeaderRequestedObjects getRequestedObject()
-   	{
-   	try{
-   		Class[] cArg = new Class[1];
-           cArg[0] = requestedObjects.getClass();
-   		Method method = (this.getClass().getMethod("getRequestedObject",cArg));
-   		return (LeaderRequestedObjects)method.invoke(this,requestedObjects);
-   	}catch(Exception e){
-   		e.printStackTrace();
-   		return null;}
-   	}
-
-//overload of getRequestedObject that returns the LeaderRequestedObjects casted at his dynamic type
-    
-    public RequestedCard getRequestedObject(RequestedCard  requestedObjects)
-	{
-		return (RequestedCard)requestedObjects;
-	}
-    
-    public RequestedTwoCards getRequestedObject(RequestedTwoCards  requestedObjects)
-  	{
-  		return (RequestedTwoCards)requestedObjects;
-  	}
-    
-    public RequestedCardPointsResources getRequestedObject(RequestedCardPointsResources  requestedObjects)
-  	{
-  		return (RequestedCardPointsResources)requestedObjects;
-  	}
-    
-    public RequestedSameCard getRequestedObject(RequestedSameCard  requestedObjects)
-  	{
-  		return (RequestedSameCard)requestedObjects;
-  	}
-    
-    public RequestedResources getRequestedObject(RequestedResources  requestedObjects)
-  	{
-  		return (RequestedResources)requestedObjects;
-  	}
-    
-    public RequestedPoints getRequestedObject(RequestedPoints  requestedObjects)
-  	{
-  		return (RequestedPoints)requestedObjects;
-  	}
-*/
+  
 }

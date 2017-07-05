@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 
+/**
+ * this class is used by the player to store his resources
+ */
 public class PlayerResources implements Serializable{
 
 	private static final long serialVersionUID = -4338651550708606365L;

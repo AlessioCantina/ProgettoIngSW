@@ -3,6 +3,9 @@ package it.polimi.LM39.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * this class contains all player informations and possessed cards
+ */
 public class Player implements Serializable{
 
 	private static final long serialVersionUID = 216892385150280280L;
@@ -19,7 +22,8 @@ public class Player implements Serializable{
 
     private ArrayList<Integer> excommunications = new ArrayList<Integer>();
 
-    public MainBoard personalMainBoard = new MainBoard(); // this is a modified version of the mainboard, should be updated every time the board gets modified
+    // this is a modified version of the MainBoard, should be updated every time the board gets modified,
+    public MainBoard personalMainBoard = new MainBoard(); 
 
     private ArrayList<String> playerPlayedLeaderCards = new ArrayList<String>();
     
@@ -27,6 +31,7 @@ public class Player implements Serializable{
     
     private ArrayList<String> playerInstantLeaderCards = new ArrayList<String>();
     
+    //here is stored the name of the copied leader card if the player used Lorenzo De'Medici
     public String copiedLeaderCard = "";
     
     public void setPlayerPlayedLeaderCard(String cardName) {
