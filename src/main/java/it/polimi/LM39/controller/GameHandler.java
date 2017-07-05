@@ -62,7 +62,7 @@ public class GameHandler {
     	Integer[] diceValues = new Integer[4];
     	for(int i=0;i<3;i++){
     	Random rand = new Random();
-    	diceValues[i] = (rand.nextInt(6) + 1);
+    	diceValues[i] = rand.nextInt(6) + 1;
     	//uncoloredFamilyMember
     	diceValues[3] = 0;
     	// There is a + 1 because rand.nextInt(6) generates number from 0 to 5 but we need from 1 to 6
@@ -365,8 +365,8 @@ public class GameHandler {
 					}
         			if(getCard(cardNameToInteger(cardName),player,k)){
 		        		setActionBonus((player.personalMainBoard.getTowersBonuses())[p][k],player);
-		        		(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].playerColor)=(familyMember.playerColor);
-		        		(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].color)=(familyMember.color);
+		        		mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].playerColor = familyMember.playerColor;
+		        		mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].color = familyMember.color;
 		        		removeCard(p,k);
 		        		return true;
 		        		}
@@ -385,8 +385,8 @@ public class GameHandler {
         		if(i==4) {
         			if(getCard(cardNameToInteger(cardName),player,k)){
 	        			//if the tower is free
-	        			(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].playerColor)=(familyMember.playerColor);
-	        			(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].color)=(familyMember.color);
+	        			mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].playerColor = familyMember.playerColor;
+	        			mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].color = familyMember.color;
 	        			setActionBonus(player.personalMainBoard.getTowersBonuses()[p][k],player);
 	        			removeCard(p,k);
 		        		return true;
@@ -406,8 +406,8 @@ public class GameHandler {
 						}
         				if(getCard(cardNameToInteger(cardName),player,k)){
 	    	        		setActionBonus((player.personalMainBoard.getTowersBonuses())[p][k],player);
-	    	        		(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].playerColor)=(familyMember.playerColor);
-	            			(mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].color)=(familyMember.color);
+	    	        		mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].playerColor = familyMember.playerColor;
+	    	        		mainBoard.familyMembersLocation.getFamilyMembersOnTheTowers()[p][k].color = familyMember.color;
 	            			removeCard(p,k);
 	    	        		return true;
 	        			}
@@ -778,8 +778,9 @@ public class GameHandler {
     	Integer[] excommunications = new Integer[3];
     	//generating three random numbers from 1 to 7, 8 to 14 , 15 to 21 ,to choose the excommunications that are ordered by period in their hashmap
     	for(int i=0,j=1;i<3;i++,j+=7){
-    	Random rand = new Random();
-    	excommunications[i] = (rand.nextInt(7) + j);}
+    		Random rand = new Random();
+    		excommunications[i] = rand.nextInt(7) + j;
+    	}
     	// There is a + 1 because rand.nextInt(7) generates number from 0 to 6 but we need from 1 to 7
     	mainBoard.excommunicationsOnTheBoard = excommunications;
     }
@@ -805,6 +806,7 @@ public class GameHandler {
 		    			break;
 		        	case 3: cardNamesOnTheTowers[j][i] = mainBoard.ventureMap.get(cardsOnTheTowers[j][i]).cardName;
 		        		break;
+		        	default: break;
 	            	}
             	}
             }
@@ -846,7 +848,7 @@ public class GameHandler {
         	
         	//check if the player has the excommunication NoVictoryForCard that penalize the final points
         	for(Integer excommunicationNumber : player.getExcommunications())
-        		if((mainBoard.excommunicationMap.get(excommunicationNumber).effect instanceof NoVictoryForCard)){
+        		if(mainBoard.excommunicationMap.get(excommunicationNumber).effect instanceof NoVictoryForCard){
         			flag = true;
         			excommunication = excommunicationNumber;
         		}
@@ -862,31 +864,33 @@ public class GameHandler {
         	//if the player does not have the excommunication on the Territory cards
         	if(!(flag && ("Territory").equals(((NoVictoryForCard)mainBoard.excommunicationMap.get(excommunication).effect).cardType))){
 	        	switch (player.personalBoard.getPossessions("Territory").size()){
-		        	case(3): finalPoints += 1;
+		        	case 3: finalPoints += 1;
 		        		break;
-		        	case(4): finalPoints += 4;
+		        	case 4: finalPoints += 4;
 		        		break;
-		        	case(5): finalPoints += 10;
+		        	case 5: finalPoints += 10;
 		        		break;
-		        	case(6): finalPoints += 20;
+		        	case 6: finalPoints += 20;
 		        		break;
+		        	default: break;
 	        	}
         	}
         	//if the player does not have the excommunication on the Character cards
         	if(!(flag && ("Character").equals(((NoVictoryForCard)mainBoard.excommunicationMap.get(excommunication).effect).cardType))){
 	        	switch (player.personalBoard.getPossessions("Character").size()){
-	        		case(1): finalPoints += 1;
+	        		case 1: finalPoints += 1;
 	        			break;
-	        		case(2): finalPoints += 3;
+	        		case 2: finalPoints += 3;
 	        			break;
-	        		case(3): finalPoints += 6;
+	        		case 3: finalPoints += 6;
 	        			break;
-		        	case(4): finalPoints += 10;
+		        	case 4: finalPoints += 10;
 		        		break;
-		        	case(5): finalPoints += 15;
+		        	case 5: finalPoints += 15;
 		        		break;
-		        	case(6): finalPoints += 21;
+		        	case 6: finalPoints += 21;
 		        		break;
+		        	default: break;
 	        	}
         	}
         	//if the player does not have the excommunication on the Venture cards
@@ -1126,14 +1130,15 @@ public class GameHandler {
     }
     public void setFirstRoundBonuses(NetworkPlayer player,Integer position) throws NotEnoughResourcesException{
     	switch (position){
-	    	case(1): player.resources.setCoins(5);
+	    	case 1: player.resources.setCoins(5);
 	    		break;
-	    	case(2): player.resources.setCoins(6);
+	    	case 2: player.resources.setCoins(6);
 	    		break;
-	    	case(3): player.resources.setCoins(7);
+	    	case 3: player.resources.setCoins(7);
 	    		break;
-	    	case(4): player.resources.setCoins(8);
+	    	case 4: player.resources.setCoins(8);
 	    		break;
+	    	default: break;
     	}
     	player.resources.setServants(3);
     	player.resources.setWoods(2);

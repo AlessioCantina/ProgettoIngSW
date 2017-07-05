@@ -14,10 +14,5 @@ public class CharacterPermanentEffect extends Effect implements Serializable{
 	 */
 	private static final long serialVersionUID = -166066794452529174L;
 
-	/**
-     * Default constructor
-     */
-    public CharacterPermanentEffect() {
-    }
 
 }

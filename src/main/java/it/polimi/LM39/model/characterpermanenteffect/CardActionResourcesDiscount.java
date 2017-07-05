@@ -11,12 +11,6 @@ public class CardActionResourcesDiscount extends CardActionDiscount implements S
 
 	private static final long serialVersionUID = 184732623897799072L;
 
-	/**
-     * Default constructor
-     */
-    public CardActionResourcesDiscount() {
-    }
-
     /**
      * 
      */

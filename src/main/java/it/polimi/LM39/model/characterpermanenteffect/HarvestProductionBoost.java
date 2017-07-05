@@ -12,12 +12,6 @@ public class HarvestProductionBoost extends CharacterPermanentEffect implements 
 	 */
 	private static final long serialVersionUID = -578440549372567931L;
 
-	/**
-     * Default constructor
-     */
-    public HarvestProductionBoost() {
-    }
-
     /**
      * 
      */

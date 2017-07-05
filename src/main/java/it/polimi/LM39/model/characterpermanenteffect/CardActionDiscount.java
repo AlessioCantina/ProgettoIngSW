@@ -9,11 +9,6 @@ public class CardActionDiscount extends CharacterPermanentEffect implements Seri
 
 	private static final long serialVersionUID = -60160185994280563L;
 
-	/**
-     * Default constructor
-     */
-    public CardActionDiscount() {
-    }
 
     /**
      * 

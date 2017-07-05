@@ -50,7 +50,7 @@ public class PersonalBoardHandler {
         CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
         for (int i=0;i<territories.size();i++)
         	if(actionValue >= gameHandler.mainBoard.territoryMap.get(territories.get(i)).activationCost)
-        		cardHandler.doInstantEffect((gameHandler.mainBoard.territoryMap.get(territories.get(i)).activationReward),player);
+        		cardHandler.doInstantEffect(gameHandler.mainBoard.territoryMap.get(territories.get(i)).activationReward,player);
         return true;
     	}
     	else{
@@ -94,7 +94,7 @@ public class PersonalBoardHandler {
         		 response = GameHandler.checkResponse(response, player);
   
         		 if(("yes").equals(response))
-        			 checkPlayer(player,(gameHandler.mainBoard.buildingMap.get(buildings.get(i)).activationEffect),costResources,costPoints,bonusResources,bonusPoints);
+        			 checkPlayer(player,gameHandler.mainBoard.buildingMap.get(buildings.get(i)).activationEffect,costResources,costPoints,bonusResources,bonusPoints);
         		 
         	 }
         		 try{

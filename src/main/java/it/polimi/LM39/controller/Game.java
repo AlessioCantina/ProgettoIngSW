@@ -463,6 +463,7 @@ public class Game implements Runnable{
     		break;
     		case 3: cardType = "Venture";
     		break;
+    		default: break;
     		}	
     	}
     	else{
@@ -508,16 +509,16 @@ public class Game implements Runnable{
     	}
     	else{
     		switch(cardType){
-    		case("Territory"): cardHandler.getInfo(gameHandler.mainBoard.territoryMap.get(cardNumber).instantBonuses,player);
+    		case"Territory": cardHandler.getInfo(gameHandler.mainBoard.territoryMap.get(cardNumber).instantBonuses,player);
     						player.setMessage("Harvest Cost " + gameHandler.mainBoard.territoryMap.get(cardNumber).activationCost);
     						player.setMessage("When activated this card gives you:");
     						cardHandler.getInfo(gameHandler.mainBoard.territoryMap.get(cardNumber).activationReward,player);
     						break;
-    		case("Character"): player.setMessage("Coins cost " + gameHandler.mainBoard.characterMap.get(cardNumber).costCoins);
+    		case"Character": player.setMessage("Coins cost " + gameHandler.mainBoard.characterMap.get(cardNumber).costCoins);
     						cardHandler.getInfo(gameHandler.mainBoard.characterMap.get(cardNumber).instantBonuses,player);
     						cardHandler.getInfo(gameHandler.mainBoard.characterMap.get(cardNumber).permanentEffect,player);
     						break;
-    		case("Building"): player.setMessage("This card costs in resources:");
+    		case"Building": player.setMessage("This card costs in resources:");
 			   				cardHandler.printCardResources(gameHandler.mainBoard.buildingMap.get(cardNumber).costResources,player);
 			   				player.setMessage("This card gives you:");
 			   				cardHandler.printCardPoints(gameHandler.mainBoard.buildingMap.get(cardNumber).instantBonuses,player);
@@ -525,7 +526,7 @@ public class Game implements Runnable{
 			   				player.setMessage("When activated this card gives you:");
 			   				cardHandler.getInfo(gameHandler.mainBoard.buildingMap.get(cardNumber).activationEffect,player);
 			   				break;
-    		case("Venture"): if(gameHandler.mainBoard.ventureMap.get(cardNumber).neededMilitary>0){
+    		case"Venture": if(gameHandler.mainBoard.ventureMap.get(cardNumber).neededMilitary>0){
     						player.setMessage("To get this card you need " + gameHandler.mainBoard.ventureMap.get(cardNumber).neededMilitary + " military points");
     						}
     						if(gameHandler.mainBoard.ventureMap.get(cardNumber).costMilitary > 0){
@@ -543,6 +544,7 @@ public class Game implements Runnable{
 			    			player.setMessage("This card gives you:");
 				   			cardHandler.getInfo(gameHandler.mainBoard.ventureMap.get(cardNumber).instant,player);
 			    			break;
+    		default: break;
     		}
     	}
     }
@@ -601,6 +603,7 @@ public class Game implements Runnable{
     /**
      * the core of the game, handles periods, rounds and player moves
      */
+    @Override
     public void run() {
     	//initialize the game loading parameters and cards
     	try {
@@ -738,7 +741,7 @@ public class Game implements Runnable{
     private NetworkPlayer playerColorToNetworkPlayer (String color){
     	for(NetworkPlayer player: players)
     		if(player.playerColor.equals(color))
-    			return(player);
+    			return player;
     	return null;
     }
     
@@ -784,7 +787,7 @@ public class Game implements Runnable{
     				response = players.get((playerNumber + n)).sendMessage();
     				playerNumber2 = playerNumber + n;
     			}
-    			else if (((playerNumber + n)-players.size())<players.size()){
+    			else if ((playerNumber + n -players.size())<players.size()){
     				response = players.get((playerNumber + n)-players.size()).sendMessage();
     				playerNumber2 = (playerNumber + n) -players.size();
     			}

@@ -62,7 +62,7 @@ public class CardHandler {
 		 Class[] cArg = new Class[2];
 		 cArg[0] = instantEffect.getClass();
 		 cArg[1] = NetworkPlayer.class;
-		 Method lMethod = (this.getClass().getMethod("doInstantEffect",cArg));
+		 Method lMethod = this.getClass().getMethod("doInstantEffect",cArg);
 		 lMethod.invoke(this,instantEffect,player);
 	}
  
@@ -85,7 +85,7 @@ public class CardHandler {
 		 cArg[2] = NetworkPlayer.class;
 		 Method lMethod = null;
 		try {
-			lMethod = (this.getClass().getMethod("doInstantEffect",cArg));
+			lMethod = this.getClass().getMethod("doInstantEffect",cArg);
 		} catch (NoSuchMethodException e) {
 			doInstantEffect(instantEffect,player);
 			return;
@@ -605,7 +605,7 @@ public class CardHandler {
 		Class[] cArg = new Class[2];
 		cArg[0] = requestedObject.getClass();
 		cArg[1] = NetworkPlayer.class;
-		Method lMethod = (this.getClass().getMethod("checkLeaderRequestedObject",cArg));
+		Method lMethod = this.getClass().getMethod("checkLeaderRequestedObject",cArg);
 		return (boolean)lMethod.invoke(this,requestedObject,player);
 	}
 	
@@ -724,7 +724,7 @@ public class CardHandler {
 		requestedCard.cardType=requestedObject.cardType2;
 		flag2 = checkLeaderRequestedObject(requestedCard,player);
 		//the two condition returned true the leader can be used
-		return (flag1 && flag2);
+		return flag1 && flag2;
 	}
 		
 	
@@ -747,7 +747,7 @@ public class CardHandler {
 		Class[] cArg = new Class[2];
 	    cArg[0] = permanentEffect.getClass();
 	    cArg[1] = NetworkPlayer.class;
-		Method lMethod = (this.getClass().getMethod("activateCharacter",cArg));
+		Method lMethod = this.getClass().getMethod("activateCharacter",cArg);
 		return (DecoratedMethods)lMethod.invoke(this,permanentEffect,player);
 		}
 	
@@ -781,6 +781,7 @@ public class CardHandler {
 	    		break;
 	    	case "Venture": i=3;
 				break;
+			default: break;
 		}
 		for(int j=0;j<4;j++)
 			towersValue[j][i]-=permanentEffect.discount;
@@ -873,8 +874,8 @@ public class CardHandler {
 		Class[] cArg = new Class[2];
 	    cArg[0] = permanentEffect.getClass();
 	    cArg[1] = NetworkPlayer.class;
-		Method lMethod = (this.getClass().getMethod("activateExcommunication",cArg));
-		Method lMethod2 = (this.getClass().getMethod("getInfo",cArg));
+		Method lMethod = this.getClass().getMethod("activateExcommunication",cArg);
+		Method lMethod2 = this.getClass().getMethod("getInfo",cArg);
 		lMethod2.invoke(this,permanentEffect,player);
 		return (DecoratedMethods)lMethod.invoke(this,permanentEffect,player);
 	}	
@@ -1088,13 +1089,13 @@ public class CardHandler {
 	    cArg[2] = cardName.getClass();
 		Method lMethod;
 		try {
-			lMethod = (this.getClass().getMethod("activateLeader",cArg));
+			lMethod = this.getClass().getMethod("activateLeader",cArg);
 			return (DecoratedMethods)lMethod.invoke(this,permanentEffect,player,cardName);
 		} catch (NoSuchMethodException e) {
 			Class[] cArg1 = new Class[2];
 			cArg1[0] = cArg[0];
 			cArg1[1] = cArg[1];
-			lMethod = (this.getClass().getMethod("doInstantEffect",cArg1));
+			lMethod = this.getClass().getMethod("doInstantEffect",cArg1);
 			addPlayerInstantLeaderCard(cardName,player);
 			lMethod.invoke(this,permanentEffect,player);
 			return decoratedMethods;
@@ -1470,7 +1471,7 @@ public class CardHandler {
 		 Class[] cArg = new Class[2];
 		 cArg[0] = effect.getClass();
 		 cArg[1] = NetworkPlayer.class;
-		 Method lMethod = (this.getClass().getMethod("getInfo",cArg));
+		 Method lMethod = this.getClass().getMethod("getInfo",cArg);
 		 lMethod.invoke(this,effect,player);
 	 }
 	/**
@@ -1519,7 +1520,7 @@ public class CardHandler {
 		 Class[] cArg = new Class[2];
 		 cArg[0] = effect.getClass();
 		 cArg[1] = NetworkPlayer.class;
-		 Method lMethod = (this.getClass().getMethod("getInfo",cArg));
+		 Method lMethod = this.getClass().getMethod("getInfo",cArg);
 		 lMethod.invoke(this,effect,player);
 	 }
 	
@@ -1563,7 +1564,7 @@ public class CardHandler {
 		 Class[] cArg = new Class[2];
 		 cArg[0] = effect.getClass();
 		 cArg[1] = NetworkPlayer.class;
-		 Method lMethod = (this.getClass().getMethod("getInfo",cArg));
+		 Method lMethod = this.getClass().getMethod("getInfo",cArg);
 		 lMethod.invoke(this,effect,player);
 	 }
 	
@@ -1642,7 +1643,7 @@ public class CardHandler {
 		 Class[] cArg = new Class[2];
 		 cArg[0] = effect.getClass();
 		 cArg[1] = NetworkPlayer.class;	
-		 Method lMethod = (this.getClass().getMethod("getInfo",cArg));
+		 Method lMethod = this.getClass().getMethod("getInfo",cArg);
 		 lMethod.invoke(this,effect,player);
 	 }
 	
@@ -1705,7 +1706,7 @@ public class CardHandler {
 	    cArg[0] = permanentEffect.getClass();
 	    cArg[1] = NetworkPlayer.class;
 		Method lMethod;
-		lMethod = (this.getClass().getMethod("getInfo",cArg));
+		lMethod = this.getClass().getMethod("getInfo",cArg);
 		lMethod.invoke(this,permanentEffect,player);
 	}
 	

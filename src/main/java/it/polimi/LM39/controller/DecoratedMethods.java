@@ -98,8 +98,8 @@ public class DecoratedMethods {
 	        		player.setMessage("Invalid position! the position must be between 1 and 4");
 		        	return false;
 		        	}
-	        	(gameHandler.mainBoard.familyMembersLocation.getFamilyMembersOnTheMarket()[position-1].color) = (familyMember.color);
-	        	(gameHandler.mainBoard.familyMembersLocation.getFamilyMembersOnTheMarket()[position-1].playerColor) = (familyMember.playerColor);
+	        	gameHandler.mainBoard.familyMembersLocation.getFamilyMembersOnTheMarket()[position-1].color = familyMember.color;
+	        	gameHandler.mainBoard.familyMembersLocation.getFamilyMembersOnTheMarket()[position-1].playerColor = familyMember.playerColor;
 	        	}
 	        	else {
 	            	player.setMessage("Your Family Member must have a value of at least 1");

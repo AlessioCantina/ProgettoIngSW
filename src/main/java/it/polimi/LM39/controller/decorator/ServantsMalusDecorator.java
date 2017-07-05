@@ -31,7 +31,7 @@ public class ServantsMalusDecorator extends DecoratedMethodsDecorator{
 	    		player.setMessage("How many?");
 	    		Integer qty = Integer.parseInt(player.sendMessage());
 	    		player.resources.setServants(-qty);
-	    		return (qty/servantsMalus);
+	    		return qty/servantsMalus;
 	    	}
 	    	else if (("no").equals(response))
 	    		return 0;

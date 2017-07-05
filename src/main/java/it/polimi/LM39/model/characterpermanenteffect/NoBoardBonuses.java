@@ -12,10 +12,5 @@ public class NoBoardBonuses extends CharacterPermanentEffect implements Serializ
 	 */
 	private static final long serialVersionUID = 5961803112200683864L;
 
-	/**
-     * Default constructor
-     */
-    public NoBoardBonuses() {
-    }
 
 }
