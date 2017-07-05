@@ -41,6 +41,24 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	          this.objOutput.flush();	//needed to avoid deadlock
 	          this.objInput = new ObjectInputStream(new BufferedInputStream(this.socket.getInputStream()));
 	    }
+	    
+	    public Socket getSocket(){
+	    	return this.socket;
+	    }
+	    
+	    public ObjectOutputStream getOutputStream(){
+	    	return this.objOutput;
+	    }
+	    
+	    public ObjectInputStream getInputStream(){
+	    	return this.objInput;
+	    }
+	    
+	    public void resetConnection(Socket socket,ObjectOutputStream output, ObjectInputStream input) throws IOException {
+	    	this.socket = socket;
+	        this.objOutput = output;
+	        this.objInput = input;
+	    }
 	    /*
 	     * used from the controller to send mainboard
 	     */
@@ -53,6 +71,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
         		objOutput.reset();
 	    	}catch (IOException e) {
 	    		logger.log(Level.WARNING, "Can't write objects on stream", e);
+	    		disconnectionHandler();
 		    }	
 	    }
 	    /*
@@ -67,10 +86,27 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
     				objOutput.writeUTF(this.message);
     				objOutput.flush();
 	    		} catch (IOException e) {
-					Thread.currentThread().interrupt();
+	    			logger.log(Level.WARNING, "Player disconnected");
+	    			disconnectionHandler();
 	    		}
 	    	}
 	    }
+	    
+	    public void disconnectionHandler(){
+	    	synchronized(DISCONNECT_LOCK){
+	    		try {
+	    			socket.close();
+					DISCONNECT_LOCK.wait();
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    	}
+	    }
+
+
 	    /*
 	     * wait for the room to start, then unlocks player's threads
 	     * 
@@ -78,11 +114,17 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    public void run() {
 	    	synchronized(LOCK){
 	    		try {
-	    	    	this.serverInterface.joinRoom(this);
-	    	    	while(!Thread.currentThread().isInterrupted())
+	    			if(this.serverInterface.loginPlayer(objInput.readUTF(), this)){
+	    				synchronized(DISCONNECT_LOCK){
+	    					DISCONNECT_LOCK.notifyAll();
+	    				}
+	    			}
+	    	    	while(!Thread.currentThread().isInterrupted()){
 	    	    		LOCK.wait();
+	    	    		break;
+	    	    	}
 	    			System.out.println("THREAD UNLOCKED" + Thread.currentThread());
-				} catch (InterruptedException e) {
+				} catch (InterruptedException | IOException e) {
 					Thread.currentThread().interrupt();
 				}
 	    	}
@@ -91,9 +133,8 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	     * this method return the client action to the game controller
 	     */
 	    public String sendMessage(){
-	    	synchronized(CLIENT_LOCK){
 	    		try {
-	    			if(("").equals(clientAction)){
+	    			if(("").equals(clientAction)){	    				
 	    				objOutput.writeObject(true);
 	    				objOutput.flush();
 	    				clientAction = objInput.readUTF();
@@ -101,12 +142,11 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    					CLIENT_LOCK.wait();
 	    			}
 				} catch (IOException e) {
-					logger.log(Level.SEVERE,"Socket closed", e); //TODO handle the ioexception from socket closed
+					logger.log(Level.WARNING, "Can't write objects on stream", e);
+					disconnectionHandler();
 				} catch (InterruptedException e) {
 					logger.log(Level.SEVERE,"Can't interrupt the thread", e);
-					Thread.currentThread().interrupt();
 				}
-	    	}
 	    	String stringToSet = clientAction;
 	    	clientAction = "";
 	    	return stringToSet;

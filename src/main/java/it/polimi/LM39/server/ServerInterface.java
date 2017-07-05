@@ -5,7 +5,7 @@ package it.polimi.LM39.server;
  * a room and getting a room. implemented by server used by rmi and socket
  */
 public interface ServerInterface {
-	public void loginPlayer(String nickName, NetworkPlayer networkPlayer);
+	public Boolean loginPlayer(String nickName, NetworkPlayer networkPlayer);
 	NetworkPlayer getPlayer(String nickName);
 	public void joinRoom(NetworkPlayer networkPlayer);
 	public Room getRoom(Integer roomNumber);

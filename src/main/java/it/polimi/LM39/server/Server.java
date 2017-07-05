@@ -1,5 +1,7 @@
 package it.polimi.LM39.server;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.*;
 
 
@@ -50,11 +52,28 @@ public class Server implements ServerInterface{
      * 
      */
 	@Override
-	public void loginPlayer(String nickName, NetworkPlayer networkPlayer) {
+	public Boolean loginPlayer(String nickName, NetworkPlayer networkPlayer) {
 		synchronized(LOGIN_LOCK){
 			if (!players.containsKey(nickName)){
 				players.put(nickName, networkPlayer);
 				networkPlayer.setNickName(nickName);
+				this.joinRoom(networkPlayer);
+				return false;
+			}
+			else{
+				try {
+					if(((SocketPlayer)players.get(nickName)).getSocket().isClosed())
+					((SocketPlayer)players.get(nickName)).resetConnection(((SocketPlayer)networkPlayer).getSocket(),
+							((SocketPlayer)networkPlayer).getOutputStream(),((SocketPlayer)networkPlayer).getInputStream());
+					else{
+						ObjectOutputStream objOutput = new ObjectOutputStream(((SocketPlayer)networkPlayer).getSocket().getOutputStream());
+						objOutput.writeObject(false);
+					}
+						
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				return true;
 			}
 		}	
 	}

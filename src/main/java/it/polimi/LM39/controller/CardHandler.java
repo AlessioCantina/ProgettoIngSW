@@ -1182,17 +1182,19 @@ public class CardHandler {
 	
 	/**
 	 * to handle DoubleResourcesFromDevelopment permanent effect
+	 * this method is synchronized to avoid multiple assignment to the static variable
 	 * @param permanentEffect
 	 * @param player
 	 * @param cardName
 	 * @return
 	 */
-	public DecoratedMethods activateLeader(DoubleResourcesFromDevelopment permanentEffect,NetworkPlayer player,String cardName) {
+	public synchronized DecoratedMethods activateLeader(DoubleResourcesFromDevelopment permanentEffect,NetworkPlayer player,String cardName) {
 		addPlayerPlayedLeaderCard(cardName,player);
 		playerDoubleResourcesFromDevelopment = player.playerColor;
 		
 		return decoratedMethods;
 	}
+	
 	
 	/**
 	 * to handle NoMilitaryRequirementsForTerritory permanent effect

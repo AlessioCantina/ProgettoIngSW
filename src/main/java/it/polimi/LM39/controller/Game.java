@@ -609,7 +609,7 @@ public class Game implements Runnable{
 			logger.log(Level.SEVERE,"Failed to read json files", e);
 		}
     	//make the players choose four leader cards
-    	chooseLeaderCard();
+    	//chooseLeaderCard();			//TODO uncomment
     	//make the player choose one bonus tile
     	chooseBonusTile();
     	//the array list where the players actions order is stored

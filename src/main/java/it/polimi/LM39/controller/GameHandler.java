@@ -821,7 +821,7 @@ public class GameHandler {
     public Integer cardNameToInteger (String card) throws CardNotFoundException{
     	for(int i=0;i<4;i++)
     		for(int j=0;j<4;j++){
-    			if(mainBoard.getCardNamesOnTheTowers()[i][j].compareToIgnoreCase(card) == 0 && !card.equals(""))
+    			if(mainBoard.getCardNamesOnTheTowers()[i][j].compareToIgnoreCase(card) == 0 && !("").equals(card))
     				return mainBoard.getCardsOnTheTowers()[i][j];}
     	throw new CardNotFoundException("Card not found!"); //card not found
     			
@@ -846,7 +846,7 @@ public class GameHandler {
         	
         	//check if the player has the excommunication NoVictoryForCard that penalize the final points
         	for(Integer excommunicationNumber : player.getExcommunications())
-        		if((mainBoard.excommunicationMap.get(excommunicationNumber).effect.getClass().getSimpleName()).equals(NoVictoryForCard.class)){
+        		if((mainBoard.excommunicationMap.get(excommunicationNumber).effect instanceof NoVictoryForCard)){
         			flag = true;
         			excommunication = excommunicationNumber;
         		}

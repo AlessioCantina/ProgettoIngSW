@@ -17,11 +17,10 @@ public class StartGame {
 		int port;
 		SocketClient socketClient;
 		String userName = "user";
-/*		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("Welcome to Lorenzo il Magnifico! \nSelect the User Interface");
 		do{
 		System.out.println("1 - Command Line Interface");
-		System.out.println("2 - Graphic User Interface");
 		uiChoice = Integer.parseInt(input.readLine());
 		}while(uiChoice != 1 && uiChoice != 2);
 		do{
@@ -35,10 +34,10 @@ public class StartGame {
 		port = Integer.parseInt(input.readLine());
 		System.out.println("Choose a username:");
 		userName = input.readLine();
-		if(uiChoice == 1 && connectionChoice == 1){		*/
+		if(uiChoice == 1 && connectionChoice == 1){		
 			CLI cli = new CLI();
 			socketClient = new SocketClient("localhost",3421,userName,cli);	
 			new Thread(socketClient).start();		
 		}
-	//}
+	}
 }

@@ -32,7 +32,6 @@ public class SocketClient extends AbstractClient implements Runnable{
     	super(UI);
     	this.userName = userName;
     	socket = new Socket(ip,port);
-    	socket.setKeepAlive(true);	
     	socketOut = new ObjectOutputStream(socket.getOutputStream());
     	socketOut.flush();
     	socketIn = new ObjectInputStream(new BufferedInputStream(this.socket.getInputStream()));  
@@ -48,6 +47,12 @@ public class SocketClient extends AbstractClient implements Runnable{
     	Logger logger = Logger.getLogger(SocketClient.class.getName());
     	Object objectGrabber;
     	NetworkPlayer player = null;
+    	try {
+			socketOut.writeUTF(userName);
+	    	socketOut.flush();
+		} catch (IOException e1) {
+			logger.log(Level.SEVERE, "Can't write on socket", e1);
+		}
     		while (!socket.isClosed()){	
     			try{
     				while(socketIn.read() != 0){
@@ -79,16 +84,22 @@ public class SocketClient extends AbstractClient implements Runnable{
     							Thread.currentThread().join();
     							socket.close();
     						}
-    				} catch (IOException | InterruptedException writeException) {
+    				} catch (IOException writeException) {
     					logger.log(Level.SEVERE, "Can't write on socket", writeException);
+    				} catch (InterruptedException intException){
+    					Thread.currentThread().interrupt();
     				}
     				} catch (ClassNotFoundException e) {
     					logger.log(Level.SEVERE, "Object class not found", e);
     				} catch (EOFException e) {
     					continue;
     				} catch (IOException e) {
-    					Thread.currentThread().interrupt();
-    					logger.log(Level.SEVERE, "Can't write on socket", e);
+    					logger.log(Level.INFO, "Nickname already choosen");
+    					try {
+							Thread.currentThread().join();
+						} catch (InterruptedException e1) {
+							Thread.currentThread().interrupt();
+						}
 				} 			
     		}
     	}
