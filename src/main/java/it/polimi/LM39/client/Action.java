@@ -1,7 +1,9 @@
 package it.polimi.LM39.client;
 
-/*
+/**
  * enum with possible actions available for the client
+ * CONTROLLER contains available action which will be handled by the server
+ * CLI contains available action which will be handled locally by the CLI
  */
 public enum Action {
 	CONTROLLER (new String[]{"GET CARD","ACTIVATE PRODUCTION","ACTIVATE HARVEST","DISCARD LEADER","ACTIVATE LEADER","GO TO THE MARKET",
@@ -15,7 +17,7 @@ public enum Action {
 		this.actions = actions;
 	}
 
-	/*
+	/**
 	 * print the action's menu
 	 */
 	static void printAvailableActions(){
@@ -23,7 +25,7 @@ public enum Action {
 			for(String actionName : possibleActions.actions)
 				System.out.println(actionName.toLowerCase());
 	}
-	/*
+	/**
 	 * checks if the client action is in the possible actions (in the enum) and return which part
 	 * of the software will take care of his action (CLI or CONTROLLER) 
 	 * 
@@ -36,6 +38,6 @@ public enum Action {
 					return possibleActions.name();
 			}
 		}
-		return "Action Not Available";
+		return "";
 	}
 }

@@ -53,27 +53,24 @@ public class Server implements ServerInterface{
      */
 	@Override
 	public Boolean loginPlayer(String nickName, NetworkPlayer networkPlayer) throws IOException {
-		synchronized(LOGIN_LOCK){
-			if (!players.containsKey(nickName)){
-				players.put(nickName, networkPlayer);
-				networkPlayer.setNickName(nickName);
-				this.joinRoom(networkPlayer);
-				return false;
+		if (!players.containsKey(nickName)){
+			this.joinRoom(networkPlayer);
+			players.put(nickName, networkPlayer);
+			networkPlayer.setNickName(nickName);
+			return false;
+		}
+		else{
+			if(((SocketPlayer)players.get(nickName)).getSocket().isClosed()){
+				SocketPlayer player = ((SocketPlayer)players.get(nickName));
+				SocketPlayer newPlayer = (SocketPlayer)networkPlayer;
+				player.resetConnection(newPlayer.getSocket(), newPlayer.getOutputStream(), newPlayer.getInputStream());
 			}
 			else{
-				if(((SocketPlayer)players.get(nickName)).getSocket().isClosed()){
-					SocketPlayer player = ((SocketPlayer)players.get(nickName));
-					SocketPlayer newPlayer = (SocketPlayer)networkPlayer;
-					player.resetConnection(newPlayer.getSocket(), newPlayer.getOutputStream(), newPlayer.getInputStream());
-				}
-				else{
-					ObjectOutputStream objOutput = new ObjectOutputStream(((SocketPlayer)networkPlayer).getSocket().getOutputStream());
-					objOutput.writeObject(false);
-				}
-						
-				return true;
+				ObjectOutputStream objOutput = new ObjectOutputStream(((SocketPlayer)networkPlayer).getSocket().getOutputStream());
+				objOutput.writeObject(false);
 			}
-		}	
+		return true;
+		}
 	}
 
 	/*

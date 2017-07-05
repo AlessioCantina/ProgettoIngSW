@@ -1,8 +1,7 @@
 package it.polimi.LM39.client;
+
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -20,75 +19,23 @@ import it.polimi.LM39.exception.InvalidActionTypeException;
 import it.polimi.LM39.model.ActionBonus;
 import it.polimi.LM39.model.CardPoints;
 import it.polimi.LM39.model.CardResources;
-import it.polimi.LM39.model.Effect;
-import it.polimi.LM39.model.Excommunication;
 import it.polimi.LM39.model.FamilyMember;
 import it.polimi.LM39.model.FamilyMembersLocation;
 import it.polimi.LM39.model.MainBoard;
 import it.polimi.LM39.model.PersonalBoard;
 import it.polimi.LM39.model.PlayerRank;
 import it.polimi.LM39.model.Rankings;
-import it.polimi.LM39.model.characterpermanenteffect.CardActionDiscount;
-import it.polimi.LM39.model.characterpermanenteffect.CardActionResourcesDiscount;
-import it.polimi.LM39.model.characterpermanenteffect.HarvestProductionBoost;
-import it.polimi.LM39.model.characterpermanenteffect.NoBoardBonuses;
-import it.polimi.LM39.model.characterpermanenteffect.NoCharacterPermanentEffect;
-import it.polimi.LM39.model.excommunicationpermanenteffect.CardActionMalus;
-import it.polimi.LM39.model.excommunicationpermanenteffect.DiceMalus;
-import it.polimi.LM39.model.excommunicationpermanenteffect.HarvestProductionMalus;
-import it.polimi.LM39.model.excommunicationpermanenteffect.MalusForResources;
-import it.polimi.LM39.model.excommunicationpermanenteffect.MalusForResourcesCost;
-import it.polimi.LM39.model.excommunicationpermanenteffect.MalusVictoryForMilitary;
-import it.polimi.LM39.model.excommunicationpermanenteffect.MilitaryPointsMalus;
-import it.polimi.LM39.model.excommunicationpermanenteffect.NoMarket;
-import it.polimi.LM39.model.excommunicationpermanenteffect.ResourcesMalus;
-import it.polimi.LM39.model.excommunicationpermanenteffect.ServantsMalus;
-import it.polimi.LM39.model.excommunicationpermanenteffect.SkipFirstTurn;
-import it.polimi.LM39.model.excommunicationpermanenteffect.VictoryMalus;
-import it.polimi.LM39.model.instanteffect.CoinForCard;
-import it.polimi.LM39.model.instanteffect.DoublePointsTransformation;
-import it.polimi.LM39.model.instanteffect.DoubleResourcesTransformation;
-import it.polimi.LM39.model.instanteffect.GetCard;
-import it.polimi.LM39.model.instanteffect.GetCardAndPoints;
-import it.polimi.LM39.model.instanteffect.GetCardAndResources;
-import it.polimi.LM39.model.instanteffect.GetDiscountedCard;
-import it.polimi.LM39.model.instanteffect.HarvestProductionAction;
-import it.polimi.LM39.model.instanteffect.HarvestProductionAndPoints;
-import it.polimi.LM39.model.instanteffect.NoInstantEffect;
-import it.polimi.LM39.model.instanteffect.Points;
-import it.polimi.LM39.model.instanteffect.PointsTransformation;
-import it.polimi.LM39.model.instanteffect.Resources;
-import it.polimi.LM39.model.instanteffect.ResourcesAndPoints;
-import it.polimi.LM39.model.instanteffect.ResourcesAndPointsTransformation;
-import it.polimi.LM39.model.instanteffect.ResourcesTransformation;
-import it.polimi.LM39.model.instanteffect.SetFamilyMember;
-import it.polimi.LM39.model.instanteffect.VictoryForCard;
-import it.polimi.LM39.model.instanteffect.VictoryForMilitary;
-import it.polimi.LM39.model.leaderobject.RequestedCard;
-import it.polimi.LM39.model.leaderobject.RequestedCardPointsResources;
-import it.polimi.LM39.model.leaderobject.RequestedPoints;
-import it.polimi.LM39.model.leaderobject.RequestedResources;
-import it.polimi.LM39.model.leaderobject.RequestedSameCard;
-import it.polimi.LM39.model.leaderobject.RequestedTwoCards;
-import it.polimi.LM39.model.leaderpermanenteffect.AlreadyOccupiedTowerDiscount;
-import it.polimi.LM39.model.leaderpermanenteffect.CardCoinDiscount;
-import it.polimi.LM39.model.leaderpermanenteffect.CopyLeaderAbility;
-import it.polimi.LM39.model.leaderpermanenteffect.DoubleResourcesFromDevelopment;
-import it.polimi.LM39.model.leaderpermanenteffect.NoMilitaryRequirementsForTerritory;
-import it.polimi.LM39.model.leaderpermanenteffect.PlaceFamilyMemberOnOccupiedSpace;
-import it.polimi.LM39.model.leaderpermanenteffect.SetColoredDicesValues;
-import it.polimi.LM39.model.leaderpermanenteffect.UncoloredMemberBonus;
-import it.polimi.LM39.model.leaderpermanenteffect.VictoryForSupportingTheChurch;
 import it.polimi.LM39.server.NetworkPlayer;
 
 
-/*
+/**
  * COMMAND LINE INTERFACE
  */
 public class CLI extends UserInterface{
 
-	/*
-	 * input scanner and logger
+	/**
+	 * input scanner, logger, mainboard and timeout variables
+	 * 2 boolean needed to use timeout when necessary , and to display helper at the start
 	 */
 	private MainBoard mainBoard;
 	private BufferedReader userInput;
@@ -96,25 +43,33 @@ public class CLI extends UserInterface{
 	private FutureTask<String> readNextLine;
 	private boolean displayAction = false;
 	private boolean timeOutActive = false;
+	private boolean excommunicationRequest = false;
+	private boolean error = false;
 	private Long moveTimeout;
 	
+	/**
+	 * set the clientmove timeout
+	 *
+	 */
+	@Override
 	public void setMoveTimeout(Long timeout){
 		System.out.println("TIMEOUT SETTATO" + timeout);
 		this.moveTimeout = timeout;
 	}
 
-	/*
-	 * set the mainboard for the client and print
-	 * 
+	/**
+	 * set the current mainboard
 	 */
 	public void setCurrentMainBoard(MainBoard mainBoard){
 		if(this.mainBoard == null)
 			displayAction = true;
 		this.mainBoard = mainBoard;
-		this.displaymainboard();
+		if(!error)
+			this.displaymainboard();
 	}
-	/*
-	 * display player's resources
+	/**
+	 * display player's current resources
+	 * @param player
 	 */
 	public void displayresources(NetworkPlayer player){
 		System.out.println("Available resources:\n");
@@ -125,21 +80,19 @@ public class CLI extends UserInterface{
 		System.out.printf("%n");
 	}
     /**
-     * Default constructor: initialize the inputstream and the logger
+     * Default constructor: initialize the inputstream
      */
     public CLI() {
-    	System.out.println("Cli started");
     	userInput = new BufferedReader(new InputStreamReader(System.in));
     }
-    /*
+    /**
      * show action menu
      */
     public void displaymenu(){
     	Action.printAvailableActions();
     }
-    /*
+    /**
      * print the mainboard (only towers)
-     * 
      */
 	public void displaymainboard() {
 		String[][] cardsOnTowers = mainBoard.getCardNamesOnTheTowers();
@@ -193,7 +146,7 @@ public class CLI extends UserInterface{
 		System.out.println("╚═══════════════════════╩════════════════╩═══════════════════════╩════════════════╩═══════════════════════╩════════════════╩═══════════════════════╩════════════════╝");
 		System.out.printf("%n");
 	}
-	/*
+	/**
 	 * print the market zone, if a space is empty print the space bonuses
 	 */
 	public void displaymarket(){
@@ -203,7 +156,7 @@ public class CLI extends UserInterface{
 		while(i < mainBoard.marketSize){
 			System.out.println("╔═══════════════════════════════╗");
 			if(("").equals(this.getFamilyMemberColor(market[i])))
-				System.out.printf("║%-30s║%n",this.tilePrinter(market[i], new int[]{i,0}, "market"));
+				System.out.printf("║%-31s║%n",this.tilePrinter(market[i], new int[]{i,0}, "market"));
 			else
 				System.out.printf("║%-15s %-15s║%n",this.tilePrinter(market[i], new int[]{i,0}, "market"),this.getFamilyMemberColor(market[i]));
 			System.out.println("╚═══════════════════════════════╝");
@@ -211,7 +164,7 @@ public class CLI extends UserInterface{
 		}
 		System.out.printf("%n");
 	}
-	/*
+	/**
 	 * print faith track, victory track and military track
 	 */
 	public void displayrankings(){
@@ -240,9 +193,13 @@ public class CLI extends UserInterface{
 		}
 		System.out.printf("%n");
 	}
-	/*
-	 * support method for printmarket and printmainboard , print the family member on the market or the
-	 *  bonus if there is no family member
+	/**
+	 * this method print the family member on the selected position
+	 * if there is no family member it will print the position bonus
+	 * @param familyMember
+	 * @param index
+	 * @param tileType
+	 * @return
 	 */
 	public String tilePrinter(FamilyMember familyMember, int[] index, String tileType){
 		ActionBonus bonus = new ActionBonus();
@@ -266,7 +223,7 @@ public class CLI extends UserInterface{
 		else
 			return " color:" + familyMember.color;
 	}
-	/*
+	/**
 	 * print the council palace with relative bonuses
 	 */
 	public void displaycouncilpalace(){
@@ -289,7 +246,7 @@ public class CLI extends UserInterface{
 		System.out.println(this.getPoints(palaceBonus.points));
 		System.out.printf("%n");
 	}
-	/*
+	/**
 	 * support method which generate a string with the available resources
 	 */
 	public String getResources(CardResources resources){
@@ -308,7 +265,7 @@ public class CLI extends UserInterface{
 			 return " ";
 		 return resourcesString;
 	}
-	/*
+	/**
 	 * support method which generate a string with the available points
 	 */
 	public String getPoints(CardPoints points){
@@ -323,7 +280,7 @@ public class CLI extends UserInterface{
 			 return " ";
 		 return pointsString;
 	}
-	/*
+	/**
 	 * print harvest and production area
 	 */
 	public void displayharvestandproduction() {
@@ -338,8 +295,8 @@ public class CLI extends UserInterface{
 		}
 		int i = 0;
 		if(!harvestArea.isEmpty()){
-			System.out.println("═════════════════════════════");	//TODO fix size
-			while(i < mainBoard.harvestAndProductionSize){
+			System.out.println("═════════════════════════════");
+			while(i < harvestArea.size()){
 				System.out.printf("║%-15s║%n",this.getPlayerColor(harvestArea.get(i)));
 				System.out.printf("║%-15s║%n",this.getFamilyMemberColor(harvestArea.get(i)));
 				i++;
@@ -351,7 +308,7 @@ public class CLI extends UserInterface{
 		if(!productionArea.isEmpty()){
 			i = 0;
 			System.out.println("╔══════════════════════╗");	
-			while(i < mainBoard.harvestAndProductionSize){
+			while(i < productionArea.size()){
 				System.out.printf("║%-15s║%n",this.getPlayerColor(productionArea.get(i)));
 				System.out.printf("║%-15s║%n",this.getFamilyMemberColor(productionArea.get(i)));
 				i++;
@@ -383,9 +340,6 @@ public class CLI extends UserInterface{
 		printCardType("Character",characters);
 		System.out.println("Possessed leaders:");
 		printCardType(leaders);
-		System.out.println("Possessed excommunications:");
-		System.out.printf("%n");
-		//TODO print excommunication in some way
 	}
 	/*
 	 * support method for printpossessedcards
@@ -465,11 +419,25 @@ public class CLI extends UserInterface{
 	 */
 	@Override
 	public void printMessage(String message) {
-		if(("What action do you want to perform?").equals(message))
+		if(moveTimeout == 0L){
+			printError();
+		}
+		else
+			System.out.println(message);	
+		if(("What action do you want to perform?").equals(message) || ("Do you want to support the Church? yes or no").equals(message))
 			timeOutActive = true;
 		else
 			timeOutActive = false;
-		System.out.println(message);	
+		if(("Do you want to support the Church? yes or no").equals(message))
+			excommunicationRequest = true;
+		else
+			excommunicationRequest = false;
+	}
+	
+	private void printError(){
+		if(!error)
+			System.out.println("You have been disconnected because the timeout expired. Please reconnect to play again");
+		error = true;
 	}
 	/*
 	 * enable client's stream and wait for a response
@@ -497,7 +465,11 @@ public class CLI extends UserInterface{
 			} catch (ExecutionException e) {
 				logger.log(Level.WARNING, "Future exception", e);
 			} catch (TimeoutException e) {
-				response = "skip action";
+				if(!excommunicationRequest)
+					response = "skip action";
+				else
+					response = "no";
+				moveTimeout = 0L;
 			}
 			response = response.trim();
 			stringController = Action.isIn(response);

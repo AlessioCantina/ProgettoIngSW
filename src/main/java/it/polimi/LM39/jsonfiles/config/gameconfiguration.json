@@ -533,7 +533,7 @@
          "military":0
       }
    },
-    "gameStartTimeOut":1000,
-    "playerMoveTimeOut":2000
+    "gameStartTimeOut":10,
+    "playerMoveTimeOut":20
 
 }

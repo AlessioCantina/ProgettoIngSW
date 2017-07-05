@@ -48,7 +48,7 @@ public class SocketClient extends AbstractClient implements Runnable{
 	    	socketOut.flush();
 	    	UI.setMoveTimeout(socketIn.readLong());
 		} catch (IOException e1) {
-			logger.log(Level.SEVERE, "Can't write on socket", e1);
+			logger.log(Level.SEVERE, "Can't write on socket");
 		}
     		while (!socket.isClosed()){	
     			try{

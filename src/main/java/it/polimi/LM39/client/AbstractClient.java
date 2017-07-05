@@ -1,9 +1,11 @@
 package it.polimi.LM39.client;
 
-
+/**
+ * abstract class which will be extended by CLI and GUI
+ * provides basic constructor and getter
+ *
+ */
 public abstract class AbstractClient {
-
-	protected static long playerMoveTimeout = 1000;
 
     protected UserInterface UI;
     
@@ -12,13 +14,6 @@ public abstract class AbstractClient {
     }
     public UserInterface getUI(){
     	return this.UI;
-    }
-
-    /**
-     * 
-     */
-    public void connect() {
-        // TODO implement here
     }
 
 }

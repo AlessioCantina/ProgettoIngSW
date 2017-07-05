@@ -261,11 +261,12 @@ public class GsonReader {
 				String timeOutToExtract = "";
 				if(("NAME").equals(jsonReader.peek().toString()))
 					timeOutToExtract = jsonReader.nextName();
-				if(("gameStartTimeOut").equals(timeOutToExtract)){
-					room.setRoomTimeout(gson.fromJson(jsonReader,long.class));
+				if(("gameStartTimeOut").equals(timeOutToExtract))
+					room.setRoomTimeout(gson.fromJson(jsonReader,Integer.class));
+				else if(("playerMoveTimeOut").equals(timeOutToExtract)){
+					int secondsTimeout = gson.fromJson(jsonReader,Integer.class);
+					Room.playerMoveTimeout = secondsTimeout * 1000;
 				}
-				else if(("playerMoveTimeOut").equals(timeOutToExtract))
-					Room.playerMoveTimeout= gson.fromJson(jsonReader,long.class);
 				else
 					gson.fromJson(jsonReader, Object.class);
 			}
