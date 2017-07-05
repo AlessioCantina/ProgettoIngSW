@@ -60,6 +60,7 @@ public class CLI extends UserInterface{
 	/**
 	 * set the current mainboard
 	 */
+	@Override
 	public void setCurrentMainBoard(MainBoard mainBoard){
 		if(this.mainBoard == null)
 			displayAction = true;
@@ -443,6 +444,7 @@ public class CLI extends UserInterface{
 	 * enable client's stream and wait for a response
 	 * 
 	 */
+	@Override
 	public String askClient(NetworkPlayer player){
     	FutureTask<String> readNextLine = new FutureTask<String>(() -> {
     		  return userInput.readLine();

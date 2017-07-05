@@ -62,6 +62,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    /*
 	     * used from the controller to send mainboard
 	     */
+	    @Override
 	    public void setMessage(MainBoard mainBoard){
 	    	this.mainBoard = mainBoard;
 	    	try{
@@ -77,6 +78,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    /*
 	     * synchronized method which avoid deadlock if the controller want to send multiple messages to a client
 	     */
+	    @Override
 	    public void setMessage(String controllerMessage){
 	    	synchronized(LOCK){
 	    		this.message = controllerMessage;
@@ -114,6 +116,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	     * wait for the room to start, then unlocks player's threads
 	     * 
 	     */
+	    @Override
 	    public void run() {
 	    	synchronized(LOCK){
 	    		try {
@@ -138,6 +141,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    /*
 	     * this method return the client action to the game controller
 	     */
+	    @Override
 	    public String sendMessage(){
 	    		try {
 	    			if(("").equals(clientAction)){	    				
