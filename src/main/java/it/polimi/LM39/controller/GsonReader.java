@@ -265,7 +265,7 @@ public class GsonReader {
 					room.setRoomTimeout(gson.fromJson(jsonReader,long.class));
 				}
 				else if(("playerMoveTimeOut").equals(timeOutToExtract))
-					room.setPlayerMoveTimeout(gson.fromJson(jsonReader,long.class));
+					Room.playerMoveTimeout= gson.fromJson(jsonReader,long.class);
 				else
 					gson.fromJson(jsonReader, Object.class);
 			}

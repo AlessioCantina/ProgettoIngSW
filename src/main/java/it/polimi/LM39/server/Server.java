@@ -61,10 +61,11 @@ public class Server implements ServerInterface{
 				return false;
 			}
 			else{
-				//TODO clean up code
-				if(((SocketPlayer)players.get(nickName)).getSocket().isClosed())
-				((SocketPlayer)players.get(nickName)).resetConnection(((SocketPlayer)networkPlayer).getSocket(),
-						((SocketPlayer)networkPlayer).getOutputStream(),((SocketPlayer)networkPlayer).getInputStream());
+				if(((SocketPlayer)players.get(nickName)).getSocket().isClosed()){
+					SocketPlayer player = ((SocketPlayer)players.get(nickName));
+					SocketPlayer newPlayer = (SocketPlayer)networkPlayer;
+					player.resetConnection(newPlayer.getSocket(), newPlayer.getOutputStream(), newPlayer.getInputStream());
+				}
 				else{
 					ObjectOutputStream objOutput = new ObjectOutputStream(((SocketPlayer)networkPlayer).getSocket().getOutputStream());
 					objOutput.writeObject(false);

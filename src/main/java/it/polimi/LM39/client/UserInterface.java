@@ -20,6 +20,7 @@ public abstract class UserInterface {
     private UIcontroller controller;
 
 
+    public abstract void setMoveTimeout(Long timeout);
 
     /**
      * 

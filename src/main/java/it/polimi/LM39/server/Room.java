@@ -18,8 +18,8 @@ public class Room implements Runnable{
 	private Game game;
 	private ArrayList<NetworkPlayer> players;
 	private long roomCreationTime;
-	private long roomStartTimeout;
-	private long playerMoveTimeout;
+	private Long roomStartTimeout;
+	public static long playerMoveTimeout;
 	private Boolean roomState;	//TODO check if we need something more than a boolean
     /*
      * initialize the room properties
@@ -38,17 +38,11 @@ public class Room implements Runnable{
     public long getRoomTimeout(){
     	return this.roomStartTimeout;
     }
-    public long getPlayerMoveTimeout(){
-    	return this.playerMoveTimeout;
-    }
     public Boolean getRoomState(){
     	return this.roomState;
     }
     public void setRoomTimeout(long roomStartTimeOut){
     	this.roomStartTimeout = roomStartTimeOut;
-    }
-    public void setPlayerMoveTimeout(long playerMoveTimeOut){
-    	this.playerMoveTimeout = playerMoveTimeOut;
     }
     /*
      * thread which measure time elapsed and if there are enough player starts the game

@@ -2,10 +2,17 @@ package it.polimi.LM39.client;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -86,15 +93,25 @@ public class CLI extends UserInterface{
 	private MainBoard mainBoard;
 	private BufferedReader userInput;
 	private Logger logger = Logger.getLogger(CLI.class.getName());
-	private boolean firstMessage = true;
+	private FutureTask<String> readNextLine;
+	private boolean displayAction = false;
+	private boolean timeOutActive = false;
+	private Long moveTimeout;
+	
+	public void setMoveTimeout(Long timeout){
+		System.out.println("TIMEOUT SETTATO" + timeout);
+		this.moveTimeout = timeout;
+	}
+
 	/*
 	 * set the mainboard for the client and print
 	 * 
 	 */
 	public void setCurrentMainBoard(MainBoard mainBoard){
+		if(this.mainBoard == null)
+			displayAction = true;
 		this.mainBoard = mainBoard;
 		this.displaymainboard();
-		this.firstMessage = true;
 	}
 	/*
 	 * display player's resources
@@ -106,7 +123,6 @@ public class CLI extends UserInterface{
 		System.out.println("Coins:" + player.resources.getCoins());
 		System.out.println("Servants:" + player.resources.getServants());
 		System.out.printf("%n");
-		return;
 	}
     /**
      * Default constructor: initialize the inputstream and the logger
@@ -449,6 +465,10 @@ public class CLI extends UserInterface{
 	 */
 	@Override
 	public void printMessage(String message) {
+		if(("What action do you want to perform?").equals(message))
+			timeOutActive = true;
+		else
+			timeOutActive = false;
 		System.out.println(message);	
 	}
 	/*
@@ -456,27 +476,32 @@ public class CLI extends UserInterface{
 	 * 
 	 */
 	public String askClient(NetworkPlayer player){
-		
+    	FutureTask<String> readNextLine = new FutureTask<String>(() -> {
+    		  return userInput.readLine();
+    		});
+      	ExecutorService executor = Executors.newFixedThreadPool(2);
+      	executor.execute(readNextLine);
 		String response = "";
-	/*	if(firstMessage)
-			Action.printAvailableActions();	*/
 		String stringController;
+		if(displayAction){
+			System.out.println("Write display menu to show available actions");
+			displayAction = false;
+		}
 			try {
-				response = userInput.readLine();
-			}catch (IOException e) {
-				logger.log(Level.WARNING,"Unable to read input",e);
+				if(timeOutActive)
+					response = readNextLine.get(moveTimeout, TimeUnit.MILLISECONDS);
+				else
+					response = readNextLine.get();
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			} catch (ExecutionException e) {
+				logger.log(Level.WARNING, "Future exception", e);
+			} catch (TimeoutException e) {
+				response = "skip action";
 			}
 			response = response.trim();
 			stringController = Action.isIn(response);
-			System.out.println(response);
-			if(stringController == Action.CONTROLLER.toString() && firstMessage){
-				firstMessage = false;
-				return response;
-			}
-			else if((stringController == Action.CONTROLLER_SPECIAL.toString() && firstMessage)
-					||(stringController != Action.CLI.toString() && !firstMessage)|| stringController == Action.LEADERS_NAMES.toString())
-				return response;
-			else if(stringController == Action.CLI.toString()){
+			if(stringController == Action.CLI.toString()){
 				Method lMethod = null;
 				try {
 					lMethod = (this.getClass().getMethod(response.replace(" ", ""), new Class[] {}));
@@ -493,10 +518,8 @@ public class CLI extends UserInterface{
 				}
 				response = this.askClient(player);
 			}
-			else if(("Action Not Available").equals(stringController)){
-				System.out.println("Action not recognized, please retry");
-				response = this.askClient(player);
-			}
+			else
+				return response;
 		return response;
 	}
 

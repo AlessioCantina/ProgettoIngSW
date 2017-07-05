@@ -70,7 +70,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
         		objOutput.flush();
         		objOutput.reset();
 	    	}catch (IOException e) {
-	    		logger.log(Level.WARNING, "Can't write objects on stream", e);
+	    		logger.log(Level.WARNING, "Player disconnected", e);
 	    		disconnectionHandler();
 		    }	
 	    }
@@ -98,6 +98,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    			socket.close();
 	    			while(socket.isClosed())
 	    				DISCONNECT_LOCK.wait();
+	    			setMessage(this.mainBoard);
 				} catch (InterruptedException e) {
 					Thread.currentThread().interrupt();
 				} catch (IOException e) {
@@ -115,6 +116,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    	synchronized(LOCK){
 	    		try {
 	    			if(this.serverInterface.loginPlayer(objInput.readUTF(), this)){
+	    				objOutput.flush();
 	    				synchronized(DISCONNECT_LOCK){
 	    					DISCONNECT_LOCK.notifyAll();
 	    				}
@@ -124,6 +126,8 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    	    		break;
 	    	    	}
 	    			System.out.println("THREAD UNLOCKED" + Thread.currentThread());
+    				System.out.println(Room.playerMoveTimeout);
+    				objOutput.writeLong(Room.playerMoveTimeout);
 				} catch (InterruptedException | IOException e) {
 					Thread.currentThread().interrupt();
 				}
@@ -145,7 +149,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    				}	    					
 	    			}
 				} catch (IOException e) {
-					logger.log(Level.WARNING, "Can't write objects on stream", e);
+					logger.log(Level.WARNING, "Player disconnected");
 					disconnectionHandler();
 				} catch (InterruptedException e) {
 					Thread.currentThread().interrupt();

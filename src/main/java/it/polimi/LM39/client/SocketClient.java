@@ -19,11 +19,7 @@ public class SocketClient extends AbstractClient implements Runnable{
 	private Socket socket;
 	private ObjectOutputStream socketOut;
 	private ObjectInputStream socketIn;
-	private long clientTimeout = 1000000;
 
-	public void setClientTimeout(long timeout){
-		this.clientTimeout = timeout;
-	}
 
     /*
 	 * set the socket properties and initialize the stream
@@ -50,6 +46,7 @@ public class SocketClient extends AbstractClient implements Runnable{
     	try {
 			socketOut.writeUTF(userName);
 	    	socketOut.flush();
+	    	UI.setMoveTimeout(socketIn.readLong());
 		} catch (IOException e1) {
 			logger.log(Level.SEVERE, "Can't write on socket", e1);
 		}
@@ -70,36 +67,23 @@ public class SocketClient extends AbstractClient implements Runnable{
     				}
     			}catch (SocketTimeoutException socketException) {
     				try {
-    						long moveStartTime = System.currentTimeMillis();
     						socketOut.writeUTF(UI.askClient(player));
-							System.out.println("ORA CORRENTE: " + System.currentTimeMillis() + "ORA INIZIO" + moveStartTime);
-    						if(System.currentTimeMillis() - moveStartTime < clientTimeout){
-    							socketOut.flush();
-    							socket.setSoTimeout(0);
-    						}
-    						else{
-    							UI.printMessage("Client timedout. Please reconnect to play again");
-    							socketOut.writeUTF("Client timedout");
-    							socketOut.flush();
-    							Thread.currentThread().join();
-    							socket.close();
-    						}
+    						socketOut.flush();
+    						socket.setSoTimeout(0);
     				} catch (IOException writeException) {
     					logger.log(Level.SEVERE, "Can't write on socket", writeException);
-    				} catch (InterruptedException intException){
+    				}
+    			}catch (ClassNotFoundException e) {
+    				logger.log(Level.SEVERE, "Object class not found", e);
+    			}catch (EOFException e) {
+    				continue;
+    			}catch (IOException e) {
+    				logger.log(Level.INFO, "Nickname already choosen");
+    				try {
+    					Thread.currentThread().join();
+    				}catch (InterruptedException e1) {
     					Thread.currentThread().interrupt();
     				}
-    				} catch (ClassNotFoundException e) {
-    					logger.log(Level.SEVERE, "Object class not found", e);
-    				} catch (EOFException e) {
-    					continue;
-    				} catch (IOException e) {
-    					logger.log(Level.INFO, "Nickname already choosen");
-    					try {
-							Thread.currentThread().join();
-						} catch (InterruptedException e1) {
-							Thread.currentThread().interrupt();
-						}
 				} 			
     		}
     	}
