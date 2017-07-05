@@ -202,7 +202,7 @@ public class CLI extends UserInterface{
 	 * @param tileType
 	 * @return
 	 */
-	public String tilePrinter(FamilyMember familyMember, int[] index, String tileType){
+	private String tilePrinter(FamilyMember familyMember, int[] index, String tileType){
 		ActionBonus bonus = new ActionBonus();
 		ActionBonus[][] bonusesMatrix;
 		String bonuses;
@@ -216,7 +216,7 @@ public class CLI extends UserInterface{
 			if((" ").equals(this.getResources(bonus.resources)) && !(" ").equals(this.getPoints(bonus.points)))
 				bonuses = this.getPoints(bonus.points);
 			else
-				bonuses = this.getResources(bonus.resources).concat((this.getPoints(bonus.points)));
+				bonuses = this.getResources(bonus.resources).concat(this.getPoints(bonus.points));
 			return bonuses;
 		}
 		else if(("tower").equals(tileType) || ("market").equals(tileType))
@@ -250,7 +250,7 @@ public class CLI extends UserInterface{
 	/**
 	 * support method which generate a string with the available resources
 	 */
-	public String getResources(CardResources resources){
+	private String getResources(CardResources resources){
 		 String resourcesString = "";
 		 if(resources.coins != 0)
 			 resourcesString = resourcesString.concat("coins:" + resources.coins + " "); 
@@ -269,7 +269,7 @@ public class CLI extends UserInterface{
 	/**
 	 * support method which generate a string with the available points
 	 */
-	public String getPoints(CardPoints points){
+	private String getPoints(CardPoints points){
 		String pointsString = "";
 		 if(points.faith != 0)
 			 pointsString = pointsString.concat("faith:" + points.faith + " ");
@@ -345,7 +345,7 @@ public class CLI extends UserInterface{
 	/*
 	 * support method for printpossessedcards
 	 */
-	public void printCardType(String cardType, ArrayList<Integer> cardMap){
+	private void printCardType(String cardType, ArrayList<Integer> cardMap){
 		int i = 0;
 		while (i < cardMap.size()){
 			if(("Territory").equals(cardType))
@@ -362,7 +362,7 @@ public class CLI extends UserInterface{
 	/*
 	 * support method for printpossessedcards
 	 */
-	public void printCardType(ArrayList<String> cardMap){
+	private void printCardType(ArrayList<String> cardMap){
 		Iterator<String> iterator = cardMap.iterator();
 		while(iterator.hasNext()){
 			System.out.println(iterator.next());
@@ -392,7 +392,7 @@ public class CLI extends UserInterface{
 	/*
 	 * support method: return free if there is no family member on the space, otherwise it returns the player's color
 	 */
-	public String getPlayerColor(FamilyMember familyMember){
+	private String getPlayerColor(FamilyMember familyMember){
 		if(("").equals(familyMember.playerColor))
 			return "free";
 		return "Player:" + familyMember.playerColor;
@@ -400,7 +400,7 @@ public class CLI extends UserInterface{
 	/*
 	 * support method: return free if there is no family member on the space, otherwise it returns the family member's color
 	 */
-	public String getFamilyMemberColor(FamilyMember familyMember){
+	private String getFamilyMemberColor(FamilyMember familyMember){
 		if(("").equals(familyMember.color))
 			return "";
 		return "Color:" + familyMember.color;
@@ -408,7 +408,7 @@ public class CLI extends UserInterface{
 	/*
 	 * support method: return no card if there is no card on the selected space otherwise it returns the specific card
 	 */
-	public String getCardOnTower(String cardOnTower, Integer cardNumber){
+	private String getCardOnTower(String cardOnTower, Integer cardNumber){
 		if(cardNumber == -1)
 			return "";
 		else
@@ -444,7 +444,6 @@ public class CLI extends UserInterface{
 	 * enable client's stream and wait for a response
 	 * 
 	 */
-	@Override
 	public String askClient(NetworkPlayer player){
     	FutureTask<String> readNextLine = new FutureTask<String>(() -> {
     		  return userInput.readLine();
@@ -468,7 +467,7 @@ public class CLI extends UserInterface{
 				logger.log(Level.WARNING, "Future exception", e);
 			} catch (TimeoutException e) {
 				if(!excommunicationRequest)
-					response = "skip action";
+					response = "timeout";
 				else
 					response = "no";
 				moveTimeout = 0L;

@@ -15,8 +15,7 @@ public class Server implements ServerInterface{
 	public static final Integer ROOM_CAPACITY = 4;
 	public static final Integer SOCKET_PORT = 3421;
 	public static final Integer RMI_PORT = 3334;
-	/* lock to handle multiple thread */
-    private static Object LOGIN_LOCK = new Object();  
+	/* lock to handle multiple thread */ 
     private static Object ROOM_LOCK = new Object();
     private SocketServer socketServer;
     private HashMap<String,NetworkPlayer> players;
@@ -48,7 +47,7 @@ public class Server implements ServerInterface{
     }
 
     /*
-     * add player to the hashmap TODO test if the lock is working from different machines
+     * add player to the hashmap
      * 
      */
 	@Override
@@ -60,14 +59,19 @@ public class Server implements ServerInterface{
 			return false;
 		}
 		else{
-			if(((SocketPlayer)players.get(nickName)).getSocket().isClosed()){
-				SocketPlayer player = ((SocketPlayer)players.get(nickName));
+			SocketPlayer player = ((SocketPlayer)players.get(nickName));
+			if(player.getSocket().isClosed()){
 				SocketPlayer newPlayer = (SocketPlayer)networkPlayer;
 				player.resetConnection(newPlayer.getSocket(), newPlayer.getOutputStream(), newPlayer.getInputStream());
 			}
-			else{
-				ObjectOutputStream objOutput = new ObjectOutputStream(((SocketPlayer)networkPlayer).getSocket().getOutputStream());
-				objOutput.writeObject(false);
+			if(player.getIdleStatus()){
+				player.getSocket().close();
+				SocketPlayer newPlayer = (SocketPlayer)networkPlayer;
+				player.resetConnection(newPlayer.getSocket(), newPlayer.getOutputStream(), newPlayer.getInputStream());
+				player.getOutputStream().writeLong(Room.playerMoveTimeout);
+				player.clientAction = "";
+				player.setIdleStatus(false);
+				SocketPlayer.disconnectedPlayers--;
 			}
 		return true;
 		}
@@ -113,7 +117,6 @@ public class Server implements ServerInterface{
 	/*
 	 * return the room object using the roomnumber provided	 
 	 */
-	@Override
 	public Room getRoom(Integer roomNumber){
 		return this.rooms.get(roomNumber);
 	}

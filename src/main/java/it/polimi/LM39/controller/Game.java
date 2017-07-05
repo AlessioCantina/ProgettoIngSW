@@ -416,7 +416,7 @@ public class Game implements Runnable{
 			}
     	}
     	
-    	else if (("skip action").equals(response)){
+    	else if (("skip action").equals(response) || ("timeout").equals(response)){
     		//do nothing
     	}
     	else{

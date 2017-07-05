@@ -12,6 +12,7 @@ public abstract class NetworkPlayer extends Player{
 	private static final long serialVersionUID = 3267472590124957050L;
 	protected static transient Object DISCONNECT_LOCK = new Object();
 	private String nickName;
+	private Boolean idleStatus = false;
 	/*
 	 * get and set nickname
 	 */
@@ -21,6 +22,13 @@ public abstract class NetworkPlayer extends Player{
 	public void setNickName(String nickName){
 		this.nickName = nickName;
 	}
+	public void setIdleStatus(Boolean status){
+		this.idleStatus = status;
+	}
+	public Boolean getIdleStatus(){
+		return this.idleStatus;
+	}
+
 	/*
 	 * method that will be implemented by both rmi and socket to communicate with the controller
 	 */

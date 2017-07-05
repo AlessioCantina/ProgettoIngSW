@@ -264,8 +264,7 @@ public class GsonReader {
 				if(("gameStartTimeOut").equals(timeOutToExtract))
 					room.setRoomTimeout(gson.fromJson(jsonReader,Integer.class));
 				else if(("playerMoveTimeOut").equals(timeOutToExtract)){
-					int secondsTimeout = gson.fromJson(jsonReader,Integer.class);
-					Room.playerMoveTimeout = secondsTimeout * 1000;
+					Room.setMoveTimeout(gson.fromJson(jsonReader,Integer.class));
 				}
 				else
 					gson.fromJson(jsonReader, Object.class);

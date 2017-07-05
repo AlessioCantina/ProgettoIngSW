@@ -24,10 +24,10 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    private transient ObjectOutputStream objOutput;
 	    private String message;				//information which will be send to the client
 	    private MainBoard mainBoard;
-	    private String clientAction;
+	    protected String clientAction;
 	    private Boolean requestedMessage;
 	    protected transient static Object LOCK = new Object();
-	    private transient static Object CLIENT_LOCK = new Object();
+	    protected static Integer disconnectedPlayers = 0;
 	    /*
 	     * the constructor initialize the streams and start the thread
 	     */
@@ -62,31 +62,33 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    /*
 	     * used from the controller to send mainboard
 	     */
-	    @Override
 	    public void setMessage(MainBoard mainBoard){
 	    	this.mainBoard = mainBoard;
 	    	try{
-        		objOutput.writeObject(this);
-        		objOutput.writeObject(this.mainBoard);
-        		objOutput.flush();
-        		objOutput.reset();
+	    		if(!this.getIdleStatus())
+	    			objOutput.writeObject(this);
+        			objOutput.writeObject(this.mainBoard);
+        			objOutput.flush();
+        			objOutput.reset();
+					if(SocketPlayer.disconnectedPlayers != 0)
+						setMessage("There are " + SocketPlayer.disconnectedPlayers + " disconnected players");
 	    	}catch (IOException e) {
 	    		logger.log(Level.WARNING, "Player disconnected");
 	    		disconnectionHandler();
 		    }	
 	    }
 	    /*
-	     * synchronized method which avoid deadlock if the controller want to send multiple messages to a client
+	     * method which avoid deadlock if the controller want to send multiple messages to a client
 	     */
-	    @Override
 	    public void setMessage(String controllerMessage){
 	    	synchronized(LOCK){
 	    		this.message = controllerMessage;
     			requestedMessage = false;
     			try {
-    				objOutput.writeObject(requestedMessage);
-    				objOutput.writeUTF(this.message);
-    				objOutput.flush();
+    				if(!this.getIdleStatus())
+    					objOutput.writeObject(requestedMessage);    						
+    					objOutput.writeUTF(this.message);
+    					objOutput.flush();
 	    		} catch (IOException e) {
 	    			logger.log(Level.WARNING, "Player disconnected");
 	    			disconnectionHandler();
@@ -116,7 +118,6 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	     * wait for the room to start, then unlocks player's threads
 	     * 
 	     */
-	    @Override
 	    public void run() {
 	    	synchronized(LOCK){
 	    		try {
@@ -137,28 +138,29 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 					Thread.currentThread().interrupt();
 				}
 	    	}
+	    	
 	    }
 	    /*
 	     * this method return the client action to the game controller
 	     */
-	    @Override
 	    public String sendMessage(){
 	    		try {
-	    			if(("").equals(clientAction)){	    				
+	    			if(("").equals(clientAction)){	
 	    				objOutput.writeObject(true);
 	    				objOutput.flush();
 	    				clientAction = objInput.readUTF();
-	    				while(("Client Timedout").equals(clientAction)){
-	    					synchronized(CLIENT_LOCK){
-	    						CLIENT_LOCK.wait();
-	    					}
-	    				}	    					
 	    			}
+	    			if(("timeout").equals(clientAction)){
+	    				SocketPlayer.disconnectedPlayers++;
+	    				this.setIdleStatus(true);
+	    				objOutput.writeObject(true);
+	    				objOutput.flush();
+	    				return clientAction;
+	    			}
+	    				
 				} catch (IOException e) {
 					logger.log(Level.WARNING, "Player disconnected");
 					disconnectionHandler();
-				} catch (InterruptedException e) {
-					Thread.currentThread().interrupt();
 				}
 	    	String stringToSet = clientAction;
 	    	clientAction = "";

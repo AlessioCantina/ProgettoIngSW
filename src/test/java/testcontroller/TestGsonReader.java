@@ -1,4 +1,4 @@
-package testcontroller;
+package junittest;
 
 import java.io.IOException;
 
@@ -54,10 +54,6 @@ public class TestGsonReader extends TestCase{
 	@Test
 	public void testConfigLoader() throws IOException{
 		GsonReader.configLoader(testRoom);
-		if(Room.playerMoveTimeout > 0)
-			assertTrue(true);
-		else
-			assertTrue(false);
 		if(testRoom.getRoomTimeout() > 0)
 			assertTrue(true);
 		else

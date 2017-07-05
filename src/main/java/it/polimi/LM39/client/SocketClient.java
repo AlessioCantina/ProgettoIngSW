@@ -75,10 +75,8 @@ public class SocketClient extends AbstractClient implements Runnable{
     				}
     			}catch (ClassNotFoundException e) {
     				logger.log(Level.SEVERE, "Object class not found", e);
-    			}catch (EOFException e) {
-    				continue;
     			}catch (IOException e) {
-    				logger.log(Level.INFO, "Nickname already choosen");
+    				logger.log(Level.INFO, "Nickname already choosen", e);
     				try {
     					Thread.currentThread().join();
     				}catch (InterruptedException e1) {
