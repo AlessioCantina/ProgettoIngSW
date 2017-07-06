@@ -93,6 +93,7 @@ public class Game implements Runnable{
     	String[] colors = {"green","blue","red","yellow"};
     	for(int i = 0; i < players.size(); i++){
     		players.get(i).playerColor = colors[i];
+    		players.get(i).setMessage("Your color is " + colors[i]);
     	}
     }
     
@@ -665,7 +666,7 @@ public class Game implements Runnable{
     private void sendFinalPoints (ArrayList<PlayerRank> finalScores){
     	for(NetworkPlayer player : players)
     		for(PlayerRank playerRank : finalScores){
-    			player.setMessage(playerRank.playerColor + " made " + playerRank.getPlayerPoints());
+    			player.setMessage(playerColorToNetworkPlayer(playerRank.playerColor).getNickName() + " made " + playerRank.getPlayerPoints());
     		}
     }
     
