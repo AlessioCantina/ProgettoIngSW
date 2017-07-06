@@ -492,7 +492,7 @@ public class GameHandler {
     			player.points.setFaith(-player.points.getFaith());
     			return;
     		}
-    		else if(!("no").equals(response)){
+    		else if(!("no").equals(response) || !("timeout").equals(response)){
     			player.setMessage("You must answer yes or no");
     			supportTheChurch(player);
     			return;
