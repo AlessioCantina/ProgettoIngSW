@@ -236,13 +236,12 @@ public class CLI implements UserInterface{
 		int i = 0;
 		ActionBonus palaceBonus = mainBoard.councilPalaceBonus;
 		if(!councilPalace.isEmpty()){
-			System.out.println("╔════════════════════════════════════╗");
+			System.out.println("Council Palace:%n");
 			while(i < councilPalace.size()){
-				System.out.printf("║%-15s%n",this.getPlayerColor(councilPalace.get(i)));
-				System.out.printf("║%-15s%n",this.getFamilyMemberColor(councilPalace.get(i)));
+				System.out.printf("%-15s%n",this.getPlayerColor(councilPalace.get(i)));
+				System.out.printf("%-15s%n",this.getFamilyMemberColor(councilPalace.get(i)));
 				i++;
 			}
-			System.out.println("╚════════════════════════════════════╝");
 		}
 		else
 			System.out.println("Nobody is at Council Palace");
@@ -299,25 +298,23 @@ public class CLI implements UserInterface{
 		}
 		int i = 0;
 		if(!harvestArea.isEmpty()){
-			System.out.println("═════════════════════════════");
+			System.out.println("Harvest Area%n");
 			while(i < harvestArea.size()){
-				System.out.printf("║%-15s║%n",this.getPlayerColor(harvestArea.get(i)));
-				System.out.printf("║%-15s║%n",this.getFamilyMemberColor(harvestArea.get(i)));
+				System.out.printf("%-15s%n",this.getPlayerColor(harvestArea.get(i)));
+				System.out.printf("%-15s%n",this.getFamilyMemberColor(harvestArea.get(i)));
 				i++;
 			}
-			System.out.println("═════════════════════════════");
 		}
 		else
 			System.out.println("Nobody is at harvest area");
 		if(!productionArea.isEmpty()){
+			System.out.println("Production Area%n");
 			i = 0;
-			System.out.println("╔══════════════════════╗");	
 			while(i < productionArea.size()){
-				System.out.printf("║%-15s║%n",this.getPlayerColor(productionArea.get(i)));
-				System.out.printf("║%-15s║%n",this.getFamilyMemberColor(productionArea.get(i)));
+				System.out.printf("%-15s%n",this.getPlayerColor(productionArea.get(i)));
+				System.out.printf("%-15s%n",this.getFamilyMemberColor(productionArea.get(i)));
 				i++;
 			}
-			System.out.println("╚══════════════════════╝");
 		}
 		else
 			System.out.println("Nobody is at production area");
