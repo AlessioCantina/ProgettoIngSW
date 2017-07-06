@@ -236,7 +236,7 @@ public class CLI implements UserInterface{
 		int i = 0;
 		ActionBonus palaceBonus = mainBoard.councilPalaceBonus;
 		if(!councilPalace.isEmpty()){
-			System.out.println("Council Palace:%n");
+			System.out.println("Council Palace:");
 			while(i < councilPalace.size()){
 				System.out.printf("%-15s%n",this.getPlayerColor(councilPalace.get(i)));
 				System.out.printf("%-15s%n",this.getFamilyMemberColor(councilPalace.get(i)));
@@ -298,7 +298,7 @@ public class CLI implements UserInterface{
 		}
 		int i = 0;
 		if(!harvestArea.isEmpty()){
-			System.out.println("Harvest Area%n");
+			System.out.println("Harvest Area");
 			while(i < harvestArea.size()){
 				System.out.printf("%-15s%n",this.getPlayerColor(harvestArea.get(i)));
 				System.out.printf("%-15s%n",this.getFamilyMemberColor(harvestArea.get(i)));
@@ -308,7 +308,7 @@ public class CLI implements UserInterface{
 		else
 			System.out.println("Nobody is at harvest area");
 		if(!productionArea.isEmpty()){
-			System.out.println("Production Area%n");
+			System.out.println("Production Area");
 			i = 0;
 			while(i < productionArea.size()){
 				System.out.printf("%-15s%n",this.getPlayerColor(productionArea.get(i)));

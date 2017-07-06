@@ -35,6 +35,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    	  message = "";
 	    	  this.clientAction = "";
 	          this.socket = socket;
+	          this.socket.setKeepAlive(true);
 	          this.requestedMessage = false;
 	          this.serverInterface = serverInterface;
 	          this.objOutput = new ObjectOutputStream(this.socket.getOutputStream()); 

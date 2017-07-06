@@ -33,6 +33,7 @@ public class SocketClient extends AbstractClient implements Runnable{
     public SocketClient(String ip, int port, String userName,String password, UserInterface ui) throws IOException {
     	super(ui);
     	socket = new Socket(ip,port);
+    	socket.setKeepAlive(true);
     	socketOut = new ObjectOutputStream(socket.getOutputStream());
     	socketOut.flush();
     	socketIn = new ObjectInputStream(new BufferedInputStream(this.socket.getInputStream()));  
