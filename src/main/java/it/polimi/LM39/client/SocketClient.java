@@ -2,11 +2,11 @@ package it.polimi.LM39.client;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import it.polimi.LM39.exception.ClientTimedOutException;
 import it.polimi.LM39.model.MainBoard;
 import it.polimi.LM39.server.NetworkPlayer;
 
@@ -63,27 +63,29 @@ public class SocketClient extends AbstractClient implements Runnable{
     					}	
     					if(objectGrabber instanceof Boolean){
     						if((Boolean)objectGrabber)
-    							socket.setSoTimeout(500);
+    							break;
     						UI.printMessage((socketIn.readUTF()));
     					}
     				}
-    			}catch (SocketTimeoutException socketException) {
-    				try {
-    						socketOut.writeUTF(UI.askClient(player));
-    						socketOut.flush();
-    						socket.setSoTimeout(0);
-    				} catch (IOException writeException) {
-    					logger.log(Level.SEVERE, "Can't write on socket", writeException);
+    				String response = UI.askClient(player);
+					socketOut.writeUTF(response);
+					socketOut.flush();
+    				if(("timeout").equals(response)){
+    					throw new ClientTimedOutException("Client Timedout");
     				}
+
     			}catch (ClassNotFoundException e) {
     				logger.log(Level.SEVERE, "Object class not found", e);
     			}catch (IOException e) {
-    				logger.log(Level.INFO, "Nickname already choosen", e);
+    				logger.log(Level.INFO, "Nickname already chosen", e);
     				try {
     					Thread.currentThread().join();
     				}catch (InterruptedException e1) {
     					Thread.currentThread().interrupt();
     				}
+				} catch (ClientTimedOutException e) {
+					logger.log(Level.INFO, "Client timedout. Please reconnect to continue playing");
+					break;
 				} 			
     		}
     	}

@@ -153,7 +153,8 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    				clientAction = objInput.readUTF();
 	    			}
 	    			if(("timeout").equals(clientAction)){
-	    				SocketPlayer.disconnectedPlayers++;
+	    				if(!this.getIdleStatus())
+	    					SocketPlayer.disconnectedPlayers++;
 	    				this.setIdleStatus(true);
 	    				objOutput.writeObject(true);
 	    				objOutput.flush();

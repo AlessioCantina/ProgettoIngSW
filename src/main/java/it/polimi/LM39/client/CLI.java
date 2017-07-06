@@ -53,7 +53,6 @@ public class CLI extends UserInterface{
 	 */
 	@Override
 	public void setMoveTimeout(Long timeout){
-		System.out.println("TIMEOUT SETTATO" + timeout);
 		this.moveTimeout = timeout;
 	}
 
@@ -321,8 +320,8 @@ public class CLI extends UserInterface{
 		System.out.printf("%n");
 	}
 
-	/*
-	 * print player's possessed cards, including leader and excommunications
+	/**
+	 * print player's possessed cards, including leaders
 	 */
 	public void displaypossessedcards(NetworkPlayer player){
 		PersonalBoard board = player.personalBoard;
@@ -342,8 +341,9 @@ public class CLI extends UserInterface{
 		System.out.println("Possessed leaders:");
 		printCardType(leaders);
 	}
-	/*
+	/**
 	 * support method for printpossessedcards
+	 *  print the card name based on card type
 	 */
 	private void printCardType(String cardType, ArrayList<Integer> cardMap){
 		int i = 0;
@@ -359,8 +359,9 @@ public class CLI extends UserInterface{
 			i++;
 		}
 	}
-	/*
+	/**
 	 * support method for printpossessedcards
+	 * used for leaders to print them
 	 */
 	private void printCardType(ArrayList<String> cardMap){
 		Iterator<String> iterator = cardMap.iterator();
@@ -369,7 +370,7 @@ public class CLI extends UserInterface{
 		}
 		System.out.printf("%n");
 	}
-	/*
+	/**
 	 * print dices values
 	 */
 	public void displaydicesvalues(){
@@ -379,34 +380,31 @@ public class CLI extends UserInterface{
 		+"Orange dice:"+ diceValues[2]);
 		System.out.printf("%n");
 	}
-	/*
-	 * print excommunications on the board
-	 */
-	public void displayexcommunication(){
-		Integer[] excommunications = mainBoard.excommunicationsOnTheBoard;
-		System.out.printf("First period:"+ excommunications[0] + "%n"
-		+"Second period:"+ excommunications[1] + "%n"
-		+"Third period:"+ excommunications[2]);
-		System.out.printf("%n");
-	}
-	/*
+	/**
 	 * support method: return free if there is no family member on the space, otherwise it returns the player's color
+	 * @param familyMember
+	 * @return
 	 */
 	private String getPlayerColor(FamilyMember familyMember){
 		if(("").equals(familyMember.playerColor))
 			return "free";
 		return "Player:" + familyMember.playerColor;
 	}
-	/*
+	/**
 	 * support method: return free if there is no family member on the space, otherwise it returns the family member's color
+	 * @param familyMember
+	 * @return
 	 */
 	private String getFamilyMemberColor(FamilyMember familyMember){
 		if(("").equals(familyMember.color))
 			return "";
 		return "Color:" + familyMember.color;
 	}
-	/*
+	/**
 	 * support method: return no card if there is no card on the selected space otherwise it returns the specific card
+	 * @param cardOnTower
+	 * @param cardNumber
+	 * @return
 	 */
 	private String getCardOnTower(String cardOnTower, Integer cardNumber){
 		if(cardNumber == -1)
@@ -414,17 +412,13 @@ public class CLI extends UserInterface{
 		else
 			return cardOnTower;
 	}
-	/*
+	/**
 	 * print the message to the client
 	 * 
 	 */
 	@Override
 	public void printMessage(String message) {
-		if(moveTimeout == 0L){
-			printError();
-		}
-		else
-			System.out.println(message);	
+		System.out.println(message);	
 		if(("What action do you want to perform?").equals(message) || ("Do you want to support the Church? yes or no").equals(message))
 			timeOutActive = true;
 		else
@@ -435,14 +429,10 @@ public class CLI extends UserInterface{
 			excommunicationRequest = false;
 	}
 	
-	private void printError(){
-		if(!error)
-			System.out.println("You have been disconnected because the timeout expired. Please reconnect to play again");
-		error = true;
-	}
-	/*
+	/**
 	 * enable client's stream and wait for a response
-	 * 
+	 * code from https://stackoverflow.com/questions/12803151/how-to-interrupt-a-scanner-nextline-call	(future)
+	 * reflection used on client's response to automatically call the selected method 
 	 */
 	public String askClient(NetworkPlayer player){
     	FutureTask<String> readNextLine = new FutureTask<String>(() -> {
@@ -456,314 +446,42 @@ public class CLI extends UserInterface{
 			System.out.println("Write display menu to show available actions");
 			displayAction = false;
 		}
-			try {
-				if(timeOutActive)
-					response = readNextLine.get(moveTimeout, TimeUnit.MILLISECONDS);
-				else
-					response = readNextLine.get();
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
-			} catch (ExecutionException e) {
-				logger.log(Level.WARNING, "Future exception", e);
-			} catch (TimeoutException e) {
-				if(!excommunicationRequest)
-					response = "timeout";
-				else
-					response = "no";
-				moveTimeout = 0L;
-			}
-			response = response.trim();
-			stringController = Action.isIn(response);
-			if(stringController == Action.CLI.toString()){
-				Method lMethod = null;
-				try {
-					lMethod = (this.getClass().getMethod(response.replace(" ", ""), new Class[] {}));
-					lMethod.invoke(this);
-				} catch (NoSuchMethodException e) {
-					try {
-							lMethod = (this.getClass().getMethod(response.replace(" ", ""), new Class[] {NetworkPlayer.class}));
-							lMethod.invoke(this,player);
-						}catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException reflectionError) {
-						logger.log(Level.WARNING,"Wrong input",reflectionError);
-					}
-				} catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException reflection2Error){
-					logger.log(Level.WARNING,"Reflection error",reflection2Error);
-				}
-				response = this.askClient(player);
-			}
+		try {
+			if(timeOutActive)
+				response = readNextLine.get(moveTimeout, TimeUnit.MILLISECONDS);
 			else
-				return response;
+				response = readNextLine.get();
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+		} catch (ExecutionException e) {
+			logger.log(Level.WARNING, "Future exception", e);
+		} catch (TimeoutException e) {
+			if(!excommunicationRequest)
+				response = "timeout";
+			else
+				response = "no";
+			moveTimeout = 0L;
+		}
+		response = response.trim();
+		stringController = Action.isIn(response);
+		if(stringController == Action.CLI.toString()){
+			Method lMethod = null;
+			try {
+				lMethod = (this.getClass().getMethod(response.replace(" ", ""), new Class[] {}));
+				lMethod.invoke(this);
+			} catch (NoSuchMethodException e) {
+				try {
+					lMethod = (this.getClass().getMethod(response.replace(" ", ""), new Class[] {NetworkPlayer.class}));
+					lMethod.invoke(this,player);
+				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException reflectionError) {
+					logger.log(Level.WARNING,"Wrong input",reflectionError);
+				}
+			} catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException reflection2Error){
+				logger.log(Level.WARNING,"Reflection error",reflection2Error);
+			}
+			response = this.askClient(player);
+		}else
+			return response;
 		return response;
 	}
-
-/*	public void displaycardinfo(){
-		String response = "";
-		System.out.println("What card do you want to get info about?");
-		try {
-			response = userInput.readLine();
-		} catch (IOException e) {
-			logger.log(Level.WARNING,"Unable to read input",e);
-		}
-		//TODO nella mainboard ho sia numeri e nomi, cerco semplicemente il nome (cardNametoInteger gamehandler intero + stringa)
-		//creo arraylist di nomi da arraylist di numeri 
-	}
-	public void getInfo(Effect effect) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
-		 Class[] cArg = new Class[2];
-		 cArg[0] = effect.getClass();
-		 cArg[1] = effect.getClass();
-		 Method lMethod = (this.getClass().getMethod("getInfo",cArg));
-		 lMethod.invoke(this,effect);
-	 }
-	 
-	/*
-	 * InstantEffect info
-	 
-	
-	public void getInfo (CoinForCard effect){
-		System.out.println("This Instant Effect gives " + effect.coinQty + "coins" + "for " + effect.cardType + " cards");
-	}
-	
-	public void getInfo (DoublePointsTransformation effect){
-		System.out.printf("The Transformation 1 gives you " + this.getPoints(effect.points) 
-		+ " for %n" + this.getResources(effect.requestedForTransformation));
-		System.out.printf("The Transformation 2 gives you " + this.getPoints(effect.points) 
-		+ " for %n" + this.getResources(effect.requestedForTransformation2));
-	}
-	
-	public void getInfo (DoubleResourcesTransformation effect){
-		System.out.printf("The Transformation 1 gives you " + this.getResources(effect.resources) + " for %n" 
-		+ this.getResources(effect.requestedForTransformation));
-		System.out.println("The Transformation 2 gives you " + this.getResources(effect.resources2) + " for %n"
-		+ this.getResources(effect.requestedForTransformation2));
-	}
-	
-	public void getInfo (GetCard effect){
-		System.out.println("This effect gives you a " + effect.cardType + " card of value " + effect.cardValue);
-	}
-	
-	public void getInfo (GetCardAndPoints effect){
-		System.out.printf("This effect gives you a " + effect.cardType + " card of value " + effect.cardValue
-		+ "and %n" + getPoints(effect.points));
-	}
-	
-	public void getInfo (GetCardAndResources effect){
-		System.out.printf("This effect gives you a " + effect.cardType + " card of value " + effect.cardValue
-		+ "and%n" + getResources(effect.resources));
-	}
-	
-	public void getInfo (GetDiscountedCard effect){
-		System.out.printf("This effect gives you a " + effect.cardType + " card of value " + effect.cardValue 
-		+ "%n with a discount of " + getResources(effect.cardDiscount));
-	}
-	
-	public void getInfo (HarvestProductionAction effect){
-		System.out.println("This effect gives you a " + effect.actionType + " action of value " + effect.actionValue);
-	}
-	
-	public void getInfo (HarvestProductionAndPoints effect){
-		System.out.printf("This effect gives you a " + effect.actionType + " action of value " + effect.actionValue
-		+ "and%n" + getPoints(effect.points));
-	}
-	
-	public void getInfo (Points effect){
-		System.out.println("This Instant Effect gives you " + getPoints(effect.points));
-	}
-	
-	public void getInfo (PointsTransformation effect){
-		System.out.printf("This Transformation gives you " + getPoints(effect.points)
-		+ "for%n" + getResources(effect.requestedForTransformation));
-	}
-	
-	public void getInfo (Resources effect){
-		System.out.println("This Instant Effect gives you " + getResources(effect.resources));
-	}
-	
-	public void getInfo (ResourcesAndPoints effect){
-		System.out.printf("This Instant Effect gives you " + getResources(effect.resources) + " and%n"
-		+ getPoints(effect.points));		
-	}
-	public void getInfo (ResourcesAndPointsTransformation effect){
-		System.out.printf("This Transformation gives you " + getResources(effect.resources) + " and%n" + getPoints(effect.points)
-		+ " for%n" + getPoints(effect.requestedForTransformation));
-	}
-	
-	public void getInfo (ResourcesTransformation effect){
-		System.out.printf("This Transformation gives you " + getResources(effect.resources) + " for%n" 
-		+ getResources(effect.requestedForTransformation));
-	}
-	
-	public void getInfo (SetFamilyMember effect){
-		System.out.println("This effect set a colored family member you chose to this value: " + effect.familyMemberValue);
-	}
-	
-	public void getInfo (VictoryForCard effect){
-		System.out.printf("This Instant Effect gives you " + effect.victoryQty + " Victory Points%n" 
-		+ "for each" + effect.cardType + " card you have");
-	}
-	
-	public void getInfo (VictoryForMilitary effect){
-		System.out.printf("This Instant Effect gives you " + effect.victoryQty + " Victory Points %n"
-		+ "for each " + effect.militaryQty + " Military Points you have");
-	}
-	
-	/*
-	 * LeaderObject info
-	 *
-	
-	public void getInfo (RequestedCard requested){
-		System.out.println("To activate this Leader you need " + requested.cardQty + " " + requested.cardType + " cards");
-	}
-	
-	public void getInfo (RequestedCardPointsResources requested){
-		System.out.printf("To activate this Leader you need " + requested.cardQty + " " + requested.cardType + " cards and%n"
-		+ getResources(requested.resources) + getPoints(requested.points));
-	}
-	
-	public void getInfo (RequestedPoints requested){
-		System.out.println("To activate this Leader you need "+ getPoints(requested.points));
-	}
-	
-	public void getInfo (RequestedResources requested){
-		System.out.println("To activate this Leader you need "+ getResources(requested.resources));
-	}
-	
-	public void getInfo (RequestedSameCard requested){
-		System.out.println("To activate this Leader you need " + requested.cardQty + " cards of the same type");
-	}
-	
-	public void getInfo (RequestedTwoCards requested){
-		System.out.printf("To activate this Leader you need " + requested.cardQty + " " + requested.cardType + " cards %n"
-		+ "and " + requested.cardQty2 + " " + requested.cardType2 + " cards");
-	}
-	
-	/*
-	 * CharacterPermanentEffect info
-	 *
-	
-	public void getInfo (CardActionDiscount bonus){
-		System.out.println("This permanent effect gives you a discount of " + bonus.discount + " in action value to get a " + bonus.cardType + " card");
-	}
-	
-	public void getInfo (CardActionResourcesDiscount bonus){
-		System.out.printf("This permanent effect gives you a discount of " + bonus.discount + " in action value %n"
-		+ "and a discount on the resources cost of " + getResources(bonus.resourcesDiscount) + "to get a " + bonus.cardType + " card ");
-	}
-	
-	public void getInfo (HarvestProductionBoost bonus){
-		System.out.println("This permanent effect gives you a boost of " + bonus.actionValue + " in action value on  " + bonus.actionType + " action");
-	}
-	
-	public void getInfo (NoBoardBonuses bonus){
-		System.out.println("This permanent effect blocks all the bonuses on the Towers action spaces");
-	}
-	
-	/*
-	 * ExcommunicationPermanentEffect info
-	 *
-	
-	public void getInfo (CardActionMalus malus){
-		System.out.printf("Each time you take a " + malus.cardType + " card (through the action space or as a Card effect),%n"
-		+ "your action receives a " +  -malus.malus + " reduction");
-	}
-	
-	public void getInfo (DiceMalus malus){
-		System.out.println("All your colored Family Members receive a " + malus.malus + " reduction");
-	}
-	
-	public void getInfo (HarvestProductionMalus malus){
-		System.out.println("Each time you perform a " + malus.actionType + " action (through the action space or as a Card effect), its value is decreased by " +  malus.malus);
-	}
-	
-	public void getInfo (MalusForResources malus){
-		System.out.println("At the end of the game, you lose " + malus.victoryQty + " Victory Points for each " + malus.resourceQty + " resources (wood, stone, coin, servant) in your supply on your Personal Board.");
-	}
-	
-	public void getInfo (MalusForResourcesCost malus){
-		System.out.println("At the end of the game, you lose " + malus.victoryQty + " Victory Points for each " + malus.resourceQty + " wood and stone on your Building Cards’ costs.");
-	}
-	
-	public void getInfo (MalusVictoryForMilitary malus){
-		System.out.println("At the end of the game, you lose " + malus.victoryQty + " Victory Points for each" + malus.militaryQty + " Military Points you have.");
-	}
-	
-	public void getInfo (MilitaryPointsMalus malus){
-		System.out.println("Each time you gain Military Points (from action spaces or from your Cards), gain " + malus.militaryQty + " fewer Military Points.");
-	}
-	
-	public void getInfo (NoMarket malus){
-		System.out.println("You can’t permanently place your Family Members in the Market action spaces.");
-	}
-	
-	public void getInfo (ResourcesMalus malus){
-		System.out.printf("Each time you receive woods or stones (from action spaces or from your Cards), you receive fewer wood or stone,%n"
-		+ " each time you receive servants and/or coins (from action spaces or from your Cards) you receive fewer coin and/or servants.%n"
-		+ " In these quantities: " + getResources(malus.resources));
-	}
-	
-	public void getInfo (ServantsMalus malus){
-		System.out.println("You have to spend " + malus.servantsQty + " servants to increase your action value by 1");
-	}
-	
-	public void getInfo (SkipFirstTurn malus){
-		System.out.println("Each round, you skip your first turn. When all players have taken all their turns, you may still place your last Family Member");
-	}
-	
-	public void getInfo (VictoryMalus malus){
-		System.out.println("At the end of the game, before the Final Scoring, you lose " + malus.victoryMalus + " Victory Points for every " + malus.victoryQty + " Victory Points you have");
-	}
-	
-	/*
-	 * LeaderPermanentEffect info
-	 /
-	
-	public void getInfo (AlreadyOccupiedTowerDiscount effect){
-		System.out.println("You don’t have to spend 3 coins when you place your Family Members in a Tower that is already occupied");
-	}
-	
-	public void getInfo (CardCoinDiscount effect){
-		System.out.printf("When you take Development Cards, you get a discount of " + effect.coinQty + " coins (if the card you are taking has coins in its cost.)%n" +
-		"This is not a discount on the coins you must spend if you take a Development Card from a Tower that’s already occupied");
-	}
-	
-	public void getInfo (CopyLeaderAbility effect){
-		System.out.println("Copy the ability of another Leader Card already played by another player. Once you decide the ability to copy, it can’t be changed");
-	}
-	
-	public void getInfo (DoubleResourcesFromDevelopment effect){
-		System.out.println("Each time you receive wood, stone, coins, or servants as an immediate effect from Development Cards (not from an action space), you receive the resources twice");
-	}
-	
-	public void getInfo (NoMilitaryRequirementsForTerritory effect){
-		System.out.println("You don’t need to satisfy the Military Points requirement when you take Territory Cards");
-	}
-	
-	public void getInfo (PlaceFamilyMemberOnOccupiedSpace effect){
-		System.out.println("You can place your Family Members in occupied action spaces");
-	}
-	
-	public void getInfo (SetColoredDicesValues effect){
-		if (effect.boostOrSet==true)
-			System.out.printf("Your colored Family Members have a bonus of " + effect.diceValue + " on their value. %n"
-			+"(You can increase their value by spending servants or if you have Character Cards with this effect)");
-		else
-			System.out.printf("Your colored Family Members have a value of " + effect.diceValue + ", regardless of their related dice. %n" 
-			+ "(You can increase their value by spending servants or if you have Character Cards with this effect)");
-	}
-	
-	public void getInfo (UncoloredMemberBonus effect){
-		System.out.printf("Your uncolored Family Member has a bonus of " + effect.bonus + " on its value.%n"
-		+ "(You can increase its value by spending servants or if you have Character Cards with this effect.)");
-	}
-	
-	public void getInfo (VictoryForSupportingTheChurch effect){
-		System.out.println("You gain " + effect.victoryQty + " additional Victory Points when you support the Church in a Vatican Report phase.");
-	}
-	
-	public void getInfo (NoInstantEffect effect){
-		System.out.println("This Card doesn't give any Instant Effect");
-	}
-	
-	public void getInfo (NoCharacterPermanentEffect effect){
-		System.out.println("This Card doesn't give any Permanent Effect");
-	}	*/
 }
