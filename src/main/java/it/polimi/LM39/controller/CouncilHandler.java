@@ -10,7 +10,6 @@ import it.polimi.LM39.server.NetworkPlayer;
  * this class handles the council favors
  */
 public class CouncilHandler {
-	Council council = new Council();
 	
 	/**
 	 * to handle the council favors
@@ -34,15 +33,15 @@ public class CouncilHandler {
 				favorsList.add(choice);
 				//add to the player the bonus he chose
 				switch(choice){
-				case 1: gameHandler.decoratedMethods.addCardResources(council.bonus1, player);
+				case 1: gameHandler.decoratedMethods.addCardResources(Council.getResources(1), player);
 					break;
-				case 2: gameHandler.decoratedMethods.addCardResources(council.bonus2, player);
+				case 2: gameHandler.decoratedMethods.addCardResources(Council.getResources(2), player);
 					break;
-				case 3: gameHandler.decoratedMethods.addCardResources(council.bonus3, player);
+				case 3: gameHandler.decoratedMethods.addCardResources(Council.getResources(3), player);
 					break;
-				case 4: gameHandler.decoratedMethods.addCardPoints(council.bonus4, player);
+				case 4: gameHandler.decoratedMethods.addCardPoints(Council.getPoints(4), player);
 					break;
-				case 5: gameHandler.decoratedMethods.addCardPoints(council.bonus5, player);
+				case 5: gameHandler.decoratedMethods.addCardPoints(Council.getPoints(5), player);
 					break;
 				default:
 					//if the player chose a bonus that doesn't exist
@@ -78,11 +77,11 @@ public class CouncilHandler {
 	 */
 	private void bonusInfo(NetworkPlayer player){
 		//send to the player what the bonuses give
-		player.setMessage("Bonus 1 gives " + council.bonus1.stones + " stones " + council.bonus1.woods + " woods");
-		player.setMessage("Bonus 2 gives " + council.bonus2.servants + " servants");
-		player.setMessage("Bonus 3 gives " + council.bonus3.coins + " coins");
-		player.setMessage("Bonus 4 gives " + council.bonus4.military + " military points");
-		player.setMessage("Bonus 5 gives " + council.bonus5.faith + " faith points");
+		player.setMessage("Bonus 1 gives " + Council.getResources(1).stones + " stones " + Council.getResources(1).woods + " woods");
+		player.setMessage("Bonus 2 gives " + Council.getResources(2).servants + " servants");
+		player.setMessage("Bonus 3 gives " + Council.getResources(3).coins + " coins");
+		player.setMessage("Bonus 4 gives " + Council.getPoints(4).military + " military points");
+		player.setMessage("Bonus 5 gives " + Council.getPoints(5).faith + " faith points");
 	}
 	
 }

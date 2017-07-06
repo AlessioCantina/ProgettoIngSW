@@ -1,53 +1,90 @@
 package it.polimi.LM39.model;
 
-import java.io.Serializable;
-
 /**
  * this class contains the bonuses that a council favor can give
  */
-public class Council implements Serializable{
+public enum Council {
+
+	BONUS1 (new CardResources(),1),
+	BONUS2 (new CardResources(),2),
+	BONUS3 (new CardResources(),3),
+	BONUS4 (new CardPoints(),4),
+	BONUS5 (new CardPoints(),5);
+	
+	private CardResources resources = new CardResources();
+	private CardPoints points = new CardPoints();
+	private Integer bonusNumber;
 	
 	/**
-	 * to set the bonuses values
+	 * static initializer to set the bonuses values
 	 */
-	public Council(){
-		bonus1.woods=1;
-		bonus1.stones=1;
-		bonus1.coins=0;
-		bonus1.servants=0;
-		bonus1.council=0;
+	static{
+		BONUS1.resources.woods = 1;
+		BONUS1.resources.stones = 1;
+		BONUS1.resources.coins = 0;
+		BONUS1.resources.servants = 0;
+		BONUS1.resources.council = 0;
 		
-		bonus2.servants=2;
-		bonus2.woods=0;
-		bonus2.stones=0;
-		bonus2.coins=0;
-		bonus2.council=0;
+		BONUS2.resources.woods = 0;
+		BONUS2.resources.stones = 0;
+		BONUS2.resources.coins = 0;
+		BONUS2.resources.servants = 2;
+		BONUS2.resources.council = 0;
 		
-		bonus3.coins=2;
-		bonus3.servants=0;
-		bonus3.woods=0;
-		bonus3.stones=0;
-		bonus3.council=0;
+		BONUS3.resources.woods = 0;
+		BONUS3.resources.stones = 0;
+		BONUS3.resources.coins = 2;
+		BONUS3.resources.servants = 0;
+		BONUS3.resources.council = 0;
 		
-		bonus4.military=2;
-		bonus4.faith=0;
-		bonus4.victory=0;
+		BONUS4.points.military = 2;
+		BONUS4.points.faith = 0;
+		BONUS4.points.victory = 0;
 		
-		bonus5.faith=1;
-		bonus5.victory=0;
-		bonus5.military=0;
+		BONUS5.points.military = 0;
+		BONUS5.points.faith = 1;
+		BONUS5.points.victory = 0;
+		
 	}
-
-	private static final long serialVersionUID = -466980208863809990L;
-
-	public CardResources bonus1 = new CardResources();
-
-    public CardResources bonus2 = new CardResources();
-
-    public CardResources bonus3 = new CardResources();
-
-    public CardPoints bonus4 = new CardPoints(); 
-
-    public CardPoints bonus5 = new CardPoints();
-
+	/**
+	 * resources constructor needed by enum to set the value
+	 * @param resources
+	 * @param bonusNumber
+	 */
+	Council(CardResources resources, Integer bonusNumber){
+		this.bonusNumber = bonusNumber;
+	}
+	/**
+	 * points constructor needed by enum to set the value
+	 * @param resources
+	 * @param bonusNumber
+	 */
+	Council(CardPoints resources, Integer bonusNumber){
+		this.bonusNumber = bonusNumber;
+	}
+	/**
+	 * get the bonus resources
+	 * @param bonusNumber
+	 * @return
+	 */
+	public static CardResources getResources(Integer bonusNumber){
+		for(Council councilFavor : Council.values()){
+			if(councilFavor.bonusNumber == bonusNumber && bonusNumber < 4)
+				return councilFavor.resources;
+		}
+		return null;
+	}
+	/**
+	 * get the bonus points
+	 * @param bonusNumber
+	 * @return
+	 */
+	public static CardPoints getPoints(Integer bonusNumber){
+		for(Council councilFavor : Council.values()){
+			if(councilFavor.bonusNumber == bonusNumber && bonusNumber > 3)
+				return councilFavor.points;
+		}
+		return null;
+	}
+	
 }

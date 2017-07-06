@@ -15,6 +15,7 @@ public class StartGame {
 		System.out.println("Welcome to Lorenzo il Magnifico! \n");
 		System.out.println("Write the server IP:");
 		String ip = input.readLine();
+		System.out.println("Write the server port:");
 		int port = Integer.parseInt(input.readLine());
 		System.out.println("Choose a username:");
 		String userName = input.readLine();	
