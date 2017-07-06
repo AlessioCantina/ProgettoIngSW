@@ -8,7 +8,7 @@ import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestdiscardLeader extends TestCase{
 	GameHandler gameHandler = new GameHandler();
@@ -16,7 +16,7 @@ public class TestdiscardLeader extends TestCase{
 	@Test
 	public void testDiscardLeader() throws NotEnoughResourcesException, NotEnoughPointsException{
 		//case of a player that has not played the leader card he wants to discard
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		ArrayList<String> possessedLeaders = new ArrayList<String>();
 		possessedLeaders.add("Francesco Sforza");
 		player.personalBoard.setPossessedLeaders(possessedLeaders);
@@ -28,7 +28,7 @@ public class TestdiscardLeader extends TestCase{
 		assertEquals(testValue1,size);
 		
 		//case of a player that has played the leader card he wants to discard
-		player = new TestPlayer();
+		player = new FakeTestPlayer();
 		possessedLeaders = new ArrayList<String>();
 		possessedLeaders.add("Francesco Sforza");
 		player.personalBoard.setPossessedLeaders(possessedLeaders);
@@ -42,7 +42,7 @@ public class TestdiscardLeader extends TestCase{
 		assertEquals(testValue1,size);
 		
 		//case of a player that has played the leader card he wants to discard, in this case the leader has an Instant Effect
-		player = new TestPlayer();
+		player = new FakeTestPlayer();
 		possessedLeaders = new ArrayList<String>();
 		possessedLeaders.add("Francesco Sforza");
 		player.personalBoard.setPossessedLeaders(possessedLeaders);
@@ -54,7 +54,7 @@ public class TestdiscardLeader extends TestCase{
 		assertEquals(testValue1,size);
 		
 		//case of a player that does not have the leader card he wants to discard
-		player = new TestPlayer();
+		player = new FakeTestPlayer();
 		possessedLeaders = new ArrayList<String>();
 		possessedLeaders.add("Girolamo Savonarola");
 		player.personalBoard.setPossessedLeaders(possessedLeaders);

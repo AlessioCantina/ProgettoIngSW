@@ -5,14 +5,14 @@ import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.model.CardPoints;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestsubCardPoints extends TestCase{
 	GameHandler gameHandler = new GameHandler();
 	
 	@Test
 	public void testSubCardPoints() throws NotEnoughPointsException{
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		CardPoints points = new CardPoints();
 		player.points.setFaith(1);
 		player.points.setMilitary(1);
@@ -25,7 +25,7 @@ public class TestsubCardPoints extends TestCase{
 		assertEquals(testValue2,player.points.getMilitary());
 		
 		//in case the player has not enough resources an exception will be thrown and he will not pay anything
-		player = new TestPlayer();
+		player = new FakeTestPlayer();
 		points = new CardPoints();
 		player.points.setFaith(1);
 		player.points.setMilitary(1);

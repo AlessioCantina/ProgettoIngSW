@@ -10,7 +10,7 @@ import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestsupportTheChurch extends TestCase{
 	GameHandler gameHandler = new GameHandler();
@@ -26,7 +26,7 @@ public class TestsupportTheChurch extends TestCase{
 	
 	@Test
 	public void testSupportTheChurch() throws NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException{
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		player.personalMainBoard=gameHandler.mainBoard;
 		//set the necessary faith points needed to support the church at the end of the first period
 		player.points.setFaith(3);
@@ -44,7 +44,7 @@ public class TestsupportTheChurch extends TestCase{
 		//the player should haven't any excommunications
 		assertEquals(testValue3,size);
 		
-		player = new TestPlayer();
+		player = new FakeTestPlayer();
 		player.personalMainBoard=gameHandler.mainBoard;
 		//set the necessary faith points needed to support the church at the end of the first period
 		player.points.setFaith(3);
@@ -62,7 +62,7 @@ public class TestsupportTheChurch extends TestCase{
 		//the player should have one excommunication
 		assertEquals(testValue3,size);
 		
-		player = new TestPlayer();
+		player = new FakeTestPlayer();
 		player.personalMainBoard=gameHandler.mainBoard;
 		gameHandler.supportTheChurch(player);
 		testValue1=0;

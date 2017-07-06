@@ -7,13 +7,13 @@ import org.junit.Test;
 import it.polimi.LM39.controller.Game;
 import it.polimi.LM39.server.NetworkPlayer;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestemptyPlayerInstantLeaderCards extends TestCase{
 	
 	@Test
 	public void testEmptyPlayerInstantLeaderCards() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		ArrayList<String> leaders = new ArrayList<String>();
 		leaders.add("Santa Rita");
 		player.setPlayerInstantLeaderCards(leaders);

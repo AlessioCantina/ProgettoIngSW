@@ -5,14 +5,14 @@ import org.junit.Test;
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.model.FamilyMember;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestchooseFamilyMember extends TestCase{
 	GameHandler gameHandler = new GameHandler();
 	
 	@Test
 	public void testChooseFamilyMember(){
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		player.playerColor="green";
 		player.setResponse("orange");
 		FamilyMember familyMember = gameHandler.chooseFamilyMember(player);

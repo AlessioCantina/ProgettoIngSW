@@ -11,7 +11,7 @@ import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestgetCard extends TestCase{
 	GameHandler gameHandler = new GameHandler();
@@ -25,7 +25,7 @@ public class TestgetCard extends TestCase{
 	
 	@Test
 	public void testGetCard1() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException{
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		player.playerColor="green";
 		//reset player resources
 		player.resources.setCoins(-player.resources.getCoins());
@@ -74,7 +74,7 @@ public class TestgetCard extends TestCase{
 		
 	@Test
 	public void testGetCard2() throws NotEnoughResourcesException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException{
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		player.playerColor="green";
 		//get a venture card (in this case Support to the Cardinal) it costs 4 military points but needed are 7 or 2 woods, 2 stones and 3 coins it gives 3 faith points and 4 victory points at the end of the game
 		//player decides to pay in resources

@@ -12,10 +12,13 @@ import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.CardPoints;
 import junit.framework.TestCase;
-
+/**
+ * test military points malus decorator class
+ *
+ */
 public class TestMilitaryPointsMalusDecorator extends TestCase{
 
-	private TestPlayer testPlayer = new TestPlayer();
+	private FakeTestPlayer testPlayer = new FakeTestPlayer();
 	private GameHandler testGameHandler = new GameHandler();
 	private DecoratedMethods testDecorator = new DecoratedMethods();
 	private MilitaryPointsMalusDecorator testResourcesDecorator;

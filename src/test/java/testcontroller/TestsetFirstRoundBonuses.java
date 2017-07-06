@@ -5,12 +5,12 @@ import org.junit.Test;
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestsetFirstRoundBonuses extends TestCase{
 	
 	Integer testValue = 1;
-	TestPlayer testPlayer = new TestPlayer();
+	FakeTestPlayer testPlayer = new FakeTestPlayer();
 	GameHandler gameHandler = new GameHandler();
 	
 	@Test

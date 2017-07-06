@@ -13,7 +13,7 @@ import it.polimi.LM39.exception.NotEnoughResourcesException;
 import junit.framework.TestCase;
 
 public class TestServantsMalusDecorator extends TestCase{
-	private TestPlayer testPlayer = new TestPlayer();
+	private FakeTestPlayer testPlayer = new FakeTestPlayer();
 	private GameHandler testGameHandler = new GameHandler();
 	private DecoratedMethods testDecorator = new DecoratedMethods();
 	private ServantsMalusDecorator testResourcesDecorator;

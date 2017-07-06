@@ -10,14 +10,14 @@ import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.model.MainBoard;
 import it.polimi.LM39.server.NetworkPlayer;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class Testinitialize extends TestCase{
 
 	@Test
 	public void testInitialize() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException{
-		TestPlayer player1 = new TestPlayer();
-		TestPlayer player2 = new TestPlayer();
+		FakeTestPlayer player1 = new FakeTestPlayer();
+		FakeTestPlayer player2 = new FakeTestPlayer();
 		ArrayList<NetworkPlayer> players = new ArrayList<NetworkPlayer>();
 		players.add(player1);
 		players.add(player2);

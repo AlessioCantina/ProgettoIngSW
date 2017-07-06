@@ -875,8 +875,6 @@ public class CardHandler {
 	    cArg[0] = permanentEffect.getClass();
 	    cArg[1] = NetworkPlayer.class;
 		Method lMethod = this.getClass().getMethod("activateExcommunication",cArg);
-		Method lMethod2 = this.getClass().getMethod("getInfo",cArg);
-		lMethod2.invoke(this,permanentEffect,player);
 		return (DecoratedMethods)lMethod.invoke(this,permanentEffect,player);
 	}	
 	

@@ -6,6 +6,10 @@ import org.junit.Test;
 import it.polimi.LM39.model.FamilyMember;
 import junit.framework.TestCase;
 
+/**
+ * test familymember class
+ *
+ */
 public class TestFamilyMember extends TestCase{
 	
 	FamilyMember testFamilyMember;

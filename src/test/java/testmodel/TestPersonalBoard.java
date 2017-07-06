@@ -1,6 +1,8 @@
 package testmodel;
 
-
+/**
+ * test personal board class
+ */
 import java.util.ArrayList;
 
 import org.junit.Test;

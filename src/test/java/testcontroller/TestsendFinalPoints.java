@@ -8,13 +8,13 @@ import it.polimi.LM39.controller.Game;
 import it.polimi.LM39.model.PlayerRank;
 import it.polimi.LM39.server.NetworkPlayer;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestsendFinalPoints extends TestCase{
 	
 	@Test
 	public void testSendFinalPoints() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		ArrayList<NetworkPlayer> players = new ArrayList<NetworkPlayer>();
 		players.add(player);
 		Game game = new Game(1,players);

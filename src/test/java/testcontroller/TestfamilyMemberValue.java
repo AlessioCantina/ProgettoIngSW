@@ -7,7 +7,7 @@ import org.junit.Test;
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.model.FamilyMember;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestfamilyMemberValue extends TestCase{
 	GameHandler gameHandler = new GameHandler();
@@ -19,7 +19,7 @@ public class TestfamilyMemberValue extends TestCase{
 	
 	@Test
 	public void testFamilyMemberValue() throws IOException{
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		player.personalMainBoard=gameHandler.mainBoard;
 		FamilyMember familyMember = new FamilyMember();
 		familyMember.color="black";

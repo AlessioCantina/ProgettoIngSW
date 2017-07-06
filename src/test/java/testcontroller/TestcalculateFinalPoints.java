@@ -10,7 +10,7 @@ import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.PlayerRank;
 import it.polimi.LM39.server.NetworkPlayer;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestcalculateFinalPoints extends TestCase{
 	GameHandler gameHandler = new GameHandler();
@@ -24,7 +24,7 @@ public class TestcalculateFinalPoints extends TestCase{
 
 	@Test
 	public void testCalculateFinalPoints1() throws NotEnoughPointsException, NotEnoughResourcesException{
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		player.playerColor="green";
 		
 		//give 3 woods and 3 servants to the player -> 1 victory points
@@ -63,7 +63,7 @@ public class TestcalculateFinalPoints extends TestCase{
 	
 	@Test
 	public void testCalculateFinalPoints2(){
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		player.playerColor="green";
 		
 		//give 4 territories to the player -> 4 victory point
@@ -85,7 +85,7 @@ public class TestcalculateFinalPoints extends TestCase{
 	}
 	@Test
 	public void testCalculateFinalPoints3(){
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		player.playerColor="green";
 		
 		//give 5 territories to the player -> 10 victory point
@@ -110,7 +110,7 @@ public class TestcalculateFinalPoints extends TestCase{
 	
 	@Test
 	public void testCalculateFinalPoints4(){
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		player.playerColor="green";
 		
 		//give 6 territories to the player -> 20 victory point
@@ -137,7 +137,7 @@ public class TestcalculateFinalPoints extends TestCase{
 	
 	@Test
 	public void testCalculateFinalPoints5(){
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		player.playerColor="green";
 		
 		//give 5 character to the player -> 15 victory point
@@ -158,7 +158,7 @@ public class TestcalculateFinalPoints extends TestCase{
 
 	@Test
 	public void testCalculateFinalPoints6(){
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		player.playerColor="green";
 		
 		//give 6 character to the player -> 21 victory point

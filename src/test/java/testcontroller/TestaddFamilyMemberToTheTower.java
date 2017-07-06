@@ -12,7 +12,7 @@ import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.FamilyMember;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestaddFamilyMemberToTheTower extends TestCase{
 	GameHandler gameHandler = new GameHandler();
@@ -28,7 +28,7 @@ public class TestaddFamilyMemberToTheTower extends TestCase{
 	
 	@Test
 	public void testAddFamilyMemberToTheTower1() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, CardNotFoundException{
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		player.personalMainBoard=gameHandler.mainBoard;
 		FamilyMember familyMember = new FamilyMember();
 		familyMember.playerColor="green";
@@ -49,7 +49,7 @@ public class TestaddFamilyMemberToTheTower extends TestCase{
 	
 	@Test
 	public void testAddFamilyMemberToTheTower2() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, CardNotFoundException{
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		player.personalMainBoard=gameHandler.mainBoard;
 		FamilyMember familyMember = new FamilyMember();
 		familyMember.playerColor="green";
@@ -78,8 +78,8 @@ public class TestaddFamilyMemberToTheTower extends TestCase{
 	
 	@Test
 	public void testAddFamilyMemberToTheTower3() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, CardNotFoundException{
-		TestPlayer player1 = new TestPlayer();
-		TestPlayer player2 = new TestPlayer();
+		FakeTestPlayer player1 = new FakeTestPlayer();
+		FakeTestPlayer player2 = new FakeTestPlayer();
 		player1.playerColor="green";
 		player2.playerColor="yellow";
 		player1.personalMainBoard=gameHandler.mainBoard;
@@ -118,7 +118,7 @@ public class TestaddFamilyMemberToTheTower extends TestCase{
 	@Test
 	public void testAddFamilyMemberToTheTower4() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, CardNotFoundException{
 		String[][] cardNames = gameHandler.mainBoard.getCardNamesOnTheTowers();
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		player.personalMainBoard=gameHandler.mainBoard;
 		FamilyMember familyMember1 = new FamilyMember();
 		familyMember1.playerColor="green";
@@ -137,7 +137,7 @@ public class TestaddFamilyMemberToTheTower extends TestCase{
 	@Test
 	public void testAddFamilyMemberToTheTower5() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, CardNotFoundException{
 		String[][] cardNames = gameHandler.mainBoard.getCardNamesOnTheTowers();
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		player.personalMainBoard=gameHandler.mainBoard;
 		FamilyMember familyMember = new FamilyMember();
 		familyMember.playerColor="green";

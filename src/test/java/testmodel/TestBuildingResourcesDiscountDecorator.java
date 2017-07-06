@@ -12,9 +12,12 @@ import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.CardResources;
 import junit.framework.TestCase;
 
+/**
+ * test the building resources discount decorator class
+ */
 public class TestBuildingResourcesDiscountDecorator extends TestCase{
 
-	private TestPlayer testPlayer = new TestPlayer();
+	private FakeTestPlayer testPlayer = new FakeTestPlayer();
 	private GameHandler testGameHandler = new GameHandler();
 	private DecoratedMethods testDecorator = new DecoratedMethods();
 	private BuildingResourcesDiscountDecorator testResourcesDecorator;
@@ -67,6 +70,4 @@ public class TestBuildingResourcesDiscountDecorator extends TestCase{
 		
 
 	}
-
-	
 }

@@ -7,13 +7,13 @@ import org.junit.Test;
 import it.polimi.LM39.controller.Game;
 import it.polimi.LM39.server.NetworkPlayer;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestplayerColorToNetworkPlayer extends TestCase{
 	
 	@Test
 	public void testPlayerColorToNetworkPlayer() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		player.playerColor="green";
 		ArrayList<NetworkPlayer> players = new ArrayList<NetworkPlayer>();
 		players.add(player);
@@ -25,7 +25,7 @@ public class TestplayerColorToNetworkPlayer extends TestCase{
 		Method method = Game.class.getDeclaredMethod("playerColorToNetworkPlayer", cArg);
 		method.setAccessible(true);
 		//the player with color green is the player created above
-		assertTrue(player == (TestPlayer)method.invoke(game, "green"));
+		assertTrue(player == (FakeTestPlayer)method.invoke(game, "green"));
 	}
 
 }

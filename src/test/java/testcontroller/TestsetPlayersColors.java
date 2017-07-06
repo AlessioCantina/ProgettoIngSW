@@ -7,13 +7,13 @@ import org.junit.Test;
 import it.polimi.LM39.controller.Game;
 import it.polimi.LM39.server.NetworkPlayer;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestsetPlayersColors extends TestCase{
 
 	@Test
 	public void testSetPlayersColors() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		ArrayList<NetworkPlayer> players = new ArrayList<NetworkPlayer>();
 		players.add(player);
 		Game game = new Game(1,players);

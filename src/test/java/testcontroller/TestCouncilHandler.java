@@ -9,7 +9,7 @@ import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestCouncilHandler extends TestCase{
 	CouncilHandler councilHandler = new CouncilHandler();
@@ -24,7 +24,7 @@ public class TestCouncilHandler extends TestCase{
 	
 	@Test
 	public void testGetCouncil() throws NotEnoughResourcesException, NotEnoughPointsException{
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		
 		//the player decides to get the first favor (1 wood and 1 stone)
 		player.setResponse("1");

@@ -340,16 +340,31 @@ public class CLI implements UserInterface{
 		ArrayList<Integer> ventures = board.getPossessions("Venture");
 		ArrayList<Integer> characters = board.getPossessions("Character");
 		ArrayList<String> leaders = board.getPossessedLeaders();
-		System.out.println("Possessed buildings:");
-		printCardType("Building",buildings);
-		System.out.println("Possessed territories:");
-		printCardType("Territory",territories);
-		System.out.println("Possessed ventures:");
-		printCardType("Venture",ventures);
-		System.out.println("Possessed characters:");
-		printCardType("Character",characters);
-		System.out.println("Possessed leaders:");
-		printCardType(leaders);
+		if(!buildings.isEmpty()){
+			System.out.println("Possessed buildings:");
+			printCardType("Building",buildings);
+			System.out.printf("%n");
+		}
+		if(!territories.isEmpty()){
+			System.out.println("Possessed territories:");
+			printCardType("Territory",territories);
+			System.out.printf("%n");
+		}
+		if(!ventures.isEmpty()){
+			System.out.println("Possessed ventures:");
+			printCardType("Venture",ventures);
+			System.out.printf("%n");
+		}
+		if(!characters.isEmpty()){
+			System.out.println("Possessed characters:");
+			printCardType("Character",characters);
+			System.out.printf("%n");
+		}
+		if(!leaders.isEmpty()){
+			System.out.println("Possessed leaders:");
+			printCardType(leaders);
+			System.out.printf("%n");
+		}
 	}
 	/**
 	 * support method for printpossessedcards

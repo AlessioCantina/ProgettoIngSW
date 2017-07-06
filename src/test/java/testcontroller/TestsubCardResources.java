@@ -5,14 +5,14 @@ import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.CardResources;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestsubCardResources extends TestCase{
 	GameHandler gameHandler = new GameHandler();
 	
 	@Test
 	public void testSubCardResources() throws NotEnoughResourcesException{
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		CardResources resources = new CardResources();
 		player.resources.setCoins(1);
 		player.resources.setWoods(1);
@@ -31,7 +31,7 @@ public class TestsubCardResources extends TestCase{
 		assertEquals(testValue1,player.resources.getServants());
 		
 		//in case the player has not enough resources an exception will be thrown and he will not pay anything
-		player = new TestPlayer();
+		player = new FakeTestPlayer();
 		resources = new CardResources();
 		player.resources.setCoins(1);
 		player.resources.setWoods(1);

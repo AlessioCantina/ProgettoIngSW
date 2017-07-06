@@ -14,7 +14,7 @@ import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.ActionBonus;
 import it.polimi.LM39.model.MainBoard;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestCardHandler extends TestCase{
 
@@ -25,8 +25,8 @@ public class TestCardHandler extends TestCase{
     GameHandler testGameHandler = new GameHandler();
     DecoratedMethods testMethods = new DecoratedMethods();
     CardHandler testCardHandler;
-    TestPlayer testPlayer = new TestPlayer();
-    TestPlayer testPlayer2 = new TestPlayer();
+    FakeTestPlayer testPlayer = new FakeTestPlayer();
+    FakeTestPlayer testPlayer2 = new FakeTestPlayer();
     ActionBonus testBonus = new ActionBonus();
     
     @Before

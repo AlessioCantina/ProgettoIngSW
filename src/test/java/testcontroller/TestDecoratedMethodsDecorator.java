@@ -13,12 +13,12 @@ import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.CardPoints;
 import it.polimi.LM39.model.CardResources;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestDecoratedMethodsDecorator extends TestCase{
 	
 	private DecoratedMethods testDecoratedMethods = new DecoratedMethods();
-	private TestPlayer testPlayer = new TestPlayer();
+	private FakeTestPlayer testPlayer = new FakeTestPlayer();
 	private GameHandler testGameHandler = new GameHandler();
 	
 	@Before

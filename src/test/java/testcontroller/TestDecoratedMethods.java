@@ -11,11 +11,11 @@ import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.FamilyMember;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestDecoratedMethods extends TestCase{
 
-	private TestPlayer testPlayer = new TestPlayer();
+	private FakeTestPlayer testPlayer = new FakeTestPlayer();
 	private GameHandler testGameHandler = new GameHandler();
 	private DecoratedMethods testDecorator = new DecoratedMethods();
 	private FamilyMember testMember = new FamilyMember();

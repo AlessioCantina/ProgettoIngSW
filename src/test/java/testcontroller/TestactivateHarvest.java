@@ -12,7 +12,7 @@ import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.ActionBonus;
 import it.polimi.LM39.model.FamilyMember;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestactivateHarvest extends TestCase{
 	GameHandler gameHandler = new GameHandler();
@@ -28,7 +28,7 @@ public class TestactivateHarvest extends TestCase{
 	
 	@Test
 	public void testActivateHarvest() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		player.playerColor="green";
 		//reset coins
 		player.resources.setCoins(-player.resources.getCoins());

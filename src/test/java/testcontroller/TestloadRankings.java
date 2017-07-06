@@ -12,7 +12,7 @@ import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.server.NetworkPlayer;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestloadRankings extends TestCase{
 	GameHandler gameHandler = new GameHandler();
@@ -26,7 +26,7 @@ public class TestloadRankings extends TestCase{
 	
 	@Test
 	public void testLoadRanking() throws NoSuchMethodException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, NotEnoughPointsException, InvocationTargetException{
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		player.playerColor="green";
 		player.points.setFaith(5);
 		player.points.setMilitary(6);

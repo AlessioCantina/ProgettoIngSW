@@ -7,13 +7,13 @@ import org.junit.Test;
 import it.polimi.LM39.controller.Game;
 import it.polimi.LM39.server.NetworkPlayer;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestgiveFamilyMembersBack extends TestCase{
 	
 	@Test
 	public void testGiveFamilyMembersBack() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		//the player has played the black familyMember
 		player.setPlayedFamilyMember("black");
 		ArrayList<NetworkPlayer> players = new ArrayList<NetworkPlayer>();

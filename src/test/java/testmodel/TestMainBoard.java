@@ -8,7 +8,9 @@ import it.polimi.LM39.model.CardPoints;
 import it.polimi.LM39.model.CardResources;
 import it.polimi.LM39.model.MainBoard;
 import junit.framework.TestCase;
-
+/**
+ * test main board class
+ */
 public class TestMainBoard extends TestCase{
 	ActionBonus[][] testBonus = new ActionBonus[1][1];	
 	MainBoard testMainBoard;

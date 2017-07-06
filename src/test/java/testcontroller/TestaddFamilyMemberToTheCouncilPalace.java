@@ -10,7 +10,7 @@ import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.FamilyMember;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestaddFamilyMemberToTheCouncilPalace extends TestCase{
 	GameHandler gameHandler = new GameHandler();
@@ -26,7 +26,7 @@ public class TestaddFamilyMemberToTheCouncilPalace extends TestCase{
 
 	@Test
 	public void testAddFamilyMemberToTheCouncilPalace() throws IOException, NotEnoughResourcesException, NotEnoughPointsException{
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		player.personalMainBoard=gameHandler.mainBoard;
 		FamilyMember familyMember = new FamilyMember();
 		familyMember.playerColor="green";

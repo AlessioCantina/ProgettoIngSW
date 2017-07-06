@@ -11,7 +11,7 @@ import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.FamilyMember;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestsetPlayerActionOrder extends TestCase{
 	GameHandler gameHandler = new GameHandler();
@@ -26,9 +26,9 @@ public class TestsetPlayerActionOrder extends TestCase{
 	
 	@Test
 	public void testSetPlayerActionOrder() throws IOException, NotEnoughResourcesException, NotEnoughPointsException{
-		TestPlayer player1 = new TestPlayer();
+		FakeTestPlayer player1 = new FakeTestPlayer();
 		player1.playerColor="green";
-		TestPlayer player2 = new TestPlayer();
+		FakeTestPlayer player2 = new FakeTestPlayer();
 		player2.playerColor="yellow";
 		ArrayList<String> playerActionOrder = new ArrayList<String>();
 		playerActionOrder.add(player1.playerColor);

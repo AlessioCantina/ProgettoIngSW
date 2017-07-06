@@ -5,13 +5,13 @@ import org.junit.Test;
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.model.MainBoard;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestresetPlayerPersonalMainBoard extends TestCase{
 	
 	MainBoard testMainBoard = new MainBoard();
 	GameHandler testGameHandler = new GameHandler();
-	TestPlayer testPlayer = new TestPlayer();
+	FakeTestPlayer testPlayer = new FakeTestPlayer();
 	
 	@Test
 	public void testResetPlayerPersonalMainBoard(){

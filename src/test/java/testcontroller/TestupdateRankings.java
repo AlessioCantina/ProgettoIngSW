@@ -12,10 +12,10 @@ import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.model.PlayerRank;
 import it.polimi.LM39.model.Rankings;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestupdateRankings extends TestCase{
-	private TestPlayer testPlayer = new TestPlayer();
+	private FakeTestPlayer testPlayer = new FakeTestPlayer();
 	private GameHandler testGameHandler = new GameHandler();
 	private Rankings testRankings = new Rankings();
 	private PlayerRank testMilitaryRank = new PlayerRank();

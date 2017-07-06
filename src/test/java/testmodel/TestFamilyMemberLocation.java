@@ -10,6 +10,10 @@ import it.polimi.LM39.model.FamilyMember;
 import it.polimi.LM39.model.FamilyMembersLocation;
 import junit.framework.TestCase;
 
+/**
+ * test familymember location class
+ *
+ */
 public class TestFamilyMemberLocation extends TestCase{
 
 	FamilyMember testFamilyMember;

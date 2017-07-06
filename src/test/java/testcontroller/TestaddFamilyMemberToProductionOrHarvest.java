@@ -14,7 +14,7 @@ import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.ActionBonus;
 import it.polimi.LM39.model.FamilyMember;
 import junit.framework.TestCase;
-import testmodel.TestPlayer;
+import testmodel.FakeTestPlayer;
 
 public class TestaddFamilyMemberToProductionOrHarvest extends TestCase{
 	GameHandler gameHandler = new GameHandler();
@@ -32,7 +32,7 @@ public class TestaddFamilyMemberToProductionOrHarvest extends TestCase{
 	public void testAddFamilyMemberToProductionOrHarvest1() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
 		//match of 2 players
 		gameHandler.mainBoard.harvestAndProductionSize=1;
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		player.personalMainBoard=gameHandler.mainBoard;
 		player.personalBoard.personalBonusTile.harvestBonus = new ActionBonus();
 		player.personalBoard.personalBonusTile.productionBonus = new ActionBonus();
@@ -62,7 +62,7 @@ public class TestaddFamilyMemberToProductionOrHarvest extends TestCase{
 	public void testAddFamilyMemberToProductionOrHarvest2() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
 		//match of >2 players
 		gameHandler.mainBoard.harvestAndProductionSize=20;
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		player.personalMainBoard=gameHandler.mainBoard;
 		player.personalBoard.personalBonusTile.harvestBonus = new ActionBonus();
 		FamilyMember familyMember = new FamilyMember();
@@ -92,7 +92,7 @@ public class TestaddFamilyMemberToProductionOrHarvest extends TestCase{
 	public void testAddFamilyMemberToProductionOrHarvest3() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
 		//match of >2 players
 		gameHandler.mainBoard.harvestAndProductionSize=20;
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		player.personalMainBoard=gameHandler.mainBoard;
 		player.personalBoard.personalBonusTile.harvestBonus = new ActionBonus();
 		FamilyMember familyMember = new FamilyMember();
@@ -116,7 +116,7 @@ public class TestaddFamilyMemberToProductionOrHarvest extends TestCase{
 		
 		
 		//another player add a family member to the occupied Harvest
-		TestPlayer player2 = new TestPlayer();
+		FakeTestPlayer player2 = new FakeTestPlayer();
 		player2.personalMainBoard=gameHandler.mainBoard;
 		player2.personalBoard.personalBonusTile.harvestBonus = new ActionBonus();
 		FamilyMember familyMember2 = new FamilyMember();
@@ -131,7 +131,7 @@ public class TestaddFamilyMemberToProductionOrHarvest extends TestCase{
 	public void testAddFamilyMemberToProductionOrHarvest4() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
 		//match of 2 players
 		gameHandler.mainBoard.harvestAndProductionSize=1;
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		player.personalMainBoard=gameHandler.mainBoard;
 		player.personalBoard.personalBonusTile.harvestBonus = new ActionBonus();
 		FamilyMember familyMember = new FamilyMember();
@@ -142,7 +142,7 @@ public class TestaddFamilyMemberToProductionOrHarvest extends TestCase{
 		assertTrue(gameHandler.addFamilyMemberToProductionOrHarvest(familyMember, gameHandler.mainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Harvest"), "Harvest", player));
 	
 		//another player tries to add a family member to the occupied Harvest
-		TestPlayer player2 = new TestPlayer();
+		FakeTestPlayer player2 = new FakeTestPlayer();
 		player2.personalMainBoard=gameHandler.mainBoard;
 		player2.personalBoard.personalBonusTile.harvestBonus = new ActionBonus();
 		FamilyMember familyMember2 = new FamilyMember();
@@ -157,7 +157,7 @@ public class TestaddFamilyMemberToProductionOrHarvest extends TestCase{
 	public void testAddFamilyMemberToProductionOrHarvest5() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
 		//match of 2 players
 		gameHandler.mainBoard.harvestAndProductionSize=1;
-		TestPlayer player = new TestPlayer();
+		FakeTestPlayer player = new FakeTestPlayer();
 		player.personalMainBoard=gameHandler.mainBoard;
 		player.personalBoard.personalBonusTile.productionBonus = new ActionBonus();
 		FamilyMember familyMember = new FamilyMember();
@@ -168,7 +168,7 @@ public class TestaddFamilyMemberToProductionOrHarvest extends TestCase{
 		assertTrue(gameHandler.addFamilyMemberToProductionOrHarvest(familyMember, gameHandler.mainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Production"), "Production", player));
 	
 		//another player tries to add a family member to the occupied Production
-		TestPlayer player2 = new TestPlayer();
+		FakeTestPlayer player2 = new FakeTestPlayer();
 		player2.personalMainBoard=gameHandler.mainBoard;
 		player2.personalBoard.personalBonusTile.productionBonus = new ActionBonus();
 		FamilyMember familyMember2 = new FamilyMember();

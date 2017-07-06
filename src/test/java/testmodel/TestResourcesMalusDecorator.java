@@ -16,7 +16,7 @@ import junit.framework.TestCase;
 public class TestResourcesMalusDecorator extends TestCase{
 	
 
-	private TestPlayer testPlayer = new TestPlayer();
+	private FakeTestPlayer testPlayer = new FakeTestPlayer();
 	private GameHandler testGameHandler = new GameHandler();
 	private DecoratedMethods testDecorator = new DecoratedMethods();
 	private ResourcesMalusDecorator testResourcesDecorator;
