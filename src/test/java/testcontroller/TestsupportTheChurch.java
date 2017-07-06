@@ -9,7 +9,6 @@ import org.junit.Test;
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
-import it.polimi.LM39.model.FamilyMember;
 import junit.framework.TestCase;
 import testmodel.TestPlayer;
 

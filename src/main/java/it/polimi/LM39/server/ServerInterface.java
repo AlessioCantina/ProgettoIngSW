@@ -8,7 +8,6 @@ import java.io.IOException;
  */
 public interface ServerInterface {
 	public Boolean loginPlayer(String nickName,String password, NetworkPlayer networkPlayer) throws IOException;
-	NetworkPlayer getPlayer(String nickName);
 	public void joinRoom(NetworkPlayer networkPlayer);
 	public Room getRoom(Integer roomNumber);
 }

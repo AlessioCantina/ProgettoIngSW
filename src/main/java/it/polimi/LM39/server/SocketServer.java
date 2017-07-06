@@ -16,12 +16,12 @@ public class SocketServer extends AbstractServer implements Runnable{
     public SocketServer(ServerInterface serverInterface) {
     	super(serverInterface);
     }
-    /*
-     * method called by the server to istantiate the socket server
+    /**
+     * method called by the server to instantiate the socket server
      * 
      */
     @Override
-    public void StartServer(Integer socketPort){
+    public void startServer(Integer socketPort){
     	try{
     		serverSocket = new ServerSocket(socketPort);
     		new Thread(this).start();
@@ -30,7 +30,7 @@ public class SocketServer extends AbstractServer implements Runnable{
     	}
     }
 
-    /*
+    /**
      * listen clients for connect requests
      */
     @Override
@@ -38,7 +38,6 @@ public class SocketServer extends AbstractServer implements Runnable{
 		try{
 			Socket socket = serverSocket.accept();
 			SocketPlayer socketPlayer = new SocketPlayer(getServerController(),socket);
-			System.out.println("Socket Listener up");
 			new Thread(socketPlayer).start();
 			this.run();
 		}catch (IOException e) {

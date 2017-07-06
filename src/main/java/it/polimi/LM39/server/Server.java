@@ -5,32 +5,33 @@ import java.util.*;
 
 import it.polimi.LM39.credentials.Hash;
 
-
-
 /**
- * server class which starts both rmi and socket servers
+ * server class which starts socket server
  */
 public class Server implements ServerInterface{
 	
-	/* network and game constants */
+	// network and game constants, locks to handle multiple threads
 	public static final Integer ROOM_CAPACITY = 4;
 	public static final Integer SOCKET_PORT = 3421;
-	/* lock to handle multiple thread */ 
     private static Object ROOM_LOCK = new Object();
     private SocketServer socketServer;
     private static HashMap<String,NetworkPlayer> players;
     private ArrayList<Room> rooms;   
     
-    /*
+    /**
      * initialize the players hashmap and room arraylist
-     * then it create the server's object
+     * then create the server's object
      */
     public Server() {
     	players = new HashMap<>();
     	rooms = new ArrayList<>();
     	socketServer = new SocketServer(this);
     }
-    
+    /**
+     * used by controller when the game is finished
+     * to allow players to play another game
+     * @param playersLogout
+     */
     public static void logoutPlayers(ArrayList<NetworkPlayer> playersLogout){
     	for(NetworkPlayer player : playersLogout){
     		SocketPlayer.setDisconnectedPlayers(-1);
@@ -38,24 +39,30 @@ public class Server implements ServerInterface{
     		Hash.unregister(player.getNickName());
     	}
     }
-    /*
+    /**
      * main which start the servers
      */
     public static void main(String[] args){
          Server server = new Server();
          server.startServer();
     }
-    /*
-     * starts the thread
+    /**
+     * starts the server's thread
      */
     private void startServer(){
     	System.out.println("SocketServer started");
-    	socketServer.StartServer(SOCKET_PORT);
+    	socketServer.startServer(SOCKET_PORT);
     }
 
-    /*
-     * add player to the hashmap
-     * 
+    /**
+     * login the player
+     * add the player to the room
+     * add the player to the server's hashmap
+     * register the player to the credentials' database
+     * checks if the player was already in a game or if the player is already playing
+     * @param nickName
+     * @param password
+     * @param networkPlayer
      */
 	@Override
 	public Boolean loginPlayer(String nickName,String password,NetworkPlayer networkPlayer) throws IOException {
@@ -67,19 +74,19 @@ public class Server implements ServerInterface{
 			return false;
 		}
 		else if(Hash.login(nickName, password)){
-			SocketPlayer player = ((SocketPlayer)players.get(nickName));
-			SocketPlayer newPlayer = (SocketPlayer)networkPlayer;
-			if(player.getSocket().isClosed())
-				player.resetConnection(newPlayer.getSocket(), newPlayer.getOutputStream(), newPlayer.getInputStream());
-			if(player.getIdleStatus()){
-				player.getSocket().close();
-				player.resetConnection(newPlayer.getSocket(), newPlayer.getOutputStream(), newPlayer.getInputStream());
-				player.getOutputStream().writeLong(Room.playerMoveTimeout);
-				player.getOutputStream().flush();
-				player.clientAction = "";
-				player.setIdleStatus(false);
-				SocketPlayer.setDisconnectedPlayers(-1);
-			}
+				SocketPlayer player = (SocketPlayer)players.get(nickName);
+				SocketPlayer newPlayer = (SocketPlayer)networkPlayer;
+				if(player.getSocket().isClosed())
+					player.resetConnection(newPlayer.getSocket(), newPlayer.getOutputStream(), newPlayer.getInputStream());
+				if(player.getIdleStatus()){
+					player.getSocket().close();
+					player.resetConnection(newPlayer.getSocket(), newPlayer.getOutputStream(), newPlayer.getInputStream());
+					player.getOutputStream().writeLong(Room.playerMoveTimeout);
+					player.getOutputStream().flush();
+					player.clientAction = "";
+					player.setIdleStatus(false);
+					SocketPlayer.setDisconnectedPlayers(-1);
+				}
 		return true;
 		}else{
 			SocketPlayer newPlayer = (SocketPlayer)networkPlayer;
@@ -90,18 +97,10 @@ public class Server implements ServerInterface{
 		return false;
 	}
 
-	/*
-	 * return the networkplayer object using the nickname
-	 */
-	@Override
-	public NetworkPlayer getPlayer(String nickName) {
-		return players.get(nickName);
-	}
-
-
-	/*
+	/**
 	 * this method create the room if needed and call the method to add the player to the room
 	 * the ROOM_LOCK avoid multiple room creation from different thread	 
+	 * @param networkPlayer
 	 */
 	@Override
 	public void joinRoom(NetworkPlayer networkPlayer) {
@@ -127,9 +126,10 @@ public class Server implements ServerInterface{
 			}
 		}
 	}
-	/*
+	/**
 	 * return the room object using the roomnumber provided	 
 	 */
+	@Override
 	public Room getRoom(Integer roomNumber){
 		return this.rooms.get(roomNumber);
 	}

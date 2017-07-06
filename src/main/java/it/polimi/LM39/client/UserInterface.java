@@ -6,7 +6,7 @@ import it.polimi.LM39.server.NetworkPlayer;
 /**
  * abstract class extended by CLI which provides basic methods that will be used by socketclient
  */
-public abstract class UserInterface {
+public interface UserInterface {
 
     public abstract void setMoveTimeout(Long timeout);
     

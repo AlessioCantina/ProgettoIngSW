@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-/*
+/**
  * every player connected to the socket has this object which manipulates connection between server and client
  * this is the server side, so we send objects and strings and receive strings from client
  */
@@ -28,8 +28,8 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    private Boolean requestedMessage;
 	    protected transient static Object LOCK = new Object();
 	    protected static Integer disconnectedPlayers = 0;
-	    /*
-	     * the constructor initialize the streams and start the thread
+	    /**
+	     * the constructor initialize the streams
 	     */
 	    public SocketPlayer(ServerInterface serverInterface, Socket socket) throws IOException {
 	    	  message = "";
@@ -41,30 +41,52 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	          this.objOutput.flush();	//needed to avoid deadlock
 	          this.objInput = new ObjectInputStream(new BufferedInputStream(this.socket.getInputStream()));
 	    }
-	    
+	    /**
+	     * socket getter
+	     * @return
+	     */
 	    public Socket getSocket(){
 	    	return this.socket;
 	    }
+	    /**
+	     * output stream getter
+	     * @return
+	     */
+	    public ObjectOutputStream getOutputStream(){
+	    	return this.objOutput;
+	    }
+	    /**
+	     * input stream getter
+	     * @return
+	     */
+	    public ObjectInputStream getInputStream(){
+	    	return this.objInput;
+	    }
+	    /**
+	     * disconnected players setter
+	     * @param playerNumber
+	     */
 	    public static synchronized void setDisconnectedPlayers(Integer playerNumber){
 	    	if(disconnectedPlayers + playerNumber >= 0)
 	    		disconnectedPlayers += playerNumber;
 	    }
-	    public ObjectOutputStream getOutputStream(){
-	    	return this.objOutput;
-	    }
-	    
-	    public ObjectInputStream getInputStream(){
-	    	return this.objInput;
-	    }
-	    
+
+	    /**
+	     * reset the player's connection when he reconnects to the server
+	     * @param socket
+	     * @param output
+	     * @param input
+	     * @throws IOException
+	     */
 	    public void resetConnection(Socket socket,ObjectOutputStream output, ObjectInputStream input) throws IOException {
 	    	this.socket = socket;
 	        this.objOutput = output;
 	        this.objInput = input;
 	    }
-	    /*
-	     * used from the controller to send mainboard
+	    /**
+	     * used from the controller to set the mainboard to send
 	     */
+	    @Override
 	    public void setMessage(MainBoard mainBoard){
 	    	this.mainBoard = mainBoard;
 	    	try{
@@ -80,9 +102,11 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    		disconnectionHandler();
 		    }	
 	    }
-	    /*
-	     * method which avoid deadlock if the controller want to send multiple messages to a client
+	    /**
+	     * used from the controller to set the mainboard to send
+	     * synchronized to avoid deadlock if the controller want to send multiple messages to a client
 	     */
+	    @Override
 	    public void setMessage(String controllerMessage){
 	    	synchronized(LOCK){
 	    		this.message = controllerMessage;
@@ -99,7 +123,10 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    		}
 	    	}
 	    }
-	    
+	    /**
+	     * this method checks if the player closed the game, 
+	     * handles the disconnection and wait for the player to reconnect
+	     */
 	    public void disconnectionHandler(){
 	    	synchronized(DISCONNECT_LOCK){
 	    		try {
@@ -118,10 +145,11 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    }
 
 
-	    /*
+	    /**
 	     * wait for the room to start, then unlocks player's threads
 	     * 
 	     */
+	    @Override
 	    public void run() {
 	    	synchronized(LOCK){
 	    		try {
@@ -136,19 +164,18 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    	    		LOCK.wait();
 	    	    		break;
 	    	    	}
-	    			System.out.println("THREAD UNLOCKED" + Thread.currentThread());
-    				System.out.println(Room.playerMoveTimeout);
     				objOutput.writeLong(Room.playerMoveTimeout);
     				objOutput.flush();
 				} catch (InterruptedException | IOException e) {
 					Thread.currentThread().interrupt();
 				}
 	    	}
-	    	
 	    }
-	    /*
+	    /**
 	     * this method return the client action to the game controller
+	     * if a client exceeds the timeout return timeout
 	     */
+	    @Override
 	    public String sendMessage(){
 	    	try {
 	    		if(("").equals(clientAction)){	
@@ -162,7 +189,6 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    			this.setIdleStatus(true);
 	    			objOutput.writeObject(true);
 	    			objOutput.flush();
-	    			System.out.println(clientAction);
 	    			return clientAction;
 	    		}	    				
 			} catch (IOException e) {

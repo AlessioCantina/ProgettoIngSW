@@ -30,8 +30,8 @@ public class SocketClient extends AbstractClient implements Runnable{
 	 * @throws UnknownHostException
 	 * @throws IOException
 	 */
-    public SocketClient(String ip, int port, String userName,String password, UserInterface UI) throws UnknownHostException, IOException {
-    	super(UI);
+    public SocketClient(String ip, int port, String userName,String password, UserInterface ui) throws IOException {
+    	super(ui);
     	socket = new Socket(ip,port);
     	socketOut = new ObjectOutputStream(socket.getOutputStream());
     	socketOut.flush();
@@ -49,7 +49,7 @@ public class SocketClient extends AbstractClient implements Runnable{
 			socketOut.writeUTF(userName);
 			socketOut.writeUTF(password);
 	    	socketOut.flush();
-	    	UI.setMoveTimeout(socketIn.readLong());
+	    	ui.setMoveTimeout(socketIn.readLong());
 		} catch (IOException e1) {
 			logger.log(Level.SEVERE, "Can't write on socket");
 		}
@@ -70,15 +70,15 @@ public class SocketClient extends AbstractClient implements Runnable{
     					if(objectGrabber instanceof NetworkPlayer)
     						player = (NetworkPlayer) objectGrabber;
     					if(objectGrabber instanceof MainBoard){
-    						UI.setCurrentMainBoard((MainBoard)objectGrabber);
+    						ui.setCurrentMainBoard((MainBoard)objectGrabber);
     					}	
     					if(objectGrabber instanceof Boolean){
     						if((Boolean)objectGrabber)
     							break;
-    						UI.printMessage((socketIn.readUTF()));
+    						ui.printMessage(socketIn.readUTF());
     					}
     				}
-    				String response = UI.askClient(player);
+    				String response = ui.askClient(player);
 					socketOut.writeUTF(response);
 					socketOut.flush();
     				if(("timeout").equals(response)){

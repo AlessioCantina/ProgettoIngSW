@@ -31,7 +31,12 @@ import it.polimi.LM39.server.NetworkPlayer;
 /**
  * COMMAND LINE INTERFACE
  */
-public class CLI extends UserInterface{
+/**
+ * since the cli uses println and printf, suppress warning on
+ * printf, println and duplicated strings
+ */
+@java.lang.SuppressWarnings({"squid:S106","squid:S1192"})
+public class CLI implements UserInterface{
 
 	/**
 	 * input scanner, logger, mainboard and timeout variables
@@ -429,6 +434,7 @@ public class CLI extends UserInterface{
 	 * code from https://stackoverflow.com/questions/12803151/how-to-interrupt-a-scanner-nextline-call	(future)
 	 * reflection used on client's response to automatically call the selected method 
 	 */
+	@Override
 	public String askClient(NetworkPlayer player){
     	FutureTask<String> readNextLine = new FutureTask<String>(() -> {
     		  return userInput.readLine();
@@ -459,11 +465,11 @@ public class CLI extends UserInterface{
 		if(stringController == Action.CLI.toString()){
 			Method lMethod = null;
 			try {
-				lMethod = (this.getClass().getMethod(response.replace(" ", ""), new Class[] {}));
+				lMethod = this.getClass().getMethod(response.replace(" ", ""), new Class[] {});
 				lMethod.invoke(this);
 			} catch (NoSuchMethodException e) {
 				try {
-					lMethod = (this.getClass().getMethod(response.replace(" ", ""), new Class[] {NetworkPlayer.class}));
+					lMethod = this.getClass().getMethod(response.replace(" ", ""), new Class[] {NetworkPlayer.class});
 					lMethod.invoke(this,player);
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException reflectionError) {
 					logger.log(Level.WARNING,"Wrong input",reflectionError);

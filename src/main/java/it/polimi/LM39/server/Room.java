@@ -15,10 +15,9 @@ public class Room implements Runnable{
 	 * logger, timeouts, room state and constants 
 	 */
 	Logger logger = Logger.getLogger(Room.class.getName());
-	public final Integer MIN_CLIENT = 2;
-	public final Integer MAX_CLIENT = 4;
+	public static final Integer MIN_CLIENT = 2;
+	public static final Integer MAX_CLIENT = 4;
 	protected static Integer roomCounter = 0;
-	private Game game;
 	private ArrayList<NetworkPlayer> players;
 	private long roomCreationTime;
 	private long roomStartTimeout;
@@ -70,6 +69,7 @@ public class Room implements Runnable{
      * thread which measure time elapsed and start the game after the timeout expires
      * 
      */
+    @Override
     public void run(){
 		System.out.println("Waiting for timeout");
     	while(System.currentTimeMillis() - roomCreationTime <= roomStartTimeout && !roomState){
@@ -102,7 +102,7 @@ public class Room implements Runnable{
      * start the game thread
      */
     public void startRoom(){
-    	this.game = new Game(this.getConnectedPlayers(),players);
+    	Game game = new Game(this.getConnectedPlayers(),players);
     	roomState = true;
     	synchronized(SocketPlayer.LOCK){
     		SocketPlayer.LOCK.notifyAll();
