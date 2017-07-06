@@ -42,7 +42,6 @@ public class CLI extends UserInterface{
 	private Logger logger = Logger.getLogger(CLI.class.getName());
 	private boolean displayAction = false;
 	private boolean timeOutActive = false;
-	private boolean excommunicationRequest = false;
 	private boolean error = false;
 	private Long moveTimeout;
 	
@@ -83,6 +82,7 @@ public class CLI extends UserInterface{
      */
     public CLI() {
     	userInput = new BufferedReader(new InputStreamReader(System.in));
+    	System.out.println("Connected to the server. Waiting for other players");
     }
     /**
      * show action menu

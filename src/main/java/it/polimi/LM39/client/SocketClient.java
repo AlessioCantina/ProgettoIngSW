@@ -11,39 +11,40 @@ import it.polimi.LM39.model.MainBoard;
 import it.polimi.LM39.server.NetworkPlayer;
 
 
-/*
+/**
  * socket client: enables the socket in/out for the client
  */
 public class SocketClient extends AbstractClient implements Runnable{
-	private String userName;
 	private Socket socket;
 	private ObjectOutputStream socketOut;
 	private ObjectInputStream socketIn;
-	private String password;
+	private Logger logger = Logger.getLogger(SocketClient.class.getName());
 
-    /*
-	 * set the socket properties and initialize the stream
-     */
+	/**
+	 * set the client parameters (ip,port and UI) and send username and password to the server
+	 * @param ip
+	 * @param port
+	 * @param userName
+	 * @param password
+	 * @param UI
+	 * @throws UnknownHostException
+	 * @throws IOException
+	 */
     public SocketClient(String ip, int port, String userName,String password, UserInterface UI) throws UnknownHostException, IOException {
     	super(UI);
-    	this.userName = userName;
-    	this.password = password;
     	socket = new Socket(ip,port);
     	socketOut = new ObjectOutputStream(socket.getOutputStream());
     	socketOut.flush();
     	socketIn = new ObjectInputStream(new BufferedInputStream(this.socket.getInputStream()));  
+    	initializeClient(userName,password);
     }
-
-    /*
-     * infinite loop which listen to socket server, when there is no more data on the socket
-     * asks client for an input. 
-     * 
+    /**
+     * support method for the constructor, sends username and password to the server
+     * and receive the move timeout from the server
+     * @param userName
+     * @param password
      */
-    @Override
-    public void run(){
-    	Logger logger = Logger.getLogger(SocketClient.class.getName());
-    	Object objectGrabber;
-    	NetworkPlayer player = null;
+    private void initializeClient(String userName,String password){
     	try {
 			socketOut.writeUTF(userName);
 			socketOut.writeUTF(password);
@@ -52,6 +53,16 @@ public class SocketClient extends AbstractClient implements Runnable{
 		} catch (IOException e1) {
 			logger.log(Level.SEVERE, "Can't write on socket");
 		}
+    }
+    /**
+     * infinite loop which listen to socket server, when there is no more data on the socket
+     * asks client for an input. 
+     * 
+     */
+    @Override
+    public void run(){
+    	Object objectGrabber;
+    	NetworkPlayer player = null;
     		while (!socket.isClosed()){	
     			try{
     				while(socketIn.read() != 0){

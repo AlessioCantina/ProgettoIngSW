@@ -3,7 +3,8 @@ package it.polimi.LM39.model.characterpermanenteffect;
 import java.io.Serializable;
 
 /**
- * 
+ * Used by Farmer,Artisan,Peasant,Scholar
+ * permanent effect on harvest or production, every action on actiontype will be increased by actionvalue
  */
 public class HarvestProductionBoost extends CharacterPermanentEffect implements Serializable {
 
