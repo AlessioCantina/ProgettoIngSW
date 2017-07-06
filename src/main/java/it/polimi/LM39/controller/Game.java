@@ -365,58 +365,6 @@ public class Game implements Runnable{
 			playerAction(player);
 			return;
 		}
-    	else if(("debug").equals(response)){
-    		try {
-    			player.setMessage("set coins");
-    			response = player.sendMessage();
-				player.resources.setCoins(Integer.parseInt(response));
-				
-				player.setMessage("set woods");
-				response = player.sendMessage();
-				player.resources.setWoods(Integer.parseInt(response));
-				
-				player.setMessage("set stones");
-				response = player.sendMessage();
-				player.resources.setStones(Integer.parseInt(response));
-				
-				player.setMessage("set servants");
-				response = player.sendMessage();
-				player.resources.setServants(Integer.parseInt(response));
-				
-				player.setMessage("set victory");
-				response = player.sendMessage();
-				player.points.setVictory(Integer.parseInt(response));
-				
-				player.setMessage("set faith");
-				response = player.sendMessage();
-				player.points.setFaith(Integer.parseInt(response));
-				
-				player.setMessage("set military");
-				response = player.sendMessage();
-				player.points.setMilitary(Integer.parseInt(response));
-				
-
-			} catch (NumberFormatException | NotEnoughResourcesException | NotEnoughPointsException e) {
-				logger.log(Level.SEVERE,"Reflection error", e);
-			}
-    		playerAction(player);
-			return;
-    		
-    	}
-    	
-    	else if (("debug excommunication").equals(response)){
-    		player.setMessage("set excommunication number");
-    		response = player.sendMessage();
-    		CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
-    		try {
-				gameHandler.decoratedMethods = cardHandler.activateExcommunication(gameHandler.mainBoard.excommunicationMap.get(Integer.parseInt(response)).effect,player);
-				player.setExcommunications(Integer.parseInt(response));
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				logger.log(Level.SEVERE,"Reflection error", e);
-			}
-    	}
-    	
     	else if (("skip action").equals(response) || ("timeout").equals(response)){
     		//do nothing
     	}
@@ -613,7 +561,7 @@ public class Game implements Runnable{
 			logger.log(Level.SEVERE,"Failed to read json files", e);
 		}
     	//make the players choose four leader cards
-    	//chooseLeaderCard();			//TODO uncomment
+    	chooseLeaderCard();
     	//make the player choose one bonus tile
     	chooseBonusTile();
     	//the array list where the players actions order is stored

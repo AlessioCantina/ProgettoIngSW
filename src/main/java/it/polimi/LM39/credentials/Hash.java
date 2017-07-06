@@ -104,16 +104,6 @@ public class Hash {
     return sb.toString();
   }
   
-  /*
-  public static void main(String[] args){
-	  byte[] salt = getNextSalt();
-	  byte[] hashed_psw = hash("password!".toCharArray(),salt);
-	  if(isExpectedPassword("password!".toCharArray(), salt, hashed_psw))
-		  System.out.println("logged!");
-	  
-  }
-  */
-  
   /**
    * to register a player on the server
    * @param nickName   the player nick name
