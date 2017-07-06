@@ -329,7 +329,7 @@ public class CardHandler {
 								else
 									player.resources.setCoins(costCoins);
 								if(!gameHandler.getCard(cardNumber, player, j))
-									//if the player doesn't have enough resources to get the card it means that costCoins >= instantEffect.cardDiscount.coins
+									//if the player does not have enough resources to get the card it means that costCoins >= instantEffect.cardDiscount.coins
 									//so we get the bonus back from the player
 									player.resources.setCoins(-instantEffect.cardDiscount.coins);
 							}
@@ -1573,7 +1573,7 @@ public class CardHandler {
 	 */
 	
 	public void getInfo (NoVictoryForCard malus,NetworkPlayer player){
-		player.setMessage("At the end of the game, you don’t score points for any of your " + malus.cardType);
+		player.setMessage("At the end of the game, you do not score points for any of your " + malus.cardType);
 	}
 	public void getInfo (CardActionMalus malus,NetworkPlayer player){
 		player.setMessage("Each time you take a " + malus.cardType + " card (through the action space or as a Card effect), your action receives a " +  -malus.malus + " reduction");
@@ -1604,7 +1604,7 @@ public class CardHandler {
 	}
 	
 	public void getInfo (NoMarket malus,NetworkPlayer player){
-		player.setMessage("You can’t permanently place your Family Members in the Market action spaces.");
+		player.setMessage("You cannot permanently place your Family Members in the Market action spaces.");
 	}
 	
 	public void getInfo (ResourcesMalus malus,NetworkPlayer player){
@@ -1652,7 +1652,7 @@ public class CardHandler {
 	 */
 	
 	public void getInfo (AlreadyOccupiedTowerDiscount effect,NetworkPlayer player){
-		player.setMessage("You don’t have to spend 3 coins when you place your Family Members in a Tower that is already occupied");
+		player.setMessage("You do not have to spend 3 coins when you place your Family Members in a Tower that is already occupied");
 	}
 	
 	public void getInfo (CardCoinDiscount effect,NetworkPlayer player){
@@ -1660,7 +1660,7 @@ public class CardHandler {
 	}
 	
 	public void getInfo (CopyLeaderAbility effect,NetworkPlayer player){
-		player.setMessage("Copy the ability of another Leader Card already played by another player. Once you decide the ability to copy, it can’t be changed");
+		player.setMessage("Copy the ability of another Leader Card already played by another player. Once you decide the ability to copy, it cannot be changed");
 	}
 	
 	public void getInfo (DoubleResourcesFromDevelopment effect,NetworkPlayer player){
@@ -1668,7 +1668,7 @@ public class CardHandler {
 	}
 	
 	public void getInfo (NoMilitaryRequirementsForTerritory effect,NetworkPlayer player){
-		player.setMessage("You don’t need to satisfy the Military Points requirement when you take Territory Cards");
+		player.setMessage("You do not need to satisfy the Military Points requirement when you take Territory Cards");
 	}
 	
 	public void getInfo (PlaceFamilyMemberOnOccupiedSpace effect,NetworkPlayer player){
