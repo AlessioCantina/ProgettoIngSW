@@ -40,7 +40,6 @@ public class CLI extends UserInterface{
 	private MainBoard mainBoard;
 	private BufferedReader userInput;
 	private Logger logger = Logger.getLogger(CLI.class.getName());
-	private FutureTask<String> readNextLine;
 	private boolean displayAction = false;
 	private boolean timeOutActive = false;
 	private boolean excommunicationRequest = false;
@@ -423,10 +422,6 @@ public class CLI extends UserInterface{
 			timeOutActive = true;
 		else
 			timeOutActive = false;
-		if(("Do you want to support the Church? yes or no").equals(message))
-			excommunicationRequest = true;
-		else
-			excommunicationRequest = false;
 	}
 	
 	/**
@@ -456,10 +451,7 @@ public class CLI extends UserInterface{
 		} catch (ExecutionException e) {
 			logger.log(Level.WARNING, "Future exception", e);
 		} catch (TimeoutException e) {
-			if(!excommunicationRequest)
-				response = "timeout";
-			else
-				response = "no";
+			response = "timeout";
 			moveTimeout = 0L;
 		}
 		response = response.trim();

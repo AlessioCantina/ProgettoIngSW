@@ -25,6 +25,4 @@ public class GameClient extends UIcontroller {
      */
     private AbstractClient client;
 
-
-
 }

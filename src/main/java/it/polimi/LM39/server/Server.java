@@ -1,7 +1,6 @@
 package it.polimi.LM39.server;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.*;
 
 import it.polimi.LM39.credentials.Hash;
@@ -16,13 +15,11 @@ public class Server implements ServerInterface{
 	/* network and game constants */
 	public static final Integer ROOM_CAPACITY = 4;
 	public static final Integer SOCKET_PORT = 3421;
-	public static final Integer RMI_PORT = 3334;
 	/* lock to handle multiple thread */ 
     private static Object ROOM_LOCK = new Object();
     private SocketServer socketServer;
-    private HashMap<String,NetworkPlayer> players;
+    private static HashMap<String,NetworkPlayer> players;
     private ArrayList<Room> rooms;   
-    private RMIServer rmiServer;  //TODO rmi
     
     /*
      * initialize the players hashmap and room arraylist
@@ -33,18 +30,26 @@ public class Server implements ServerInterface{
     	rooms = new ArrayList<>();
     	socketServer = new SocketServer(this);
     }
+    
+    public static void logoutPlayers(ArrayList<NetworkPlayer> playersLogout){
+    	for(NetworkPlayer player : playersLogout){
+    		SocketPlayer.setDisconnectedPlayers(-1);
+    		players.remove(player.getNickName());
+    		Hash.unregister(player.getNickName());
+    	}
+    }
     /*
-     * main which start the servers TODO: rmi
+     * main which start the servers
      */
     public static void main(String[] args){
          Server server = new Server();
-         server.StartServer();
+         server.startServer();
     }
     /*
      * starts the thread
      */
-    private void StartServer(){
-    	System.out.println("SocketServer Creato");
+    private void startServer(){
+    	System.out.println("SocketServer started");
     	socketServer.StartServer(SOCKET_PORT);
     }
 
@@ -63,25 +68,24 @@ public class Server implements ServerInterface{
 		}
 		else if(Hash.login(nickName, password)){
 			SocketPlayer player = ((SocketPlayer)players.get(nickName));
-			if(player.getSocket().isClosed()){
-				SocketPlayer newPlayer = (SocketPlayer)networkPlayer;
+			SocketPlayer newPlayer = (SocketPlayer)networkPlayer;
+			if(player.getSocket().isClosed())
 				player.resetConnection(newPlayer.getSocket(), newPlayer.getOutputStream(), newPlayer.getInputStream());
-			}
 			if(player.getIdleStatus()){
 				player.getSocket().close();
-				SocketPlayer newPlayer = (SocketPlayer)networkPlayer;
 				player.resetConnection(newPlayer.getSocket(), newPlayer.getOutputStream(), newPlayer.getInputStream());
 				player.getOutputStream().writeLong(Room.playerMoveTimeout);
 				player.getOutputStream().flush();
 				player.clientAction = "";
 				player.setIdleStatus(false);
-				SocketPlayer.disconnectedPlayers--;
+				SocketPlayer.setDisconnectedPlayers(-1);
 			}
 		return true;
 		}else{
-			((SocketPlayer)networkPlayer).getOutputStream().writeLong(Room.playerMoveTimeout);
-			((SocketPlayer)networkPlayer).getOutputStream().flush();
-			((SocketPlayer)networkPlayer).setMessage("Wrong password, please reconnect");
+			SocketPlayer newPlayer = (SocketPlayer)networkPlayer;
+			newPlayer.getOutputStream().writeLong(Room.playerMoveTimeout);
+			newPlayer.getOutputStream().flush();
+			newPlayer.setMessage("Wrong password, please reconnect");
 		}
 		return false;
 	}
@@ -94,11 +98,12 @@ public class Server implements ServerInterface{
 		return players.get(nickName);
 	}
 
-	@Override
+
 	/*
 	 * this method create the room if needed and call the method to add the player to the room
 	 * the ROOM_LOCK avoid multiple room creation from different thread	 
 	 */
+	@Override
 	public void joinRoom(NetworkPlayer networkPlayer) {
 		synchronized(ROOM_LOCK){ 
 			if(Room.roomCounter == 0)
@@ -120,7 +125,6 @@ public class Server implements ServerInterface{
 					room.addPlayer(networkPlayer);
 				}
 			}
-			ROOM_LOCK.notifyAll();
 		}
 	}
 	/*

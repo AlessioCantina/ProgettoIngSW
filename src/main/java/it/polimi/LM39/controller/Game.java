@@ -17,6 +17,7 @@ import it.polimi.LM39.model.PersonalBonusTile;
 import it.polimi.LM39.model.PlayerRank;
 import it.polimi.LM39.model.excommunicationpermanenteffect.SkipFirstTurn;
 import it.polimi.LM39.server.NetworkPlayer;
+import it.polimi.LM39.server.Server;
 
 /**
  * this class is the core of the game there is one for every room

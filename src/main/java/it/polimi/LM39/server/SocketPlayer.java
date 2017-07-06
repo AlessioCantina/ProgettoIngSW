@@ -45,7 +45,10 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    public Socket getSocket(){
 	    	return this.socket;
 	    }
-	    
+	    public static synchronized void setDisconnectedPlayers(Integer playerNumber){
+	    	if(disconnectedPlayers + playerNumber >= 0)
+	    		disconnectedPlayers += playerNumber;
+	    }
 	    public ObjectOutputStream getOutputStream(){
 	    	return this.objOutput;
 	    }
@@ -85,10 +88,11 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    		this.message = controllerMessage;
     			requestedMessage = false;
     			try {
-    				if(!this.getIdleStatus())
+    				if(!this.getIdleStatus()){
     					objOutput.writeObject(requestedMessage);    						
     					objOutput.writeUTF(this.message);
     					objOutput.flush();
+    				}
 	    		} catch (IOException e) {
 	    			logger.log(Level.WARNING, "Player disconnected");
 	    			disconnectionHandler();
@@ -146,25 +150,25 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	     * this method return the client action to the game controller
 	     */
 	    public String sendMessage(){
-	    		try {
-	    			if(("").equals(clientAction)){	
-	    				objOutput.writeObject(true);
-	    				objOutput.flush();
-	    				clientAction = objInput.readUTF();
-	    			}
-	    			if(("timeout").equals(clientAction)){
-	    				if(!this.getIdleStatus())
-	    					SocketPlayer.disconnectedPlayers++;
-	    				this.setIdleStatus(true);
-	    				objOutput.writeObject(true);
-	    				objOutput.flush();
-	    				return clientAction;
-	    			}
-	    				
-				} catch (IOException e) {
-					logger.log(Level.WARNING, "Player disconnected");
-					disconnectionHandler();
-				}
+	    	try {
+	    		if(("").equals(clientAction)){	
+	    			objOutput.writeObject(true);
+	    			objOutput.flush();
+	    			clientAction = objInput.readUTF();
+	    		}
+	    		if(("timeout").equals(clientAction)){
+	    			if(!this.getIdleStatus())
+	    				setDisconnectedPlayers(+1);
+	    			this.setIdleStatus(true);
+	    			objOutput.writeObject(true);
+	    			objOutput.flush();
+	    			System.out.println(clientAction);
+	    			return clientAction;
+	    		}	    				
+			} catch (IOException e) {
+				logger.log(Level.WARNING, "Player disconnected");
+				disconnectionHandler();
+			}
 	    	String stringToSet = clientAction;
 	    	clientAction = "";
 	    	return stringToSet;

@@ -7,10 +7,13 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/*
- *  class that handle room 
+/**
+ *  class that handle a single room
  */
 public class Room implements Runnable{
+	/**
+	 * logger, timeouts, room state and constants 
+	 */
 	Logger logger = Logger.getLogger(Room.class.getName());
 	public final Integer MIN_CLIENT = 2;
 	public final Integer MAX_CLIENT = 4;
@@ -20,8 +23,8 @@ public class Room implements Runnable{
 	private long roomCreationTime;
 	private long roomStartTimeout;
 	protected static Long playerMoveTimeout;
-	private Boolean roomState;	//TODO check if we need something more than a boolean
-    /*
+	private Boolean roomState;	
+    /**
      * initialize the room properties
      */
     public Room() {
@@ -35,26 +38,42 @@ public class Room implements Runnable{
     		logger.log(Level.SEVERE, "Failed to read file", exception);
     	}
     }
+    /**
+     * room timeout getter
+     * @return
+     */
     public long getRoomTimeout(){
     	return this.roomStartTimeout;
     }
+    /**
+     * room state getter (started or not)
+     * @return
+     */
     public Boolean getRoomState(){
     	return this.roomState;
     }
+    /**
+     * room timeout setter (after this timeout the room will start the game)
+     * @param roomStartTimeOut
+     */
     public void setRoomTimeout(Integer roomStartTimeOut){
     	this.roomStartTimeout = roomStartTimeOut*1000L;
     }
+    /**
+     * player moveTimeout (will be sent to the client at the start of the game)
+     * @param moveTimeout
+     */
     public static void setMoveTimeout(Integer moveTimeout){
     	playerMoveTimeout = moveTimeout*1000L;
     }
-    /*
-     * thread which measure time elapsed and if there are enough player starts the game
+    /**
+     * thread which measure time elapsed and start the game after the timeout expires
      * 
      */
     public void run(){
+		System.out.println("Waiting for timeout");
     	while(System.currentTimeMillis() - roomCreationTime <= roomStartTimeout && !roomState){
 			try {
-				System.out.println("Waiting for timeout");
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
@@ -62,18 +81,16 @@ public class Room implements Runnable{
     	}
     	this.startRoom();   
     }
-    /*
-     * it adds a player to a room
+    /**
+     * add the player to the current room
+     * @param player
      */
     public void addPlayer(NetworkPlayer player){
     	this.players.add(player);
-    	System.out.println(getConnectedPlayers());
 		if(this.getConnectedPlayers() == MIN_CLIENT){
 			roomCreationTime = System.currentTimeMillis();
 			new Thread(this).start();
 		}
-		else if(this.getConnectedPlayers() == MAX_CLIENT)
-			this.roomState = true;
     }
     /*
      * return the number of players connected to the room

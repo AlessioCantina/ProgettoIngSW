@@ -10,8 +10,6 @@ public class Player implements Serializable{
 
 	private static final long serialVersionUID = 216892385150280280L;
 
-	public String nickname = "";
-
     public String playerColor = "";
 
     public PersonalBoard personalBoard = new PersonalBoard();
