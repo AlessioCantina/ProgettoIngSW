@@ -50,6 +50,13 @@ public class CLI implements UserInterface{
 	private boolean error = false;
 	private Long moveTimeout;
 	
+    /**
+     * Default constructor: initialize the inputstream
+     */
+    public CLI() {
+    	userInput = new BufferedReader(new InputStreamReader(System.in));
+    	System.out.println("Connected to the server.");
+    }
 	/**
 	 * set the clientmove timeout
 	 *
@@ -83,17 +90,19 @@ public class CLI implements UserInterface{
 		System.out.printf("%n");
 	}
     /**
-     * Default constructor: initialize the inputstream
-     */
-    public CLI() {
-    	userInput = new BufferedReader(new InputStreamReader(System.in));
-    	System.out.println("Connected to the server. Waiting for other players");
-    }
-    /**
      * show action menu
      */
     public void displaymenu(){
     	Action.printAvailableActions();
+    }
+    
+    public void displayavailablemembers(NetworkPlayer player){
+    	ArrayList<String> playedFamilyMembers = player.getPlayedFamilyMembers();
+    	String[] familyMember = {"black","white","uncolored","orange"};
+    	System.out.println("Available family members:");
+    	for(String member : familyMember)
+    		if(!playedFamilyMembers.contains(member))
+    			System.out.println(member);
     }
     /**
      * print the mainboard (only towers)

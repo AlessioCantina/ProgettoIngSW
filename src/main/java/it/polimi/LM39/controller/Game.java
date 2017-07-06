@@ -93,9 +93,9 @@ public class Game implements Runnable{
     	String[] colors = {"green","blue","red","yellow"};
     	for(int i = 0; i < players.size(); i++){
     		players.get(i).playerColor = colors[i];
-    		players.get(i).setMessage(" ");
+    		players.get(i).setMessage("\n");
     		players.get(i).setMessage("Your color is " + colors[i]);
-    		players.get(i).setMessage(" ");
+    		players.get(i).setMessage("\n");
     	}
     }
     
