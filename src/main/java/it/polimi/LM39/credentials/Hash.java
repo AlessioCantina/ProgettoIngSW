@@ -137,6 +137,14 @@ public class Hash {
   public static boolean login(String nickName, String password){
 	  PswAndSalt pswAndSalt = credentialsMap.get(nickName);
 	  return isExpectedPassword(password.toCharArray(), pswAndSalt.getSalt(), pswAndSalt.getPassword());
-	  
   }
+  
+  /**
+   * to unregister a player at the end of a game
+   * @param nickName
+   */
+  public static void unregister(String nickName){
+	  credentialsMap.remove(nickName);
+  }
+
 }

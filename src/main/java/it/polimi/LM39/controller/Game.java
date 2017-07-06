@@ -85,7 +85,7 @@ public class Game implements Runnable{
     }
     
     /**
-     * to give a clor to the players
+     * to give a color to the players
      * @param players
      */
     private void setPlayersColor(ArrayList<NetworkPlayer> players){
@@ -684,7 +684,8 @@ public class Game implements Runnable{
     	}
     	//calculate and send the final points made by every player to every player
     	sendFinalPoints(gameHandler.calculateFinalPoints(players));
-    	
+    	//logout players at the end of the game
+    	Server.logoutPlayers(players);
     }
     
     /**
