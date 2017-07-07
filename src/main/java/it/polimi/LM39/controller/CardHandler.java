@@ -1258,7 +1258,7 @@ public class CardHandler {
 		 Class[] cArg = new Class[2];
 		 cArg[0] = effect.getClass();
 		 cArg[1] = NetworkPlayer.class;
-		 Method lMethod = (this.getClass().getMethod("getInfo",cArg));
+		 Method lMethod = this.getClass().getMethod("getInfo",cArg);
 		 lMethod.invoke(this,effect,player);
 	 }
 	 

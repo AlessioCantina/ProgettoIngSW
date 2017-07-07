@@ -1,6 +1,5 @@
 package it.polimi.LM39.controller.decorator;
 
-import java.lang.reflect.InvocationTargetException;
 import it.polimi.LM39.controller.DecoratedMethods;
 import it.polimi.LM39.controller.PersonalBoardHandler;
 import it.polimi.LM39.exception.InvalidActionTypeException;

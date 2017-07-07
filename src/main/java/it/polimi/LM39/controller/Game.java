@@ -714,7 +714,7 @@ public class Game implements Runnable{
     			}
     			Integer playerNumber2;
     			if(playerNumber+n<players.size()){
-    				response = players.get((playerNumber + n)).sendMessage();
+    				response = players.get(playerNumber + n).sendMessage();
     				playerNumber2 = playerNumber + n;
     			}
     			else if ((playerNumber + n -players.size())<players.size()){

@@ -526,7 +526,7 @@ public class GameHandler {
      */
     public Integer familyMemberValue (FamilyMember familyMember, NetworkPlayer player) {
     	Integer diceValue = familyMemberColorToDiceValue(familyMember.color,player);
-    	return (diceValue+familyMember.getServants());
+    	return diceValue+familyMember.getServants();
     }
 
     /**
