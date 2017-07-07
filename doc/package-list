@@ -1,0 +1,15 @@
+it.polimi.LM39.client
+it.polimi.LM39.controller
+it.polimi.LM39.controller.decorator
+it.polimi.LM39.credentials
+it.polimi.LM39.exception
+it.polimi.LM39.model
+it.polimi.LM39.model.characterpermanenteffect
+it.polimi.LM39.model.excommunicationpermanenteffect
+it.polimi.LM39.model.instanteffect
+it.polimi.LM39.model.leaderobject
+it.polimi.LM39.model.leaderpermanenteffect
+it.polimi.LM39.server
+testcontroller
+testcontrollerdecorator
+testmodel
