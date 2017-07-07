@@ -33,10 +33,10 @@ public class PersonalBoard implements Serializable{
         	case "Building": return this.possessedBuildings;
         	case "Venture": return this.possessedVentures;
         	case "Character": return this.possessedCharacters;
-        	default: System.out.println("Invalid cardType!");
+        	default:
         		break;
         }
-        return null;
+        return new ArrayList<>();
     }
 
     public void setPossessions(Integer possession, String cardType) {
@@ -49,7 +49,7 @@ public class PersonalBoard implements Serializable{
         		break;
         	case "Character": this.possessedCharacters.add(possession);
         		break;
-        	default: System.out.println("Invalid cardType!");
+        	default:
         		break;
         }
     }

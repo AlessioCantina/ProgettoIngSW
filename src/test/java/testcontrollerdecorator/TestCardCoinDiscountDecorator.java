@@ -1,4 +1,4 @@
-package testmodel;
+package testcontrollerdecorator;
 
 import java.io.IOException;
 
@@ -11,6 +11,7 @@ import it.polimi.LM39.controller.decorator.CardCoinDiscountDecorator;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import junit.framework.TestCase;
+import testmodel.FakeTestPlayer;
 
 /**
  * test the card coin discount decorator class
@@ -23,6 +24,9 @@ public class TestCardCoinDiscountDecorator extends TestCase{
 	private CardCoinDiscountDecorator testResourcesDecorator;
 	private Integer testBonus;
 	
+	/**
+	 * set up a fake game to test the decorator
+	 */
 	@Before
 	public void setUp() throws IOException, NotEnoughResourcesException{
 		testDecorator.setGameHandler(testGameHandler);
@@ -37,6 +41,11 @@ public class TestCardCoinDiscountDecorator extends TestCase{
 	    testResourcesDecorator = new CardCoinDiscountDecorator(testDecorator,testBonus);
 	}
 	
+	/**
+	 * try to get a building, a character and a venture with the decorator discount on coins
+	 * @throws NotEnoughResourcesException
+	 * @throws NotEnoughPointsException
+	 */
 	@Test
 	public void testCardCoinDiscount() throws NotEnoughResourcesException, NotEnoughPointsException{
 		// bonus is 1 coin

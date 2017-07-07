@@ -69,7 +69,7 @@ public enum Council {
 	 */
 	public static CardResources getResources(Integer bonusNumber){
 		for(Council councilFavor : Council.values()){
-			if(councilFavor.bonusNumber == bonusNumber && bonusNumber < 4)
+			if(bonusNumber < 4 && councilFavor.bonusNumber == bonusNumber)
 				return councilFavor.resources;
 		}
 		return null;
@@ -81,7 +81,7 @@ public enum Council {
 	 */
 	public static CardPoints getPoints(Integer bonusNumber){
 		for(Council councilFavor : Council.values()){
-			if(councilFavor.bonusNumber == bonusNumber && bonusNumber > 3)
+			if(bonusNumber > 3 && councilFavor.bonusNumber == bonusNumber)
 				return councilFavor.points;
 		}
 		return null;

@@ -1,4 +1,4 @@
-package testmodel;
+package testcontrollerdecorator;
 
 import java.io.IOException;
 
@@ -12,7 +12,12 @@ import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.FamilyMember;
 import junit.framework.TestCase;
+import testmodel.FakeTestPlayer;
 
+/**
+ * test the no market decorator
+ *
+ */
 public class TestNoMarketDecorator extends TestCase{
 	
 	private FakeTestPlayer testPlayer = new FakeTestPlayer();
@@ -21,6 +26,9 @@ public class TestNoMarketDecorator extends TestCase{
 	private FamilyMember testMember = new FamilyMember();
 	private NoMarketDecorator testNoMarket;
 	
+	/**
+	 * set up a fake game to test the decorator
+	 */
 	@Before
 	public void setUp() throws IOException, NotEnoughResourcesException{
 		testDecorator.setGameHandler(testGameHandler);
@@ -30,6 +38,12 @@ public class TestNoMarketDecorator extends TestCase{
 	    testNoMarket = new NoMarketDecorator(testDecorator);
 	}
 
+	/**
+	 * try to add a family member to the market
+	 * @throws IOException
+	 * @throws NotEnoughResourcesException
+	 * @throws NotEnoughPointsException
+	 */
 	@Test
 	public void testNoMarketDecorator() throws IOException, NotEnoughResourcesException, NotEnoughPointsException{
 		int testPosition = 1;

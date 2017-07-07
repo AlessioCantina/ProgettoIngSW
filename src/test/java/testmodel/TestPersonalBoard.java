@@ -20,15 +20,25 @@ public class TestPersonalBoard extends TestCase{
 		String testCardType = "Territory";
 		testPersonalBoard.setPossessions(testCard, testCardType);
 		assertEquals(testPersonalBoard.getPossessions(testCardType).get(0),testCard);
+		
 		testCardType = "Building";
 		testPersonalBoard.setPossessions(testCard, testCardType);
 		assertEquals(testPersonalBoard.getPossessions(testCardType).get(0),testCard);
+		
 		testCardType = "Venture";
 		testPersonalBoard.setPossessions(testCard, testCardType);
 		assertEquals(testPersonalBoard.getPossessions(testCardType).get(0),testCard);
+		
 		testCardType = "Character";
 		testPersonalBoard.setPossessions(testCard, testCardType);
 		assertEquals(testPersonalBoard.getPossessions(testCardType).get(0),testCard);
+		
+		testPersonalBoard.setPossessions(10, "CharacterTest");
+		assertEquals(1,testPersonalBoard.getPossessions(testCardType).size());
+		
+		ArrayList testGetPossession = new ArrayList<>();
+		assertEquals(testGetPossession,testPersonalBoard.getPossessions(""));
+		
 	}
 
 	@Test

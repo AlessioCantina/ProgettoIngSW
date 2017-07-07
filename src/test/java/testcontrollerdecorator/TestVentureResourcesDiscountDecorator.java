@@ -1,4 +1,4 @@
-package testmodel;
+package testcontrollerdecorator;
 
 import java.io.IOException;
 
@@ -11,7 +11,11 @@ import it.polimi.LM39.controller.decorator.VentureResourcesDiscountDecorator;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.CardResources;
 import junit.framework.TestCase;
+import testmodel.FakeTestPlayer;
 
+/**
+ * test the venture resources discount decorator class
+ */
 public class TestVentureResourcesDiscountDecorator extends TestCase{
 	
 	private FakeTestPlayer testPlayer = new FakeTestPlayer();
@@ -20,6 +24,9 @@ public class TestVentureResourcesDiscountDecorator extends TestCase{
 	private VentureResourcesDiscountDecorator testResourcesDecorator;
 	private CardResources ventureDiscount = new CardResources();
 	
+	/**
+	 * set up a fake game to test the decorator
+	 */
 	@Before
 	public void setUp() throws IOException, NotEnoughResourcesException{
 		testDecorator.setGameHandler(testGameHandler);
@@ -34,8 +41,12 @@ public class TestVentureResourcesDiscountDecorator extends TestCase{
 	    testResourcesDecorator = new VentureResourcesDiscountDecorator(testDecorator,ventureDiscount);
 	}
 	
+	/**
+	 * try to get two ventures with the decorator discount on two resources
+	 * @throws NotEnoughResourcesException
+	 */
 	@Test
-	public void testBuildingResourcesDecorator() throws NotEnoughResourcesException{
+	public void testVentureResourcesDecorator() throws NotEnoughResourcesException{
 		// discount is 1 wood
 		Integer expectedWoods = 3;
 		// second card is Hosting Panhandlers (which costs 3 woods) 
@@ -51,8 +62,12 @@ public class TestVentureResourcesDiscountDecorator extends TestCase{
 		assertEquals(expectedStones,testPlayer.resources.getStones());
 	}
 	
+	/**
+	 * try to get two ventures with the decorator discount on a single resource
+	 * @throws NotEnoughResourcesException
+	 */
 	@Test
-	public void testBuildingResourcesDecoratorOneResource() throws NotEnoughResourcesException{
+	public void testVentureResourcesDecoratorOneResource() throws NotEnoughResourcesException{
 		// discount is only 1 wood
 		Integer expectedWoods = 3;
 		ventureDiscount.stones = 0;

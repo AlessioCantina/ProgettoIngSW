@@ -1,4 +1,4 @@
-package testmodel;
+package testcontrollerdecorator;
 
 import java.io.IOException;
 
@@ -12,6 +12,7 @@ import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.CardPoints;
 import junit.framework.TestCase;
+import testmodel.FakeTestPlayer;
 /**
  * test military points malus decorator class
  *
@@ -24,6 +25,9 @@ public class TestMilitaryPointsMalusDecorator extends TestCase{
 	private MilitaryPointsMalusDecorator testResourcesDecorator;
 	private Integer testMalus;
 	
+	/**
+	 * set up a fake game to test the decorator
+	 */
 	@Before
 	public void setUp() throws IOException, NotEnoughPointsException, NotEnoughResourcesException{
 		testDecorator.setGameHandler(testGameHandler);
@@ -35,10 +39,14 @@ public class TestMilitaryPointsMalusDecorator extends TestCase{
 	    testMalus = 1;
 	    testResourcesDecorator = new MilitaryPointsMalusDecorator(testDecorator,testMalus);
 	}
-	
+	/**
+	 * try to get military points with the malus applied
+	 * @throws NotEnoughResourcesException
+	 * @throws NotEnoughPointsException
+	 */
 	@Test
 	public void testMilitaryPointsMalus() throws NotEnoughResourcesException, NotEnoughPointsException{
-		// malus is 1 military
+		// malus is 1 militarye
 		Integer expectedMilitary = 7;
 		CardPoints testPoints = new CardPoints();
 		testPoints.military = 3;

@@ -1,4 +1,4 @@
-package testcontroller;
+package testcontrollerdecorator;
 
 import java.io.IOException;
 
@@ -15,6 +15,11 @@ import it.polimi.LM39.model.CardResources;
 import junit.framework.TestCase;
 import testmodel.FakeTestPlayer;
 
+/**
+ * test the generic decorated methods decorator
+ * in this class we have the standard methods without discounts
+ *
+ */
 public class TestDecoratedMethodsDecorator extends TestCase{
 	
 	private DecoratedMethods testDecoratedMethods = new DecoratedMethods();
@@ -31,6 +36,12 @@ public class TestDecoratedMethodsDecorator extends TestCase{
 	    testGameHandler.initializeTheGame();
 	}
 	
+	/**
+	 * test the methods which are possible to test without the iteration with the client
+	 * (coinsForCharacter,resourcesForVenture,resourcesForBuilding,addCardResources,addCardPoints)
+	 * @throws NotEnoughResourcesException
+	 * @throws NotEnoughPointsException
+	 */
 	@Test
 	public void testDecoratedMethods() throws NotEnoughResourcesException, NotEnoughPointsException{
 		Integer expectedCoins = 9;

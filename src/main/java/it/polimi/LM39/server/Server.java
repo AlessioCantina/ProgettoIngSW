@@ -1,6 +1,7 @@
 package it.polimi.LM39.server;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.*;
 
 import it.polimi.LM39.credentials.Hash;
@@ -66,6 +67,7 @@ public class Server implements ServerInterface{
      */
 	@Override
 	public Boolean loginPlayer(String nickName,String password,NetworkPlayer networkPlayer) throws IOException {
+		//player isn't in a game
 		if (!players.containsKey(nickName)){
 			this.joinRoom(networkPlayer);
 			players.put(nickName, networkPlayer);
@@ -73,28 +75,46 @@ public class Server implements ServerInterface{
 			Hash.register(nickName, password);
 			return false;
 		}
+		//player already in a game
 		else if(Hash.login(nickName, password)){
 				SocketPlayer player = (SocketPlayer)players.get(nickName);
 				SocketPlayer newPlayer = (SocketPlayer)networkPlayer;
-				if(player.getSocket().isClosed())
+				//player disconnected
+				if(player.getSocket().isClosed()){
 					player.resetConnection(newPlayer.getSocket(), newPlayer.getOutputStream(), newPlayer.getInputStream());
+					return true;
+				}
+				//player idle
 				if(player.getIdleStatus()){
 					player.getSocket().close();
 					player.resetConnection(newPlayer.getSocket(), newPlayer.getOutputStream(), newPlayer.getInputStream());
-					player.getOutputStream().writeLong(Room.playerMoveTimeout);
-					player.getOutputStream().flush();
+					this.sendTimeout(player.getOutputStream());
 					player.clientAction = "";
 					player.setIdleStatus(false);
 					SocketPlayer.setDisconnectedPlayers(-1);
+					return true;
 				}
-		return true;
+				//player already in a game and still connected
+				else{
+					this.sendTimeout(player.getOutputStream());
+					newPlayer.setMessage("Player already in game. Please reconnect with another nickname");
+					return false;
+				}		
 		}else{
 			SocketPlayer newPlayer = (SocketPlayer)networkPlayer;
-			newPlayer.getOutputStream().writeLong(Room.playerMoveTimeout);
-			newPlayer.getOutputStream().flush();
+			this.sendTimeout(newPlayer.getOutputStream());
 			newPlayer.setMessage("Wrong password, please reconnect");
 		}
 		return false;
+	}
+	/**
+	 * support method to send the timeout to the player when he reconnects
+	 * @param stream
+	 * @throws IOException
+	 */
+	private void sendTimeout(ObjectOutputStream stream) throws IOException{
+		stream.writeLong(Room.playerMoveTimeout);
+		stream.flush();
 	}
 
 	/**

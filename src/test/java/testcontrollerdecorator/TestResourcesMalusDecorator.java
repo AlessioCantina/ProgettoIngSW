@@ -1,4 +1,4 @@
-package testmodel;
+package testcontrollerdecorator;
 
 import java.io.IOException;
 
@@ -12,7 +12,12 @@ import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.CardResources;
 import junit.framework.TestCase;
+import testmodel.FakeTestPlayer;
 
+/**
+ * test the resources malus decorator
+ *
+ */
 public class TestResourcesMalusDecorator extends TestCase{
 	
 
@@ -23,6 +28,9 @@ public class TestResourcesMalusDecorator extends TestCase{
 	private CardResources testMalus = new CardResources();
 	private CardResources testResources = new CardResources();
 	
+	/**
+	 * set up a fake game to test the decorator
+	 */
 	@Before
 	public void setUp() throws IOException, NotEnoughResourcesException{
 		testDecorator.setGameHandler(testGameHandler);
@@ -38,7 +46,11 @@ public class TestResourcesMalusDecorator extends TestCase{
 	    testResources.stones = 2;
 	    testResourcesDecorator = new ResourcesMalusDecorator(testDecorator,testGameHandler,testMalus);
 	}
-	
+	/**
+	 * try to get a building with the malus applied on two resources
+	 * @throws NotEnoughResourcesException
+	 * @throws NotEnoughPointsException
+	 */
 	@Test
 	public void testBuildingResourcesDecorator() throws NotEnoughResourcesException, NotEnoughPointsException{
 		// malus is 1 wood, 1 stone
@@ -54,7 +66,11 @@ public class TestResourcesMalusDecorator extends TestCase{
 		
 		assertEquals(expectedStones,testPlayer.resources.getStones());
 	}
-	
+	/**
+	 * try to get a building with the malus applied on a single resource
+	 * @throws NotEnoughResourcesException
+	 * @throws NotEnoughPointsException
+	 */
 	@Test
 	public void testBuildingResourcesDecoratorSingleResource() throws NotEnoughResourcesException, NotEnoughPointsException{
 		// malus is 1 wood, 1 stone

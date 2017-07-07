@@ -1,4 +1,4 @@
-package testmodel;
+package testcontrollerdecorator;
 
 import java.io.IOException;
 
@@ -11,6 +11,7 @@ import it.polimi.LM39.controller.decorator.BuildingResourcesDiscountDecorator;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.CardResources;
 import junit.framework.TestCase;
+import testmodel.FakeTestPlayer;
 
 /**
  * test the building resources discount decorator class
@@ -23,6 +24,9 @@ public class TestBuildingResourcesDiscountDecorator extends TestCase{
 	private BuildingResourcesDiscountDecorator testResourcesDecorator;
 	private CardResources buildingDiscount = new CardResources();
 	
+	/**
+	 * set up a fake game to test the decorator
+	 */
 	@Before
 	public void setUp() throws IOException, NotEnoughResourcesException{
 		testDecorator.setGameHandler(testGameHandler);
@@ -37,6 +41,10 @@ public class TestBuildingResourcesDiscountDecorator extends TestCase{
 	    testResourcesDecorator = new BuildingResourcesDiscountDecorator(testDecorator,buildingDiscount);
 	}
 	
+	/**
+	 * try to get two buildings with the decorator discount on two resources
+	 * @throws NotEnoughResourcesException
+	 */
 	@Test
 	public void testBuildingResourcesDecorator() throws NotEnoughResourcesException{
 		// discount is 1 wood
@@ -52,7 +60,10 @@ public class TestBuildingResourcesDiscountDecorator extends TestCase{
 		testResourcesDecorator.resourcesForBuilding(testPlayer, testGameHandler.mainBoard.buildingMap.get(2));
 		assertEquals(expectedStones,testPlayer.resources.getStones());
 	}
-	
+	/**
+	 * try to get two buildings with the decorator discount on a single resource
+	 * @throws NotEnoughResourcesException
+	 */
 	@Test
 	public void testBuildingResourcesDecoratorOneResource() throws NotEnoughResourcesException{
 		// discount is only 1 wood
