@@ -11,6 +11,7 @@ import javax.crypto.spec.PBEKeySpec;
 
 /**
  * The following is a snippet of code from https://stackoverflow.com/questions/18142745/how-do-i-generate-a-salt-in-java-for-salted-hash
+ * I wrote the methods login, register and unregister
  * I (Alessio) like hashes and ciphers, so even if this level of security is not needed by the game, I decided to store the login passwords salted and hashed
  * in an hashmap
  */
@@ -81,28 +82,6 @@ public class Hash {
     }
     return true;
   }
-
-  /**
-   * Generates a random password of a given length, using letters and digits.
-   *
-   * @param length the length of the password
-   *
-   * @return a random password
-   */
-  public static String generateRandomPassword(int length) {
-    StringBuilder sb = new StringBuilder(length);
-    for (int i = 0; i < length; i++) {
-      int c = RANDOM.nextInt(62);
-      if (c <= 9) {
-        sb.append(String.valueOf(c));
-      } else if (c < 36) {
-        sb.append((char) ('a' + c - 10));
-      } else {
-        sb.append((char) ('A' + c - 36));
-      }
-    }
-    return sb.toString();
-  }
   
   /**
    * to register a player on the server
@@ -125,8 +104,12 @@ public class Hash {
    * @return
    */
   public static boolean login(String nickName, String password){
-	  PswAndSalt pswAndSalt = credentialsMap.get(nickName);
-	  return isExpectedPassword(password.toCharArray(), pswAndSalt.getSalt(), pswAndSalt.getPassword());
+	  if(credentialsMap.containsKey(nickName)){
+		  PswAndSalt pswAndSalt = credentialsMap.get(nickName);
+	  	return isExpectedPassword(password.toCharArray(), pswAndSalt.getSalt(), pswAndSalt.getPassword());
+	  }
+	  else
+		  return false;
   }
   
   /**
