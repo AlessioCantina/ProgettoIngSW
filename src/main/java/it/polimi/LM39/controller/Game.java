@@ -97,35 +97,105 @@ public class Game implements Runnable{
     }
     
     /**
-     * to handle the various actions that a player can do
+     * to get a card on the Towers
      * @param player
      */
-    private void playerAction(NetworkPlayer player){
-    	player.setMessage("What action do you want to perform?");
-    	String response = player.sendMessage();
-    	//flag is false by default
+    private void actionGetCard (NetworkPlayer player){
     	boolean flag;
-    	if(("get card").equals(response)){
-    		player.setMessage("What card do you want?");
-    		response = player.sendMessage();
-    		try {
-				gameHandler.cardNameToInteger(response);
-			} catch (CardNotFoundException e) {
-				player.setMessage("This card is not on the Towers");
-				playerAction(player);
-				return;
-			}
-    		FamilyMember familyMember;
+		player.setMessage("What card do you want?");
+		String response = player.sendMessage();
+		try {
+			gameHandler.cardNameToInteger(response);
+		} catch (CardNotFoundException e) {
+			player.setMessage("This card is not on the Towers");
+			doPlayerAction(player);
+			return;
+		}
+		FamilyMember familyMember;
+		try {
+			familyMember = handleFamilyMember(player);
+		} catch (DoAnotherActionException e2) {
+			doPlayerAction(player);
+			return;
+		}
+		try {
+			flag = gameHandler.addFamilyMemberToTheTower(familyMember, response, player);
+		} catch (ReflectiveOperationException | NotEnoughResourcesException | NotEnoughPointsException
+				| CardNotFoundException e) {
+			logger.log(Level.SEVERE, "Reflection error", e);
+			//give the servants back to the player if the action failed
 			try {
-				familyMember = handleFamilyMember(player);
-			} catch (DoAnotherActionException e2) {
-				playerAction(player);
-				return;
+				player.resources.setServants(familyMember.getServants());
+			} catch (NotEnoughResourcesException e1) {
+				logger.log(Level.WARNING, "Not enough servants", e1);
 			}
-    		try {
-				flag = gameHandler.addFamilyMemberToTheTower(familyMember, response, player);
-			} catch (ReflectiveOperationException | NotEnoughResourcesException | NotEnoughPointsException
-					| CardNotFoundException e) {
+			doPlayerAction(player);
+			return;
+		}
+		if(flag==false){
+			//give the servants back to the player if the action failed
+			try {
+				player.resources.setServants(familyMember.getServants());
+			} catch (NotEnoughResourcesException e1) {
+				logger.log(Level.WARNING, "Not enough servants", e1);
+			}
+			doPlayerAction(player);
+			return;
+		}
+		//add the played family member to the played family members list
+		player.setPlayedFamilyMember(familyMember.color);
+    	
+    }
+    
+    /**
+     * to activate the production
+     * @param player
+     */
+    private void actionActivateProduction(NetworkPlayer player){
+    	FamilyMember familyMember;
+    	boolean flag;
+		try {
+			familyMember = handleFamilyMember(player);
+		} catch (DoAnotherActionException e2) {
+			doPlayerAction(player);
+			return;
+		}
+		try {
+			flag = gameHandler.addFamilyMemberToProductionOrHarvest(familyMember,player.personalMainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Production"),"Production",player);
+		} catch (ReflectiveOperationException | NotEnoughResourcesException | NotEnoughPointsException
+				| InvalidActionTypeException e) {
+			logger.log(Level.SEVERE, "Reflection error", e);
+			//give the servants back to the player if the action failed
+			try {
+				player.resources.setServants(familyMember.getServants());
+			} catch (NotEnoughResourcesException e1) {
+				logger.log(Level.WARNING, "Not enough servants", e1);
+			}
+			doPlayerAction(player);
+			return;
+		}
+		if (flag == false){
+			doPlayerAction(player);
+			return;}
+    }
+    
+    /**
+     * to activate the harvest
+     * @param player
+     */
+    private void actionActivateHarvest(NetworkPlayer player){
+    	boolean flag;
+		FamilyMember familyMember;
+		try {
+			familyMember = handleFamilyMember(player);
+		} catch (DoAnotherActionException e2) {
+			doPlayerAction(player);
+			return;
+		}
+		try {
+			flag = gameHandler.addFamilyMemberToProductionOrHarvest(familyMember,player.personalMainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Harvest"),"Harvest",player);
+		} catch (ReflectiveOperationException | NotEnoughResourcesException | NotEnoughPointsException
+				| InvalidActionTypeException e) {
 				logger.log(Level.SEVERE, "Reflection error", e);
 				//give the servants back to the player if the action failed
 				try {
@@ -133,238 +203,227 @@ public class Game implements Runnable{
 				} catch (NotEnoughResourcesException e1) {
 					logger.log(Level.WARNING, "Not enough servants", e1);
 				}
-				playerAction(player);
+				doPlayerAction(player);
 				return;
-			}
-    		if(flag==false){
-				//give the servants back to the player if the action failed
-				try {
-					player.resources.setServants(familyMember.getServants());
-				} catch (NotEnoughResourcesException e1) {
-					logger.log(Level.WARNING, "Not enough servants", e1);
-				}
-				playerAction(player);
-				return;
-    		}
-    		//ad the played family member to the played family fembers list
-    		player.setPlayedFamilyMember(familyMember.color);
-    	}
-    	else if (("activate production").equals(response)){
-    		FamilyMember familyMember;
-			try {
-				familyMember = handleFamilyMember(player);
-			} catch (DoAnotherActionException e2) {
-				playerAction(player);
-				return;
-			}
-    		try {
-    			flag = gameHandler.addFamilyMemberToProductionOrHarvest(familyMember,player.personalMainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Production"),"Production",player);
-			} catch (ReflectiveOperationException | NotEnoughResourcesException | NotEnoughPointsException
-					| InvalidActionTypeException e) {
-				logger.log(Level.SEVERE, "Reflection error", e);
-				//give the servants back to the player if the action failed
-				try {
-					player.resources.setServants(familyMember.getServants());
-				} catch (NotEnoughResourcesException e1) {
-					logger.log(Level.WARNING, "Not enough servants", e1);
-				}
-				playerAction(player);
-				return;
-			}
-    		if (flag == false){
-    			playerAction(player);
-    			return;}
-    	}
-    	else if (("activate harvest").equals(response)){
-    		FamilyMember familyMember;
-			try {
-				familyMember = handleFamilyMember(player);
-			} catch (DoAnotherActionException e2) {
-				playerAction(player);
-				return;
-			}
-			try {
-				flag = gameHandler.addFamilyMemberToProductionOrHarvest(familyMember,player.personalMainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Harvest"),"Harvest",player);
-			} catch (ReflectiveOperationException | NotEnoughResourcesException | NotEnoughPointsException
-					| InvalidActionTypeException e) {
-					logger.log(Level.SEVERE, "Reflection error", e);
-					//give the servants back to the player if the action failed
-					try {
-						player.resources.setServants(familyMember.getServants());
-					} catch (NotEnoughResourcesException e1) {
-						logger.log(Level.WARNING, "Not enough servants", e1);
-					}
-					playerAction(player);
+		}
+		if (flag == false){
+			doPlayerAction(player);
+			return;}
+    }
+    
+    /**
+     * to dicard a leader
+     * @param player
+     */
+    private void actionDiscardLeader(NetworkPlayer player){
+		Integer cardNumber = -1;
+		player.setMessage("Which leader card do you want to discard?");
+		String response = player.sendMessage();
+		if(player.personalBoard.getPossessedLeaders().contains(response)){
+			cardNumber = player.personalBoard.getPossessedLeaders().indexOf(response);
+				try {	
+					gameHandler.discardLeader(player, player.personalBoard.getPossessedLeaders().get(cardNumber));
+				} catch (NotEnoughResourcesException | NotEnoughPointsException e) {
+					logger.log(Level.WARNING, "Not enough points or resources", e);
+					doPlayerAction(player);
 					return;
-			}
-			if (flag == false){
-    			playerAction(player);
-    			return;}
-			
-    	}
-    	else if (("discard leader").equals(response)){
-    		Integer cardNumber = -1;
-    		player.setMessage("Which leader card do you want to discard?");
-    		response = player.sendMessage();
-    		if(player.personalBoard.getPossessedLeaders().contains(response)){
-    			cardNumber = player.personalBoard.getPossessedLeaders().indexOf(response);
-					try {	
-						gameHandler.discardLeader(player, player.personalBoard.getPossessedLeaders().get(cardNumber));
-					} catch (NotEnoughResourcesException | NotEnoughPointsException e) {
-						logger.log(Level.WARNING, "Not enough points or resources", e);
-						playerAction(player);
+				}
+		}
+		if(cardNumber == -1)
+			player.setMessage("You don't have this leader");
+		doPlayerAction(player);
+    }
+    
+    /**
+     * to activate a leader
+     * @param player
+     */
+    private void actionActivateLeader(NetworkPlayer player){
+    	player.setMessage("Which leader do you want to activate?");
+		String response = player.sendMessage();
+		boolean flag = false;
+		if(player.personalBoard.getPossessedLeaders().contains(response) && !player.getPlayerInstantLeaderCards().contains(response) 
+		&& !player.getPlayerPlayedLeaderCards().contains(response)){
+				CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
+				try {
+					flag = cardHandler.checkLeaderRequestedObject(gameHandler.mainBoard.leaderMap.get(response).requestedObjects, player);
+				} catch (ReflectiveOperationException e) {
+					logger.log(Level.SEVERE, "Reflection error", e);
+				}
+				if(flag == false){
+					player.setMessage("You do not have the requirements to activate this leader!");
+					doPlayerAction(player);
+					return;
+				}
+				else {
+					try {
+						gameHandler.decoratedMethods = cardHandler.activateLeader(gameHandler.mainBoard.leaderMap.get(response).effect, player, gameHandler.mainBoard.leaderMap.get(response).cardName);
+						doPlayerAction(player);
 						return;
-					}
-    		}
-    		if(cardNumber == -1)
-    			player.setMessage("You don't have this leader");
-    		playerAction(player);
-    	}
-    	else if (("activate leader").equals(response)){
-    		player.setMessage("Which leader do you want to activate?");
-    		response = player.sendMessage();
-    		flag = false;
-    		if(player.personalBoard.getPossessedLeaders().contains(response) && !player.getPlayerInstantLeaderCards().contains(response) 
-    		&& !player.getPlayerPlayedLeaderCards().contains(response)){
-					CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
-    				try {
-						flag = cardHandler.checkLeaderRequestedObject(gameHandler.mainBoard.leaderMap.get(response).requestedObjects, player);
 					} catch (ReflectiveOperationException e) {
 						logger.log(Level.SEVERE, "Reflection error", e);
 					}
-    				if(flag == false){
-    					player.setMessage("You do not have the requirements to activate this leader!");
-						playerAction(player);
-						return;
-    				}
-    				else {
-    					try {
-    						gameHandler.decoratedMethods = cardHandler.activateLeader(gameHandler.mainBoard.leaderMap.get(response).effect, player, gameHandler.mainBoard.leaderMap.get(response).cardName);
-    						playerAction(player);
-    						return;
-						} catch (ReflectiveOperationException e) {
-							logger.log(Level.SEVERE, "Reflection error", e);
-						}
-    				}	
-			}
-    		else{
-					player.setMessage("You do not have this card or this card is active");
-					playerAction(player);
-					return;
-			}
-    	}
-    	
-    	else if (("go to the market").equals(response)){
-    		CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
-    		for(int i =0;i<gameHandler.mainBoard.marketSize;i++){
-    			ActionBonus bonus = gameHandler.mainBoard.marketBonuses[i];
-    			player.setMessage("Market position " + (i+1) + " gives you:");
-    			cardHandler.printCardResources(bonus.resources, player);
-    			cardHandler.printCardPoints(bonus.points, player);
-    		}
-    		FamilyMember familyMember;
+				}	
+		}
+		else{
+				player.setMessage("You do not have this card or this card is active");
+				doPlayerAction(player);
+				return;
+		}
+    }
+    
+    /**
+     * to go to the market
+     * @param player
+     */
+    private void actionGoToTheMarket(NetworkPlayer player){
+		CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
+		for(int i =0;i<gameHandler.mainBoard.marketSize;i++){
+			ActionBonus bonus = gameHandler.mainBoard.marketBonuses[i];
+			player.setMessage("Market position " + (i+1) + " gives you:");
+			cardHandler.printCardResources(bonus.resources, player);
+			cardHandler.printCardPoints(bonus.points, player);
+		}
+		FamilyMember familyMember;
+		try {
+			familyMember = handleFamilyMember(player);
+		} catch (DoAnotherActionException e1) {
+			doPlayerAction(player);
+			return;
+		}
+		player.setMessage("In which position do you want to go? From 1 to " + gameHandler.mainBoard.marketSize);
+		boolean flag = false;
+		String response = player.sendMessage();
+		if(!("4").equals(response) && !("3").equals(response) && !("2").equals(response) && !("1").equals(response)){
+			player.setMessage("You must choose between 1 and 4");
+			//give the servants back to the player if the action failed
 			try {
-				familyMember = handleFamilyMember(player);
-			} catch (DoAnotherActionException e1) {
-				playerAction(player);
-				return;
+				player.resources.setServants(familyMember.getServants());
+			} catch (NotEnoughResourcesException e) {
+				logger.log(Level.WARNING, "Not enough resources", e);
 			}
-    		player.setMessage("In which position do you want to go? From 1 to " + gameHandler.mainBoard.marketSize);
-    		flag = false;
-    		response = player.sendMessage();
-    		if(!("4").equals(response) && !("3").equals(response) && !("2").equals(response) && !("1").equals(response)){
-    			player.setMessage("You must choose between 1 and 4");
-    			//give the servants back to the player if the action failed
-				try {
-					player.resources.setServants(familyMember.getServants());
-				} catch (NotEnoughResourcesException e) {
-					logger.log(Level.WARNING, "Not enough resources", e);
-				}
-				playerAction(player);
-				return;
-    		}
-    		else{
-    			try {
-					flag = gameHandler.decoratedMethods.addFamilyMemberToTheMarket(familyMember, Integer.parseInt(response), player);
-				} catch (NumberFormatException | NotEnoughResourcesException
-						| NotEnoughPointsException e) {
-					logger.log(Level.SEVERE,"Not enough resources or points", e);
-				}
-    			if(flag==false){
-    				//give the servants back to the player if the action failed
-    				try {
-    					player.resources.setServants(familyMember.getServants());
-    				} catch (NotEnoughResourcesException e) {
-    					logger.log(Level.WARNING,"Not enough resources or points", e);
-    				}
-    				playerAction(player);
-    				return;
-    			}
-    		}
-    	}
-    	
-    	else if (("go to the council palace").equals(response)){
-    		flag = false;
-    		FamilyMember familyMember;
+			doPlayerAction(player);
+			return;
+		}
+		else{
 			try {
-				familyMember = handleFamilyMember(player);
-			} catch (DoAnotherActionException e1) {
-				playerAction(player);
-				return;
+				flag = gameHandler.decoratedMethods.addFamilyMemberToTheMarket(familyMember, Integer.parseInt(response), player);
+			} catch (NumberFormatException | NotEnoughResourcesException
+					| NotEnoughPointsException e) {
+				logger.log(Level.SEVERE,"Not enough resources or points", e);
 			}
-    		try {
-				flag = gameHandler.addFamilyMemberToTheCouncilPalace(familyMember, player);
-			} catch (NotEnoughResourcesException | NotEnoughPointsException e) {
-				logger.log(Level.WARNING,"Not enough resources or points", e);
-			}
-    		if(flag==false){
+			if(flag==false){
 				//give the servants back to the player if the action failed
 				try {
 					player.resources.setServants(familyMember.getServants());
 				} catch (NotEnoughResourcesException e) {
-					logger.log(Level.WARNING,"Not enough servants", e);
+					logger.log(Level.WARNING,"Not enough resources or points", e);
 				}
-				playerAction(player);
+				doPlayerAction(player);
 				return;
-    		}
-    	}
-    	
-    	else if (("get card info").equals(response)){
-    		player.setMessage("What card are you interested in ?");
-    		String cardName = player.sendMessage();
-    		try {
-				searchCard(cardName,player);
-				playerAction(player);
-				return;
+			}
+		}
+    }
+    
+    /**
+     * to go to the council palace
+     * @param player
+     */
+    private void actionGoToTheCouncilPalace(NetworkPlayer player){
+    	boolean flag = false;
+		FamilyMember familyMember;
+		try {
+			familyMember = handleFamilyMember(player);
+		} catch (DoAnotherActionException e1) {
+			doPlayerAction(player);
+			return;
+		}
+		try {
+			flag = gameHandler.addFamilyMemberToTheCouncilPalace(familyMember, player);
+		} catch (NotEnoughResourcesException | NotEnoughPointsException e) {
+			logger.log(Level.WARNING,"Not enough resources or points", e);
+		}
+		if(flag==false){
+			//give the servants back to the player if the action failed
+			try {
+				player.resources.setServants(familyMember.getServants());
+			} catch (NotEnoughResourcesException e) {
+				logger.log(Level.WARNING,"Not enough servants", e);
+			}
+			doPlayerAction(player);
+			return;
+		}
+    }
+    
+    /**
+     * to get informations about a card costs and bonuses
+     * @param player
+     */
+    private void actionGetCardInfo(NetworkPlayer player){
+    	player.setMessage("What card are you interested in ?");
+		String cardName = player.sendMessage();
+		try {
+			searchCard(cardName,player);
+			doPlayerAction(player);
+			return;
+		} catch (ReflectiveOperationException e) {
+			logger.log(Level.SEVERE,"Reflection error", e);
+		}
+		catch (CardNotFoundException e) {
+			doPlayerAction(player);
+			return;
+		}
+    }
+    
+    /**
+     * to show the excommunications on the Board
+     * @param player
+     */
+    private void actionDisplayExcommunications(NetworkPlayer player){
+    	CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
+		for(int i=0;i<3;i++){
+			player.setMessage("Excommunication " + (i+1));
+			try {
+				cardHandler.getInfo(gameHandler.mainBoard.excommunicationMap.get(gameHandler.mainBoard.excommunicationsOnTheBoard[i]).effect,player);
 			} catch (ReflectiveOperationException e) {
 				logger.log(Level.SEVERE,"Reflection error", e);
 			}
-    		catch (CardNotFoundException e) {
-    			playerAction(player);
-    			return;
-			}
-    	}
-    	
-    	else if (("display excommunications").equals(response)){
-    		CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
-			for(int i=0;i<3;i++){
-				player.setMessage("Excommunication " + (i+1));
-				try {
-					cardHandler.getInfo(gameHandler.mainBoard.excommunicationMap.get(gameHandler.mainBoard.excommunicationsOnTheBoard[i]).effect,player);
-				} catch (ReflectiveOperationException e) {
-					logger.log(Level.SEVERE,"Reflection error", e);
-				}
-			}
-			playerAction(player);
-			return;
 		}
-    	else if (("skip action").equals(response) || ("timeout").equals(response)){
-    		//do nothing
-    	}
-    	else{
-    		player.setMessage("Invalid action");
-    		playerAction(player);
-			return;
+		doPlayerAction(player);
+		return;
+    }
+    
+    /**
+     * to call the various actions that a player can do
+     * @param player
+     */
+    private void doPlayerAction(NetworkPlayer player){
+    	player.setMessage("What action do you want to perform?");
+    	String response = player.sendMessage();
+    	switch(response){
+    	case "get card": actionGetCard (player);
+    		break;
+    	case "activate production": actionActivateProduction(player);
+    		break;
+    	case "activate harvest": actionActivateHarvest(player);
+    		break;
+    	case  "discard leader": actionDiscardLeader(player);
+    		break;
+    	case "activate leader": actionActivateLeader(player);
+    		break;
+    	case "go to the market": actionGoToTheMarket(player);
+    		break;
+    	case "go to the council palace": actionGoToTheCouncilPalace(player);
+    		break;
+    	case "get card info": actionGetCardInfo(player);
+    		break;
+    	case "display excommunications": actionDisplayExcommunications(player);
+    		break;
+    	case "skip action": // do nothing
+    		break;
+    	default: player.setMessage("Invalid action");
+				 doPlayerAction(player);
+			break;
     	}
     }
     
@@ -569,7 +628,7 @@ public class Game implements Runnable{
         	    		updatePersonalMainBoards(player);
         	    		if((turn == 0 && !skipFirstTurn(player)) || turn != 0){
 	    					player.setMessage(gameHandler.mainBoard);
-	    					playerAction(player);
+	    					doPlayerAction(player);
 	    					player.setMessage("End of your turn");
 	    					gameHandler.updateRankings(player);
 	    				}
@@ -581,7 +640,7 @@ public class Game implements Runnable{
         	    				player = playerColorToNetworkPlayer(order.get(i));
         	    				if(skipFirstTurn(player)){
         	    					player.setMessage(gameHandler.mainBoard);
-        	    					playerAction(player);
+        	    					doPlayerAction(player);
         	    					player.setMessage("End of your turn");
         	    					gameHandler.updateRankings(player);
         	    				}
