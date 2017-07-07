@@ -2,7 +2,6 @@ package it.polimi.LM39.controller;
 
 
 import it.polimi.LM39.server.NetworkPlayer;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import com.google.gson.Gson;
 import it.polimi.LM39.exception.InvalidActionTypeException;
@@ -14,13 +13,13 @@ import it.polimi.LM39.model.FamilyMember;
 import it.polimi.LM39.model.instanteffect.InstantEffect;
 
 /**
- * this calss contains the methods to handle the player PersonalBoard
+ * this class contains the methods to handle the player PersonalBoard
  */
 public class PersonalBoardHandler {
 	private GameHandler gameHandler;
     
 	/**
-	 * setter fo rgameHandler
+	 * setter for rgameHandler
 	 * @param gameHandler
 	 */
 	public void setGameHandler(GameHandler gameHandler){
@@ -34,9 +33,6 @@ public class PersonalBoardHandler {
 	 * @param familyMember
 	 * @return
 	 * @throws ReflectiveOperationException
-	 * @throws NotEnoughResourcesException
-	 * @throws NotEnoughPointsException
-	 * @throws InvalidActionTypeException
 	 */
     public boolean activateHarvest(Integer actionValue, NetworkPlayer player,FamilyMember familyMember) throws ReflectiveOperationException , NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException {
     	if(actionValue > 0){
@@ -63,9 +59,6 @@ public class PersonalBoardHandler {
      * @param familyMember
      * @return
      * @throws ReflectiveOperationException
-     * @throws NotEnoughResourcesException
-     * @throws NotEnoughPointsException
-     * @throws InvalidActionTypeException
      */
     public boolean activateProduction(Integer actionValue, NetworkPlayer player,FamilyMember familyMember) throws ReflectiveOperationException,  NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException {
     	if(actionValue > 0){
@@ -131,11 +124,7 @@ public class PersonalBoardHandler {
      * @param bonusPoints
      * @throws NotEnoughResourcesException
      * @throws NotEnoughPointsException
-     * @throws NoSuchMethodException
-     * @throws SecurityException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
+     * @throws ReflectiveOperationException
      */
     private void checkPlayer(NetworkPlayer player,InstantEffect activationEffect,CardResources costResources, CardPoints costPoints, CardResources bonusResources, CardPoints bonusPoints) throws  NotEnoughResourcesException, NotEnoughPointsException,ReflectiveOperationException {
     	NetworkPlayer fakePlayer;

@@ -1,16 +1,13 @@
 package it.polimi.LM39.controller;
 
 import it.polimi.LM39.model.characterpermanenteffect.*;
-
 import it.polimi.LM39.model.excommunicationpermanenteffect.*;
 import it.polimi.LM39.model.leaderpermanenteffect.*;
 import it.polimi.LM39.server.Room;
 import it.polimi.LM39.model.instanteffect.*;
 import it.polimi.LM39.model.leaderobject.*;
-
 import it.polimi.LM39.model.*;
 import it.polimi.LM39.model.Character;
-
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -18,11 +15,9 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
-
 import com.google.gson.typeadapters.RuntimeTypeAdapterFactory;
 
 /*
@@ -44,7 +39,7 @@ public class GsonReader {
 			Class[] cArg = new Class[2];
 			cArg[0] = adapter.getClass();
 	        cArg[1] = cardType.getClass();
-			Method lMethod = (this.getClass().getMethod("subEffectRegister",cArg));
+			Method lMethod = this.getClass().getMethod("subEffectRegister",cArg);
 			lMethod.invoke(this,adapter,cardType);
 		}catch(NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e){
 			logger.log(Level.WARNING, "Failed to call reflected method", e);
@@ -200,7 +195,7 @@ public class GsonReader {
 		 try{	//reflection to get the hashmap correct type 
 				Class[] cArg = new Class[1];
 			    cArg[0] = cardType.getClass();
-			    Method lMethod = (this.getClass().getMethod("hashMapCreator",cArg));
+			    Method lMethod = this.getClass().getMethod("hashMapCreator",cArg);
 				cardHashMap = (HashMap<Integer,?>)lMethod.invoke(this,cardType);	//reflection necessary to remove the wildcard value and instantiate the correct type for card
 				jsonReader.beginArray();  											
 				int i = 1;

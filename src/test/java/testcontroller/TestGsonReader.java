@@ -42,10 +42,9 @@ public class TestGsonReader extends TestCase{
 	/**
 	 * test the cards' loader
 	 * we just need to check if hashmaps are of correct sizes
-	 * @throws IOException
 	 */
 	@Test
-	public void testFileToCard() throws IOException{
+	public void testFileToCard(){
 		testGson.fileToCard(testMainBoard);
 		if(testMainBoard.buildingMap.size() == cardNumber &&
 		testMainBoard.characterMap.size() == cardNumber &&
