@@ -83,20 +83,23 @@ public class SocketClient extends AbstractClient implements Runnable{
 					socketOut.writeUTF(response);
 					socketOut.flush();
     				if(("timeout").equals(response)){
-    					throw new ClientTimedOutException("Client Timedout");
+    					throw new ClientTimedOutException("Client timedout. Please reconnect to continue playing");
     				}
 
     			}catch (ClassNotFoundException e) {
     				logger.log(Level.SEVERE, "Object class not found", e);
     			}catch (IOException e) {
     				logger.log(Level.INFO, "Network Error", e);
+    				// eofexception means that the server closed the socket since the player was already in a game
+    				if(e instanceof EOFException)	
+    					logger.log(Level.INFO, "Player already connected");
     				try {
     					Thread.currentThread().join();
     				}catch (InterruptedException e1) {
     					Thread.currentThread().interrupt();
     				}
 				} catch (ClientTimedOutException e) {
-					logger.log(Level.INFO, "Client timedout. Please reconnect to continue playing");
+					logger.log(Level.INFO, e.getMessage());
 					break;
 				} 			
     		}

@@ -79,13 +79,13 @@ public class Server implements ServerInterface{
 		else if(Hash.login(nickName, password)){
 				SocketPlayer player = (SocketPlayer)players.get(nickName);
 				SocketPlayer newPlayer = (SocketPlayer)networkPlayer;
-				//player disconnected
+				//player disconnected during his turn
 				if(player.getSocket().isClosed()){
 					player.resetConnection(newPlayer.getSocket(), newPlayer.getOutputStream(), newPlayer.getInputStream());
 					return true;
 				}
-				//player idle
-				if(player.getIdleStatus()){
+				//player idle or disconnected not during his turn
+				else{
 					player.getSocket().close();
 					player.resetConnection(newPlayer.getSocket(), newPlayer.getOutputStream(), newPlayer.getInputStream());
 					this.sendTimeout(player.getOutputStream());
@@ -94,12 +94,7 @@ public class Server implements ServerInterface{
 					SocketPlayer.setDisconnectedPlayers(-1);
 					return true;
 				}
-				//player already in a game and still connected
-				else{
-					this.sendTimeout(player.getOutputStream());
-					newPlayer.setMessage("Player already in game. Please reconnect with another nickname");
-					return false;
-				}		
+		//login failed
 		}else{
 			SocketPlayer newPlayer = (SocketPlayer)networkPlayer;
 			this.sendTimeout(newPlayer.getOutputStream());
