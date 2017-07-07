@@ -1,19 +1,23 @@
 package testmodel;
 
-/**
- * test personal board class
- */
-import java.util.ArrayList;
 
+import java.util.ArrayList;
 import org.junit.Test;
 
 import it.polimi.LM39.model.PersonalBoard;
 import junit.framework.TestCase;
 
+/**
+ * test personal board class
+ */
 public class TestPersonalBoard extends TestCase{
 	
 	private PersonalBoard testPersonalBoard = new PersonalBoard();
 	
+	/**
+	 * test get and set possession
+	 * try the four valid strings then an invalid one
+	 */
 	@Test
 	public void testPossession(){
 		Integer testCard = 5;
@@ -38,9 +42,12 @@ public class TestPersonalBoard extends TestCase{
 		
 		ArrayList testGetPossession = new ArrayList<>();
 		assertEquals(testGetPossession,testPersonalBoard.getPossessions(""));
-		
 	}
 
+	/**
+	 * test set and get leader
+	 * set works with strings and arraylist of strings
+	 */
 	@Test
 	public void testPossessedLeader(){
 		String testLeader = "Ludovico Ariosto";

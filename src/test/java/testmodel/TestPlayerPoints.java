@@ -6,7 +6,10 @@ import org.junit.Test;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.model.PlayerPoints;
 import junit.framework.TestCase;
-
+/**
+ * player points class test
+ *
+ */
 public class TestPlayerPoints extends TestCase{
 
 	PlayerPoints testPoints;
@@ -16,6 +19,10 @@ public class TestPlayerPoints extends TestCase{
 		testPoints = new PlayerPoints();
 	}
 	
+	/**
+	 * test get and set points with a possible value
+	 * @throws NotEnoughPointsException
+	 */
 	@Test
 	public void testPoints() throws NotEnoughPointsException{
 		Integer testValue = 3;
@@ -28,7 +35,9 @@ public class TestPlayerPoints extends TestCase{
 		testPoints.setFinalVictory(testValue);
 		assertEquals(testPoints.getFinalVictory(),testValue);
 	}
-	
+	/**
+	 * test get and set points with an invalid value to test the exception
+	 */
 	@Test
 	public void testPointsException() {
 		Integer negativeValue = -1;

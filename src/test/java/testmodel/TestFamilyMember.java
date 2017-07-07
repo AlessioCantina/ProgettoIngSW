@@ -19,6 +19,9 @@ public class TestFamilyMember extends TestCase{
 		testFamilyMember = new FamilyMember();
 	}
 
+	/**
+	 * try to add servants to increase the value of a family member
+	 */
 	@Test
 	public void testServants(){
 		int servants = 3;

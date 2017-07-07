@@ -18,7 +18,9 @@ public class TestPlayer extends TestCase{
 	public void setUp(){
 		testPlayer = new Player();
 	}
-	
+	/**
+	 * test set and get on player's leader cards
+	 */
 	@Test
 	public void testPlayerLeaderCard(){
 		String testLeader = "Ludovico Ariosto";
@@ -27,13 +29,18 @@ public class TestPlayer extends TestCase{
 		
 	}
 
+	/**
+	 * test set and get on player's excommunications
+	 */
 	@Test
 	public void testPlayerExcommunication(){
 		Integer testExcommunication = 3;
 		testPlayer.setExcommunications(testExcommunication);
 		assertEquals(testExcommunication,testPlayer.getExcommunications().get(0));
 	}
-	
+	/**
+	 * test set and get on player's family members
+	 */
 	@Test
 	public void testPlayedFamilyMember(){
 		String testFamilyMember = "black";
@@ -45,7 +52,9 @@ public class TestPlayer extends TestCase{
 		testPlayer.setPlayedFamilyMembers(testFamilyList);
 		assertEquals(testFamilyList,testPlayer.getPlayedFamilyMembers());
 	}
-	
+	/**
+	 * test get and set on player's leaders (this method works on leader which have an instant effect)
+	 */
 	@Test
 	public void testPlayerInstantLeader(){
 		String testInstantLeader = "Giovanni dalle Bande Nere";

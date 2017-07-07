@@ -15,7 +15,10 @@ import it.polimi.LM39.model.ActionBonus;
 import it.polimi.LM39.model.MainBoard;
 import junit.framework.TestCase;
 import testmodel.FakeTestPlayer;
-
+/**
+ * test card handler class
+ *
+ */
 public class TestCardHandler extends TestCase{
 
 	int cardNumber;
@@ -28,7 +31,9 @@ public class TestCardHandler extends TestCase{
     FakeTestPlayer testPlayer = new FakeTestPlayer();
     FakeTestPlayer testPlayer2 = new FakeTestPlayer();
     ActionBonus testBonus = new ActionBonus();
-    
+    /**
+     * we have to set up player's resources and start the game
+     */
     @Before
     public void setUp() throws IOException, NotEnoughResourcesException{
     	
@@ -61,6 +66,15 @@ public class TestCardHandler extends TestCase{
     	
         testCardHandler = new CardHandler(testGameHandler,testMethods);
     }
+    /**
+     * test get info method, it will print the information about the selected card
+     * we just use the get info on every card and test if it ends
+     * @throws NoSuchMethodException
+     * @throws SecurityException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     */
     @Test
     public void testGetInfo() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
     	for(int i =1;i<=cardNumber;i++){
@@ -83,14 +97,22 @@ public class TestCardHandler extends TestCase{
     		
     	}
     	
-    	for(int i =1;i<=excommunicationNumber;i++){
-    		
+    	for(int i =1;i<=excommunicationNumber;i++)
     		testCardHandler.getInfo(testGameHandler.mainBoard.excommunicationMap.get(i).effect,testPlayer);
 
-    	}
     	assertTrue(true);    	
     }
-    
+    /**
+     * test do instant effect method
+     * we can test only some effects which doesn't require iteration with the user
+     * so we use instance of to select only those effects
+     * after we activate all the effects, we check if the resources are correct
+     * @throws NoSuchMethodException
+     * @throws SecurityException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     */
     @Test
     public void testDoInstantEffect() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
     	Integer expectedCoins = 92;
@@ -143,7 +165,15 @@ public class TestCardHandler extends TestCase{
     	assertEquals(expectedStones,testPlayer.resources.getStones());
     	assertEquals(expectedServants,testPlayer.resources.getServants());
     }
-    
+    /**
+     * test check leader requested objects method
+     * check if the player has the requirements to activate the selected leader cards
+     * @throws SecurityException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     * @throws NoSuchMethodException
+     */
     @Test
     public void testCheckLeaderRequestedObjects() throws SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
     	for(int i =0;i<leaderNumber;i++){	
@@ -151,13 +181,29 @@ public class TestCardHandler extends TestCase{
     	}
     	assertTrue(true);
     }
-    
+    /**
+     * test activate character method
+     * activate all the characters' permanent effects
+     * @throws NoSuchMethodException
+     * @throws SecurityException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     */
     public void testActivateCharacter() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
     	for(int i =1;i<=cardNumber;i++)
     		testCardHandler.activateCharacter(testGameHandler.mainBoard.characterMap.get(i).permanentEffect,testPlayer);
     	assertTrue(true);
     }
-    
+    /**
+     * test activate excommunication method
+     * activate all the excommunications' permanent effects
+     * @throws NoSuchMethodException
+     * @throws SecurityException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     */
     @Test
     public void testActivateExcommunication() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
     	for(int i =1;i<=excommunicationNumber;i++)
@@ -165,7 +211,15 @@ public class TestCardHandler extends TestCase{
 
     	assertTrue(true);
     }
-    
+    /**
+     * test activate leader method
+     * activate all the leaders' permanent effects
+     * @throws SecurityException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     * @throws NoSuchMethodException
+     */
     @Test
     public void testActivateLeader() throws SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException{
     	for(int i =0;i<leaderNumber;i++){

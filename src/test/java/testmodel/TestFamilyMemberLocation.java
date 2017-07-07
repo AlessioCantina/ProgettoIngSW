@@ -24,7 +24,9 @@ public class TestFamilyMemberLocation extends TestCase{
 		testFamilyMember = new FamilyMember();
 		testLocation = new FamilyMembersLocation();
 	}
-	
+	/**
+	 * try to place a family member in the council space
+	 */
 	@Test
 	public void testFamilyMemberAtCouncil(){
 		ArrayList <FamilyMember> testList = new ArrayList<FamilyMember>();
@@ -37,7 +39,9 @@ public class TestFamilyMemberLocation extends TestCase{
 		testList = testLocation.getFamilyMembersAtTheCouncilPalace();
 		assertTrue(!testList.isEmpty());
 	}
-	
+	/**
+	 * try to place a family member on a tower
+	 */
 	@Test
 	public void testFamilyMemberOnTheTowers(){
 		int testX = 0,testY = 0;
@@ -49,7 +53,9 @@ public class TestFamilyMemberLocation extends TestCase{
 		else
 			assertTrue(false);
 	}
-	
+	/**
+	 * try to place a family member on the market
+	 */
 	@Test
 	public void testFamilyMemberOnTheMarket(){
 		int testPosition = 0;
@@ -61,7 +67,11 @@ public class TestFamilyMemberLocation extends TestCase{
 		else
 			assertTrue(false);
 	}
-	
+	/**
+	 * try to place a family member on production and harvest
+	 * test also the exceptions
+	 * @throws InvalidActionTypeException
+	 */
 	@Test
 	public void testFamilyMemberOnProductionOrHarvest() throws InvalidActionTypeException{
 		ArrayList<FamilyMember> testHarvestPosition = new ArrayList<FamilyMember>();

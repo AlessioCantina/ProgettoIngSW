@@ -8,7 +8,10 @@ import org.junit.Test;
 import it.polimi.LM39.model.PlayerRank;
 import it.polimi.LM39.model.Rankings;
 import junit.framework.TestCase;
-
+/**
+ * test rankings class
+ *
+ */
 public class TestRankings extends TestCase{
 
 	Rankings testRankings = new Rankings();
@@ -21,7 +24,9 @@ public class TestRankings extends TestCase{
 		testRank.playerColor = testColor;
 		testValues.add(testRank);
 	}
-	
+	/**
+	 * test set and get rankings
+	 */
 	@Test
 	public void testRankings(){
 		testRankings.setFaithRanking(testValues);

@@ -6,7 +6,10 @@ import org.junit.Test;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
 import it.polimi.LM39.model.PlayerResources;
 import junit.framework.TestCase;
-
+/**
+ * test player resources class
+ *
+ */
 public class TestPlayerResources extends TestCase{
 
 	PlayerResources testResources;
@@ -15,7 +18,10 @@ public class TestPlayerResources extends TestCase{
 	public void setUp(){
 		testResources = new PlayerResources();
 	}
-	
+	/**
+	 * test resources get and set with a valid value
+	 * @throws NotEnoughResourcesException
+	 */
 	@Test
 	public void testResources() throws NotEnoughResourcesException{
 		Integer testValue = 3;
@@ -30,7 +36,9 @@ public class TestPlayerResources extends TestCase{
 		testResources.setCouncil(testValue);
 		assertEquals(testResources.getCouncil(),testValue);
 	}
-	
+	/**
+	 * test get and set resources with an invalid value to test the exception
+	 */
 	@Test
 	public void testResourcesException() {
 		Integer negativeValue = -1;

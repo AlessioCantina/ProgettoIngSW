@@ -13,8 +13,15 @@ import it.polimi.LM39.model.PlayerRank;
 import it.polimi.LM39.model.Rankings;
 import junit.framework.TestCase;
 import testmodel.FakeTestPlayer;
-
+/**
+ * test update rankings method (gamehandler class)
+ *
+ */
 public class TestupdateRankings extends TestCase{
+	
+	/**
+	 * we need to set up a complete game to test this method
+	 */
 	private FakeTestPlayer testPlayer = new FakeTestPlayer();
 	private GameHandler testGameHandler = new GameHandler();
 	private Rankings testRankings = new Rankings();
@@ -25,7 +32,9 @@ public class TestupdateRankings extends TestCase{
 	private ArrayList<PlayerRank> testVictoryList = new ArrayList<PlayerRank>();
 	private ArrayList<PlayerRank> testMilitaryList = new ArrayList<PlayerRank>();
 	
-
+	/**
+	 * initialize variables to use the updateRankings method
+	 */
 	@Before
 	public void setUp() throws NotEnoughPointsException, IOException {
 	
@@ -51,6 +60,10 @@ public class TestupdateRankings extends TestCase{
 		testGameHandler.mainBoard.rankings = testRankings; 
 	}
 
+	/**
+	 * test update rankings, it will set the current rankings to player's values
+	 * @throws NotEnoughPointsException
+	 */
 	@Test
 	public void testRankings() throws NotEnoughPointsException {
 		testPlayer.points.setFaith(7);

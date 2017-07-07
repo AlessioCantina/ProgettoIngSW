@@ -16,6 +16,9 @@ public class TestMainBoard extends TestCase{
 	MainBoard testMainBoard;
 	String[][] testCards = new String[1][1];
 	
+	/**
+	 * set up some bonuses, resources and points that will be set on the mainboard
+	 */
 	@Before
 	public void setUp(){
 		testBonus[0][0] = new ActionBonus();
@@ -35,7 +38,9 @@ public class TestMainBoard extends TestCase{
 		testBonus[0][0].resources = testResources;
 		testCards[0][0] = "Hosting Panhandlers";
 	}
-	
+	/**
+	 * try to set bonuses on towers
+	 */
 	@Test
 	public void testTowerBonuses(){
 		ActionBonus[][] getBonusTest = new ActionBonus[4][4];
@@ -46,7 +51,9 @@ public class TestMainBoard extends TestCase{
 		else
 			assertTrue(false);
 	}
-	
+	/**
+	 * try to set dices values
+	 */
 	@Test
 	public void testDicesValues(){
 		Integer[] testValues = {2,3,5};
@@ -57,14 +64,18 @@ public class TestMainBoard extends TestCase{
 			assertTrue(false);
 		
 	}
-	
+	/**
+	 * try to set played leader cards
+	 */
 	@Test
 	public void testPlayedLeaderCards(){
 		String leaderTest = "Ludovico Ariosto";
 		testMainBoard.setPlayedLeaderCard(leaderTest);
 		assertTrue(!testMainBoard.getPlayedLeaderCard().isEmpty());
 	}
-	
+	/**
+	 * try to set cards on towers
+	 */
 	@Test
 	public void testCardNameOnTowers(){
 		testMainBoard.setCardNamesOnTheTowers(testCards);
@@ -73,7 +84,9 @@ public class TestMainBoard extends TestCase{
 		else
 			assertTrue(false);
 	}
-	
+	/**
+	 * try to set values on towers
+	 */
 	@Test
 	public void testTowersValues(){
 		Integer[][] testTowersValues = new Integer [1][1];
