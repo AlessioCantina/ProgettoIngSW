@@ -2,7 +2,6 @@ package it.polimi.LM39.controller;
 
 
 import it.polimi.LM39.server.NetworkPlayer;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import com.google.gson.Gson;
@@ -64,12 +63,11 @@ public class PersonalBoardHandler {
      * @param familyMember
      * @return
      * @throws ReflectiveOperationException
-     * @throws IOException
      * @throws NotEnoughResourcesException
      * @throws NotEnoughPointsException
      * @throws InvalidActionTypeException
      */
-    public boolean activateProduction(Integer actionValue, NetworkPlayer player,FamilyMember familyMember) throws ReflectiveOperationException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException {
+    public boolean activateProduction(Integer actionValue, NetworkPlayer player,FamilyMember familyMember) throws ReflectiveOperationException,  NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException {
     	if(actionValue > 0){
     	gameHandler.setActionBonus(player.personalBoard.personalBonusTile.productionBonus,player);
     	ArrayList <Integer> buildings = player.personalBoard.getPossessions("Building");
@@ -131,7 +129,6 @@ public class PersonalBoardHandler {
      * @param costPoints
      * @param bonusResources
      * @param bonusPoints
-     * @throws IOException
      * @throws NotEnoughResourcesException
      * @throws NotEnoughPointsException
      * @throws NoSuchMethodException
@@ -140,7 +137,7 @@ public class PersonalBoardHandler {
      * @throws IllegalArgumentException
      * @throws InvocationTargetException
      */
-    private void checkPlayer(NetworkPlayer player,InstantEffect activationEffect,CardResources costResources, CardPoints costPoints, CardResources bonusResources, CardPoints bonusPoints) throws IOException, NotEnoughResourcesException, NotEnoughPointsException,ReflectiveOperationException {
+    private void checkPlayer(NetworkPlayer player,InstantEffect activationEffect,CardResources costResources, CardPoints costPoints, CardResources bonusResources, CardPoints bonusPoints) throws  NotEnoughResourcesException, NotEnoughPointsException,ReflectiveOperationException {
     	NetworkPlayer fakePlayer;
     	Gson gson = new Gson();
     	

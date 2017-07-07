@@ -1,10 +1,7 @@
 package testcontrollerdecorator;
 
-import java.io.IOException;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import it.polimi.LM39.controller.DecoratedMethods;
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.controller.decorator.ServantsMalusDecorator;
@@ -27,7 +24,7 @@ public class TestServantsMalusDecorator extends TestCase{
 	 * set up a fake game to test the decorator
 	 */
 	@Before
-	public void setUp() throws IOException, NotEnoughPointsException, NotEnoughResourcesException{
+	public void setUp() throws NotEnoughPointsException, NotEnoughResourcesException{
 		testDecorator.setGameHandler(testGameHandler);
 	    testGameHandler.setPeriod(1);
 	    testGameHandler.setRound(1);
@@ -42,11 +39,10 @@ public class TestServantsMalusDecorator extends TestCase{
 	/**
 	 * we can't test the decorator properly because it requires iteration with the player
 	 * so we won't add servants to the action
-	 * @throws IOException
 	 * @throws NotEnoughResourcesException
 	 */
 	@Test
-	public void testServantsMalusDecorator() throws IOException, NotEnoughResourcesException{
+	public void testServantsMalusDecorator() throws NotEnoughResourcesException{
 		// malus is 1 servant
 		Integer expectedServants = 5;
 		testResourcesDecorator.addServants(testPlayer);

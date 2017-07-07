@@ -1,10 +1,7 @@
 package testcontroller;
 
-import java.io.IOException;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
@@ -15,14 +12,14 @@ public class TestgetCard extends TestCase{
 	GameHandler gameHandler = new GameHandler();
 	
 	@Before
-	public void setUp() throws IOException  {
+	public void setUp() {
 		gameHandler.setPeriod(1);
 		gameHandler.setRound(1);
 		gameHandler.initializeTheGame();
 	}
 	
 	@Test
-	public void testGetCard1() throws ReflectiveOperationException, IOException, NotEnoughResourcesException, NotEnoughPointsException{
+	public void testGetCard1() throws ReflectiveOperationException, NotEnoughResourcesException, NotEnoughPointsException{
 		FakeTestPlayer player = new FakeTestPlayer();
 		player.playerColor="green";
 		//reset player resources
@@ -71,7 +68,7 @@ public class TestgetCard extends TestCase{
 	}
 		
 	@Test
-	public void testGetCard2() throws NotEnoughResourcesException,ReflectiveOperationException, IOException{
+	public void testGetCard2() throws NotEnoughResourcesException,ReflectiveOperationException{
 		FakeTestPlayer player = new FakeTestPlayer();
 		player.playerColor="green";
 		//get a venture card (in this case Support to the Cardinal) it costs 4 military points but needed are 7 or 2 woods, 2 stones and 3 coins it gives 3 faith points and 4 victory points at the end of the game

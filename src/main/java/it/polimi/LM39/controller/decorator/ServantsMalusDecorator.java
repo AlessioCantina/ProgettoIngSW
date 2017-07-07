@@ -1,6 +1,5 @@
 package it.polimi.LM39.controller.decorator;
 
-import java.io.IOException;
 import it.polimi.LM39.controller.DecoratedMethods;
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
@@ -23,7 +22,7 @@ public class ServantsMalusDecorator extends DecoratedMethodsDecorator{
 	 * the value of a family member by 1
 	 */
 	@Override
-	 public Integer addServants(NetworkPlayer player) throws IOException, NotEnoughResourcesException{
+	 public Integer addServants(NetworkPlayer player) throws NotEnoughResourcesException{
 			player.setMessage("Do you want to add servants? yes or no \n You have an Excommunication so if you add "+ servantsMalus + " your action will increase by 1");
 	    	String response = player.sendMessage();
 	    	response = GameHandler.checkResponse(response, player);

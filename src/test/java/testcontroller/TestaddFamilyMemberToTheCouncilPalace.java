@@ -1,10 +1,7 @@
 package testcontroller;
 
-import java.io.IOException;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
@@ -16,7 +13,7 @@ public class TestaddFamilyMemberToTheCouncilPalace extends TestCase{
 	GameHandler gameHandler = new GameHandler();
 	
 	@Before
-	public void setUp() throws IOException  {
+	public void setUp() {
 		gameHandler.setPeriod(1);
 		gameHandler.setRound(1);
 		gameHandler.initializeTheGame();
@@ -25,7 +22,7 @@ public class TestaddFamilyMemberToTheCouncilPalace extends TestCase{
 	}
 
 	@Test
-	public void testAddFamilyMemberToTheCouncilPalace() throws IOException, NotEnoughResourcesException, NotEnoughPointsException{
+	public void testAddFamilyMemberToTheCouncilPalace() throws NotEnoughResourcesException, NotEnoughPointsException{
 		FakeTestPlayer player = new FakeTestPlayer();
 		player.personalMainBoard=gameHandler.mainBoard;
 		FamilyMember familyMember = new FamilyMember();

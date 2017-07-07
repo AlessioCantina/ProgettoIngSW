@@ -1,6 +1,5 @@
 package testcontroller;
 
-import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
 import it.polimi.LM39.controller.GameHandler;
@@ -10,14 +9,14 @@ public class TestloadCardsOnTheMainBoard extends TestCase{
 	GameHandler gameHandler = new GameHandler();
 	
 	@Before
-	public void setUp() throws IOException  {
+	public void setUp() {
 		gameHandler.setPeriod(1);
 		gameHandler.setRound(1);
 		gameHandler.initializeTheGame();
 	}
 	
 	@Test
-	public void testLoadCardsOnTheMainBoard() throws IOException{
+	public void testLoadCardsOnTheMainBoard() {
 		gameHandler.loadCardsOnTheMainBoard();
 		assertTrue(checkPeriod(1));
 		

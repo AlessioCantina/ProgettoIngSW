@@ -1,10 +1,7 @@
 package testcontroller;
 
-import java.io.IOException;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import it.polimi.LM39.controller.DecoratedMethods;
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.NotEnoughPointsException;
@@ -21,7 +18,7 @@ public class TestDecoratedMethods extends TestCase{
 	private FamilyMember testMember = new FamilyMember();
 	
 	@Before
-	public void setUp() throws IOException{
+	public void setUp() {
 	    testGameHandler.setPeriod(1);
 	    testGameHandler.setRound(1);
 	    testGameHandler.initializeTheGame();
@@ -34,7 +31,7 @@ public class TestDecoratedMethods extends TestCase{
 	}
 	
 	@Test
-	public void testAddFamilyMemberToTheMarket() throws IOException, NotEnoughResourcesException, NotEnoughPointsException{
+	public void testAddFamilyMemberToTheMarket() throws NotEnoughResourcesException, NotEnoughPointsException{
 		// go to the first market position, which gives 5 coins
 		Integer position = 1;
 		Integer expectedCoins = 5;
@@ -49,7 +46,7 @@ public class TestDecoratedMethods extends TestCase{
 	}
 	
 	@Test
-	public void testAddFamilyMemberToTheMarketFailed() throws IOException, NotEnoughResourcesException, NotEnoughPointsException{
+	public void testAddFamilyMemberToTheMarketFailed() throws NotEnoughResourcesException, NotEnoughPointsException{
 		// go to the third market position, which gives 3 coins and 2 military and is unavailable in 2 players matches
 		Integer position = 3;
 		Integer expectedCoins = 0;

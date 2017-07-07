@@ -1,10 +1,7 @@
 package testcontrollerdecorator;
 
-import java.io.IOException;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import it.polimi.LM39.controller.DecoratedMethods;
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.controller.decorator.MilitaryPointsMalusDecorator;
@@ -29,7 +26,7 @@ public class TestMilitaryPointsMalusDecorator extends TestCase{
 	 * set up a fake game to test the decorator
 	 */
 	@Before
-	public void setUp() throws IOException, NotEnoughPointsException, NotEnoughResourcesException{
+	public void setUp() throws NotEnoughPointsException, NotEnoughResourcesException{
 		testDecorator.setGameHandler(testGameHandler);
 	    testGameHandler.setPeriod(1);
 	    testGameHandler.setRound(1);

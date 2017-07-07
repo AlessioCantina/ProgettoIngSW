@@ -1,10 +1,7 @@
 package testcontroller;
 
-import java.io.IOException;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
@@ -15,7 +12,7 @@ public class TestsupportTheChurch extends TestCase{
 	GameHandler gameHandler = new GameHandler();
 	
 	@Before
-	public void setUp() throws IOException  {
+	public void setUp() {
 		gameHandler.setPeriod(1);
 		gameHandler.setRound(1);
 		gameHandler.initializeTheGame();

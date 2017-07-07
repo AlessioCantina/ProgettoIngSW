@@ -1,7 +1,5 @@
 package it.polimi.LM39.controller;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import it.polimi.LM39.exception.InvalidActionTypeException;
 import it.polimi.LM39.exception.NotEnoughPointsException;
@@ -84,11 +82,10 @@ public class DecoratedMethods {
 	  * @param position
 	  * @param player
 	  * @return
-	  * @throws IOException
 	  * @throws NotEnoughResourcesException
 	  * @throws NotEnoughPointsException
 	  */
-	 public boolean addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException {
+	 public boolean addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException {
 	    	FamilyMember[] familyMembersAtTheMarket = player.personalMainBoard.familyMembersLocation.getFamilyMembersOnTheMarket(); // we use the player Personal MainBaord
 	        if(("").equals(familyMembersAtTheMarket[position-1].color) && (position-1)<gameHandler.mainBoard.marketSize){ 
 	        	if(gameHandler.familyMemberValue(familyMember,player)>=1){
@@ -131,10 +128,9 @@ public class DecoratedMethods {
 	  * to add servants to a family member
 	  * @param player
 	  * @return
-	  * @throws IOException
 	  * @throws NotEnoughResourcesException
 	  */
-	 public Integer addServants(NetworkPlayer player) throws IOException, NotEnoughResourcesException{
+	 public Integer addServants(NetworkPlayer player) throws NotEnoughResourcesException{
 	    	player.setMessage("Do you want to add servants? yes or no");
 	    	String response = player.sendMessage();
 	    	response = GameHandler.checkResponse(response, player);
@@ -170,12 +166,11 @@ public class DecoratedMethods {
 	  * @param personalBoardHandler
 	  * @param familyMember
 	  * @throws ReflectiveOperationException
-	  * @throws IOException
 	  * @throws NotEnoughResourcesException
 	  * @throws NotEnoughPointsException
 	  * @throws InvalidActionTypeException
 	  */
-	 public boolean activateProduction(Integer actionValue, NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws ReflectiveOperationException , IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
+	 public boolean activateProduction(Integer actionValue, NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws ReflectiveOperationException , NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
 		 return personalBoardHandler.activateProduction(actionValue, player,familyMember);
 	 }
 

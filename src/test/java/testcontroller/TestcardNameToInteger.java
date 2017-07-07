@@ -1,10 +1,7 @@
 package testcontroller;
 
-import java.io.IOException;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.CardNotFoundException;
 import junit.framework.TestCase;
@@ -13,7 +10,7 @@ public class TestcardNameToInteger extends TestCase{
 	GameHandler gameHandler = new GameHandler();
 
 	@Before
-	public void setUp() throws IOException  {
+	public void setUp() {
 		gameHandler.setPeriod(1);
 		gameHandler.setRound(1);
 		gameHandler.initializeTheGame();

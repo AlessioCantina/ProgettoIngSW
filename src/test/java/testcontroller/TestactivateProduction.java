@@ -1,6 +1,5 @@
 package testcontroller;
 
-import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
 import it.polimi.LM39.controller.GameHandler;
@@ -18,7 +17,7 @@ public class TestactivateProduction extends TestCase{
 	PersonalBoardHandler personalBoardHandler = new PersonalBoardHandler();
 	
 	@Before
-	public void setUp() throws IOException  {
+	public void setUp(){
 		gameHandler.setPeriod(1);
 		gameHandler.setRound(1);
 		gameHandler.initializeTheGame();
@@ -26,7 +25,7 @@ public class TestactivateProduction extends TestCase{
 	}
 	
 	@Test
-	public void testActivateProduction() throws NotEnoughResourcesException, ReflectiveOperationException, IOException, NotEnoughPointsException, InvalidActionTypeException{
+	public void testActivateProduction() throws NotEnoughResourcesException, ReflectiveOperationException, NotEnoughPointsException, InvalidActionTypeException{
 		FakeTestPlayer player = new FakeTestPlayer();
 		player.playerColor="green";
 		player.setResponse("yes");

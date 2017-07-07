@@ -1,6 +1,5 @@
 package it.polimi.LM39.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Level;
@@ -42,9 +41,8 @@ public class Game implements Runnable{
 
     /**
      * to initialize the game, prepare the MainBoard and the players
-     * @throws IOException
      */
-    private void initialize() throws IOException{
+    private void initialize(){
     	if(playerNumber > 2)
     		//unreachable value for harvestAndProductionSize
     		gameHandler.mainBoard.harvestAndProductionSize = 9;
@@ -126,7 +124,7 @@ public class Game implements Runnable{
 			}
     		try {
 				flag = gameHandler.addFamilyMemberToTheTower(familyMember, response, player);
-			} catch (ReflectiveOperationException | IOException | NotEnoughResourcesException | NotEnoughPointsException
+			} catch (ReflectiveOperationException | NotEnoughResourcesException | NotEnoughPointsException
 					| CardNotFoundException e) {
 				logger.log(Level.SEVERE, "Reflection error", e);
 				//give the servants back to the player if the action failed
@@ -161,7 +159,7 @@ public class Game implements Runnable{
 			}
     		try {
     			flag = gameHandler.addFamilyMemberToProductionOrHarvest(familyMember,player.personalMainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Production"),"Production",player);
-			} catch (ReflectiveOperationException | IOException | NotEnoughResourcesException | NotEnoughPointsException
+			} catch (ReflectiveOperationException | NotEnoughResourcesException | NotEnoughPointsException
 					| InvalidActionTypeException e) {
 				logger.log(Level.SEVERE, "Reflection error", e);
 				//give the servants back to the player if the action failed
@@ -187,7 +185,7 @@ public class Game implements Runnable{
 			}
 			try {
 				flag = gameHandler.addFamilyMemberToProductionOrHarvest(familyMember,player.personalMainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Harvest"),"Harvest",player);
-			} catch (ReflectiveOperationException | IOException | NotEnoughResourcesException | NotEnoughPointsException
+			} catch (ReflectiveOperationException | NotEnoughResourcesException | NotEnoughPointsException
 					| InvalidActionTypeException e) {
 					logger.log(Level.SEVERE, "Reflection error", e);
 					//give the servants back to the player if the action failed
@@ -288,7 +286,7 @@ public class Game implements Runnable{
     		else{
     			try {
 					flag = gameHandler.decoratedMethods.addFamilyMemberToTheMarket(familyMember, Integer.parseInt(response), player);
-				} catch (NumberFormatException | IOException | NotEnoughResourcesException
+				} catch (NumberFormatException | NotEnoughResourcesException
 						| NotEnoughPointsException e) {
 					logger.log(Level.SEVERE,"Not enough resources or points", e);
 				}
@@ -316,7 +314,7 @@ public class Game implements Runnable{
 			}
     		try {
 				flag = gameHandler.addFamilyMemberToTheCouncilPalace(familyMember, player);
-			} catch (IOException | NotEnoughResourcesException | NotEnoughPointsException e) {
+			} catch (NotEnoughResourcesException | NotEnoughPointsException e) {
 				logger.log(Level.WARNING,"Not enough resources or points", e);
 			}
     		if(flag==false){
@@ -500,7 +498,7 @@ public class Game implements Runnable{
     	FamilyMember familyMember = gameHandler.chooseFamilyMember(player);
 		try {
 			familyMember.setServants(gameHandler.decoratedMethods.addServants(player));
-		} catch (IOException | NotEnoughResourcesException e) {
+		} catch (NotEnoughResourcesException e) {
 			player.setMessage("You do not have enough servants!");
 			player.setMessage("You can use another Family Member or do another action, respond change family member or do another action");
 			String response = player.sendMessage();
@@ -547,11 +545,7 @@ public class Game implements Runnable{
     @Override
     public void run() {
     	//initialize the game loading parameters and cards
-    	try {
-			initialize();
-		} catch (IOException e) {
-			logger.log(Level.SEVERE,"Failed to read json files", e);
-		}
+		initialize();
     	//make the players choose four leader cards
     	chooseLeaderCard();
     	//make the player choose one bonus tile
@@ -565,11 +559,7 @@ public class Game implements Runnable{
     		for(int round=0;round<2;round++){
     			order = gameHandler.getPlayersActionOrder();
     			gameHandler.setRound(round+1);
-    			try {
-					gameHandler.loadCardsOnTheMainBoard();
-				} catch (IOException e2) {
-					logger.log(Level.SEVERE,"Failed to read configuration files", e2);
-				}
+				gameHandler.loadCardsOnTheMainBoard();
     			gameHandler.rollTheDices();
     			
     			for(int turn=0;turn<4;turn++){

@@ -1,6 +1,5 @@
 package testcontroller;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -17,7 +16,7 @@ public class TestskipFirstTurn extends TestCase{
 	GameHandler gameHandler = new GameHandler();
 	
 	@Before
-	public void setUp() throws IOException  {
+	public void setUp() {
 		gameHandler.setPeriod(1);
 		gameHandler.setRound(1);
 		gameHandler.initializeTheGame();

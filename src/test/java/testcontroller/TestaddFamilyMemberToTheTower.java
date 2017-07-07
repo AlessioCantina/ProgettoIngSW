@@ -1,10 +1,7 @@
 package testcontroller;
 
-import java.io.IOException;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.CardNotFoundException;
 import it.polimi.LM39.exception.NotEnoughPointsException;
@@ -17,7 +14,7 @@ public class TestaddFamilyMemberToTheTower extends TestCase{
 	GameHandler gameHandler = new GameHandler();
 	
 	@Before
-	public void setUp() throws IOException  {
+	public void setUp() {
 		gameHandler.setPeriod(1);
 		gameHandler.setRound(1);
 		gameHandler.initializeTheGame();
@@ -26,7 +23,7 @@ public class TestaddFamilyMemberToTheTower extends TestCase{
 	}
 	
 	@Test
-	public void testAddFamilyMemberToTheTower1() throws ReflectiveOperationException, IOException, NotEnoughResourcesException, NotEnoughPointsException, CardNotFoundException{
+	public void testAddFamilyMemberToTheTower1() throws ReflectiveOperationException, NotEnoughResourcesException, NotEnoughPointsException, CardNotFoundException{
 		FakeTestPlayer player = new FakeTestPlayer();
 		player.personalMainBoard=gameHandler.mainBoard;
 		FamilyMember familyMember = new FamilyMember();
@@ -47,7 +44,7 @@ public class TestaddFamilyMemberToTheTower extends TestCase{
 	}
 	
 	@Test
-	public void testAddFamilyMemberToTheTower2() throws ReflectiveOperationException, IOException, NotEnoughResourcesException, NotEnoughPointsException, CardNotFoundException{
+	public void testAddFamilyMemberToTheTower2() throws ReflectiveOperationException, NotEnoughResourcesException, NotEnoughPointsException, CardNotFoundException{
 		FakeTestPlayer player = new FakeTestPlayer();
 		player.personalMainBoard=gameHandler.mainBoard;
 		FamilyMember familyMember = new FamilyMember();
@@ -76,7 +73,7 @@ public class TestaddFamilyMemberToTheTower extends TestCase{
 	}
 	
 	@Test
-	public void testAddFamilyMemberToTheTower3() throws ReflectiveOperationException, IOException, NotEnoughResourcesException, NotEnoughPointsException, CardNotFoundException{
+	public void testAddFamilyMemberToTheTower3() throws ReflectiveOperationException, NotEnoughResourcesException, NotEnoughPointsException, CardNotFoundException{
 		FakeTestPlayer player1 = new FakeTestPlayer();
 		FakeTestPlayer player2 = new FakeTestPlayer();
 		player1.playerColor="green";
@@ -115,7 +112,7 @@ public class TestaddFamilyMemberToTheTower extends TestCase{
 	}
 	
 	@Test
-	public void testAddFamilyMemberToTheTower4() throws ReflectiveOperationException, IOException, NotEnoughResourcesException, NotEnoughPointsException, CardNotFoundException{
+	public void testAddFamilyMemberToTheTower4() throws ReflectiveOperationException, NotEnoughResourcesException, NotEnoughPointsException, CardNotFoundException{
 		String[][] cardNames = gameHandler.mainBoard.getCardNamesOnTheTowers();
 		FakeTestPlayer player = new FakeTestPlayer();
 		player.personalMainBoard=gameHandler.mainBoard;
@@ -134,7 +131,7 @@ public class TestaddFamilyMemberToTheTower extends TestCase{
 	}
 	
 	@Test
-	public void testAddFamilyMemberToTheTower5() throws ReflectiveOperationException, IOException, NotEnoughResourcesException, NotEnoughPointsException, CardNotFoundException{
+	public void testAddFamilyMemberToTheTower5() throws ReflectiveOperationException, NotEnoughResourcesException, NotEnoughPointsException, CardNotFoundException{
 		String[][] cardNames = gameHandler.mainBoard.getCardNamesOnTheTowers();
 		FakeTestPlayer player = new FakeTestPlayer();
 		player.personalMainBoard=gameHandler.mainBoard;

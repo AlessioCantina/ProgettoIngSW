@@ -1,6 +1,5 @@
 package testcontroller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +15,7 @@ public class TestCouncilHandler extends TestCase{
 	GameHandler gameHandler = new GameHandler();
 
 	@Before
-	public void setUp() throws IOException  {
+	public void setUp() {
 		gameHandler.setPeriod(1);
 		gameHandler.setRound(1);
 		gameHandler.initializeTheGame();

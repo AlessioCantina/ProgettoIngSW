@@ -1,10 +1,7 @@
 package testcontroller;
 
-import java.io.IOException;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.InvalidActionTypeException;
 import it.polimi.LM39.exception.NotEnoughPointsException;
@@ -18,7 +15,7 @@ public class TestaddFamilyMemberToProductionOrHarvest extends TestCase{
 	GameHandler gameHandler = new GameHandler();
 	
 	@Before
-	public void setUp() throws IOException  {
+	public void setUp() {
 		gameHandler.setPeriod(1);
 		gameHandler.setRound(1);
 		gameHandler.initializeTheGame();
@@ -27,7 +24,7 @@ public class TestaddFamilyMemberToProductionOrHarvest extends TestCase{
 	}
 	
 	@Test
-	public void testAddFamilyMemberToProductionOrHarvest1() throws ReflectiveOperationException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
+	public void testAddFamilyMemberToProductionOrHarvest1() throws ReflectiveOperationException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
 		//match of 2 players
 		gameHandler.mainBoard.harvestAndProductionSize=1;
 		FakeTestPlayer player = new FakeTestPlayer();
@@ -57,7 +54,7 @@ public class TestaddFamilyMemberToProductionOrHarvest extends TestCase{
 	}
 	
 	@Test
-	public void testAddFamilyMemberToProductionOrHarvest2() throws ReflectiveOperationException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
+	public void testAddFamilyMemberToProductionOrHarvest2() throws ReflectiveOperationException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
 		//match of >2 players
 		gameHandler.mainBoard.harvestAndProductionSize=20;
 		FakeTestPlayer player = new FakeTestPlayer();
@@ -87,7 +84,7 @@ public class TestaddFamilyMemberToProductionOrHarvest extends TestCase{
 	}
 	
 	@Test
-	public void testAddFamilyMemberToProductionOrHarvest3() throws ReflectiveOperationException , IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
+	public void testAddFamilyMemberToProductionOrHarvest3() throws ReflectiveOperationException , NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
 		//match of >2 players
 		gameHandler.mainBoard.harvestAndProductionSize=20;
 		FakeTestPlayer player = new FakeTestPlayer();
@@ -126,7 +123,7 @@ public class TestaddFamilyMemberToProductionOrHarvest extends TestCase{
 	}
 	
 	@Test
-	public void testAddFamilyMemberToProductionOrHarvest4() throws ReflectiveOperationException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
+	public void testAddFamilyMemberToProductionOrHarvest4() throws ReflectiveOperationException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
 		//match of 2 players
 		gameHandler.mainBoard.harvestAndProductionSize=1;
 		FakeTestPlayer player = new FakeTestPlayer();
@@ -152,7 +149,7 @@ public class TestaddFamilyMemberToProductionOrHarvest extends TestCase{
 	}
 	
 	@Test
-	public void testAddFamilyMemberToProductionOrHarvest5() throws ReflectiveOperationException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
+	public void testAddFamilyMemberToProductionOrHarvest5() throws ReflectiveOperationException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
 		//match of 2 players
 		gameHandler.mainBoard.harvestAndProductionSize=1;
 		FakeTestPlayer player = new FakeTestPlayer();

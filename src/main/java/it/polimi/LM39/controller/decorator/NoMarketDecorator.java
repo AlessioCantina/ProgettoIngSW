@@ -1,6 +1,5 @@
 package it.polimi.LM39.controller.decorator;
 
-import java.io.IOException;
 import it.polimi.LM39.controller.DecoratedMethods;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.exception.NotEnoughResourcesException;
@@ -22,7 +21,7 @@ public class NoMarketDecorator extends DecoratedMethodsDecorator{
 	 * this method overrides addFamilyMemberToTheMarket to prevent the player from going to the market if he has the excommunication that prevent that
 	 */
 	@Override
-	public boolean addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException {
+	public boolean addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException {
 		player.setMessage("Because of the Excommunication you can’t place your Family Members in the Market action spaces");
 		return false;
 	}

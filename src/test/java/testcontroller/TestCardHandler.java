@@ -1,12 +1,9 @@
 package testcontroller;
 
-import java.io.IOException;
 import it.polimi.LM39.model.instanteffect.*;
 import java.lang.reflect.InvocationTargetException;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import it.polimi.LM39.controller.CardHandler;
 import it.polimi.LM39.controller.DecoratedMethods;
 import it.polimi.LM39.controller.GameHandler;
@@ -35,7 +32,7 @@ public class TestCardHandler extends TestCase{
      * we have to set up player's resources and start the game
      */
     @Before
-    public void setUp() throws IOException, NotEnoughResourcesException{
+    public void setUp() throws NotEnoughResourcesException{
     	
     	
     	testPlayer.personalBoard.personalBonusTile.harvestBonus = testBonus;

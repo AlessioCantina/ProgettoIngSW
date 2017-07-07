@@ -1,10 +1,7 @@
 package testcontrollerdecorator;
 
-import java.io.IOException;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import it.polimi.LM39.controller.DecoratedMethods;
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.controller.decorator.DecoratedMethodsDecorator;
@@ -27,7 +24,7 @@ public class TestDecoratedMethodsDecorator extends TestCase{
 	private GameHandler testGameHandler = new GameHandler();
 	
 	@Before
-	public void setUp() throws IOException, NotEnoughResourcesException{
+	public void setUp() throws NotEnoughResourcesException{
 		testDecoratedMethods.setGameHandler(testGameHandler);
 		testPlayer.resources.setCoins(10);
 		testPlayer.resources.setWoods(10);

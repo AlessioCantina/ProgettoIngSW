@@ -1,7 +1,5 @@
 package it.polimi.LM39.controller;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.logging.*;
 import it.polimi.LM39.exception.CardNotFoundException;
@@ -76,10 +74,9 @@ public class GameHandler {
      * @param player
      * @param towerNumber
      * @return
-     * @throws IOException
      * @throws ReflectiveOperationException
      */
-    public boolean getCard(Integer cardNumber,NetworkPlayer player, Integer towerNumber) throws IOException,ReflectiveOperationException {
+    public boolean getCard(Integer cardNumber,NetworkPlayer player, Integer towerNumber) throws ReflectiveOperationException {
     	boolean cardGotten=false;
     	switch(towerNumber){
     		case 0: Territory territory=mainBoard.territoryMap.get(cardNumber);
@@ -105,10 +102,9 @@ public class GameHandler {
      * @param territory
      * @param player
      * @param cardNumber
-     * @throws IOException
      * @throws ReflectiveOperationException
      */
-    private boolean getTerritoryCard(Territory territory,NetworkPlayer player,Integer cardNumber) throws IOException, ReflectiveOperationException {
+    private boolean getTerritoryCard(Territory territory,NetworkPlayer player,Integer cardNumber) throws  ReflectiveOperationException {
     	ArrayList<Integer> possessedTerritories = player.personalBoard.getPossessions("Territory");
     	int militaryPoints = player.points.getMilitary();
     	if (possessedTerritories.size()<6){
@@ -134,10 +130,9 @@ public class GameHandler {
      * @param character
      * @param player
      * @param cardNumber
-     * @throws IOException
      * @throws ReflectiveOperationException
      */
-    private boolean getCharacterCard(Character character,NetworkPlayer player,Integer cardNumber) throws IOException, ReflectiveOperationException {
+    private boolean getCharacterCard(Character character,NetworkPlayer player,Integer cardNumber) throws  ReflectiveOperationException {
     	
     	ArrayList<Integer> possessedCharacters = player.personalBoard.getPossessions("Character");
 		if (possessedCharacters.size()<6){
@@ -165,9 +160,8 @@ public class GameHandler {
 	 * @param player
 	 * @param cardNumber
 	 * @return
-	 * @throws IOException
 	 */
-    private boolean getBuildingCard(Building building,NetworkPlayer player,Integer cardNumber) throws IOException{
+    private boolean getBuildingCard(Building building,NetworkPlayer player,Integer cardNumber) {
     	ArrayList<Integer> possessedBuildings = player.personalBoard.getPossessions("Building");
 		if (possessedBuildings.size()<6){
 	    		try {
@@ -193,7 +187,6 @@ public class GameHandler {
      * @param player
      * @param cardNumber
      * @return
-     * @throws IOException
      * @throws ReflectiveOperationException
      */
     private boolean getVentureCard(Venture venture,NetworkPlayer player,Integer cardNumber) throws ReflectiveOperationException {
@@ -291,13 +284,12 @@ public class GameHandler {
      * @param cardName
      * @param player
      * @return
-     * @throws IOException
      * @throws NotEnoughResourcesException
      * @throws NotEnoughPointsException
      * @throws ReflectiveOperationException
      * @throws CardNotFoundException
      */
-    public boolean addFamilyMemberToTheTower(FamilyMember familyMember , String cardName, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException, ReflectiveOperationException , CardNotFoundException {
+    public boolean addFamilyMemberToTheTower(FamilyMember familyMember , String cardName, NetworkPlayer player) throws  NotEnoughResourcesException, NotEnoughPointsException, ReflectiveOperationException , CardNotFoundException {
         int i,j;
         boolean coloredFamilyMemberOnTheTower = false;
         boolean uncoloredFamilyMemberOnTheTower = false;
@@ -429,11 +421,10 @@ public class GameHandler {
      * @param familyMember
      * @param player
      * @return
-     * @throws IOException
      * @throws NotEnoughResourcesException
      * @throws NotEnoughPointsException
      */
-    public boolean addFamilyMemberToTheCouncilPalace(FamilyMember familyMember, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException{
+    public boolean addFamilyMemberToTheCouncilPalace(FamilyMember familyMember, NetworkPlayer player) throws  NotEnoughResourcesException, NotEnoughPointsException{
     	if (familyMemberValue(familyMember,player)>=1){
 	    	mainBoard.familyMembersLocation.setFamilyMemberAtTheCouncilPalace(familyMember);
 	    	setActionBonus(player.personalMainBoard.councilPalaceBonus, player);
@@ -532,9 +523,8 @@ public class GameHandler {
      * @param familyMember
      * @param player
      * @return
-     * @throws IOException
      */
-    public Integer familyMemberValue (FamilyMember familyMember, NetworkPlayer player) throws IOException{
+    public Integer familyMemberValue (FamilyMember familyMember, NetworkPlayer player) {
     	Integer diceValue = familyMemberColorToDiceValue(familyMember.color,player);
     	return (diceValue+familyMember.getServants());
     }
@@ -546,13 +536,12 @@ public class GameHandler {
      * @param actionType
      * @param player
      * @return
-     * @throws IOException
      * @throws ReflectiveOperationException
      * @throws NotEnoughResourcesException
      * @throws NotEnoughPointsException
      * @throws InvalidActionTypeException
      */
-    public boolean addFamilyMemberToProductionOrHarvest(FamilyMember familyMember, ArrayList<FamilyMember> familyMembersAtProductionOrHarvest, String actionType,NetworkPlayer player) throws IOException, ReflectiveOperationException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException {
+    public boolean addFamilyMemberToProductionOrHarvest(FamilyMember familyMember, ArrayList<FamilyMember> familyMembersAtProductionOrHarvest, String actionType,NetworkPlayer player) throws  ReflectiveOperationException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException {
     	int i;
     	//doAction is false by default, to know if the action Harvest or Production can be done
     	boolean doAction;
@@ -653,9 +642,8 @@ public class GameHandler {
 
     /**
      * to initialize the MainBoard
-     * @throws IOException
      */
-    public void initializeTheGame() throws IOException {
+    public void initializeTheGame(){
     	personalBoardHandler.setGameHandler(this);
     	decoratedMethods.setGameHandler(this);
     	//initialize the value of an action space on the Towers
@@ -678,9 +666,8 @@ public class GameHandler {
     
     /**
      * to load the cards on the MainBoard
-     * @throws IOException
      */
-    public void loadCardsOnTheMainBoard() throws IOException{
+    public void loadCardsOnTheMainBoard() {
     	int j;
     	Integer[][] cardsOnTheTowers = mainBoard.getCardsOnTheTowers();
     	//checking the period to load the correct cards, we are using integers because
@@ -758,9 +745,8 @@ public class GameHandler {
    
     /**
      * to get the card names on the MainBaord
-     * @throws IOException
      */
-    private void loadCardNamesOnTheMainBoard() throws IOException{
+    private void loadCardNamesOnTheMainBoard() {
     	Integer[][] cardsOnTheTowers = mainBoard.getCardsOnTheTowers();
     	String[][] cardNamesOnTheTowers = new String[4][4]; 
     	for(int i=0;i<4;i++){

@@ -1,6 +1,5 @@
 package it.polimi.LM39.controller;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -113,12 +112,11 @@ public class CardHandler {
 	 * @param instantEffect
 	 * @param player
 	 * @param fakePlayer
-	 * @throws IOException
 	 * @throws NotEnoughResourcesException
 	 * @throws NotEnoughPointsException
 	 * @throws InvalidInputException
 	 */
-	public void doInstantEffect(DoublePointsTransformation instantEffect,NetworkPlayer player,NetworkPlayer fakePlayer) throws IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidInputException{
+	public void doInstantEffect(DoublePointsTransformation instantEffect,NetworkPlayer player,NetworkPlayer fakePlayer) throws NotEnoughResourcesException, NotEnoughPointsException, InvalidInputException{
 		//ask to the player what exchange he wants to do
 		player.setMessage("What exchange do you want to do? 1 or 2");
 		//get the player response
@@ -144,12 +142,11 @@ public class CardHandler {
 	 * @param instantEffect
 	 * @param player
 	 * @param fakePlayer
-	 * @throws IOException
 	 * @throws NotEnoughResourcesException
 	 * @throws InvalidInputException
 	 * @throws NotEnoughPointsException
 	 */
-	public void doInstantEffect(DoubleResourcesTransformation instantEffect,NetworkPlayer player,NetworkPlayer fakePlayer) throws IOException, NotEnoughResourcesException, InvalidInputException, NotEnoughPointsException{
+	public void doInstantEffect(DoubleResourcesTransformation instantEffect,NetworkPlayer player,NetworkPlayer fakePlayer) throws  NotEnoughResourcesException, InvalidInputException, NotEnoughPointsException{
 		//ask to the player what exchange he wants to do
 				player.setMessage("What exchange do you want to do? 1 or 2");
 				//get the player response
@@ -172,13 +169,12 @@ public class CardHandler {
 	 * to handle GetCard instant effect
 	 * @param instantEffect
 	 * @param player
-	 * @throws IOException
 	 * @throws CardNotFoundException
 	 * @throws NotEnoughResourcesException
 	 * @throws NotEnoughPointsException
 	 * @throws ReflectiveOperationException
 	 */
-	public void doInstantEffect(GetCard instantEffect,NetworkPlayer player) throws IOException, CardNotFoundException, NotEnoughResourcesException, NotEnoughPointsException,ReflectiveOperationException {
+	public void doInstantEffect(GetCard instantEffect,NetworkPlayer player) throws  CardNotFoundException, NotEnoughResourcesException, NotEnoughPointsException,ReflectiveOperationException {
 		// ask to the player if he wants to use this effect
 		getInfo(instantEffect,player);
 		player.setMessage("Do you want to use this effect? yes or no");
@@ -225,13 +221,12 @@ public class CardHandler {
 	 * to handle GetCardAndPoints instant effect
 	 * @param instantEffect
 	 * @param player
-	 * @throws IOException
 	 * @throws NotEnoughPointsException
 	 * @throws CardNotFoundException
 	 * @throws NotEnoughResourcesException
 	 * @throws ReflectiveOperationException
 	 */
-	public void doInstantEffect(GetCardAndPoints instantEffect,NetworkPlayer player) throws IOException, NotEnoughPointsException, CardNotFoundException, NotEnoughResourcesException, ReflectiveOperationException {
+	public void doInstantEffect(GetCardAndPoints instantEffect,NetworkPlayer player) throws  NotEnoughPointsException, CardNotFoundException, NotEnoughResourcesException, ReflectiveOperationException {
 		//making a GetCard effect and calling his method
 		GetCard effect = new GetCard();
 		effect.cardType=instantEffect.cardType;
@@ -247,13 +242,12 @@ public class CardHandler {
 	 * to handle GetCardAndResources instant effect
 	 * @param instantEffect
 	 * @param player
-	 * @throws IOException
 	 * @throws NotEnoughResourcesException
 	 * @throws CardNotFoundException
 	 * @throws NotEnoughPointsException
 	 * @throws ReflectiveOperationException
 	 */
-	public void doInstantEffect(GetCardAndResources instantEffect,NetworkPlayer player) throws IOException, NotEnoughResourcesException, CardNotFoundException, NotEnoughPointsException, NoSuchMethodException, ReflectiveOperationException {
+	public void doInstantEffect(GetCardAndResources instantEffect,NetworkPlayer player) throws  NotEnoughResourcesException, CardNotFoundException, NotEnoughPointsException, NoSuchMethodException, ReflectiveOperationException {
 		//making a GetCard effect and calling his method
 		GetCard effect = new GetCard();
 		effect.cardType=instantEffect.cardType;
@@ -269,13 +263,12 @@ public class CardHandler {
 	 * to handle GetDiscountedCard instant effect
 	 * @param instantEffect
 	 * @param player
-	 * @throws IOException
 	 * @throws CardNotFoundException
 	 * @throws NotEnoughResourcesException
 	 * @throws NotEnoughPointsException
 	 * @throws ReflectiveOperationException
 	 */
-	public void doInstantEffect(GetDiscountedCard instantEffect,NetworkPlayer player) throws IOException, CardNotFoundException, NotEnoughResourcesException, NotEnoughPointsException, ReflectiveOperationException {
+	public void doInstantEffect(GetDiscountedCard instantEffect,NetworkPlayer player) throws  CardNotFoundException, NotEnoughResourcesException, NotEnoughPointsException, ReflectiveOperationException {
 		// ask to the player if he wants to use this effect
 		getInfo(instantEffect,player);
 		player.setMessage("Do you want to use this effect? yes or no");
@@ -369,13 +362,12 @@ public class CardHandler {
 	 * to handle HarvestProductionAction instant effect
 	 * @param instantEffect
 	 * @param player
-	 * @throws IOException
 	 * @throws NotEnoughResourcesException
 	 * @throws ReflectiveOperationException
 	 * @throws NotEnoughPointsException
 	 * @throws InvalidActionTypeException
 	 */
-	public void doInstantEffect(HarvestProductionAction instantEffect,NetworkPlayer player) throws IOException, NotEnoughResourcesException, ReflectiveOperationException , NotEnoughPointsException, InvalidActionTypeException{
+	public void doInstantEffect(HarvestProductionAction instantEffect,NetworkPlayer player) throws  NotEnoughResourcesException, ReflectiveOperationException , NotEnoughPointsException, InvalidActionTypeException{
 		//ask to the player if he wants to add servants to the action
 		Integer qtyServants = gameHandler.decoratedMethods.addServants(player);
 		//check if the effect is for harvest o production and call the correct method
@@ -390,12 +382,11 @@ public class CardHandler {
 	 * @param instantEffect
 	 * @param player
 	 * @throws NotEnoughPointsException
-	 * @throws IOException
 	 * @throws ReflectiveOperationException
 	 * @throws InvocationTargetException
 	 * @throws InvalidActionTypeException
 	 */
-	public void doInstantEffect(HarvestProductionAndPoints instantEffect,NetworkPlayer player) throws NotEnoughPointsException, IOException, NotEnoughResourcesException, ReflectiveOperationException, InvalidActionTypeException{
+	public void doInstantEffect(HarvestProductionAndPoints instantEffect,NetworkPlayer player) throws NotEnoughPointsException,  NotEnoughResourcesException, ReflectiveOperationException, InvalidActionTypeException{
 		//making an HarvestProductionAction effect and calling his method
 		HarvestProductionAction effect = new HarvestProductionAction();
 		effect.actionType = instantEffect.actionType;
@@ -507,9 +498,8 @@ public class CardHandler {
 	 * to handle SetFamilyMember instant effect
 	 * @param instantEffect
 	 * @param player
-	 * @throws IOException
 	 */
-	public void doInstantEffect(SetFamilyMember instantEffect,NetworkPlayer player) throws IOException{
+	public void doInstantEffect(SetFamilyMember instantEffect,NetworkPlayer player){
 		//the color will be chosen by the user
 		player.setMessage("What FamilyMember color do you want to set the value?");
 		//get the FamilyMember color from the player

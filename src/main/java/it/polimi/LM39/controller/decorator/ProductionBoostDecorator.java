@@ -1,6 +1,5 @@
 package it.polimi.LM39.controller.decorator;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import it.polimi.LM39.controller.DecoratedMethods;
 import it.polimi.LM39.controller.PersonalBoardHandler;
@@ -26,7 +25,7 @@ public class ProductionBoostDecorator extends DecoratedMethodsDecorator{
 	 * this method overrides activateProduction to set a bonus on a production action value
 	 */
 	@Override
-	public boolean activateProduction(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws ReflectiveOperationException , NotEnoughResourcesException, NotEnoughPointsException, IOException, InvalidActionTypeException{
+	public boolean activateProduction(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws ReflectiveOperationException , NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
 		return decoratedMethods.activateProduction(value + productionBonus,player,personalBoardHandler,familyMember);
 	}
 

@@ -1,6 +1,5 @@
 package it.polimi.LM39.controller.decorator;
 
-import java.io.IOException;
 import it.polimi.LM39.controller.DecoratedMethods;
 import it.polimi.LM39.controller.PersonalBoardHandler;
 import it.polimi.LM39.exception.InvalidActionTypeException;
@@ -28,7 +27,7 @@ public class DecoratedMethodsDecorator extends DecoratedMethods{
 	
 	
 	@Override
-	public boolean activateProduction(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws ReflectiveOperationException, NotEnoughResourcesException, NotEnoughPointsException, IOException, InvalidActionTypeException {
+	public boolean activateProduction(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws ReflectiveOperationException, NotEnoughResourcesException, NotEnoughPointsException,  InvalidActionTypeException {
 		return decoratedMethods.activateProduction(value,player,personalBoardHandler,familyMember);
 	}
 	
@@ -53,7 +52,7 @@ public class DecoratedMethodsDecorator extends DecoratedMethods{
 	}
 	
 	@Override
-	public boolean addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException {
+	public boolean addFamilyMemberToTheMarket(FamilyMember familyMember, Integer position, NetworkPlayer player) throws  NotEnoughResourcesException, NotEnoughPointsException {
 		return decoratedMethods.addFamilyMemberToTheMarket(familyMember, position, player);
 	}
 	
@@ -63,7 +62,7 @@ public class DecoratedMethodsDecorator extends DecoratedMethods{
 	}
 	
 	@Override
-	public Integer addServants(NetworkPlayer player) throws IOException, NotEnoughResourcesException{
+	public Integer addServants(NetworkPlayer player) throws  NotEnoughResourcesException{
 		return decoratedMethods.addServants(player);
 	}
 	

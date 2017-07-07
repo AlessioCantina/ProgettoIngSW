@@ -1,12 +1,8 @@
 package testcontroller;
 
-
-import java.io.IOException;
 import java.util.ArrayList;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import it.polimi.LM39.controller.GameHandler;
 import it.polimi.LM39.exception.NotEnoughPointsException;
 import it.polimi.LM39.model.PlayerRank;
@@ -36,7 +32,7 @@ public class TestupdateRankings extends TestCase{
 	 * initialize variables to use the updateRankings method
 	 */
 	@Before
-	public void setUp() throws NotEnoughPointsException, IOException {
+	public void setUp() throws NotEnoughPointsException {
 	
 		testGameHandler.initializeTheGame();
 		

@@ -1,7 +1,5 @@
 package testcontroller;
 
-import java.io.IOException;
-
 import org.junit.Before;
 import org.junit.Test;
 import it.polimi.LM39.controller.GameHandler;
@@ -13,12 +11,12 @@ public class TestfamilyMemberValue extends TestCase{
 	GameHandler gameHandler = new GameHandler();
 	
 	@Before
-	public void setUp() throws IOException  {
+	public void setUp() {
 		gameHandler.rollTheDices();
 	}
 	
 	@Test
-	public void testFamilyMemberValue() throws IOException{
+	public void testFamilyMemberValue() {
 		FakeTestPlayer player = new FakeTestPlayer();
 		player.personalMainBoard=gameHandler.mainBoard;
 		FamilyMember familyMember = new FamilyMember();
