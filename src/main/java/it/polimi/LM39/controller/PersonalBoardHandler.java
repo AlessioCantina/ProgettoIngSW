@@ -110,7 +110,7 @@ public class PersonalBoardHandler {
         			 gameHandler.subCardPoints(costPoints, player);
         		 }
         		 catch (NotEnoughPointsException e){
-        			 //give back the reources subtracted from the player if the action fails
+        			 //give back the resources subtracted from the player if the action fails
         			 gameHandler.decoratedMethods.addCardResources(costResources, player);
         			 player.setMessage("You don't have enough points");
         			 activateProduction(actionValue,player,familyMember);
@@ -150,8 +150,12 @@ public class PersonalBoardHandler {
      */
     private void checkPlayer(NetworkPlayer player,InstantEffect activationEffect,CardResources costResources, CardPoints costPoints, CardResources bonusResources, CardPoints bonusPoints) throws IOException, NotEnoughResourcesException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
     	NetworkPlayer fakePlayer;
-    	Gson gson =new Gson();
+    	Gson gson = new Gson();
+    	
+    	//make a copy of the player
     	fakePlayer = gson.fromJson(gson.toJson(player),player.getClass());
+    	
+    	//set all resources and values of the fakePlayer to 20(a value high enough to complete any transformation)
     	fakePlayer.resources.setCoins(-fakePlayer.resources.getCoins());
     	fakePlayer.resources.setCoins(20);
     	fakePlayer.resources.setServants(-fakePlayer.resources.getServants());
