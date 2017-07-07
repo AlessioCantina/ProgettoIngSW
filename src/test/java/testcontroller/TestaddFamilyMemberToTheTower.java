@@ -1,7 +1,6 @@
 package testcontroller;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +26,7 @@ public class TestaddFamilyMemberToTheTower extends TestCase{
 	}
 	
 	@Test
-	public void testAddFamilyMemberToTheTower1() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, CardNotFoundException{
+	public void testAddFamilyMemberToTheTower1() throws ReflectiveOperationException, IOException, NotEnoughResourcesException, NotEnoughPointsException, CardNotFoundException{
 		FakeTestPlayer player = new FakeTestPlayer();
 		player.personalMainBoard=gameHandler.mainBoard;
 		FamilyMember familyMember = new FamilyMember();
@@ -48,7 +47,7 @@ public class TestaddFamilyMemberToTheTower extends TestCase{
 	}
 	
 	@Test
-	public void testAddFamilyMemberToTheTower2() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, CardNotFoundException{
+	public void testAddFamilyMemberToTheTower2() throws ReflectiveOperationException, IOException, NotEnoughResourcesException, NotEnoughPointsException, CardNotFoundException{
 		FakeTestPlayer player = new FakeTestPlayer();
 		player.personalMainBoard=gameHandler.mainBoard;
 		FamilyMember familyMember = new FamilyMember();
@@ -77,7 +76,7 @@ public class TestaddFamilyMemberToTheTower extends TestCase{
 	}
 	
 	@Test
-	public void testAddFamilyMemberToTheTower3() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, CardNotFoundException{
+	public void testAddFamilyMemberToTheTower3() throws ReflectiveOperationException, IOException, NotEnoughResourcesException, NotEnoughPointsException, CardNotFoundException{
 		FakeTestPlayer player1 = new FakeTestPlayer();
 		FakeTestPlayer player2 = new FakeTestPlayer();
 		player1.playerColor="green";
@@ -116,7 +115,7 @@ public class TestaddFamilyMemberToTheTower extends TestCase{
 	}
 	
 	@Test
-	public void testAddFamilyMemberToTheTower4() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, CardNotFoundException{
+	public void testAddFamilyMemberToTheTower4() throws ReflectiveOperationException, IOException, NotEnoughResourcesException, NotEnoughPointsException, CardNotFoundException{
 		String[][] cardNames = gameHandler.mainBoard.getCardNamesOnTheTowers();
 		FakeTestPlayer player = new FakeTestPlayer();
 		player.personalMainBoard=gameHandler.mainBoard;
@@ -135,7 +134,7 @@ public class TestaddFamilyMemberToTheTower extends TestCase{
 	}
 	
 	@Test
-	public void testAddFamilyMemberToTheTower5() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, CardNotFoundException{
+	public void testAddFamilyMemberToTheTower5() throws ReflectiveOperationException, IOException, NotEnoughResourcesException, NotEnoughPointsException, CardNotFoundException{
 		String[][] cardNames = gameHandler.mainBoard.getCardNamesOnTheTowers();
 		FakeTestPlayer player = new FakeTestPlayer();
 		player.personalMainBoard=gameHandler.mainBoard;

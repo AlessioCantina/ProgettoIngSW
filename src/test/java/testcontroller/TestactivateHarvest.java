@@ -1,7 +1,6 @@
 package testcontroller;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import org.junit.Before;
 import org.junit.Test;
 import it.polimi.LM39.controller.GameHandler;
@@ -27,7 +26,7 @@ public class TestactivateHarvest extends TestCase{
 	}
 	
 	@Test
-	public void testActivateHarvest() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
+	public void testActivateHarvest() throws ReflectiveOperationException , NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
 		FakeTestPlayer player = new FakeTestPlayer();
 		player.playerColor="green";
 		//reset coins

@@ -1,8 +1,6 @@
 package testcontroller;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +27,7 @@ public class TestaddFamilyMemberToProductionOrHarvest extends TestCase{
 	}
 	
 	@Test
-	public void testAddFamilyMemberToProductionOrHarvest1() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
+	public void testAddFamilyMemberToProductionOrHarvest1() throws ReflectiveOperationException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
 		//match of 2 players
 		gameHandler.mainBoard.harvestAndProductionSize=1;
 		FakeTestPlayer player = new FakeTestPlayer();
@@ -59,7 +57,7 @@ public class TestaddFamilyMemberToProductionOrHarvest extends TestCase{
 	}
 	
 	@Test
-	public void testAddFamilyMemberToProductionOrHarvest2() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
+	public void testAddFamilyMemberToProductionOrHarvest2() throws ReflectiveOperationException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
 		//match of >2 players
 		gameHandler.mainBoard.harvestAndProductionSize=20;
 		FakeTestPlayer player = new FakeTestPlayer();
@@ -89,7 +87,7 @@ public class TestaddFamilyMemberToProductionOrHarvest extends TestCase{
 	}
 	
 	@Test
-	public void testAddFamilyMemberToProductionOrHarvest3() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
+	public void testAddFamilyMemberToProductionOrHarvest3() throws ReflectiveOperationException , IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
 		//match of >2 players
 		gameHandler.mainBoard.harvestAndProductionSize=20;
 		FakeTestPlayer player = new FakeTestPlayer();
@@ -128,7 +126,7 @@ public class TestaddFamilyMemberToProductionOrHarvest extends TestCase{
 	}
 	
 	@Test
-	public void testAddFamilyMemberToProductionOrHarvest4() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
+	public void testAddFamilyMemberToProductionOrHarvest4() throws ReflectiveOperationException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
 		//match of 2 players
 		gameHandler.mainBoard.harvestAndProductionSize=1;
 		FakeTestPlayer player = new FakeTestPlayer();
@@ -154,7 +152,7 @@ public class TestaddFamilyMemberToProductionOrHarvest extends TestCase{
 	}
 	
 	@Test
-	public void testAddFamilyMemberToProductionOrHarvest5() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
+	public void testAddFamilyMemberToProductionOrHarvest5() throws ReflectiveOperationException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
 		//match of 2 players
 		gameHandler.mainBoard.harvestAndProductionSize=1;
 		FakeTestPlayer player = new FakeTestPlayer();

@@ -69,14 +69,10 @@ public class TestCardHandler extends TestCase{
     /**
      * test get info method, it will print the information about the selected card
      * we just use the get info on every card and test if it ends
-     * @throws NoSuchMethodException
-     * @throws SecurityException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
+     * @throws ReflectionOperationException
      */
     @Test
-    public void testGetInfo() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+    public void testGetInfo() throws ReflectiveOperationException {
     	for(int i =1;i<=cardNumber;i++){
     		
     		testCardHandler.getInfo(testGameHandler.mainBoard.territoryMap.get(i).activationReward,testPlayer);
@@ -107,14 +103,10 @@ public class TestCardHandler extends TestCase{
      * we can test only some effects which doesn't require iteration with the user
      * so we use instance of to select only those effects
      * after we activate all the effects, we check if the resources are correct
-     * @throws NoSuchMethodException
-     * @throws SecurityException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
+     * @throws ReflectiveOperationException
      */
     @Test
-    public void testDoInstantEffect() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+    public void testDoInstantEffect() throws ReflectiveOperationException {
     	Integer expectedCoins = 92;
     	Integer expectedWoods = 60;
     	Integer expectedStones = 58;
@@ -168,14 +160,10 @@ public class TestCardHandler extends TestCase{
     /**
      * test check leader requested objects method
      * check if the player has the requirements to activate the selected leader cards
-     * @throws SecurityException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
-     * @throws NoSuchMethodException
+     * @throws ReflectiveOperationException
      */
     @Test
-    public void testCheckLeaderRequestedObjects() throws SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
+    public void testCheckLeaderRequestedObjects() throws ReflectiveOperationException {
     	for(int i =0;i<leaderNumber;i++){	
     		testCardHandler.checkLeaderRequestedObject(testGameHandler.mainBoard.leaderMap.get(testGameHandler.mainBoard.leaderName.get(i)).requestedObjects,testPlayer);	
     	}
@@ -190,7 +178,7 @@ public class TestCardHandler extends TestCase{
      * @throws IllegalArgumentException
      * @throws InvocationTargetException
      */
-    public void testActivateCharacter() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public void testActivateCharacter() throws ReflectiveOperationException {
     	for(int i =1;i<=cardNumber;i++)
     		testCardHandler.activateCharacter(testGameHandler.mainBoard.characterMap.get(i).permanentEffect,testPlayer);
     	assertTrue(true);
@@ -198,14 +186,10 @@ public class TestCardHandler extends TestCase{
     /**
      * test activate excommunication method
      * activate all the excommunications' permanent effects
-     * @throws NoSuchMethodException
-     * @throws SecurityException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
+     * @throws ReflectiveOperationException
      */
     @Test
-    public void testActivateExcommunication() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public void testActivateExcommunication() throws ReflectiveOperationException {
     	for(int i =1;i<=excommunicationNumber;i++)
     		testCardHandler.activateExcommunication(testGameHandler.mainBoard.excommunicationMap.get(i).effect,testPlayer);
 
@@ -214,14 +198,10 @@ public class TestCardHandler extends TestCase{
     /**
      * test activate leader method
      * activate all the leaders' permanent effects
-     * @throws SecurityException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
-     * @throws NoSuchMethodException
+     * @throws ReflectiveOperationException
      */
     @Test
-    public void testActivateLeader() throws SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException{
+    public void testActivateLeader() throws ReflectiveOperationException{
     	for(int i =0;i<leaderNumber;i++){
 
     		if(("Federico da Montefeltro").equals(testGameHandler.mainBoard.leaderName.get(i)))

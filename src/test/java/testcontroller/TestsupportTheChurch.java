@@ -1,7 +1,6 @@
 package testcontroller;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +24,7 @@ public class TestsupportTheChurch extends TestCase{
 	}
 	
 	@Test
-	public void testSupportTheChurch() throws NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException{
+	public void testSupportTheChurch() throws NotEnoughPointsException,ReflectiveOperationException, NotEnoughResourcesException{
 		FakeTestPlayer player = new FakeTestPlayer();
 		player.personalMainBoard=gameHandler.mainBoard;
 		//set the necessary faith points needed to support the church at the end of the first period

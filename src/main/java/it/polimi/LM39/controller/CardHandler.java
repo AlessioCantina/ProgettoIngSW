@@ -52,13 +52,9 @@ public class CardHandler {
 	 * reflection to call the correct method that handles a specific instant effect
 	 * @param instantEffect
 	 * @param player
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
+     * @throws ReflectiveOperationException
 	 */
-	public void doInstantEffect(InstantEffect instantEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
+	public void doInstantEffect(InstantEffect instantEffect,NetworkPlayer player) throws ReflectiveOperationException {
 		 Class[] cArg = new Class[2];
 		 cArg[0] = instantEffect.getClass();
 		 cArg[1] = NetworkPlayer.class;
@@ -72,13 +68,9 @@ public class CardHandler {
 	  * @param instantEffect
 	  * @param player
 	  * @param fakePlayer
-	  * @throws SecurityException
-	  * @throws IllegalAccessException
-	  * @throws IllegalArgumentException
-	  * @throws InvocationTargetException
-	  * @throws NoSuchMethodException
+	  * @throws ReflectiveOperationException
 	  */
-	 public void doInstantEffect(InstantEffect instantEffect,NetworkPlayer player, NetworkPlayer fakePlayer) throws  SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException	{
+	 public void doInstantEffect(InstantEffect instantEffect,NetworkPlayer player, NetworkPlayer fakePlayer) throws ReflectiveOperationException {
 		 Class[] cArg = new Class[3];
 		 cArg[0] = instantEffect.getClass();
 		 cArg[1] = NetworkPlayer.class;
@@ -184,13 +176,9 @@ public class CardHandler {
 	 * @throws CardNotFoundException
 	 * @throws NotEnoughResourcesException
 	 * @throws NotEnoughPointsException
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
+	 * @throws ReflectiveOperationException
 	 */
-	public void doInstantEffect(GetCard instantEffect,NetworkPlayer player) throws IOException, CardNotFoundException, NotEnoughResourcesException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	public void doInstantEffect(GetCard instantEffect,NetworkPlayer player) throws IOException, CardNotFoundException, NotEnoughResourcesException, NotEnoughPointsException,ReflectiveOperationException {
 		// ask to the player if he wants to use this effect
 		getInfo(instantEffect,player);
 		player.setMessage("Do you want to use this effect? yes or no");
@@ -241,13 +229,9 @@ public class CardHandler {
 	 * @throws NotEnoughPointsException
 	 * @throws CardNotFoundException
 	 * @throws NotEnoughResourcesException
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
+	 * @throws ReflectiveOperationException
 	 */
-	public void doInstantEffect(GetCardAndPoints instantEffect,NetworkPlayer player) throws IOException, NotEnoughPointsException, CardNotFoundException, NotEnoughResourcesException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	public void doInstantEffect(GetCardAndPoints instantEffect,NetworkPlayer player) throws IOException, NotEnoughPointsException, CardNotFoundException, NotEnoughResourcesException, ReflectiveOperationException {
 		//making a GetCard effect and calling his method
 		GetCard effect = new GetCard();
 		effect.cardType=instantEffect.cardType;
@@ -267,13 +251,9 @@ public class CardHandler {
 	 * @throws NotEnoughResourcesException
 	 * @throws CardNotFoundException
 	 * @throws NotEnoughPointsException
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
+	 * @throws ReflectiveOperationException
 	 */
-	public void doInstantEffect(GetCardAndResources instantEffect,NetworkPlayer player) throws IOException, NotEnoughResourcesException, CardNotFoundException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	public void doInstantEffect(GetCardAndResources instantEffect,NetworkPlayer player) throws IOException, NotEnoughResourcesException, CardNotFoundException, NotEnoughPointsException, NoSuchMethodException, ReflectiveOperationException {
 		//making a GetCard effect and calling his method
 		GetCard effect = new GetCard();
 		effect.cardType=instantEffect.cardType;
@@ -293,13 +273,9 @@ public class CardHandler {
 	 * @throws CardNotFoundException
 	 * @throws NotEnoughResourcesException
 	 * @throws NotEnoughPointsException
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
+	 * @throws ReflectiveOperationException
 	 */
-	public void doInstantEffect(GetDiscountedCard instantEffect,NetworkPlayer player) throws IOException, CardNotFoundException, NotEnoughResourcesException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	public void doInstantEffect(GetDiscountedCard instantEffect,NetworkPlayer player) throws IOException, CardNotFoundException, NotEnoughResourcesException, NotEnoughPointsException, ReflectiveOperationException {
 		// ask to the player if he wants to use this effect
 		getInfo(instantEffect,player);
 		player.setMessage("Do you want to use this effect? yes or no");
@@ -395,15 +371,11 @@ public class CardHandler {
 	 * @param player
 	 * @throws IOException
 	 * @throws NotEnoughResourcesException
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
+	 * @throws ReflectiveOperationException
 	 * @throws NotEnoughPointsException
 	 * @throws InvalidActionTypeException
 	 */
-	public void doInstantEffect(HarvestProductionAction instantEffect,NetworkPlayer player) throws IOException, NotEnoughResourcesException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughPointsException, InvalidActionTypeException{
+	public void doInstantEffect(HarvestProductionAction instantEffect,NetworkPlayer player) throws IOException, NotEnoughResourcesException, ReflectiveOperationException , NotEnoughPointsException, InvalidActionTypeException{
 		//ask to the player if he wants to add servants to the action
 		Integer qtyServants = gameHandler.decoratedMethods.addServants(player);
 		//check if the effect is for harvest o production and call the correct method
@@ -419,15 +391,11 @@ public class CardHandler {
 	 * @param player
 	 * @throws NotEnoughPointsException
 	 * @throws IOException
-	 * @throws NotEnoughResourcesException
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
+	 * @throws ReflectiveOperationException
 	 * @throws InvocationTargetException
 	 * @throws InvalidActionTypeException
 	 */
-	public void doInstantEffect(HarvestProductionAndPoints instantEffect,NetworkPlayer player) throws NotEnoughPointsException, IOException, NotEnoughResourcesException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InvalidActionTypeException{
+	public void doInstantEffect(HarvestProductionAndPoints instantEffect,NetworkPlayer player) throws NotEnoughPointsException, IOException, NotEnoughResourcesException, ReflectiveOperationException, InvalidActionTypeException{
 		//making an HarvestProductionAction effect and calling his method
 		HarvestProductionAction effect = new HarvestProductionAction();
 		effect.actionType = instantEffect.actionType;
@@ -595,13 +563,9 @@ public class CardHandler {
 	 * @param requestedObject
 	 * @param player
 	 * @return
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
+	 * @throws ReflectiveOperationException
 	 */
-	public boolean checkLeaderRequestedObject(LeaderRequestedObjects requestedObject,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{	
+	public boolean checkLeaderRequestedObject(LeaderRequestedObjects requestedObject,NetworkPlayer player) throws ReflectiveOperationException {	
 		Class[] cArg = new Class[2];
 		cArg[0] = requestedObject.getClass();
 		cArg[1] = NetworkPlayer.class;
@@ -737,13 +701,9 @@ public class CardHandler {
 	 * @param permanentEffect
 	 * @param player
 	 * @return
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
+	 * @throws ReflectiveOperationException
 	 */
-	public DecoratedMethods activateCharacter(CharacterPermanentEffect permanentEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{									
+	public DecoratedMethods activateCharacter(CharacterPermanentEffect permanentEffect,NetworkPlayer player) throws ReflectiveOperationException {									
 		Class[] cArg = new Class[2];
 	    cArg[0] = permanentEffect.getClass();
 	    cArg[1] = NetworkPlayer.class;
@@ -864,13 +824,9 @@ public class CardHandler {
 	 * @param permanentEffect
 	 * @param player
 	 * @return
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
+	 * @throws ReflectiveOperationException
 	 */
-	public DecoratedMethods activateExcommunication(ExcommunicationPermanentEffect permanentEffect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
+	public DecoratedMethods activateExcommunication(ExcommunicationPermanentEffect permanentEffect,NetworkPlayer player) throws ReflectiveOperationException{
 		Class[] cArg = new Class[2];
 	    cArg[0] = permanentEffect.getClass();
 	    cArg[1] = NetworkPlayer.class;
@@ -1074,13 +1030,9 @@ public class CardHandler {
 	 * @param player
 	 * @param cardName
 	 * @return
-	 * @throws SecurityException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
-	 * @throws NoSuchMethodException
+	 * @throws ReflectiveOperationException
 	 */
-	public DecoratedMethods activateLeader(Effect permanentEffect,NetworkPlayer player,String cardName) throws SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException	{
+	public DecoratedMethods activateLeader(Effect permanentEffect,NetworkPlayer player,String cardName) throws ReflectiveOperationException{
 		Class[] cArg = new Class[3];
 	    cArg[0] = permanentEffect.getClass();
 	    cArg[1] = NetworkPlayer.class;
@@ -1134,13 +1086,9 @@ public class CardHandler {
 	 * @param cardName
 	 * @return
 	 * @throws CardNotFoundException
-	 * @throws SecurityException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
-	 * @throws NoSuchMethodException
+	 * @throws ReflectiveOperationException
 	 */
-	public DecoratedMethods activateLeader(CopyLeaderAbility permanentEffect,NetworkPlayer player,String cardName) throws CardNotFoundException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException{
+	public DecoratedMethods activateLeader(CopyLeaderAbility permanentEffect,NetworkPlayer player,String cardName) throws CardNotFoundException,ReflectiveOperationException{
 		String response;
 		if(player.copiedLeaderCard == ""){
 			ArrayList<String> choosableCards = new ArrayList<String>();
@@ -1314,13 +1262,9 @@ public class CardHandler {
 	 * reflection to call the correct method that send to the player a specific InstantEffect info
 	 * @param effect
 	 * @param player
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
+	 * @throws ReflectiveOperationException
 	 */
-	public void getInfo(InstantEffect effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
+	public void getInfo(InstantEffect effect,NetworkPlayer player) throws ReflectiveOperationException {
 		 Class[] cArg = new Class[2];
 		 cArg[0] = effect.getClass();
 		 cArg[1] = NetworkPlayer.class;
@@ -1459,13 +1403,9 @@ public class CardHandler {
 	 * reflection to call the correct method that send to the player a specific LeaderRequestedObjects info
 	 * @param effect
 	 * @param player
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
+	 * @throws ReflectiveOperationException
 	 */
-	public void getInfo(LeaderRequestedObjects effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
+	public void getInfo(LeaderRequestedObjects effect,NetworkPlayer player) throws ReflectiveOperationException {
 		 Class[] cArg = new Class[2];
 		 cArg[0] = effect.getClass();
 		 cArg[1] = NetworkPlayer.class;
@@ -1508,13 +1448,9 @@ public class CardHandler {
 	 * reflection to call the correct method that send to the player a specific CharacterPermanentEffect info
 	 * @param effect
 	 * @param player
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
+	 * @throws ReflectiveOperationException
 	 */
-	public void getInfo(CharacterPermanentEffect effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
+	public void getInfo(CharacterPermanentEffect effect,NetworkPlayer player) throws ReflectiveOperationException {
 		 Class[] cArg = new Class[2];
 		 cArg[0] = effect.getClass();
 		 cArg[1] = NetworkPlayer.class;
@@ -1552,13 +1488,9 @@ public class CardHandler {
 	 * reflection to call the correct method that send to the player a specific ExcommunicationPermanentEffect info
 	 * @param effect
 	 * @param player
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
+	 * @throws ReflectiveOperationException
 	 */
-	public void getInfo(ExcommunicationPermanentEffect effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
+	public void getInfo(ExcommunicationPermanentEffect effect,NetworkPlayer player) throws ReflectiveOperationException {
 		 Class[] cArg = new Class[2];
 		 cArg[0] = effect.getClass();
 		 cArg[1] = NetworkPlayer.class;
@@ -1631,13 +1563,9 @@ public class CardHandler {
 	 * reflection to call the correct method that send to the player a specific LeaderPermanentEffect info
 	 * @param effect
 	 * @param player
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
+	 * @throws ReflectiveOperationException
 	 */
-	public void getInfo(LeaderPermanentEffect effect,NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException	{
+	public void getInfo(LeaderPermanentEffect effect,NetworkPlayer player) throws ReflectiveOperationException{
 		 Class[] cArg = new Class[2];
 		 cArg[0] = effect.getClass();
 		 cArg[1] = NetworkPlayer.class;	
@@ -1693,13 +1621,9 @@ public class CardHandler {
 	 * reflection to call the correct method that send to the player a specific Effect info
 	 * @param permanentEffect
 	 * @param player
-	 * @throws SecurityException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
-	 * @throws NoSuchMethodException
+	 * @throws ReflectiveOperationException
 	 */
-	public void getInfo(Effect permanentEffect,NetworkPlayer player) throws SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException	{
+	public void getInfo(Effect permanentEffect,NetworkPlayer player) throws ReflectiveOperationException {
 		Class[] cArg = new Class[2];
 	    cArg[0] = permanentEffect.getClass();
 	    cArg[1] = NetworkPlayer.class;

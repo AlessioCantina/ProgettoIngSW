@@ -1,7 +1,6 @@
 package it.polimi.LM39.controller;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Level;
@@ -127,8 +126,7 @@ public class Game implements Runnable{
 			}
     		try {
 				flag = gameHandler.addFamilyMemberToTheTower(familyMember, response, player);
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | IOException | NotEnoughResourcesException | NotEnoughPointsException
+			} catch (ReflectiveOperationException | IOException | NotEnoughResourcesException | NotEnoughPointsException
 					| CardNotFoundException e) {
 				logger.log(Level.SEVERE, "Reflection error", e);
 				//give the servants back to the player if the action failed
@@ -163,8 +161,7 @@ public class Game implements Runnable{
 			}
     		try {
     			flag = gameHandler.addFamilyMemberToProductionOrHarvest(familyMember,player.personalMainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Production"),"Production",player);
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | IOException | NotEnoughResourcesException | NotEnoughPointsException
+			} catch (ReflectiveOperationException | IOException | NotEnoughResourcesException | NotEnoughPointsException
 					| InvalidActionTypeException e) {
 				logger.log(Level.SEVERE, "Reflection error", e);
 				//give the servants back to the player if the action failed
@@ -190,8 +187,7 @@ public class Game implements Runnable{
 			}
 			try {
 				flag = gameHandler.addFamilyMemberToProductionOrHarvest(familyMember,player.personalMainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Harvest"),"Harvest",player);
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | IOException | NotEnoughResourcesException | NotEnoughPointsException
+			} catch (ReflectiveOperationException | IOException | NotEnoughResourcesException | NotEnoughPointsException
 					| InvalidActionTypeException e) {
 					logger.log(Level.SEVERE, "Reflection error", e);
 					//give the servants back to the player if the action failed
@@ -235,8 +231,7 @@ public class Game implements Runnable{
 					CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
     				try {
 						flag = cardHandler.checkLeaderRequestedObject(gameHandler.mainBoard.leaderMap.get(response).requestedObjects, player);
-					} catch (NoSuchMethodException | SecurityException | IllegalAccessException
-							| IllegalArgumentException | InvocationTargetException e) {
+					} catch (ReflectiveOperationException e) {
 						logger.log(Level.SEVERE, "Reflection error", e);
 					}
     				if(flag == false){
@@ -249,8 +244,7 @@ public class Game implements Runnable{
     						gameHandler.decoratedMethods = cardHandler.activateLeader(gameHandler.mainBoard.leaderMap.get(response).effect, player, gameHandler.mainBoard.leaderMap.get(response).cardName);
     						playerAction(player);
     						return;
-						} catch (SecurityException | IllegalAccessException | IllegalArgumentException
-								| InvocationTargetException | NoSuchMethodException e) {
+						} catch (ReflectiveOperationException e) {
 							logger.log(Level.SEVERE, "Reflection error", e);
 						}
     				}	
@@ -344,8 +338,7 @@ public class Game implements Runnable{
 				searchCard(cardName,player);
 				playerAction(player);
 				return;
-			} catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-					| NoSuchMethodException e) {
+			} catch (ReflectiveOperationException e) {
 				logger.log(Level.SEVERE,"Reflection error", e);
 			}
     		catch (CardNotFoundException e) {
@@ -360,8 +353,7 @@ public class Game implements Runnable{
 				player.setMessage("Excommunication " + (i+1));
 				try {
 					cardHandler.getInfo(gameHandler.mainBoard.excommunicationMap.get(gameHandler.mainBoard.excommunicationsOnTheBoard[i]).effect,player);
-				} catch (NoSuchMethodException | SecurityException | IllegalAccessException
-						| IllegalArgumentException | InvocationTargetException e) {
+				} catch (ReflectiveOperationException e) {
 					logger.log(Level.SEVERE,"Reflection error", e);
 				}
 			}
@@ -382,14 +374,11 @@ public class Game implements Runnable{
      * to search a card on the MainBoard and on the player PersonalBoard
      * @param cardName
      * @param player
-     * @throws SecurityException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
+     * @throws ReflectiveOperationException
      * @throws NoSuchMethodException
      * @throws CardNotFoundException
      */
-    private void searchCard(String cardName,NetworkPlayer player) throws SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, CardNotFoundException{
+    private void searchCard(String cardName,NetworkPlayer player) throws ReflectiveOperationException, CardNotFoundException{
     	CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
     	int p = 0; int k = 0; int j = 0; int i;
     	Integer cardNumber = -1;
@@ -627,8 +616,7 @@ public class Game implements Runnable{
     		for(NetworkPlayer player : players){
     			try {
 					gameHandler.supportTheChurch(player);
-				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-						| InvocationTargetException | NotEnoughResourcesException | NotEnoughPointsException e) {
+				} catch (ReflectiveOperationException| NotEnoughResourcesException | NotEnoughPointsException e) {
 					logger.log(Level.SEVERE,"Reflection error", e);
 				}
     		}
@@ -680,8 +668,7 @@ public class Game implements Runnable{
     	gameHandler.resetPlayerPersonalMainBoard(player);
     		try {
 				gameHandler.activatePermanentEffects(player);
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
+			} catch (ReflectiveOperationException e) {
 				logger.log(Level.SEVERE,"Reflection error", e);
 			}
     		

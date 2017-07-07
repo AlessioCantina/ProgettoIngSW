@@ -1,7 +1,6 @@
 package testcontroller;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import org.junit.Before;
 import org.junit.Test;
 import it.polimi.LM39.controller.GameHandler;
@@ -27,7 +26,7 @@ public class TestactivateProduction extends TestCase{
 	}
 	
 	@Test
-	public void testActivateProduction() throws NotEnoughResourcesException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughPointsException, InvalidActionTypeException{
+	public void testActivateProduction() throws NotEnoughResourcesException, ReflectiveOperationException, IOException, NotEnoughPointsException, InvalidActionTypeException{
 		FakeTestPlayer player = new FakeTestPlayer();
 		player.playerColor="green";
 		player.setResponse("yes");

@@ -1,7 +1,6 @@
 package it.polimi.LM39.controller.decorator;
 
 import it.polimi.LM39.server.NetworkPlayer;
-import java.lang.reflect.InvocationTargetException;
 import it.polimi.LM39.controller.DecoratedMethods;
 import it.polimi.LM39.controller.PersonalBoardHandler;
 import it.polimi.LM39.exception.InvalidActionTypeException;
@@ -24,7 +23,7 @@ public class HarvestBoostDecorator extends DecoratedMethodsDecorator{
 	 * this method overrides activateHarvest to set an action bonus on the harvest
 	 */
 	@Override
-	public boolean activateHarvest(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
+	public boolean activateHarvest(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws ReflectiveOperationException , NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
 		return super.decoratedMethods.activateHarvest(value + harvestBonus,player,personalBoardHandler,familyMember);
 	}
 

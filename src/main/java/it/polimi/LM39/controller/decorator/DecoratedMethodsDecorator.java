@@ -1,7 +1,6 @@
 package it.polimi.LM39.controller.decorator;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import it.polimi.LM39.controller.DecoratedMethods;
 import it.polimi.LM39.controller.PersonalBoardHandler;
 import it.polimi.LM39.exception.InvalidActionTypeException;
@@ -29,12 +28,12 @@ public class DecoratedMethodsDecorator extends DecoratedMethods{
 	
 	
 	@Override
-	public boolean activateProduction(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, IOException, InvalidActionTypeException {
+	public boolean activateProduction(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws ReflectiveOperationException, NotEnoughResourcesException, NotEnoughPointsException, IOException, InvalidActionTypeException {
 		return decoratedMethods.activateProduction(value,player,personalBoardHandler,familyMember);
 	}
 	
 	@Override
-	public boolean activateHarvest(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException {
+	public boolean activateHarvest(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws ReflectiveOperationException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException {
 		return decoratedMethods.activateHarvest(value,player,personalBoardHandler,familyMember);
 	}
 	

@@ -77,13 +77,9 @@ public class GameHandler {
      * @param towerNumber
      * @return
      * @throws IOException
-     * @throws NoSuchMethodException
-     * @throws SecurityException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
+     * @throws ReflectiveOperationException
      */
-    public boolean getCard(Integer cardNumber,NetworkPlayer player, Integer towerNumber) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public boolean getCard(Integer cardNumber,NetworkPlayer player, Integer towerNumber) throws IOException,ReflectiveOperationException {
     	boolean cardGotten=false;
     	switch(towerNumber){
     		case 0: Territory territory=mainBoard.territoryMap.get(cardNumber);
@@ -110,13 +106,9 @@ public class GameHandler {
      * @param player
      * @param cardNumber
      * @throws IOException
-     * @throws NoSuchMethodException
-     * @throws SecurityException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
+     * @throws ReflectiveOperationException
      */
-    private boolean getTerritoryCard(Territory territory,NetworkPlayer player,Integer cardNumber) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+    private boolean getTerritoryCard(Territory territory,NetworkPlayer player,Integer cardNumber) throws IOException, ReflectiveOperationException {
     	ArrayList<Integer> possessedTerritories = player.personalBoard.getPossessions("Territory");
     	int militaryPoints = player.points.getMilitary();
     	if (possessedTerritories.size()<6){
@@ -143,13 +135,9 @@ public class GameHandler {
      * @param player
      * @param cardNumber
      * @throws IOException
-     * @throws NoSuchMethodException
-     * @throws SecurityException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
+     * @throws ReflectiveOperationException
      */
-    private boolean getCharacterCard(Character character,NetworkPlayer player,Integer cardNumber) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+    private boolean getCharacterCard(Character character,NetworkPlayer player,Integer cardNumber) throws IOException, ReflectiveOperationException {
     	
     	ArrayList<Integer> possessedCharacters = player.personalBoard.getPossessions("Character");
 		if (possessedCharacters.size()<6){
@@ -206,13 +194,9 @@ public class GameHandler {
      * @param cardNumber
      * @return
      * @throws IOException
-     * @throws NoSuchMethodException
-     * @throws SecurityException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
+     * @throws ReflectiveOperationException
      */
-    private boolean getVentureCard(Venture venture,NetworkPlayer player,Integer cardNumber) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+    private boolean getVentureCard(Venture venture,NetworkPlayer player,Integer cardNumber) throws ReflectiveOperationException {
     	ArrayList<Integer> possessedVentures = player.personalBoard.getPossessions("Venture");
     	CardHandler cardHandler = new CardHandler(this,decoratedMethods);
     	boolean flag = false;
@@ -281,9 +265,8 @@ public class GameHandler {
      * @param familyMemberColor
      * @param player
      * @return
-     * @throws IOException
      */
-    private Integer familyMemberColorToDiceValue(String familyMemberColor,NetworkPlayer player) throws IOException{
+    private Integer familyMemberColorToDiceValue(String familyMemberColor,NetworkPlayer player){
     	//The order followed is the one on the Game Board for the dices positions
     	Integer value = -1;
     	Integer[] diceValues = player.personalMainBoard.getDiceValues();
@@ -311,14 +294,10 @@ public class GameHandler {
      * @throws IOException
      * @throws NotEnoughResourcesException
      * @throws NotEnoughPointsException
-     * @throws NoSuchMethodException
-     * @throws SecurityException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
+     * @throws ReflectiveOperationException
      * @throws CardNotFoundException
      */
-    public boolean addFamilyMemberToTheTower(FamilyMember familyMember , String cardName, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, CardNotFoundException {
+    public boolean addFamilyMemberToTheTower(FamilyMember familyMember , String cardName, NetworkPlayer player) throws IOException, NotEnoughResourcesException, NotEnoughPointsException, ReflectiveOperationException , CardNotFoundException {
         int i,j;
         boolean coloredFamilyMemberOnTheTower = false;
         boolean uncoloredFamilyMemberOnTheTower = false;
@@ -471,13 +450,9 @@ public class GameHandler {
      * @param player
      * @throws NotEnoughResourcesException
      * @throws NotEnoughPointsException
-     * @throws NoSuchMethodException
-     * @throws SecurityException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
+     * @throws ReflectiveOperationException
      */
-    public void supportTheChurch (NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+    public void supportTheChurch (NetworkPlayer player) throws NotEnoughResourcesException, NotEnoughPointsException, ReflectiveOperationException{
     	//period + 2 is the minimum amount of faith points needed to support to the church for every period
     	CardHandler cardHandler = new CardHandler(this,decoratedMethods);
     	player.setMessage("Current Period Excommunication effect:");
@@ -572,16 +547,12 @@ public class GameHandler {
      * @param player
      * @return
      * @throws IOException
-     * @throws NoSuchMethodException
-     * @throws SecurityException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
+     * @throws ReflectiveOperationException
      * @throws NotEnoughResourcesException
      * @throws NotEnoughPointsException
      * @throws InvalidActionTypeException
      */
-    public boolean addFamilyMemberToProductionOrHarvest(FamilyMember familyMember, ArrayList<FamilyMember> familyMembersAtProductionOrHarvest, String actionType,NetworkPlayer player) throws IOException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException {
+    public boolean addFamilyMemberToProductionOrHarvest(FamilyMember familyMember, ArrayList<FamilyMember> familyMembersAtProductionOrHarvest, String actionType,NetworkPlayer player) throws IOException, ReflectiveOperationException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException {
     	int i;
     	//doAction is false by default, to know if the action Harvest or Production can be done
     	boolean doAction;
@@ -1097,13 +1068,9 @@ public class GameHandler {
     /**
      * to activate the permanent effects on a player
      * @param player
-     * @throws NoSuchMethodException
-     * @throws SecurityException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
+     * @throws ReflectiveOperationException
      */
-    public void activatePermanentEffects(NetworkPlayer player) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+    public void activatePermanentEffects(NetworkPlayer player) throws ReflectiveOperationException{
     	decoratedMethods = new DecoratedMethods();
     	decoratedMethods.setGameHandler(this);
     	CardHandler cardHandler = new CardHandler (this,decoratedMethods);

@@ -154,16 +154,12 @@ public class DecoratedMethods {
 	  * @param player
 	  * @param personalBoardHandler
 	  * @param familyMember
-	  * @throws NoSuchMethodException
-	  * @throws SecurityException
-	  * @throws IllegalAccessException
-	  * @throws IllegalArgumentException
-	  * @throws InvocationTargetException
+	  * @throws ReflectiveOperationException
 	  * @throws NotEnoughResourcesException
 	  * @throws NotEnoughPointsException
 	  * @throws InvalidActionTypeException
 	  */
-	 public boolean activateHarvest(Integer actionValue, NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
+	 public boolean activateHarvest(Integer actionValue, NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws ReflectiveOperationException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
 		 return personalBoardHandler.activateHarvest(actionValue,player,familyMember);
 	 }
 	
@@ -173,17 +169,13 @@ public class DecoratedMethods {
 	  * @param player
 	  * @param personalBoardHandler
 	  * @param familyMember
-	  * @throws NoSuchMethodException
-	  * @throws SecurityException
-	  * @throws IllegalAccessException
-	  * @throws IllegalArgumentException
-	  * @throws InvocationTargetException
+	  * @throws ReflectiveOperationException
 	  * @throws IOException
 	  * @throws NotEnoughResourcesException
 	  * @throws NotEnoughPointsException
 	  * @throws InvalidActionTypeException
 	  */
-	 public boolean activateProduction(Integer actionValue, NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
+	 public boolean activateProduction(Integer actionValue, NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws ReflectiveOperationException , IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException{
 		 return personalBoardHandler.activateProduction(actionValue, player,familyMember);
 	 }
 

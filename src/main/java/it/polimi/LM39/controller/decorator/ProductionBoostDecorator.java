@@ -26,7 +26,7 @@ public class ProductionBoostDecorator extends DecoratedMethodsDecorator{
 	 * this method overrides activateProduction to set a bonus on a production action value
 	 */
 	@Override
-	public boolean activateProduction(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, IOException, InvalidActionTypeException{
+	public boolean activateProduction(Integer value,NetworkPlayer player,PersonalBoardHandler personalBoardHandler,FamilyMember familyMember) throws ReflectiveOperationException , NotEnoughResourcesException, NotEnoughPointsException, IOException, InvalidActionTypeException{
 		return decoratedMethods.activateProduction(value + productionBonus,player,personalBoardHandler,familyMember);
 	}
 

@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 import it.polimi.LM39.controller.Game;
 import it.polimi.LM39.controller.GameHandler;
-import it.polimi.LM39.exception.CardNotFoundException;
 import it.polimi.LM39.server.NetworkPlayer;
 import junit.framework.TestCase;
 import testmodel.FakeTestPlayer;

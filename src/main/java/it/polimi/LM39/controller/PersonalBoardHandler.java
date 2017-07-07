@@ -34,16 +34,12 @@ public class PersonalBoardHandler {
 	 * @param player
 	 * @param familyMember
 	 * @return
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
+	 * @throws ReflectiveOperationException
 	 * @throws NotEnoughResourcesException
 	 * @throws NotEnoughPointsException
 	 * @throws InvalidActionTypeException
 	 */
-    public boolean activateHarvest(Integer actionValue, NetworkPlayer player,FamilyMember familyMember) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException {
+    public boolean activateHarvest(Integer actionValue, NetworkPlayer player,FamilyMember familyMember) throws ReflectiveOperationException , NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException {
     	if(actionValue > 0){
     	gameHandler.setActionBonus(player.personalBoard.personalBonusTile.harvestBonus,player);
     	ArrayList <Integer> territories = player.personalBoard.getPossessions("Territory");
@@ -67,17 +63,13 @@ public class PersonalBoardHandler {
      * @param player
      * @param familyMember
      * @return
-     * @throws NoSuchMethodException
-     * @throws SecurityException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InvocationTargetException
+     * @throws ReflectiveOperationException
      * @throws IOException
      * @throws NotEnoughResourcesException
      * @throws NotEnoughPointsException
      * @throws InvalidActionTypeException
      */
-    public boolean activateProduction(Integer actionValue, NetworkPlayer player,FamilyMember familyMember) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException , IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException {
+    public boolean activateProduction(Integer actionValue, NetworkPlayer player,FamilyMember familyMember) throws ReflectiveOperationException, IOException, NotEnoughResourcesException, NotEnoughPointsException, InvalidActionTypeException {
     	if(actionValue > 0){
     	gameHandler.setActionBonus(player.personalBoard.personalBonusTile.productionBonus,player);
     	ArrayList <Integer> buildings = player.personalBoard.getPossessions("Building");
@@ -148,7 +140,7 @@ public class PersonalBoardHandler {
      * @throws IllegalArgumentException
      * @throws InvocationTargetException
      */
-    private void checkPlayer(NetworkPlayer player,InstantEffect activationEffect,CardResources costResources, CardPoints costPoints, CardResources bonusResources, CardPoints bonusPoints) throws IOException, NotEnoughResourcesException, NotEnoughPointsException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+    private void checkPlayer(NetworkPlayer player,InstantEffect activationEffect,CardResources costResources, CardPoints costPoints, CardResources bonusResources, CardPoints bonusPoints) throws IOException, NotEnoughResourcesException, NotEnoughPointsException,ReflectiveOperationException {
     	NetworkPlayer fakePlayer;
     	Gson gson = new Gson();
     	

@@ -1,8 +1,6 @@
 package testcontroller;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +22,7 @@ public class TestgetCard extends TestCase{
 	}
 	
 	@Test
-	public void testGetCard1() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NotEnoughResourcesException, NotEnoughPointsException{
+	public void testGetCard1() throws ReflectiveOperationException, IOException, NotEnoughResourcesException, NotEnoughPointsException{
 		FakeTestPlayer player = new FakeTestPlayer();
 		player.playerColor="green";
 		//reset player resources
@@ -73,7 +71,7 @@ public class TestgetCard extends TestCase{
 	}
 		
 	@Test
-	public void testGetCard2() throws NotEnoughResourcesException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException{
+	public void testGetCard2() throws NotEnoughResourcesException,ReflectiveOperationException, IOException{
 		FakeTestPlayer player = new FakeTestPlayer();
 		player.playerColor="green";
 		//get a venture card (in this case Support to the Cardinal) it costs 4 military points but needed are 7 or 2 woods, 2 stones and 3 coins it gives 3 faith points and 4 victory points at the end of the game
