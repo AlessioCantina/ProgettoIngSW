@@ -305,20 +305,25 @@ public class GsonReader {
 		
 	}
 	 @SuppressWarnings("unchecked")
-	public void fileToCard(MainBoard mainBoard) throws IOException{
+	public void fileToCard(MainBoard mainBoard){
 		 Card territory = new Territory();  //objects needed to use java reflection which checks parameters types
 		 Card building = new Building();
 		 Card venture = new Venture();
 		 Card character = new Character();
 		 Leader leader = new Leader();
 		 Excommunication excommunication = new Excommunication();
-		 mainBoard.territoryMap = (HashMap<Integer,Territory>)hashMapCreator(territory);	
-		 mainBoard.buildingMap = (HashMap<Integer,Building>)hashMapCreator(building);
-		 mainBoard.characterMap = (HashMap<Integer,Character>)hashMapCreator(character);
-		 mainBoard.ventureMap = (HashMap<Integer,Venture>)hashMapCreator(venture);	
-		 mainBoard.leaderMap = hashMapCreator(leader,mainBoard);
-		 mainBoard.excommunicationMap = hashMapCreator(excommunication);
-		 personalTileLoader(mainBoard);
-		 configLoader(mainBoard);
+		 try{
+			 mainBoard.territoryMap = (HashMap<Integer,Territory>)hashMapCreator(territory);	
+			 mainBoard.buildingMap = (HashMap<Integer,Building>)hashMapCreator(building);
+			 mainBoard.characterMap = (HashMap<Integer,Character>)hashMapCreator(character);
+			 mainBoard.ventureMap = (HashMap<Integer,Venture>)hashMapCreator(venture);	
+			 mainBoard.leaderMap = hashMapCreator(leader,mainBoard);
+			 mainBoard.excommunicationMap = hashMapCreator(excommunication);
+			 personalTileLoader(mainBoard);
+			 configLoader(mainBoard);
+		 }
+		 catch(IOException e){
+			 logger.log(Level.SEVERE,"Can't read json files",e);
+		 }
 	 }
 }
