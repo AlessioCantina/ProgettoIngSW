@@ -1,6 +1,5 @@
 package testcontroller;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import org.junit.Test;
@@ -12,7 +11,7 @@ import testmodel.FakeTestPlayer;
 public class TestemptyPlayerInstantLeaderCards extends TestCase{
 	
 	@Test
-	public void testEmptyPlayerInstantLeaderCards() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	public void testEmptyPlayerInstantLeaderCards() throws ReflectiveOperationException{
 		FakeTestPlayer player = new FakeTestPlayer();
 		ArrayList<String> leaders = new ArrayList<String>();
 		leaders.add("Santa Rita");

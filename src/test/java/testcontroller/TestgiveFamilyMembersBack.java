@@ -12,7 +12,7 @@ import testmodel.FakeTestPlayer;
 public class TestgiveFamilyMembersBack extends TestCase{
 	
 	@Test
-	public void testGiveFamilyMembersBack() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	public void testGiveFamilyMembersBack() throws ReflectiveOperationException{
 		FakeTestPlayer player = new FakeTestPlayer();
 		//the player has played the black familyMember
 		player.setPlayedFamilyMember("black");

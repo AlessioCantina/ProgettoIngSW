@@ -1,7 +1,6 @@
 package testcontroller;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import org.junit.Test;
@@ -14,7 +13,7 @@ import testmodel.FakeTestPlayer;
 public class Testinitialize extends TestCase{
 
 	@Test
-	public void testInitialize() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException{
+	public void testInitialize() throws ReflectiveOperationException{
 		FakeTestPlayer player1 = new FakeTestPlayer();
 		FakeTestPlayer player2 = new FakeTestPlayer();
 		ArrayList<NetworkPlayer> players = new ArrayList<NetworkPlayer>();

@@ -1,6 +1,5 @@
 package testcontroller;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import org.junit.Test;
@@ -12,7 +11,7 @@ import testmodel.FakeTestPlayer;
 public class TestplayerColorToNetworkPlayer extends TestCase{
 	
 	@Test
-	public void testPlayerColorToNetworkPlayer() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	public void testPlayerColorToNetworkPlayer() throws ReflectiveOperationException{
 		FakeTestPlayer player = new FakeTestPlayer();
 		player.playerColor="green";
 		ArrayList<NetworkPlayer> players = new ArrayList<NetworkPlayer>();

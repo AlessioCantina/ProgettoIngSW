@@ -1,7 +1,6 @@
 package testcontroller;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import org.junit.Before;
@@ -24,7 +23,7 @@ public class TestloadRankings extends TestCase{
 	}
 	
 	@Test
-	public void testLoadRanking() throws NoSuchMethodException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, NotEnoughPointsException, InvocationTargetException{
+	public void testLoadRanking() throws  NotEnoughPointsException, ReflectiveOperationException{
 		FakeTestPlayer player = new FakeTestPlayer();
 		player.playerColor="green";
 		player.points.setFaith(5);

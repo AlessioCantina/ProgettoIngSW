@@ -1,7 +1,6 @@
 package testcontroller;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import org.junit.Before;
@@ -24,7 +23,7 @@ public class TestsearchCard extends TestCase{
 	}
 	
 	@Test
-	public void testSearchCard() throws NoSuchMethodException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException{
+	public void testSearchCard() throws ReflectiveOperationException{
 		FakeTestPlayer player = new FakeTestPlayer();
 		ArrayList<NetworkPlayer> players = new ArrayList<NetworkPlayer>();
 		players.add(player);

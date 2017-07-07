@@ -1,7 +1,6 @@
 package testcontroller;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import org.junit.Before;
@@ -23,7 +22,7 @@ public class TestskipFirstTurn extends TestCase{
 	}
 	
 	@Test
-	public void testSkipFirstTurn() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException{
+	public void testSkipFirstTurn() throws ReflectiveOperationException{
 		FakeTestPlayer player = new FakeTestPlayer();
 		ArrayList<NetworkPlayer> players = new ArrayList<NetworkPlayer>();
 		players.add(player);

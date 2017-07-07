@@ -1,6 +1,5 @@
 package testcontroller;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import org.junit.Test;
@@ -13,7 +12,7 @@ import testmodel.FakeTestPlayer;
 public class TestsendFinalPoints extends TestCase{
 	
 	@Test
-	public void testSendFinalPoints() throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+	public void testSendFinalPoints() throws ReflectiveOperationException{
 		FakeTestPlayer player = new FakeTestPlayer();
 		ArrayList<NetworkPlayer> players = new ArrayList<NetworkPlayer>();
 		players.add(player);
