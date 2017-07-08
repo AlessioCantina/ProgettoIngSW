@@ -3,7 +3,6 @@ package it.polimi.LM39.server;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.*;
-
 import it.polimi.LM39.credentials.Hash;
 
 /**
@@ -86,6 +85,13 @@ public class Server implements ServerInterface{
 				}
 				//player idle or disconnected not during his turn
 				else{
+					//player which try to re-login during his turn
+					if(!player.getSocket().isClosed() && !player.getIdleStatus()){
+						player.resetConnection(newPlayer.getSocket(), newPlayer.getOutputStream(), newPlayer.getInputStream());
+						this.sendTimeout(player.getOutputStream());
+						return false;
+					}
+					//player idle
 					player.getSocket().close();
 					player.resetConnection(newPlayer.getSocket(), newPlayer.getOutputStream(), newPlayer.getInputStream());
 					this.sendTimeout(player.getOutputStream());

@@ -179,8 +179,9 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    @Override
 	    public String sendMessage(){
 	    	try {
+	    		requestedMessage = true;
 	    		if(("").equals(clientAction)){	
-	    			objOutput.writeObject(true);
+	    			objOutput.writeObject(requestedMessage);
 	    			objOutput.flush();
 	    			clientAction = objInput.readUTF();
 	    		}
@@ -188,7 +189,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    			if(!this.getIdleStatus())
 	    				setDisconnectedPlayers(+1);
 	    			this.setIdleStatus(true);
-	    			objOutput.writeObject(true);
+	    			objOutput.writeObject(requestedMessage);
 	    			objOutput.flush();
 	    			return clientAction;
 	    		}	    				

@@ -421,6 +421,8 @@ public class Game implements Runnable{
     		break;
     	case "skip action": // do nothing
     		break;
+    	case "timeout": //do nothing
+    		break;
     	default: player.setMessage("Invalid action");
 				 doPlayerAction(player);
 			break;
