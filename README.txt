@@ -10,7 +10,7 @@ We have implemented:
 - Socket
 
 The project can be compiled using maven plugin, the main classes are :
-- Client side -> it.polimi.LM39.client.SartGame
+- Client side -> it.polimi.LM39.client.StartGame
 - Server side -> it.polimi.LM39.server.Server
 
 Configuration files can be found in jsonfiles/config folder.
