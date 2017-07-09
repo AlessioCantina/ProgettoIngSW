@@ -46,7 +46,7 @@ public class CLI implements UserInterface{
 	private Logger logger = Logger.getLogger(CLI.class.getName());
 	private boolean displayAction = false;
 	private boolean timeOutActive = false;
-	private Long moveTimeout;
+	private Integer moveTimeout;
 	
     /**
      * Default constructor: initialize the inputstream
@@ -60,7 +60,7 @@ public class CLI implements UserInterface{
 	 *
 	 */
 	@Override
-	public void setMoveTimeout(Long timeout){
+	public void setMoveTimeout(Integer timeout){
 		this.moveTimeout = timeout;
 	}
 
@@ -468,7 +468,7 @@ public class CLI implements UserInterface{
 		}
 		try {
 			if(timeOutActive)
-				response = readNextLine.get(moveTimeout, TimeUnit.MILLISECONDS);
+				response = readNextLine.get(moveTimeout, TimeUnit.SECONDS);
 			else
 				response = readNextLine.get();
 		} catch (InterruptedException e) {
@@ -477,7 +477,7 @@ public class CLI implements UserInterface{
 			logger.log(Level.WARNING, "Future exception", e);
 		} catch (TimeoutException e) {
 			response = "timeout";
-			moveTimeout = 0L;
+			moveTimeout = 0;
 		}
 		response = response.trim();
 		stringController = Action.isIn(response);

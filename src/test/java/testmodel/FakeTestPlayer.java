@@ -31,4 +31,9 @@ public class FakeTestPlayer extends NetworkPlayer{
 	public void setMessage(MainBoard mainBoard) {
 	}
 
+	@Override
+	public void setMessage(Integer mainBoard) {
+		
+	}
+
 }

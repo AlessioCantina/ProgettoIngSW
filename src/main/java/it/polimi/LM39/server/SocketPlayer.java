@@ -28,12 +28,14 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    private Boolean requestedMessage;
 	    protected static transient Object LOCK = new Object();
 	    protected static Integer disconnectedPlayers = 0;
+	    private Integer timeout;
 	    /**
 	     * the constructor initialize the streams
 	     */
 	    public SocketPlayer(ServerInterface serverInterface, Socket socket) throws IOException {
 	    	  message = "";
 	    	  this.clientAction = "";
+	    	  this.timeout = 0;
 	          this.socket = socket;
 	          this.socket.setKeepAlive(true);
 	          this.requestedMessage = false;
@@ -85,7 +87,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	        this.objInput = input;
 	    }
 	    /**
-	     * used from the controller to set the mainboard to send
+	     * used by the controller to set the mainboard to send
 	     */
 	    @Override
 	    public void setMessage(MainBoard mainBoard){
@@ -104,7 +106,22 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 		    }	
 	    }
 	    /**
-	     * used from the controller to set the mainboard to send
+	     * used by the controller to set the timeout to send to the player
+	     */
+	    public void setMessage(Integer timeout){
+	    	this.timeout = timeout;
+	    	try{
+	    		objOutput.writeInt(this.timeout);
+        		objOutput.flush();
+				if(SocketPlayer.disconnectedPlayers != 0)
+					setMessage("There are " + SocketPlayer.disconnectedPlayers + " disconnected players");
+	    	}catch (IOException e) {
+	    		logger.log(Level.WARNING, "Player disconnected");
+	    		disconnectionHandler();
+		    }	
+	    }
+	    /**
+	     * used by the controller to set the mainboard to send
 	     * synchronized to avoid deadlock if the controller want to send multiple messages to a client
 	     */
 	    @Override
@@ -134,8 +151,6 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    			socket.close();
 	    			while(socket.isClosed())
 	    				DISCONNECT_LOCK.wait();
-    				objOutput.writeLong(Room.playerMoveTimeout);
-    				objOutput.flush();
 	    			setMessage(this.mainBoard);
 				} catch (InterruptedException e) {
 					Thread.currentThread().interrupt();
@@ -163,8 +178,6 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    			}
 	    	    	while(this.getIdleStatus())
 	    	    		LOCK.wait();
-    				objOutput.writeLong(Room.playerMoveTimeout);
-    				objOutput.flush();
 				} catch (InterruptedException | IOException e) {
 					Thread.currentThread().interrupt();
 				}

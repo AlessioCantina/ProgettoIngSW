@@ -50,9 +50,9 @@ public class SocketClient extends AbstractClient implements Runnable{
 			socketOut.writeUTF(userName);
 			socketOut.writeUTF(password);
 	    	socketOut.flush();
-	    	ui.setMoveTimeout(socketIn.readLong());
+	    	ui.setMoveTimeout(socketIn.readInt());
 		} catch (IOException e1) {
-			logger.log(Level.SEVERE, "Can't write on socket");
+			logger.log(Level.SEVERE, "Can't write on socket", e1);
 		}
     }
     /**
@@ -70,9 +70,8 @@ public class SocketClient extends AbstractClient implements Runnable{
     					objectGrabber = socketIn.readObject();
     					if(objectGrabber instanceof NetworkPlayer)
     						player = (NetworkPlayer) objectGrabber;
-    					if(objectGrabber instanceof MainBoard){
-    						ui.setCurrentMainBoard((MainBoard)objectGrabber);
-    					}	
+    					if(objectGrabber instanceof MainBoard)
+    						ui.setCurrentMainBoard((MainBoard)objectGrabber);	
     					if(objectGrabber instanceof Boolean){
     						if((Boolean)objectGrabber)
     							break;

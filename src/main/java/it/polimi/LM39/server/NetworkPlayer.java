@@ -47,4 +47,9 @@ public abstract class NetworkPlayer extends Player{
 	 * will be used by controller to set mainboard to send
 	 */
 	public abstract void setMessage(MainBoard mainBoard);
+	/**
+	 * method that will be implemented by socket to communicate with the controller
+	 * will be used by controller to set timeout to send
+	 */
+	public abstract void setMessage(Integer mainBoard);
 }

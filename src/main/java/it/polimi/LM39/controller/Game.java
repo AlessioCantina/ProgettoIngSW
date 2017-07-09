@@ -1,5 +1,6 @@
 package it.polimi.LM39.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.logging.Level;
@@ -57,10 +58,18 @@ public class Game implements Runnable{
     
     	//set players action order
     	Collections.shuffle(players);
-   
+    	
+    	//send timeout to players
+    	for(NetworkPlayer player:players){
+    		try {
+				player.setMessage(GsonReader.playerTimeout());
+			} catch (IOException e) {
+				logger.log(Level.SEVERE, "Can't read json file", e);
+			}
+    	}
     	//set player colors
     	setPlayersColor(players);
-    	
+
     	//load the Rankings
     	loadRankings();
     	

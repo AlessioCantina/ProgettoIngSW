@@ -300,7 +300,7 @@ public class GsonReader {
 		return excommunicationHashMap;
 	}
 	/**
-	 * load the game's configurations from the stream passed by room
+	 * load the game's timeout from the config file
 	 * @param room
 	 * @param configStream
 	 * @throws IOException
@@ -317,12 +317,38 @@ public class GsonReader {
 				if(("gameStartTimeOut").equals(timeOutToExtract))
 					room.setRoomTimeout(gson.fromJson(jsonReader,Integer.class));
 				else if(("playerMoveTimeOut").equals(timeOutToExtract)){
-					Room.setMoveTimeout(gson.fromJson(jsonReader,Integer.class));
+					gson.fromJson(jsonReader,Integer.class);
 				}
 				else
 					gson.fromJson(jsonReader, Object.class);
 			}
 		jsonReader.close();
+	}
+	/**
+	 * load the player move timeout from the config file
+	 * @return
+	 * @throws IOException
+	 */
+	public static Integer playerTimeout() throws IOException{
+		final InputStream configStream = GsonReader.class.getResourceAsStream("/it/polimi/LM39/jsonfiles/config/gameconfiguration.json");
+		JsonReader jsonReader = new JsonReader(new InputStreamReader(configStream));
+			Gson gson = new GsonBuilder().create();  
+			jsonReader.beginObject();
+			while(jsonReader.hasNext()){
+				String timeOutToExtract = "";
+				if(("NAME").equals(jsonReader.peek().toString()))
+					timeOutToExtract = jsonReader.nextName();
+				if(("gameStartTimeOut").equals(timeOutToExtract))
+					gson.fromJson(jsonReader,Integer.class);
+				else if(("playerMoveTimeOut").equals(timeOutToExtract)){
+					Integer timeout = gson.fromJson(jsonReader,Integer.class);
+					return timeout;
+				}
+				else
+					gson.fromJson(jsonReader, Object.class);
+			}
+		jsonReader.close();
+		return 0;
 	}
 	/**
 	 * 
