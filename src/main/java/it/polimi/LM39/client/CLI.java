@@ -2,7 +2,6 @@ package it.polimi.LM39.client;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -47,7 +46,6 @@ public class CLI implements UserInterface{
 	private Logger logger = Logger.getLogger(CLI.class.getName());
 	private boolean displayAction = false;
 	private boolean timeOutActive = false;
-	private boolean error = false;
 	private Long moveTimeout;
 	
     /**
@@ -74,8 +72,7 @@ public class CLI implements UserInterface{
 		if(this.mainBoard == null)
 			displayAction = true;
 		this.mainBoard = mainBoard;
-		if(!error)
-			this.displaymainboard();
+		this.displaymainboard();
 	}
 	/**
 	 * display player's current resources
@@ -103,6 +100,7 @@ public class CLI implements UserInterface{
     	for(String member : familyMember)
     		if(!playedFamilyMembers.contains(member))
     			System.out.println(member);
+    	System.out.printf("%n");
     }
     /**
      * print the mainboard (only towers)
@@ -492,12 +490,13 @@ public class CLI implements UserInterface{
 				try {
 					lMethod = this.getClass().getMethod(response.replace(" ", ""), new Class[] {NetworkPlayer.class});
 					lMethod.invoke(this,player);
-				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException reflectionError) {
+				} catch (ReflectiveOperationException reflectionError) {
 					logger.log(Level.WARNING,"Wrong input",reflectionError);
 				}
-			} catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException reflection2Error){
+			} catch(ReflectiveOperationException reflection2Error){
 				logger.log(Level.WARNING,"Reflection error",reflection2Error);
 			}
+			System.out.println("What action do you want to perform?");
 			response = this.askClient(player);
 		}else
 			return response;

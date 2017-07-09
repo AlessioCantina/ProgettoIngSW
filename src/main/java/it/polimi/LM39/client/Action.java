@@ -24,6 +24,7 @@ public enum Action {
 		for(Action possibleActions : Action.values())
 			for(String actionName : possibleActions.actions)
 				System.out.println(actionName.toLowerCase());
+		System.out.printf("%n");
 	}
 	/**
 	 * checks if the client action is in the possible actions (in the enum) and return which part

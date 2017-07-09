@@ -154,32 +154,32 @@ public class CardHandler {
 	 */
 	public void doInstantEffect(DoubleResourcesTransformation instantEffect,NetworkPlayer player,NetworkPlayer fakePlayer) throws  NotEnoughResourcesException, NotEnoughPointsException{
 		//ask to the player what exchange he wants to do
-				player.setMessage("What exchange do you want to do? 1 or 2");
-				Integer choice = 0;
-				try{
-					//get the player response
-					choice = Integer.parseInt(player.sendMessage());
-				}
-				catch(NumberFormatException e){
-					player.setMessage("The exchange must be chosen between 1 and 2");
-					doInstantEffect(instantEffect,player,fakePlayer);
-					return;
-				}
-				if (choice==1){
-					//subtract the resources from the player
-					gameHandler.subCardResources(instantEffect.requestedForTransformation, fakePlayer);
-					//add resources to the player
-					gameHandler.decoratedMethods.addCardResources(instantEffect.resources, fakePlayer);}
-				else if(choice==2){
-					//subtract the resources from the player
-					gameHandler.subCardResources(instantEffect.requestedForTransformation2, fakePlayer);
-					//add resources to the player
-					gameHandler.decoratedMethods.addCardResources(instantEffect.resources2, fakePlayer);}
-				else{
-					player.setMessage("The exchange must be chosen between 1 and 2");
-					doInstantEffect(instantEffect,player,fakePlayer);
-					return;
-				}
+		player.setMessage("What exchange do you want to do? 1 or 2");
+		Integer choice = 0;
+		try{
+			//get the player response
+			choice = Integer.parseInt(player.sendMessage());
+		}
+		catch(NumberFormatException e){
+			player.setMessage("The exchange must be chosen between 1 and 2");
+			doInstantEffect(instantEffect,player,fakePlayer);
+			return;
+		}
+		if (choice==1){
+			//subtract the resources from the player
+			gameHandler.subCardResources(instantEffect.requestedForTransformation, fakePlayer);
+			//add resources to the player
+			gameHandler.decoratedMethods.addCardResources(instantEffect.resources, fakePlayer);}
+		else if(choice==2){
+			//subtract the resources from the player
+			gameHandler.subCardResources(instantEffect.requestedForTransformation2, fakePlayer);
+			//add resources to the player
+			gameHandler.decoratedMethods.addCardResources(instantEffect.resources2, fakePlayer);}
+		else{
+			player.setMessage("The exchange must be chosen between 1 and 2");
+			doInstantEffect(instantEffect,player,fakePlayer);
+			return;
+		}
 	}
 	
 	/**

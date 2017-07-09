@@ -10,7 +10,7 @@ public abstract class NetworkPlayer extends Player{
 	private static final long serialVersionUID = 3267472590124957050L;
 	protected static transient Object DISCONNECT_LOCK = new Object();
 	private String nickName = "";
-	private Boolean idleStatus = false;
+	private Boolean idleStatus = true;		//player are considered idle until the game starts
 	/**
 	 * get and set nickname
 	 */

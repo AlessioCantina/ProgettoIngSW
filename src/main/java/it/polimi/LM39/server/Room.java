@@ -79,6 +79,8 @@ public class Room implements Runnable{
 				Thread.currentThread().interrupt();
 			}
     	}
+    	for(NetworkPlayer player : players)
+    		player.setIdleStatus(false);
     	this.startRoom();   
     }
     /**

@@ -26,7 +26,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    private MainBoard mainBoard;
 	    protected String clientAction;
 	    private Boolean requestedMessage;
-	    protected transient static Object LOCK = new Object();
+	    protected static transient Object LOCK = new Object();
 	    protected static Integer disconnectedPlayers = 0;
 	    /**
 	     * the constructor initialize the streams
@@ -147,7 +147,7 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 
 
 	    /**
-	     * wait for the room to start, then unlocks player's threads
+	     * wait for the room to start, then unlocks player's thread
 	     * 
 	     */
 	    @Override
@@ -161,10 +161,8 @@ public class SocketPlayer extends NetworkPlayer implements Runnable{
 	    					DISCONNECT_LOCK.notifyAll();
 	    				}
 	    			}
-	    	    	while(!Thread.currentThread().isInterrupted()){
+	    	    	while(this.getIdleStatus())
 	    	    		LOCK.wait();
-	    	    		break;
-	    	    	}
     				objOutput.writeLong(Room.playerMoveTimeout);
     				objOutput.flush();
 				} catch (InterruptedException | IOException e) {
