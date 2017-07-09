@@ -90,9 +90,7 @@ public class Game implements Runnable{
     	String[] colors = {"green","blue","red","yellow"};
     	for(int i = 0; i < players.size(); i++){
     		players.get(i).playerColor = colors[i];
-    		players.get(i).setMessage("\n");
-    		players.get(i).setMessage("Your color is " + colors[i]);
-    		players.get(i).setMessage("\n");
+    		players.get(i).setMessage("\nYour color is " + colors[i] + "\n");
     	}
     }
     
@@ -382,7 +380,7 @@ public class Game implements Runnable{
     private void actionDisplayExcommunications(NetworkPlayer player){
     	CardHandler cardHandler = new CardHandler(gameHandler,gameHandler.decoratedMethods);
 		for(int i=0;i<3;i++){
-			player.setMessage("Excommunication " + (i+1));
+			player.setMessage("\nExcommunication " + (i+1));
 			try {
 				cardHandler.getInfo(gameHandler.mainBoard.excommunicationMap.get(gameHandler.mainBoard.excommunicationsOnTheBoard[i]).effect,player);
 			} catch (ReflectiveOperationException e) {
@@ -758,12 +756,12 @@ public class Game implements Runnable{
     		//send to the players the cards he should choose one every time 
     		for(int playerNumber=0,k=0;playerNumber<players.size();){
     			if(playerNumber+n<players.size()){
-    				players.get(playerNumber + n).setMessage("Choose a leader card between:");
+    				players.get(playerNumber + n).setMessage("\nChoose a leader card between:");
     				}
     			else if (((playerNumber + n)-players.size())<players.size()){
-    				players.get((playerNumber + n)-players.size()).setMessage("Choose a leader card between:");}
+    				players.get((playerNumber + n)-players.size()).setMessage("\nChoose a leader card between:");}
     			else
-    				players.get((playerNumber + n)-players.size()-players.size()).setMessage("Choose a leader card between:");
+    				players.get((playerNumber + n)-players.size()-players.size()).setMessage("\nChoose a leader card between:");
     			//send to the player the list of leader card in which he must choose one card
     			for(j=i+k;j>0+k;j--){
     				if(playerNumber+n<players.size())
