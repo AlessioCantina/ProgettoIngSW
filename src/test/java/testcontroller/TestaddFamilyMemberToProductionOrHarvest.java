@@ -49,7 +49,6 @@ public class TestaddFamilyMemberToProductionOrHarvest extends TestCase{
 		//the player try to add a second family member in a match of two players
 		familyMember.color="uncolored";
 		familyMember.setServants(4);
-		System.out.println(gameHandler.mainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Production").get(0).playerColor);
 		assertTrue(!(gameHandler.addFamilyMemberToProductionOrHarvest(familyMember,gameHandler.mainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Production"), "Production", player)));
 	}
 	

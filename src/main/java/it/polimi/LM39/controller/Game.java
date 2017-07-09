@@ -210,7 +210,7 @@ public class Game implements Runnable{
     }
     
     /**
-     * to dicard a leader
+     * to discard a leader
      * @param player
      */
     private void actionDiscardLeader(NetworkPlayer player){
