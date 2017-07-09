@@ -400,7 +400,7 @@ public class CLI implements UserInterface{
 		Integer[] diceValues = mainBoard.getDiceValues();
 		System.out.printf("Black dice:"+ diceValues[0] + "%n"
 		+"White dice:"+ diceValues[1] + "%n"
-		+"Orange dice:"+ diceValues[2]);
+		+"Orange dice:"+ diceValues[2] + "%n");
 		System.out.printf("%n");
 	}
 	/**
