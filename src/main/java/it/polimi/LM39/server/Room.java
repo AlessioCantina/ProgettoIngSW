@@ -79,9 +79,8 @@ public class Room implements Runnable{
 				Thread.currentThread().interrupt();
 			}
     	}
-    	for(NetworkPlayer player : players)
-    		player.setIdleStatus(false);
-    	this.startRoom();   
+    	if(!roomState)
+    		this.startRoom();   
     }
     /**
      * add the player to the current room
@@ -93,6 +92,8 @@ public class Room implements Runnable{
 			roomCreationTime = System.currentTimeMillis();
 			new Thread(this).start();
 		}
+		if(this.getConnectedPlayers() == MAX_CLIENT)
+			this.startRoom();
     }
     /*
      * return the number of players connected to the room
@@ -104,6 +105,8 @@ public class Room implements Runnable{
      * start the game thread
      */
     public void startRoom(){
+    	for(NetworkPlayer player : players)
+    		player.setIdleStatus(false);
     	Game game = new Game(this.getConnectedPlayers(),players);
     	roomState = true;
     	synchronized(SocketPlayer.LOCK){
