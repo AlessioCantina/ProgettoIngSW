@@ -136,7 +136,15 @@ public class DecoratedMethods {
 	    	response = GameHandler.checkResponse(response, player);
 	    	if(("yes").equals(response)){
 	    		player.setMessage("How many?");
-	    		Integer qty = Integer.parseInt(player.sendMessage());
+	    		Integer qty = 0;
+	    		try{
+	    			//get the player response
+	    			qty = Integer.parseInt(player.sendMessage());
+	    		}
+	    		catch(NumberFormatException e){
+	    			player.setMessage("The answer must be a number");
+	    			return addServants(player);
+	    		}
 	    		player.resources.setServants(-qty);
 	    		return qty;
 	    	}

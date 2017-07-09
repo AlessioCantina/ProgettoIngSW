@@ -25,8 +25,17 @@ public class CouncilHandler {
 			//ask to the player what Council Favor he wants
 			player.setMessage("What Council Favor do you want to get? From 1 to 5");
 			bonusInfo(player);
-			//getting the player response
-			Integer choice = Integer.parseInt(player.sendMessage());
+			Integer choice = 0;
+			try{
+				//get the player response
+				choice = Integer.parseInt(player.sendMessage());
+			}
+			catch(NumberFormatException e){
+				//if the player chose a bonus that doesn't exist
+				player.setMessage("You must choose a Favor between 1 and 5");
+				getCouncil(qty,player,gameHandler,favorsList);
+				return;
+			}
 			//check if he has already taken this Favor in case of he has multiple Favors to get
 			if(!checkAlreadyTaken(favorsList,choice)){
 				//if not add it to the list of gotten favors
@@ -47,7 +56,8 @@ public class CouncilHandler {
 					//if the player chose a bonus that doesn't exist
 					player.setMessage("You must choose a Favor between 1 and 5");
 					getCouncil(qty,player,gameHandler,favorsList);
-					}
+					return;
+				}
 					getCouncil(qty-1,player,gameHandler,favorsList);
 					}
 			else{

@@ -822,13 +822,19 @@ public class Game implements Runnable{
     			cardHandler.printCardPoints(tile.productionBonus.points, player);
     			cardHandler.printCardResources(tile.productionBonus.resources, player);
     		}
-    		String response = player.sendMessage();
-    		//if the player responded with a valid Bonus Tile Number
-    		if (Integer.parseInt(response) <= gameHandler.mainBoard.personalBonusTiles.size() && Integer.parseInt(response) >= 0){
+    		Integer response = 0;
+    		try{
+    			//get the player response
+    			response = Integer.parseInt(player.sendMessage());
+    		}
+    		catch(NumberFormatException e){
+    			response = -1;
+    		}
+    		if (response <= gameHandler.mainBoard.personalBonusTiles.size() && response >= 0){
     			//give the tile to the player
-    			player.personalBoard.personalBonusTile = gameHandler.mainBoard.personalBonusTiles.get(Integer.parseInt(response)-1);
+    			player.personalBoard.personalBonusTile = gameHandler.mainBoard.personalBonusTiles.get(response-1);
     			//remove the tile from the Main Board
-    			gameHandler.mainBoard.personalBonusTiles.remove(gameHandler.mainBoard.personalBonusTiles.get(Integer.parseInt(response)-1));
+    			gameHandler.mainBoard.personalBonusTiles.remove(gameHandler.mainBoard.personalBonusTiles.get(response-1));
     			//go to the next player
     			playerNumber++;
     		}

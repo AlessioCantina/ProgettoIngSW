@@ -216,8 +216,22 @@ public class GameHandler {
 	    		String response = player.sendMessage();
 	    		if(("abort").equals(response))
 	    			return false;
-	    		else
-	    			choice = Integer.parseInt(response);
+	    		else{
+	    			try{
+	    				choice = Integer.parseInt(response);
+	    			}
+	    			catch (NumberFormatException e){
+	    				player.setMessage("You must answer 1 or 2");
+	    			}
+	    			while(choice == 0){
+	    				try{
+		    				choice = Integer.parseInt(player.sendMessage());
+		    			}
+		    			catch (NumberFormatException e){
+		    				player.setMessage("You must answer 1 or 2");
+		    			}
+	    			}
+	    		}
 	    	}
 	    	if(venture.costMilitary==0 || choice == 2){
 	    		try {
