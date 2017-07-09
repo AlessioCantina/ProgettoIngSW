@@ -639,19 +639,18 @@ public class GameHandler {
     			}	
     		}
     		if (doAction==true){
-	    			if (actionType=="Production"){
-		    			return decoratedMethods.activateProduction(familyMemberValue(familyMember,player)-penalty,player,personalBoardHandler,familyMember); // we use the player Personal MainBaord
-	    			}
-	    			else if(actionType=="Harvest"){
-	    				return decoratedMethods.activateHarvest(familyMemberValue(familyMember,player)-penalty,player,personalBoardHandler,familyMember); // we use the player Personal MainBaord
-	    			}
+	    		if (actionType=="Production"){
+		    		decoratedMethods.activateProduction(familyMemberValue(familyMember,player)-penalty,player,personalBoardHandler,familyMember); // we use the player Personal MainBaord
+	    		}
+	    		else if(actionType=="Harvest"){
+	    			decoratedMethods.activateHarvest(familyMemberValue(familyMember,player)-penalty,player,personalBoardHandler,familyMember); // we use the player Personal MainBaord
+	    		}
+	    		return true;
 	    	}
-    			else {
-		    		player.setMessage("Invalid action it must be Production or Harvest");
-		    		return false;
-		    	}   			
-    		
-    		return true;
+    		else {
+		    	player.setMessage("Invalid action it must be Production or Harvest");
+		    	return false;
+		    }   			
     	}
 
     /**
