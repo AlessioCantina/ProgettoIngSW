@@ -15,7 +15,7 @@ The project can be compiled using maven plugin, the main classes are :
 
 Configuration files can be found in jsonfiles/config folder.
 - Default player move timeout: 600 seconds
-- Default room start timeout: 300 seconds
+- Default room start timeout: 120 seconds
 
 The server uses port 3421 it can be manually edited in 
 it.polimi.LM39.server.Server at line 15 (SOCKET_PORT)
