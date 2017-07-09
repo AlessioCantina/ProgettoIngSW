@@ -86,7 +86,8 @@ public class PersonalBoardHandler {
         		 catch (NotEnoughResourcesException e){
         			 player.setMessage("You don't have enough resources");
         			 activateProduction(actionValue,player,familyMember);
-        			 return false;
+        			 //the player at least gets the bonus from the bonus tile so return true
+        			 return true;
         		 }
         		 
         		 try{
@@ -97,13 +98,14 @@ public class PersonalBoardHandler {
         			 gameHandler.decoratedMethods.addCardResources(costResources, player);
         			 player.setMessage("You don't have enough points");
         			 activateProduction(actionValue,player,familyMember);
-        			 return false;
+        			//the player at least gets the bonus from the bonus tile so return true
+        			 return true;
         		 }
         		 
         		 //give the bonus received from the transformation to the player
         		 gameHandler.decoratedMethods.addCardResources(bonusResources, player);
         		 gameHandler.decoratedMethods.addCardPoints(bonusPoints, player);
-        	return true;	 
+        return true;	 
     	}
     	else{
     		if(gameHandler.mainBoard.familyMembersLocation.getFamilyMembersOnProductionOrHarvest("Production").contains(familyMember))
