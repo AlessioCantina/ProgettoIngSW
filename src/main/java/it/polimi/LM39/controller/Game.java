@@ -295,7 +295,7 @@ public class Game implements Runnable{
 		boolean flag = false;
 		String response = player.sendMessage();
 		if(!("4").equals(response) && !("3").equals(response) && !("2").equals(response) && !("1").equals(response)){
-			player.setMessage("You must choose between 1 and 4");
+			player.setMessage("You must choose between 1 and " + gameHandler.mainBoard.marketSize);
 			//give the servants back to the player if the action failed
 			try {
 				player.resources.setServants(familyMember.getServants());
