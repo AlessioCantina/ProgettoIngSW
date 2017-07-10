@@ -3,7 +3,6 @@ package it.polimi.LM39.controller;
 import it.polimi.LM39.model.characterpermanenteffect.*;
 import it.polimi.LM39.model.excommunicationpermanenteffect.*;
 import it.polimi.LM39.model.leaderpermanenteffect.*;
-import it.polimi.LM39.server.Room;
 import it.polimi.LM39.model.instanteffect.*;
 import it.polimi.LM39.model.leaderobject.*;
 import it.polimi.LM39.model.*;
