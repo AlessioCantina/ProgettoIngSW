@@ -8,7 +8,9 @@ import it.polimi.LM39.server.NetworkPlayer;
  */
 public interface UserInterface {
 
-    public abstract void setMoveTimeout(Integer i);
+    public abstract void setMoveTimeout(Integer timeout);
+    
+    public abstract Integer getMoveTimeout();
     
     public abstract void printMessage(String message);
         

@@ -67,7 +67,7 @@ public class TestGsonReader extends TestCase{
 	 */
 	@Test
 	public void testConfigLoader() throws IOException{
-		GsonReader.configLoader(testRoom);
+		GsonReader.timeoutLoader(0);
 		if(testRoom.getRoomTimeout() > 0)
 			assertTrue(true);
 		else

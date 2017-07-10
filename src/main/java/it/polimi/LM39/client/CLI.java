@@ -63,7 +63,14 @@ public class CLI implements UserInterface{
 	public void setMoveTimeout(Integer timeout){
 		this.moveTimeout = timeout;
 	}
-
+	/**
+	 * get the clientmove timeout
+	 *
+	 */
+	@Override
+	public Integer getMoveTimeout(){
+		return this.moveTimeout;
+	}
 	/**
 	 * set the current mainboard
 	 */

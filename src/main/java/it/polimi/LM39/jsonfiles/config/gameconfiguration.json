@@ -534,6 +534,6 @@
       }
    },
     "gameStartTimeOut":120,
-    "playerMoveTimeOut":300
+    "playerMoveTimeOut":600
 
 }

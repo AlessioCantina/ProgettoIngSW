@@ -62,7 +62,7 @@ public class Game implements Runnable{
     	//send timeout to players
     	for(NetworkPlayer player:players){
     		try {
-				player.setMessage(GsonReader.playerTimeout());
+				player.setMessage(GsonReader.timeoutLoader(1));
 			} catch (IOException e) {
 				logger.log(Level.SEVERE, "Can't read json file", e);
 			}

@@ -51,6 +51,8 @@ public class SocketClient extends AbstractClient implements Runnable{
 			socketOut.writeUTF(password);
 	    	socketOut.flush();
 	    	ui.setMoveTimeout(socketIn.readInt());
+	    	if(ui.getMoveTimeout() == 0)
+	    		System.out.println("Wrong password. Please reconnect");
 		} catch (IOException e1) {
 			logger.log(Level.SEVERE, "Can't write on socket", e1);
 		}

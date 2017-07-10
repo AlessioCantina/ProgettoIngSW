@@ -21,7 +21,6 @@ public class Room implements Runnable{
 	private ArrayList<NetworkPlayer> players;
 	private long roomCreationTime;
 	private long roomStartTimeout;
-	protected static Long playerMoveTimeout;
 	private Boolean roomState;	
     /**
      * initialize the room properties
@@ -31,7 +30,7 @@ public class Room implements Runnable{
     	roomState = false;
     	roomCounter++;
     	try{
-    		GsonReader.configLoader(this);
+    		roomStartTimeout = GsonReader.timeoutLoader(0) *1000L;	//0 to load room start timeout
     	}
     	catch(IOException exception){
     		logger.log(Level.SEVERE, "Failed to read file", exception);
@@ -52,26 +51,12 @@ public class Room implements Runnable{
     	return this.roomState;
     }
     /**
-     * room timeout setter (after this timeout the room will start the game)
-     * @param roomStartTimeOut
-     */
-    public void setRoomTimeout(Integer roomStartTimeOut){
-    	this.roomStartTimeout = roomStartTimeOut*1000L;
-    }
-    /**
-     * player moveTimeout (will be sent to the client at the start of the game)
-     * @param moveTimeout
-     */
-    public static void setMoveTimeout(Integer moveTimeout){
-    	playerMoveTimeout = moveTimeout*1000L;
-    }
-    /**
      * thread which measure time elapsed and start the game after the timeout expires
      * 
      */
     @Override
     public void run(){
-		System.out.println("Waiting for timeout");
+		System.out.println("Room started. Waiting for timeout");
     	while(System.currentTimeMillis() - roomCreationTime <= roomStartTimeout && !roomState){
 			try {
 				Thread.sleep(500);

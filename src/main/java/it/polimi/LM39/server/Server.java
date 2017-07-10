@@ -1,7 +1,6 @@
 package it.polimi.LM39.server;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.*;
 
 import it.polimi.LM39.controller.GsonReader;
@@ -83,7 +82,7 @@ public class Server implements ServerInterface{
 				//player disconnected during his turn
 				if(player.getSocket().isClosed()){
 					player.resetConnection(newPlayer.getSocket(), newPlayer.getOutputStream(), newPlayer.getInputStream());
-					player.setMessage(GsonReader.playerTimeout());
+					player.setMessage(GsonReader.timeoutLoader(1));
 					return true;
 				}
 				//player idle or disconnected not during his turn
@@ -91,35 +90,26 @@ public class Server implements ServerInterface{
 					//player which try to re-login during his turn
 					if(!player.getSocket().isClosed() && !player.getIdleStatus()){
 						player.resetConnection(newPlayer.getSocket(), newPlayer.getOutputStream(), newPlayer.getInputStream());
-						player.setMessage(GsonReader.playerTimeout());
+						player.setMessage(GsonReader.timeoutLoader(1));
 						return false;
 					}
 					//player idle
 					player.getSocket().close();
 					player.resetConnection(newPlayer.getSocket(), newPlayer.getOutputStream(), newPlayer.getInputStream());
-					player.setMessage(GsonReader.playerTimeout());
+					player.setMessage(GsonReader.timeoutLoader(1));
 					player.clientAction = "";
 					player.setIdleStatus(false);
 					SocketPlayer.setDisconnectedPlayers(-1);
 					return true;
 				}
-		//login failed
+		//login failed send 0 timeout to notify the client
 		}else{
 			SocketPlayer newPlayer = (SocketPlayer)networkPlayer;
-			this.sendTimeout(newPlayer.getOutputStream());
-			newPlayer.setMessage("Wrong password, please reconnect");
+			newPlayer.setMessage(0);
 		}
 		return false;
 	}
-	/**
-	 * support method to send the timeout to the player when he reconnects
-	 * @param stream
-	 * @throws IOException
-	 */
-	private void sendTimeout(ObjectOutputStream stream) throws IOException{
-		stream.writeLong(Room.playerMoveTimeout);
-		stream.flush();
-	}
+
 
 	/**
 	 * this method create the room if needed and call the method to add the player to the room

@@ -305,7 +305,7 @@ public class GsonReader {
 	 * @param configStream
 	 * @throws IOException
 	 */
-	public static void configLoader(Room room) throws IOException{
+	public static Integer timeoutLoader(Integer timeoutNumber) throws IOException{
 		final InputStream configStream = GsonReader.class.getResourceAsStream("/it/polimi/LM39/jsonfiles/config/gameconfiguration.json");
 		JsonReader jsonReader = new JsonReader(new InputStreamReader(configStream));
 			Gson gson = new GsonBuilder().create();  
@@ -315,34 +315,15 @@ public class GsonReader {
 				if(("NAME").equals(jsonReader.peek().toString()))
 					timeOutToExtract = jsonReader.nextName();
 				if(("gameStartTimeOut").equals(timeOutToExtract))
-					room.setRoomTimeout(gson.fromJson(jsonReader,Integer.class));
+					if(timeoutNumber == 0)
+						return gson.fromJson(jsonReader,Integer.class);
+					else
+						gson.fromJson(jsonReader,Integer.class);
 				else if(("playerMoveTimeOut").equals(timeOutToExtract)){
-					gson.fromJson(jsonReader,Integer.class);
-				}
-				else
-					gson.fromJson(jsonReader, Object.class);
-			}
-		jsonReader.close();
-	}
-	/**
-	 * load the player move timeout from the config file
-	 * @return
-	 * @throws IOException
-	 */
-	public static Integer playerTimeout() throws IOException{
-		final InputStream configStream = GsonReader.class.getResourceAsStream("/it/polimi/LM39/jsonfiles/config/gameconfiguration.json");
-		JsonReader jsonReader = new JsonReader(new InputStreamReader(configStream));
-			Gson gson = new GsonBuilder().create();  
-			jsonReader.beginObject();
-			while(jsonReader.hasNext()){
-				String timeOutToExtract = "";
-				if(("NAME").equals(jsonReader.peek().toString()))
-					timeOutToExtract = jsonReader.nextName();
-				if(("gameStartTimeOut").equals(timeOutToExtract))
-					gson.fromJson(jsonReader,Integer.class);
-				else if(("playerMoveTimeOut").equals(timeOutToExtract)){
-					Integer timeout = gson.fromJson(jsonReader,Integer.class);
-					return timeout;
+					if(timeoutNumber == 1)
+						return gson.fromJson(jsonReader,Integer.class);
+					else
+						gson.fromJson(jsonReader,Integer.class);
 				}
 				else
 					gson.fromJson(jsonReader, Object.class);
